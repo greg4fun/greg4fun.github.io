@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html prefix="        og: http://ogp.me/ns# article: http://ogp.me/ns/article#     " vocab="http://ogp.me/ns" lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+<title>Posts about monitoring | Greg's Tech Notes</title>
+<link href="https://fonts.googleapis.com/css?family=Bitter:400,400i,700" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+<link href="../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../rss.xml">
+<link rel="canonical" href="http://stencel.io/categories/monitoring.html">
+<!--[if lt IE 9]><script src="../assets/js/html5shiv-printshiv.min.js"></script><![endif]--><link rel="alternate" type="application/rss+xml" title="RSS for tag monitoring" hreflang="en" href="monitoring.xml">
+</head>
+<body>
+    <a href="#page-content" class="sr-only sr-only-focusable">Skip to main content</a>
+    
+    <section class="social"><ul>
+<li><p style="color:#fff;font-size:3em;">stencel.io</p></li>
+        <li><p style="color:#fff;font-size:2em;">greg's tech notes</p></li>
+            <li>
+                <a href="http://stencel.io/">
+                    <img src="../images/aboutme.png" alt="Greg's Tech Notes" id="logo"></a>
+            </li>
+        
+            <li><a href="../index.html" title="Home"><i class="fa fa-home"></i></a></li>
+            <li><a href="../archive.html" title="Archives"><i class="fa fa-folder-open"></i></a></li>
+            <li><a href="index.html" title="Tags"><i class="fa fa-tags"></i></a></li>
+            <li><a href="https://www.linkedin.com/in/gregstencel/" title="My Linkedin"><i class="fab fa-linkedin"></i></a></li>
+            <li><a href="https://github.com/greg4fun" title="My Github"><i class="fab fa-github"></i></a></li>
+    
+    
+
+        </ul></section><section class="page-content"><div class="content" rel="main">
+            
+
+    <header><h1>Posts about monitoring</h1>
+        <div class="metadata">
+            
+                <p class="feedlink">
+                        
+            <a href="monitoring.xml" hreflang="en" type="application/rss+xml">RSS feed</a>
+
+                </p>
+
+            
+
+        </div>
+    </header><div class="postindex">
+    <article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="../posts/build-fully-working-zabbix-server-with-database-in-seconds-thanks-to-docker.html" class="u-url">Build fully working zabbix server with database in seconds thanks to docker</a></h1>
+        <div class="metadata">
+            <p class="dateline"><a href="../posts/build-fully-working-zabbix-server-with-database-in-seconds-thanks-to-docker.html" rel="bookmark"><i class="fa fa-clock"></i> <time class="published dt-published" datetime="2018-03-16T17:47:56Z" title="2018-03-16 17:47">2018-03-16 17:47</time></a></p>
+            <p class="byline author vcard"> <i class="fa fa-user"></i> <span class="byline-name fn" itemprop="author">
+                Greg Stencel
+            </span></p>
+                <p class="commentline"><i class="fa fa-comment"></i> 
+        
+    <a href="../posts/build-fully-working-zabbix-server-with-database-in-seconds-thanks-to-docker.html#disqus_thread" data-disqus-identifier="cache/posts/build-fully-working-zabbix-server-with-database-in-seconds-thanks-to-docker.html">Comments</a>
+
+
+        </p>
+</div>
+    </header><div class="e-content entry-content">
+    <div>
+<p>To install zabbix server quickly zabbix comes with help as they have prebuild their product with docker images.
+There is lots of official zabbix images on dockerhub so it can just overwhelm you.
+There are mixes of all different possibilities like zabbix with mysql or postgres or either sqlite,
+zabbix served bt nginx or apache or java gateway.
+Depending on stack which is closest to you you can easily build docker-compose that will just run selected stack in
+seconds.
+My pick was nginx mysql so to set up fully running zabbix server we need 3 images</p>
+<ul class="simple">
+<li><p>mysql-server</p></li>
+<li><p>zabbix-web  - web interface</p></li>
+<li><p>zabbix-server - main zabbix process responsible for polling and trapping data and sending notifications to users.</p></li>
+</ul>
+<p>In addition you can add postfix mail server for notifying users but its not
+a must as you can use your own mail server if so - just remove postfix service from example below.</p>
+<p>Notice(you may want to use some specific versions or alpine versions for production env)</p>
+<p>Create some directory (directory name is crucial here for visibility and future maitenance
+of your containers and volumes or networks as the name will be used as prefix
+for docker containers created by docker-compose and also volumes directories
+so it will be easier to identify in future which volume belongs to which stack
+In Ubuntu volumes are usually being kept in/var/lib/docker/volumes but you can mount any directory from host by
+just specifying absolute or relative path in service configuration so for instance for mysql in
+example to mount mysql_data_dir just outside of our containers folder</p>
+<pre class="code bash"><a name="rest_code_ada2736a3948419e8f78eed3f3f5c008-1"></a>volumes:
+<a name="rest_code_ada2736a3948419e8f78eed3f3f5c008-2"></a>  - <span class="s1">'../mysql_data_dir:/var/lib/mysql'</span>
+</pre>
+<p>Now within directory create docker-compose.yml with selected technologies in my case it is:
+#docker-compose.yml</p>
+<pre class="code bash"><a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-1"></a>version: <span class="s1">'3'</span>
+<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-2"></a>
+<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-3"></a>services:
+<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-4"></a>  db:
+<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-5"></a>    image: mysql:latest
+<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-6"></a>    restart: always
+<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-7"></a>    expose:
+<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-8"></a>      - <span class="s1">'3336'</span>
+<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-9"></a>    environment:
+<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-10"></a>      MYSQL_ROOT_PASSWORD: <span class="s1">'my_secret_password'</span>
+<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-11"></a>      MYSQL_USER: <span class="s1">'zabbixuser'</span>
+<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-12"></a>      MYSQL_PASSWORD: <span class="s1">'zabbix_password'</span>
+<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-13"></a>      MYSQL_ROOT_HOST: <span class="s1">'%'</span>
+<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-14"></a>    volumes:
+<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-15"></a>      - <span class="s1">'mysql_data_dir:/var/lib/mysql'</span>
+<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-16"></a>
+<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-17"></a>
+<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-18"></a>  zabbix-server:
+<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-19"></a>    image: zabbix/zabbix-server-mysql
+<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-20"></a>    links:
+<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-21"></a>      - <span class="s2">"db:mysql"</span>
+<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-22"></a>      - <span class="s2">"postfix:postfix"</span>
+<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-23"></a>    environment:
+<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-24"></a>      MYSQL_ROOT_PASSWORD: <span class="s1">'my_secret_password'</span>
+<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-25"></a>      MYSQL_USER: <span class="s1">'zabbixuser'</span>
+<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-26"></a>      MYSQL_PASSWORD: <span class="s1">'zabbixpassassword'</span>
+<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-27"></a>      DB_SERVER_HOST: <span class="s1">'mysql'</span>
+<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-28"></a>
+<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-29"></a>
+<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-30"></a>  zabbix-web:
+<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-31"></a>    image: zabbix/zabbix-web-nginx-mysql
+<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-32"></a>    ports:
+<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-33"></a>      - <span class="s1">'7777:80'</span>
+<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-34"></a>    links:
+<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-35"></a>      - <span class="s2">"db:mysql"</span>
+<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-36"></a>      - <span class="s2">"zabbix-server:zabbix-server"</span>
+<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-37"></a>      - <span class="s2">"postfix:postfix"</span>
+<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-38"></a>    environment:
+<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-39"></a>      MYSQL_ROOT_PASSWORD: <span class="s1">'my_secret_password'</span>
+<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-40"></a>      MYSQL_USER: <span class="s1">'zabbixuser'</span>
+<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-41"></a>      MYSQL_PASSWORD: <span class="s1">'zabbixpassassword'</span>
+<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-42"></a>      DB_SERVER_HOST: <span class="s1">'mysql'</span>
+<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-43"></a>      ZBX_SERVER_HOST: <span class="s2">"zabbix-server"</span>
+<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-44"></a>      PHP_TZ: <span class="s2">"Europe/London"</span>
+<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-45"></a>  postfix:
+<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-46"></a>    image: catatnight/postfix
+<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-47"></a>    hostname: support
+<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-48"></a>    environment:
+<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-49"></a>      - <span class="nv">maildomain</span><span class="o">=</span>mydomain.com
+<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-50"></a>      - <span class="nv">smtp_user</span><span class="o">=</span>admin:my_password
+<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-51"></a>    ports:
+<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-52"></a>      - <span class="s2">"25:25"</span>
+<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-53"></a>    expose:
+<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-54"></a>      - <span class="s2">"25"</span>
+<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-55"></a>    volumes:
+<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-56"></a>      - /etc/nginx/ssl/postfix:/etc/postfix/certs
+<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-57"></a>      - /etc/nginx/ssl/postfix:/etc/opendkim/domainkeys
+<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-58"></a>volumes:
+<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-59"></a>  mysql_data_dir:
+<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-60"></a>    driver: <span class="nb">local</span>
+</pre>
+<p>The above solution is just enough to start zabbix server up and running in couple seconds.
+To do it just run:
+.. code-block:: bash</p>
+<blockquote>
+<p>sudo docker-compose up</p>
+</blockquote>
+<p>Thats it!!!
+You now have your zabbix running on port 7777</p>
+<p>So what happened here docker-compose up has build and runned 3 containers
+by running zabbix container it discovered there are no tables in mysql and has built them.</p>
+<p>Now you just need to add agents/servers you want to monitor.
+Check out adding agent in separate post</p>
+<p>Versions:
+(versions I've used in this example Feb 2018):</p>
+<p>Docker-compose: 1.17.0, build ac53b73
+Docker: 17.09.1-ce, build 19e2cf6
+Kernel: 4.13.0-36-generic
+System: Ubuntu 16.04.3 LTS</p>
+</div>
+    </div>
+    </article><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="../posts/adding-zabbix-agent-to-server.html" class="u-url">Adding zabbix agent to server</a></h1>
+        <div class="metadata">
+            <p class="dateline"><a href="../posts/adding-zabbix-agent-to-server.html" rel="bookmark"><i class="fa fa-clock"></i> <time class="published dt-published" datetime="2018-03-16T09:27:50Z" title="2018-03-16 09:27">2018-03-16 09:27</time></a></p>
+            <p class="byline author vcard"> <i class="fa fa-user"></i> <span class="byline-name fn" itemprop="author">
+                Greg Stencel
+            </span></p>
+                <p class="commentline"><i class="fa fa-comment"></i> 
+        
+    <a href="../posts/adding-zabbix-agent-to-server.html#disqus_thread" data-disqus-identifier="cache/posts/adding-zabbix-agent-to-server.html">Comments</a>
+
+
+        </p>
+</div>
+    </header><div class="e-content entry-content">
+    <div>
+<p>Zabbix is very powerfull tool which its using agents (or SNMP) to monitor server resources.
+Adding agent is easy but I had couple problems doing that when I used agent straight from my
+ubuntus (16.04.3) repo as there was no encryption functionality in this agent well I guess so as
+agent didn't recognize tls psk configuration so not very nice as by installing agent straight form repo
+with "sudo apt-get update &amp;&amp; sudo apt-get install zabbix-agent" I had limited functionality and unencrypted server-agent traffic.
+So there are 2 options we can install zabbix agent or use zabbix agent docker container.
+Adding zabbix agent to host system.
+For current day 3.2 is the latest so please change latest accordingly of how this artcile is old.
+wget <a class="reference external" href="http://repo.zabbix.com/zabbix/3.2/ubuntu/pool/main/z/zabbix-release/zabbix-release_3.2-1+xenial_all.deb">http://repo.zabbix.com/zabbix/3.2/ubuntu/pool/main/z/zabbix-release/zabbix-release_3.2-1+xenial_all.deb</a>
+sudo dpkg -i zabbix-release_3.2-1+xenial_all.deb
+sudo apt-get update
+apt-get purge zabbix-agent #remove previous if installed
+apt-get install zabbix-agent</p>
+<p>Now there are 3 basic options that need to be changed in agent config file:
+/etc/zabbix/zabbix_agentd.conf</p>
+<p>Server=ip of zabbix server
+ServerActive=ip of zabbix server
+Hostname=My host name</p>
+<p>sudo service zabbix-agent restart</p>
+<div class="section" id="add-host-to-server-through-web-interface">
+<h2>Add host to server through web interface:</h2>
+<p>In server go to Configuration-&gt; Hosts -&gt; Create host
+type in host name
+visible name
+public IP address opf your agent.Select group and add agent.
+Next is to select templates so add services you need to monitor (here linux + mysql : Template DB MySQL, Template OS Linux)
+after saving you should see green ZBX available label on Hosts screen
+Notice : I couldnt see zbx agent green icon until I added linux template / or zabbix agent template.</p>
+</div>
+<div class="section" id="seurity-setting-up-psk-encryption">
+<h2>Seurity - Setting up PSK encryption:</h2>
+<p>sh -c "openssl rand -hex 32 &gt; /etc/zabbix/zabbix_agentd.psk"
+Now add below lines to /etc/zabbix/zabbix_agentd.conf
+TLSConnect=psk
+TLSAccept=psk
+#each identity id must be different for each serverr connected to one zabbix server
+TLSPSKIdentity=PSK SOMETHING
+TLSPSKFile=/etc/zabbix/zabbix_agentd.psk
+sudo service zabbix-agent restart
+Get generated key string:
+cat /etc/zabbix/zabbix_agentd.psk
+and add encryption in zabbix server web interface :
+In server go to Configuration-&gt; Hosts -&gt; my host-&gt;encryption</p>
+<p>Select:
+Connections to host PSK
+connections from host PSK
+PSK identity: PSK SOMETHING (same as in zabbixagent config file)
+PSK: the hash generated (content of /etc/zabbix/zabbix_agentd.psk file on agent )
+now there should be greebn psk lablel and all our traffice will be encrypted</p>
+</div>
+<div class="section" id="adding-mysql-monitoring-option">
+<h2>Adding mysql monitoring option:</h2>
+<p>add user credentials for mysqlclient on agent server:
+mysql &gt; grant all privileges on <em>.</em> to zabbix@'%' identified by 'zabbixuserpassword';
+use localhost or host you will be accessing mysql from % is just for test purpose to eliminate
+authentication problems.</p>
+<blockquote>
+<p>Out of the topic - something about mysql remote connections and security:
+My best practice is not to have any remote access like @'%' to mysql on any server I manage
+its just dangerous and anyone can try bruteforcing and try to connect to our mysql server.
+Another way I saw in many places if admin creates @'%' accesses they use it without any encryption so there is
+plain text traffic comming from mysql-server/postgres straight to users computer which is not good (MITM etc).
+The best would be to have your mysql server set up with ssl certificate but its not popular practice as may be
+time consuming for setting up and for connecting to such server (preatty easu in mysql-workbench).
+Faster way to encrypt your mysql confidential data traffic is to use ssh tunnel but there is
+a limitation here user that needs access to mysql data needs to have ssh access to the server
+if this is an option just define users with localhost as source like <a class="reference external" href="mailto:my_db_user@localhost">my_db_user@localhost</a>
+this is safer as you cant guarantee mysql users competence so best practice is to prevent having '%',
+to double secure this method do not to expose 3306 to the public and only allow localhost(unix socket) and 127.0.0.1
+(remember mysqlclient unixsocket/ ip connection) to be able to connect through this port.
+In dockerized mysql instances when I need it to be visible I just do ports config like
+127.0.0.0:3306:3306 then it will be visible to host machine only.
+but if user wont have ssh access to the server then only option you have is using ssl cert.
+So remember having user@'%' or even <a class="reference external" href="mailto:user@'some_ip">user@'some_ip</a>' you still without ssl or ssh the traffic from mysql-server
+is still unencrypted.</p>
+</blockquote>
+<p>Ok comming back to mysql monitoring config:
+add client to my.cnf in /etc/mysql or to /etc/mysql/conf.d/mysql.cnf</p>
+<p>[client]
+user = zabbix
+password = zabbixuserpassword
+port = 3326
+host = 127.0.0.1</p>
+<p>add myu.cnf</p>
+<p>mkdir -p /var/lib/zabbix/
+cd /var/lib/zabbix
+ln -sv /etc/mysql/my.cnf</p>
+<p>service zabbix-agent restart</p>
+<p>Now you can add mysql template items in zabbix server .</p>
+<p>select linux templates to see agent visibility</p>
+<p>bug in default userparameter_mysql agent file</p>
+<p>cat /etc/zabbix/zabbix_agentd.d/userparameter_mysql.conf
+redirect error to stdout to grep later</p>
+<p>UserParameter=mysql.ping,HOME=/var/lib/zabbix mysqladmin ping 2&gt;&amp;1 | grep -c alive
+previously was
+UserParameter=mysql.ping,HOME=/var/lib/zabbix mysqladmin ping | grep -c alive
+so grep didnt work</p>
+<p>Write your post here.</p>
+</div>
+</div>
+    </div>
+    </article>
+</div>
+
+
+
+        
+       <script>var disqus_shortname="stencel";(function(){var a=document.createElement("script");a.async=true;a.src="https://"+disqus_shortname+".disqus.com/count.js";(document.getElementsByTagName("head")[0]||document.getElementsByTagName("body")[0]).appendChild(a)}());</script><footer id="footer"><p>Contents © 2020         <a href="mailto:gstencel@gmail.com">Greg Stencel</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         </p>
+            
+        </footer>
+</div>
+    </section><script src="../assets/js/all-nocdn.js"></script><!-- fancy dates --><script>
+    moment.locale("en");
+    fancydates(0, "YYYY-MM-DD HH:mm");
+    </script><!-- end fancy dates --><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element) {
+            return element.getElementsByTagName('img')[0].alt;
+    }});
+    </script><script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-50641127-1', 'stencel.io');
+  ga('send', 'pageview');
+
+</script><script type="text/javascript" src="../assets/js/tipuesearch_set.js"></script><script type="text/javascript" src="../assets/js/tipuesearch.js"></script><script type="text/javascript">
+$(document).ready(function() {
+     $('#tipue_search_input').tipuesearch({
+         'mode': 'json',
+         'contentLocation': '/assets/js/tipuesearch_content.json',
+         'showUrl': false
+     });
+});
+</script>
+</body>
+</html>

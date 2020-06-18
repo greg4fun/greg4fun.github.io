@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Greg's Tech Notes (Posts about virtualization)</title><link>http://stencel.io/</link><description></description><atom:link href="http://stencel.io/categories/virtualization.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><copyright>Contents © 2020 &lt;a href="mailto:gstencel@gmail.com"&gt;Greg Stencel&lt;/a&gt; </copyright><lastBuildDate>Thu, 18 Jun 2020 12:06:50 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>docker</title><link>http://stencel.io/posts/docker.html</link><dc:creator>Greg Stencel</dc:creator><description>&lt;div&gt;&lt;div class="section" id="first-download-download-pre-build-image"&gt;
+&lt;h2&gt;First download download pre build image :&lt;/h2&gt;
+&lt;p&gt;sudo docker pull ubuntu&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="run-pseudo-tty"&gt;
+&lt;h2&gt;run pseudo tty:&lt;/h2&gt;
+&lt;p&gt;sudo docker run -t -i ubuntu /bin/bash&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="get-image-of-running-docker"&gt;
+&lt;h2&gt;get image of running docker:&lt;/h2&gt;
+&lt;p&gt;sudo docker ps&lt;/p&gt;
+&lt;p&gt;output:
+➜  ~  sudo docker ps
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+c4fbc80d8926        ubuntu:14.04        /bin/bash           3 minutes ago       Up 3 minutes                            berserk_nobel
+➜  ~
+save container as your image:
+=============================
+sudo docker commit c4fbc80d8926 myimage_name&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="running-our-image"&gt;
+&lt;h2&gt;Running our image:&lt;/h2&gt;
+&lt;p&gt;sudo docker run -t -i myimage_name /bin/bash&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="deploying-your-app-and-dependicies"&gt;
+&lt;h2&gt;Deploying your app and dependicies:&lt;/h2&gt;
+&lt;p&gt;watch out to save container before you quit bash inside docker instance
+find container id and save&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="diff-image-container"&gt;
+&lt;h2&gt;Diff image container:&lt;/h2&gt;
+&lt;p&gt;sudo docker diff&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="start-docker-container-with-name"&gt;
+&lt;h2&gt;Start docker container with name:&lt;/h2&gt;
+&lt;p&gt;sudo docker run -i -t --name="IWAPPS2" iwapps /bin/bash&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="commit-with-name"&gt;
+&lt;h2&gt;Commit with name :&lt;/h2&gt;
+&lt;p&gt;sudo docker commit IWAPPS2 local -a "greg" -m "First image commit"&lt;/p&gt;
+&lt;p&gt;Actually, images are stored within /var/lib/docker/aufs/diff&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;OUP  sudo docker ps
+CONTAINER ID        IMAGE               COMMAND             CREATED              STATUS              PORTS
+NAMES
+95585eb7ea3c        cc68531a3552        /bin/bash           About a minute ago   Up About a minute
+mad_ptolemy
+➜  OUP  sudo docker commit 95585eb7ea3c iwps2 -a "greg" -m "First image commit"
+c86eeb858bedf779105f759ca62d10ea59e01884e985e447d9ddf7f65ee32e3c
+➜  OUP  sudo docker images
+REPOSITORY          TAG                 IMAGE ID            CREATED             VIRTUAL SIZE
+iwps2               latest              c86eeb858bed        5 seconds ago       617.5 MB
+local               latest              539a99ee88ee        22 minutes ago      348.5 MB
+&amp;lt;none&amp;gt;              &amp;lt;none&amp;gt;              d8f374aecae4        2 hours ago         348.1 MB
+iwapps              latest              85e0ae955062        4 hours ago         348.1 MB
+ubuntu              utopic              b8d67033ed07        23 hours ago        286.6 MB
+ubuntu              14.10               b8d67033ed07        23 hours ago        286.6 MB
+ubuntu              trusty              1357f421be38        23 hours ago        192.7 MB
+ubuntu              latest              1357f421be38        23 hours ago        192.7 MB
+ubuntu              14.04               1357f421be38        23 hours ago        192.7 MB
+ubuntu              14.04.1             1357f421be38        23 hours ago        192.7 MB
+ubuntu              12.04               2bed76595591        23 hours ago        120.2 MB
+ubuntu              12.04.5             2bed76595591        23 hours ago        120.2 MB
+ubuntu              precise             2bed76595591        23 hours ago        120.2 MB
+&amp;lt;none&amp;gt;              &amp;lt;none&amp;gt;              96864a7d2df3        3 weeks ago         205.1 MB
+ubuntu              12.10               c5881f11ded9        3 months ago        172.2 MB
+ubuntu              quantal             c5881f11ded9        3 months ago        172.2 MB
+ubuntu              raring              463ff6be4238        3 months ago        169.4 MB
+ubuntu              13.04               463ff6be4238        3 months ago        169.4 MB
+ubuntu              saucy               195eb90b5349        3 months ago        184.7 MB
+ubuntu              13.10               195eb90b5349        3 months ago        184.7 MB
+ubun&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;pt
+The images are stored in /var/lib/docker/graph/&amp;lt;id&amp;gt;/layer.&lt;/p&gt;
+&lt;p&gt;Note that images are just diffs from the parent image. The parent ID is stored with the image's metadata /var/lib/docker/graph/&amp;lt;id&amp;gt;/json.&lt;/p&gt;
+&lt;p&gt;When you docker run an image. AUFS will 'merge' all layers into one usable file system.&lt;/p&gt;
+&lt;p&gt;docker inspect
+docker images --no-trunc=true&lt;/p&gt;
+&lt;p&gt;Running an interactive shell
+sudo docker run -i -t ubuntu /bin/bash&lt;/p&gt;
+&lt;p&gt;sudo baobab /var/lib/docker&lt;/p&gt;
+&lt;p&gt;docker pull ubuntu
+docker run -i -t ubuntu:14.04 /bin/bash
+sudo docker info
+sudo docker version
+sudo docker search ubuntu
+sudo docker pull ubuntu
+sudo docker images&lt;/p&gt;
+&lt;/div&gt;&lt;/div&gt;</description><category>docker</category><category>virtualization</category><guid>http://stencel.io/posts/docker.html</guid><pubDate>Sat, 11 Oct 2014 09:27:28 GMT</pubDate></item></channel></rss>

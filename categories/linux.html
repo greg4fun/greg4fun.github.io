@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html prefix="        og: http://ogp.me/ns# article: http://ogp.me/ns/article#     " vocab="http://ogp.me/ns" lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+<title>Posts about Linux | Greg's Tech Notes</title>
+<link href="https://fonts.googleapis.com/css?family=Bitter:400,400i,700" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+<link href="../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../rss.xml">
+<link rel="canonical" href="http://stencel.io/categories/linux.html">
+<!--[if lt IE 9]><script src="../assets/js/html5shiv-printshiv.min.js"></script><![endif]--><link rel="alternate" type="application/rss+xml" title="RSS for tag Linux" hreflang="en" href="linux.xml">
+</head>
+<body>
+    <a href="#page-content" class="sr-only sr-only-focusable">Skip to main content</a>
+    
+    <section class="social"><ul>
+<li><p style="color:#fff;font-size:3em;">stencel.io</p></li>
+        <li><p style="color:#fff;font-size:2em;">greg's tech notes</p></li>
+            <li>
+                <a href="http://stencel.io/">
+                    <img src="../images/aboutme.png" alt="Greg's Tech Notes" id="logo"></a>
+            </li>
+        
+            <li><a href="../index.html" title="Home"><i class="fa fa-home"></i></a></li>
+            <li><a href="../archive.html" title="Archives"><i class="fa fa-folder-open"></i></a></li>
+            <li><a href="index.html" title="Tags"><i class="fa fa-tags"></i></a></li>
+            <li><a href="https://www.linkedin.com/in/gregstencel/" title="My Linkedin"><i class="fab fa-linkedin"></i></a></li>
+            <li><a href="https://github.com/greg4fun" title="My Github"><i class="fab fa-github"></i></a></li>
+    
+    
+
+        </ul></section><section class="page-content"><div class="content" rel="main">
+            
+
+    <header><h1>Posts about Linux</h1>
+        <div class="metadata">
+            
+                <p class="feedlink">
+                        
+            <a href="linux.xml" hreflang="en" type="application/rss+xml">RSS feed</a>
+
+                </p>
+
+            
+
+        </div>
+    </header><div class="postindex">
+    <article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="../posts/xrandr-tips.html" class="u-url">xrandr tips</a></h1>
+        <div class="metadata">
+            <p class="dateline"><a href="../posts/xrandr-tips.html" rel="bookmark"><i class="fa fa-clock"></i> <time class="published dt-published" datetime="2015-01-13T20:34:57Z" title="2015-01-13 20:34">2015-01-13 20:34</time></a></p>
+            <p class="byline author vcard"> <i class="fa fa-user"></i> <span class="byline-name fn" itemprop="author">
+                Greg Stencel
+            </span></p>
+                <p class="commentline"><i class="fa fa-comment"></i> 
+        
+    <a href="../posts/xrandr-tips.html#disqus_thread" data-disqus-identifier="cache/posts/xrandr-tips.html">Comments</a>
+
+
+        </p>
+</div>
+    </header><div class="e-content entry-content">
+    <div>
+<p>adding resolution
+1)generate mode
+cvt 2560 1440 60
+➜  blog git:(website) ✗ cvt 2560 1440 60
+# 2560x1440 59.96 Hz (CVT 3.69M9) hsync: 89.52 kHz; pclk: 312.25 MHz
+Modeline "2560x1440_60.00"  312.25  2560 2752 3024 3488  1440 1443 1448 1493 -hsync +vsync</p>
+<p>2)add it to xrandr
+sudo xrandr --newmode "2560x1440_60.00"  312.25  2560 2752 3024 3488  1440 1443 1448 1493  -hsync +vsync
+setting resolution</p>
+<p>3)sudo xrandr --addmode VGA-0 "1680x1050_60.00"</p>
+<p>xrandr -q
+xrandr --verbose</p>
+<p>xrandr --output HDMI-0 --mode 2560x1440</p>
+<p>irst generate a "modeline" by using cvt
+Syntax is: cvt width height refreshrate</p>
+<p>cvt 1680 1050 60
+this gives you:</p>
+<p># 1680x1050 59.95 Hz (CVT 1.76MA) hsync: 65.29 kHz; pclk: 146.25 MHz
+Modeline "1680x1050_60.00"  146.25  1680 1784 1960 2240  1050 1053 1059 1089 -hsync +vsync
+Now tell this to xrandr:</p>
+<p>sudo xrandr --newmode "1680x1050_60.00"  146.25  1680 1784 1960 2240  1050 1053 1059 1089 -</p>
+<p>First clone the two screens, (the smaller screen will display the top left portion of the virtual screen)</p>
+<blockquote>
+<p>xrandr --output VGA --auto --right-of LVDS</p>
+<p>xrandr --output LVDS --mode 1280x800</p>
+<p>xrandr --output LVDS --mode 1280x800 --rate 75</p>
+<p>xrandr --output LVDS --auto</p>
+<p>xrandr --output LVDS --off --output HDMI-0 --auto</p>
+<p>xrandr --output VGA1 --mode 1024x768 --rate 60</p>
+</blockquote>
+<p>#Laptop right extra Monitor Left</p>
+<blockquote>
+<p>xrandr --output VGA1 --left-of LVDS1</p>
+</blockquote>
+<p>#Laptop left extra Monitor right</p>
+<blockquote>
+<p>xrandr --output LVDS1 --left-of VGA1</p>
+</blockquote>
+<p>#This is to set your primary monitor.</p>
+<p>#This sets your laptop monitor as your primary monitor.</p>
+<blockquote>
+<p>xrandr --output LVDS1 --primary</p>
+</blockquote>
+<p>#This sets your VGA monitor as your primary monitor.</p>
+<blockquote>
+<p>xrandr --output VGA1 --primary</p>
+<p>xrandr --output VGA1 --mode 1024x768 --rate 60</p>
+</blockquote>
+<p>xrandr --pos &lt;x&gt;x&lt;y&gt;</p>
+<blockquote>
+<p>$ xrandr --left-of &lt;output&gt;</p>
+<p>$ xrandr --right-of &lt;output&gt;</p>
+<p>$ xrandr --above &lt;output&gt;</p>
+<p>$ xrandr --below &lt;output&gt;</p>
+</blockquote>
+<p>Option '-pos' is more flexible which can place output to anywhere, for example:</p>
+<p>$ xrandr --output VGA1 --pos 200x200
+$ xrandr --output LVDS1 --pos 400x500</p>
+<p>xrandr -o right</p>
+</div>
+    </div>
+    </article><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="../posts/linux-diplay-size-of-each-subdirectory.html" class="u-url">Linux diplay size of each subdirectory</a></h1>
+        <div class="metadata">
+            <p class="dateline"><a href="../posts/linux-diplay-size-of-each-subdirectory.html" rel="bookmark"><i class="fa fa-clock"></i> <time class="published dt-published" datetime="2014-07-01T12:31:07Z" title="2014-07-01 12:31">2014-07-01 12:31</time></a></p>
+            <p class="byline author vcard"> <i class="fa fa-user"></i> <span class="byline-name fn" itemprop="author">
+                Greg Stencel
+            </span></p>
+                <p class="commentline"><i class="fa fa-comment"></i> 
+        
+    <a href="../posts/linux-diplay-size-of-each-subdirectory.html#disqus_thread" data-disqus-identifier="cache/posts/linux-diplay-size-of-each-subdirectory.html">Comments</a>
+
+
+        </p>
+</div>
+    </header><div class="e-content entry-content">
+    <div>
+<p>To display total size of each subdirectory</p>
+<pre class="code bash"><a name="rest_code_adc96efe997b4ec8ac06358516003878-1"></a>du -sh *
+</pre>
+<p>-h human readable displays MB and GB instead of milions and bilions of bytes :)
+-s summarize total size of dir</p>
+</div>
+    </div>
+    </article><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="../posts/ssh-reverse-tunneling.html" class="u-url">ssh reverse tunneling</a></h1>
+        <div class="metadata">
+            <p class="dateline"><a href="../posts/ssh-reverse-tunneling.html" rel="bookmark"><i class="fa fa-clock"></i> <time class="published dt-published" datetime="2014-06-16T15:07:02Z" title="2014-06-16 15:07">2014-06-16 15:07</time></a></p>
+            <p class="byline author vcard"> <i class="fa fa-user"></i> <span class="byline-name fn" itemprop="author">
+                Greg Stencel
+            </span></p>
+                <p class="commentline"><i class="fa fa-comment"></i> 
+        
+    <a href="../posts/ssh-reverse-tunneling.html#disqus_thread" data-disqus-identifier="cache/posts/ssh-reverse-tunneling.html">Comments</a>
+
+
+        </p>
+</div>
+    </header><div class="e-content entry-content">
+    <div>
+<p>When you want someone to connect to your NAT-ed or Firewalled server and</p>
+<p>you run out of ideas ond options or you even dont have</p>
+<p>you dont have access to Firewall or VPN server to configure</p>
+<p>anything - you can always try to use reverse ssh tunnel.</p>
+<p>The only one condition is that you must be able to ssh from your server to public host( the one other guy wants to connect)</p>
+<p>This is how it works:</p>
+<p>[Server]  &lt;----&gt; [ FIREWALL/NAT SERVER ] &lt;----&gt; [ BOB HOST with public ip 80.80.80.80]</p>
+</div>
+    </div>
+    </article><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="../posts/list-all-users-crontab-jobs.html" class="u-url">List all users crontab jobs</a></h1>
+        <div class="metadata">
+            <p class="dateline"><a href="../posts/list-all-users-crontab-jobs.html" rel="bookmark"><i class="fa fa-clock"></i> <time class="published dt-published" datetime="2014-05-19T11:50:10Z" title="2014-05-19 11:50">2014-05-19 11:50</time></a></p>
+            <p class="byline author vcard"> <i class="fa fa-user"></i> <span class="byline-name fn" itemprop="author">
+                Greg Stencel
+            </span></p>
+                <p class="commentline"><i class="fa fa-comment"></i> 
+        
+    <a href="../posts/list-all-users-crontab-jobs.html#disqus_thread" data-disqus-identifier="cache/posts/list-all-users-crontab-jobs.html">Comments</a>
+
+
+        </p>
+</div>
+    </header><div class="e-content entry-content">
+    <pre class="code bash"><a name="rest_code_0015819660534c3aa6904a3074ef11d9-1"></a><span class="k">for</span> usr in <span class="k">$(</span>cut -f1 -d: /etc/passwd<span class="k">)</span><span class="p">;</span> <span class="k">do</span> <span class="nb">echo</span> <span class="nv">$usr</span><span class="p">;</span> crontab -u <span class="nv">$usr</span> -l<span class="p">;</span> <span class="k">done</span>
+</pre>
+    </div>
+    </article><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="../posts/linux-suspended-jobs.html" class="u-url">Linux suspended jobs</a></h1>
+        <div class="metadata">
+            <p class="dateline"><a href="../posts/linux-suspended-jobs.html" rel="bookmark"><i class="fa fa-clock"></i> <time class="published dt-published" datetime="2014-05-17T19:31:32Z" title="2014-05-17 19:31">2014-05-17 19:31</time></a></p>
+            <p class="byline author vcard"> <i class="fa fa-user"></i> <span class="byline-name fn" itemprop="author">
+                Greg Stencel
+            </span></p>
+                <p class="commentline"><i class="fa fa-comment"></i> 
+        
+    <a href="../posts/linux-suspended-jobs.html#disqus_thread" data-disqus-identifier="cache/posts/linux-suspended-jobs.html">Comments</a>
+
+
+        </p>
+</div>
+    </header><div class="e-content entry-content">
+    <div>
+<p>If you suspended job by accident with ctrl+z you can always resume by fg here more examples:</p>
+<kbd>crtl</kbd><kbd>z</kbd> suspend<br>
+
+jobs - list the current jobs<br>
+
+fg - resume the job that's next in the queue<br>
+fg %[number] - resume job [number]<br>
+bg - Push the next job in the queue into the background<br>
+bg %[number] - Push the job [number] into the background<br>
+kill %[number] - Kill the job numbered [number]<br>
+kill -[signal] %[number] - Send the signal [signal] to job number [number]<br>
+disown %[number] - you won't be owner of process anymore so it will be alive after leaving terminal<br>
+%vim <br>
+</div>
+    </div>
+    </article><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="../posts/running-scripts-in-background-linux.html" class="u-url">running-scripts-in-background-linux</a></h1>
+        <div class="metadata">
+            <p class="dateline"><a href="../posts/running-scripts-in-background-linux.html" rel="bookmark"><i class="fa fa-clock"></i> <time class="published dt-published" datetime="2014-05-13T14:01:14Z" title="2014-05-13 14:01">2014-05-13 14:01</time></a></p>
+            <p class="byline author vcard"> <i class="fa fa-user"></i> <span class="byline-name fn" itemprop="author">
+                Greg Stencel
+            </span></p>
+                <p class="commentline"><i class="fa fa-comment"></i> 
+        
+    <a href="../posts/running-scripts-in-background-linux.html#disqus_thread" data-disqus-identifier="cache/posts/running-scripts-in-background-linux.html">Comments</a>
+
+
+        </p>
+</div>
+    </header><div class="e-content entry-content">
+    <div>
+<p>I used to execute a lot of commands with &amp; at the end. But once I used plowshare and it didnt work because &amp; works until
+you wont log out .So my solution (I know I could use nohup :) ) was screen. Screen is the best tool admin can use when working
+remotely. It can be usefull when you're in place with big packet loss and you often lost connection so when you're
+restoring database  you should be in screen session because when something will disconnect you you can alwas log in and
+connect to screen session in which restoring is taking place.</p>
+<p>So executing</p>
+<pre class="code bash"><a name="rest_code_0d90cf72a376442bb18c6a9a0c1175e8-1"></a>$./my_script.sh <span class="p">&amp;</span>
+</pre>
+<p>will be only running when your session is still active so when you'll logout it will be killed.</p>
+<p>To run it independent from your presence on server do it with nohup:</p>
+<pre class="code bash"><a name="rest_code_92809d3a2898450d99eed922dfeb03f4-1"></a>$ nohup ./my_script.sh <span class="p">&amp;</span>
+</pre>
+<p>To launch screen :</p>
+<pre class="code bash"><a name="rest_code_b4450ae4d6ba42d99edc9d2fb7a818b9-1"></a>$ screen
+</pre>
+<p>Best practice is to launch screen with its name :</p>
+<pre class="code bash"><a name="rest_code_27065407db19484d93bfa6b72008a4b6-1"></a>$ screen -S my_own_screen_name
+</pre>Then if you want detach screen to get back later
+
+<kbd>Ctrl</kbd><kbd>a</kbd><kbd>d</kbd>
+
+If you want terminate screen just
+<kbd>Ctrl</kbd><kbd>d</kbd> or exit<p>then you can resume it with:</p>
+<pre class="code bash"><a name="rest_code_dfdd8264def6424b820eaab115805962-1"></a>$ screen -r my_own_screen_name
+</pre>
+<p>To list all available screens :</p>
+<pre class="code bash"><a name="rest_code_8cf8cba0e91a4202a3da26ea8a810016-1"></a>$ screen -ls
+</pre>
+<p>To attach to already attached screen:</p>
+<pre class="code bash"><a name="rest_code_dbaf39056b5c47e9a2c1beb86b09c5cf-1"></a>$ screen -x my_own_screen_name
+</pre>
+<p>To attach to attached screen and detach others:</p>
+<pre class="code bash"><a name="rest_code_70630b7f079b4a64b24000e084fcfae1-1"></a>$ screen -r -d my_own_screen_name
+</pre>
+<p>To rename existing screen:</p>
+(being attached):
+
+<kbd>Ctrl</kbd><kbd>a</kbd>:sessionname my_screen_name<kbd>Enter</kbd>
+</div>
+    </div>
+    </article><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="../posts/easy-admin-joke.html" class="u-url">Easy admin joke</a></h1>
+        <div class="metadata">
+            <p class="dateline"><a href="../posts/easy-admin-joke.html" rel="bookmark"><i class="fa fa-clock"></i> <time class="published dt-published" datetime="2014-05-10T12:31:04Z" title="2014-05-10 12:31">2014-05-10 12:31</time></a></p>
+            <p class="byline author vcard"> <i class="fa fa-user"></i> <span class="byline-name fn" itemprop="author">
+                Greg Stencel
+            </span></p>
+                <p class="commentline"><i class="fa fa-comment"></i> 
+        
+    <a href="../posts/easy-admin-joke.html#disqus_thread" data-disqus-identifier="cache/posts/easy-admin-joke.html">Comments</a>
+
+
+        </p>
+</div>
+    </header><div class="e-content entry-content">
+    <div>
+<p>When I first got admin access ages ago on shared server I wanted to do something funny
+to my coleague so I thought to display something on his screen.</p>
+<p>Remembering everything in Linux filesystem is a file or a directory
+I read about pseudoterminals "pts"  they are inside /dev directory</p>
+<p>Yea yea I know 3 rules of admin : Respect the privacy of others. Think before you type. With great power comes great responsibility bla bla bla ...</p>
+<p>To do this joke just check who is logged in and on which pts is he :</p>
+<pre class="code bash"><a name="rest_code_84c78a16839e4ba095e5f5453362c6ae-1"></a>$ who
+<a name="rest_code_84c78a16839e4ba095e5f5453362c6ae-2"></a>greg     pts/3        <span class="m">2012</span>-03-10 <span class="m">1</span>:26 <span class="o">(</span>:0<span class="o">)</span>
+<a name="rest_code_84c78a16839e4ba095e5f5453362c6ae-3"></a>mark     pts/5        <span class="m">2012</span>-03-10 <span class="m">10</span>:29 <span class="o">(</span>:0<span class="o">)</span>
+<a name="rest_code_84c78a16839e4ba095e5f5453362c6ae-4"></a>jenny    pts/7        <span class="m">2012</span>-03-10 <span class="m">13</span>:06 <span class="o">(</span>:0<span class="o">)</span>
+</pre>
+<p>So now, we know that Mark is working on pts/5 so lets send him message :)</p>
+<pre class="code bash"><a name="rest_code_493c3d2bf6c145438d77279381171a89-1"></a>$ <span class="nb">echo</span> <span class="s2">"In 5 minutes in toilet /Jenny"</span> &gt; /dev/pts/5
+</pre>
+<p>To "clean evidences" :D ( remember that guy working on this terminal will lost his current works he's working on this
+specific terminal)</p>
+<pre class="code bash"><a name="rest_code_64b26a0706804ce898aec3df938f6fef-1"></a>$ cat /dev/urandom &gt; /dev/pts/5
+</pre>
+</div>
+    </div>
+    </article>
+</div>
+
+
+
+        
+       <script>var disqus_shortname="stencel";(function(){var a=document.createElement("script");a.async=true;a.src="https://"+disqus_shortname+".disqus.com/count.js";(document.getElementsByTagName("head")[0]||document.getElementsByTagName("body")[0]).appendChild(a)}());</script><footer id="footer"><p>Contents © 2020         <a href="mailto:gstencel@gmail.com">Greg Stencel</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         </p>
+            
+        </footer>
+</div>
+    </section><script src="../assets/js/all-nocdn.js"></script><!-- fancy dates --><script>
+    moment.locale("en");
+    fancydates(0, "YYYY-MM-DD HH:mm");
+    </script><!-- end fancy dates --><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element) {
+            return element.getElementsByTagName('img')[0].alt;
+    }});
+    </script><script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-50641127-1', 'stencel.io');
+  ga('send', 'pageview');
+
+</script><script type="text/javascript" src="../assets/js/tipuesearch_set.js"></script><script type="text/javascript" src="../assets/js/tipuesearch.js"></script><script type="text/javascript">
+$(document).ready(function() {
+     $('#tipue_search_input').tipuesearch({
+         'mode': 'json',
+         'contentLocation': '/assets/js/tipuesearch_content.json',
+         'showUrl': false
+     });
+});
+</script>
+</body>
+</html>

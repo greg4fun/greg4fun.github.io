@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html prefix="        og: http://ogp.me/ns# article: http://ogp.me/ns/article#     " vocab="http://ogp.me/ns" lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+<title>Posts about virtualization | Greg's Tech Notes</title>
+<link href="https://fonts.googleapis.com/css?family=Bitter:400,400i,700" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+<link href="../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../rss.xml">
+<link rel="canonical" href="http://stencel.io/categories/virtualization.html">
+<!--[if lt IE 9]><script src="../assets/js/html5shiv-printshiv.min.js"></script><![endif]--><link rel="alternate" type="application/rss+xml" title="RSS for tag virtualization" hreflang="en" href="virtualization.xml">
+</head>
+<body>
+    <a href="#page-content" class="sr-only sr-only-focusable">Skip to main content</a>
+    
+    <section class="social"><ul>
+<li><p style="color:#fff;font-size:3em;">stencel.io</p></li>
+        <li><p style="color:#fff;font-size:2em;">greg's tech notes</p></li>
+            <li>
+                <a href="http://stencel.io/">
+                    <img src="../images/aboutme.png" alt="Greg's Tech Notes" id="logo"></a>
+            </li>
+        
+            <li><a href="../index.html" title="Home"><i class="fa fa-home"></i></a></li>
+            <li><a href="../archive.html" title="Archives"><i class="fa fa-folder-open"></i></a></li>
+            <li><a href="index.html" title="Tags"><i class="fa fa-tags"></i></a></li>
+            <li><a href="https://www.linkedin.com/in/gregstencel/" title="My Linkedin"><i class="fab fa-linkedin"></i></a></li>
+            <li><a href="https://github.com/greg4fun" title="My Github"><i class="fab fa-github"></i></a></li>
+    
+    
+
+        </ul></section><section class="page-content"><div class="content" rel="main">
+            
+
+    <header><h1>Posts about virtualization</h1>
+        <div class="metadata">
+            
+                <p class="feedlink">
+                        
+            <a href="virtualization.xml" hreflang="en" type="application/rss+xml">RSS feed</a>
+
+                </p>
+
+            
+
+        </div>
+    </header><div class="postindex">
+    <article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="../posts/docker.html" class="u-url">docker</a></h1>
+        <div class="metadata">
+            <p class="dateline"><a href="../posts/docker.html" rel="bookmark"><i class="fa fa-clock"></i> <time class="published dt-published" datetime="2014-10-11T09:27:28Z" title="2014-10-11 09:27">2014-10-11 09:27</time></a></p>
+            <p class="byline author vcard"> <i class="fa fa-user"></i> <span class="byline-name fn" itemprop="author">
+                Greg Stencel
+            </span></p>
+                <p class="commentline"><i class="fa fa-comment"></i> 
+        
+    <a href="../posts/docker.html#disqus_thread" data-disqus-identifier="cache/posts/docker.html">Comments</a>
+
+
+        </p>
+</div>
+    </header><div class="e-content entry-content">
+    <div>
+<div class="section" id="first-download-download-pre-build-image">
+<h2>First download download pre build image :</h2>
+<p>sudo docker pull ubuntu</p>
+</div>
+<div class="section" id="run-pseudo-tty">
+<h2>run pseudo tty:</h2>
+<p>sudo docker run -t -i ubuntu /bin/bash</p>
+</div>
+<div class="section" id="get-image-of-running-docker">
+<h2>get image of running docker:</h2>
+<p>sudo docker ps</p>
+<p>output:
+➜  ~  sudo docker ps
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+c4fbc80d8926        ubuntu:14.04        /bin/bash           3 minutes ago       Up 3 minutes                            berserk_nobel
+➜  ~
+save container as your image:
+=============================
+sudo docker commit c4fbc80d8926 myimage_name</p>
+</div>
+<div class="section" id="running-our-image">
+<h2>Running our image:</h2>
+<p>sudo docker run -t -i myimage_name /bin/bash</p>
+</div>
+<div class="section" id="deploying-your-app-and-dependicies">
+<h2>Deploying your app and dependicies:</h2>
+<p>watch out to save container before you quit bash inside docker instance
+find container id and save</p>
+</div>
+<div class="section" id="diff-image-container">
+<h2>Diff image container:</h2>
+<p>sudo docker diff</p>
+</div>
+<div class="section" id="start-docker-container-with-name">
+<h2>Start docker container with name:</h2>
+<p>sudo docker run -i -t --name="IWAPPS2" iwapps /bin/bash</p>
+</div>
+<div class="section" id="commit-with-name">
+<h2>Commit with name :</h2>
+<p>sudo docker commit IWAPPS2 local -a "greg" -m "First image commit"</p>
+<p>Actually, images are stored within /var/lib/docker/aufs/diff</p>
+<blockquote>
+<p>OUP  sudo docker ps
+CONTAINER ID        IMAGE               COMMAND             CREATED              STATUS              PORTS
+NAMES
+95585eb7ea3c        cc68531a3552        /bin/bash           About a minute ago   Up About a minute
+mad_ptolemy
+➜  OUP  sudo docker commit 95585eb7ea3c iwps2 -a "greg" -m "First image commit"
+c86eeb858bedf779105f759ca62d10ea59e01884e985e447d9ddf7f65ee32e3c
+➜  OUP  sudo docker images
+REPOSITORY          TAG                 IMAGE ID            CREATED             VIRTUAL SIZE
+iwps2               latest              c86eeb858bed        5 seconds ago       617.5 MB
+local               latest              539a99ee88ee        22 minutes ago      348.5 MB
+&lt;none&gt;              &lt;none&gt;              d8f374aecae4        2 hours ago         348.1 MB
+iwapps              latest              85e0ae955062        4 hours ago         348.1 MB
+ubuntu              utopic              b8d67033ed07        23 hours ago        286.6 MB
+ubuntu              14.10               b8d67033ed07        23 hours ago        286.6 MB
+ubuntu              trusty              1357f421be38        23 hours ago        192.7 MB
+ubuntu              latest              1357f421be38        23 hours ago        192.7 MB
+ubuntu              14.04               1357f421be38        23 hours ago        192.7 MB
+ubuntu              14.04.1             1357f421be38        23 hours ago        192.7 MB
+ubuntu              12.04               2bed76595591        23 hours ago        120.2 MB
+ubuntu              12.04.5             2bed76595591        23 hours ago        120.2 MB
+ubuntu              precise             2bed76595591        23 hours ago        120.2 MB
+&lt;none&gt;              &lt;none&gt;              96864a7d2df3        3 weeks ago         205.1 MB
+ubuntu              12.10               c5881f11ded9        3 months ago        172.2 MB
+ubuntu              quantal             c5881f11ded9        3 months ago        172.2 MB
+ubuntu              raring              463ff6be4238        3 months ago        169.4 MB
+ubuntu              13.04               463ff6be4238        3 months ago        169.4 MB
+ubuntu              saucy               195eb90b5349        3 months ago        184.7 MB
+ubuntu              13.10               195eb90b5349        3 months ago        184.7 MB
+ubun</p>
+</blockquote>
+<p>pt
+The images are stored in /var/lib/docker/graph/&lt;id&gt;/layer.</p>
+<p>Note that images are just diffs from the parent image. The parent ID is stored with the image's metadata /var/lib/docker/graph/&lt;id&gt;/json.</p>
+<p>When you docker run an image. AUFS will 'merge' all layers into one usable file system.</p>
+<p>docker inspect
+docker images --no-trunc=true</p>
+<p>Running an interactive shell
+sudo docker run -i -t ubuntu /bin/bash</p>
+<p>sudo baobab /var/lib/docker</p>
+<p>docker pull ubuntu
+docker run -i -t ubuntu:14.04 /bin/bash
+sudo docker info
+sudo docker version
+sudo docker search ubuntu
+sudo docker pull ubuntu
+sudo docker images</p>
+</div>
+</div>
+    </div>
+    </article>
+</div>
+
+
+
+        
+       <script>var disqus_shortname="stencel";(function(){var a=document.createElement("script");a.async=true;a.src="https://"+disqus_shortname+".disqus.com/count.js";(document.getElementsByTagName("head")[0]||document.getElementsByTagName("body")[0]).appendChild(a)}());</script><footer id="footer"><p>Contents © 2020         <a href="mailto:gstencel@gmail.com">Greg Stencel</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         </p>
+            
+        </footer>
+</div>
+    </section><script src="../assets/js/all-nocdn.js"></script><!-- fancy dates --><script>
+    moment.locale("en");
+    fancydates(0, "YYYY-MM-DD HH:mm");
+    </script><!-- end fancy dates --><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element) {
+            return element.getElementsByTagName('img')[0].alt;
+    }});
+    </script><script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-50641127-1', 'stencel.io');
+  ga('send', 'pageview');
+
+</script><script type="text/javascript" src="../assets/js/tipuesearch_set.js"></script><script type="text/javascript" src="../assets/js/tipuesearch.js"></script><script type="text/javascript">
+$(document).ready(function() {
+     $('#tipue_search_input').tipuesearch({
+         'mode': 'json',
+         'contentLocation': '/assets/js/tipuesearch_content.json',
+         'showUrl': false
+     });
+});
+</script>
+</body>
+</html>

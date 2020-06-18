@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html prefix="        og: http://ogp.me/ns# article: http://ogp.me/ns/article#     " vocab="http://ogp.me/ns" lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+<title>pycurl_problem | Greg's Tech Notes</title>
+<link href="https://fonts.googleapis.com/css?family=Bitter:400,400i,700" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+<link href="../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../rss.xml">
+<link rel="canonical" href="http://stencel.io/posts/pycurl_problem.html">
+<!--[if lt IE 9]><script src="../assets/js/html5shiv-printshiv.min.js"></script><![endif]--><meta name="author" content="Greg Stencel">
+<link rel="prev" href="rerun.html" title="rerun" type="text/html">
+<link rel="next" href="git_notes.html" title="git_notes" type="text/html">
+<meta property="og:site_name" content="Greg's Tech Notes">
+<meta property="og:title" content="pycurl_problem">
+<meta property="og:url" content="http://stencel.io/posts/pycurl_problem.html">
+<meta property="og:description" content="(flats)➜  projects  pip install pycurl
+ Downloading/unpacking pycurl
+   Downloading pycurl-7.19.3.1.tar.gz (116kB): 116kB downloaded
+   Running setup.py (path:/workspace/virtualenvs/flats/build/pycurl">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2014-06-01T14:43:33Z">
+</head>
+<body>
+    <a href="#page-content" class="sr-only sr-only-focusable">Skip to main content</a>
+    
+    <section class="social"><ul>
+<li><p style="color:#fff;font-size:3em;">stencel.io</p></li>
+        <li><p style="color:#fff;font-size:2em;">greg's tech notes</p></li>
+            <li>
+                <a href="http://stencel.io/">
+                    <img src="../images/aboutme.png" alt="Greg's Tech Notes" id="logo"></a>
+            </li>
+        
+            <li><a href="../index.html" title="Home"><i class="fa fa-home"></i></a></li>
+            <li><a href="../archive.html" title="Archives"><i class="fa fa-folder-open"></i></a></li>
+            <li><a href="../categories/index.html" title="Tags"><i class="fa fa-tags"></i></a></li>
+            <li><a href="https://www.linkedin.com/in/gregstencel/" title="My Linkedin"><i class="fab fa-linkedin"></i></a></li>
+            <li><a href="https://github.com/greg4fun" title="My Github"><i class="fab fa-github"></i></a></li>
+    
+    
+
+        </ul></section><section class="page-content"><div class="content" rel="main">
+            
+<article class="post-text h-entry hentry postpage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="#" class="u-url">pycurl_problem</a></h1>
+
+        <div class="metadata">
+            <p class="dateline"><a href="#" rel="bookmark"><i class="fa fa-clock"></i> <time class="published dt-published" datetime="2014-06-01T14:43:33Z" itemprop="datePublished" title="2014-06-01 14:43">2014-06-01 14:43</time></a></p>
+            <p class="byline author vcard"> <i class="fa fa-user"></i> <span class="byline-name fn" itemprop="author">
+                    Greg Stencel
+            </span></p>
+                <p class="commentline"><i class="far fa-comment"></i>
+        
+    <a href="pycurl_problem.html#disqus_thread" data-disqus-identifier="cache/posts/pycurl_problem.html">Comments</a>
+
+
+            
+        </p>
+<p class="sourceline"><a href="pycurl_problem.rst" class="sourcelink"><i class="fa fa-file-code"></i> Source</a></p>
+
+            
+
+            
+
+        </div>
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+    <div>
+<pre class="code bash"><a name="rest_code_dfcb5aa4367b4cdea32f994777718f1d-1"></a><span class="o">(</span>flats<span class="o">)</span>➜  projects  pip install pycurl
+<a name="rest_code_dfcb5aa4367b4cdea32f994777718f1d-2"></a> Downloading/unpacking pycurl
+<a name="rest_code_dfcb5aa4367b4cdea32f994777718f1d-3"></a>   Downloading pycurl-7.19.3.1.tar.gz <span class="o">(</span>116kB<span class="o">)</span>: 116kB downloaded
+<a name="rest_code_dfcb5aa4367b4cdea32f994777718f1d-4"></a>   Running setup.py <span class="o">(</span>path:/workspace/virtualenvs/flats/build/pycurl/setup.py<span class="o">)</span> egg_info <span class="k">for</span> package pycurl
+<a name="rest_code_dfcb5aa4367b4cdea32f994777718f1d-5"></a>     Traceback <span class="o">(</span>most recent call last<span class="o">)</span>:
+<a name="rest_code_dfcb5aa4367b4cdea32f994777718f1d-6"></a>       File <span class="s2">"&lt;string&gt;"</span>, line <span class="m">17</span>, in &lt;module&gt;
+<a name="rest_code_dfcb5aa4367b4cdea32f994777718f1d-7"></a>       File <span class="s2">"/workspace/virtualenvs/flats/build/pycurl/setup.py"</span>, line <span class="m">563</span>, in &lt;module&gt;
+<a name="rest_code_dfcb5aa4367b4cdea32f994777718f1d-8"></a>         <span class="nv">ext</span> <span class="o">=</span> get_extension<span class="o">()</span>
+<a name="rest_code_dfcb5aa4367b4cdea32f994777718f1d-9"></a>       File <span class="s2">"/workspace/virtualenvs/flats/build/pycurl/setup.py"</span>, line <span class="m">368</span>, in get_extension
+<a name="rest_code_dfcb5aa4367b4cdea32f994777718f1d-10"></a>         <span class="nv">ext_config</span> <span class="o">=</span> ExtensionConfiguration<span class="o">()</span>
+<a name="rest_code_dfcb5aa4367b4cdea32f994777718f1d-11"></a>       File <span class="s2">"/workspace/virtualenvs/flats/build/pycurl/setup.py"</span>, line <span class="m">65</span>, in __init__
+<a name="rest_code_dfcb5aa4367b4cdea32f994777718f1d-12"></a>         self.configure<span class="o">()</span>
+<a name="rest_code_dfcb5aa4367b4cdea32f994777718f1d-13"></a>       File <span class="s2">"/workspace/virtualenvs/flats/build/pycurl/setup.py"</span>, line <span class="m">100</span>, in configure_unix
+<a name="rest_code_dfcb5aa4367b4cdea32f994777718f1d-14"></a>         raise ConfigurationError<span class="o">(</span>msg<span class="o">)</span>
+<a name="rest_code_dfcb5aa4367b4cdea32f994777718f1d-15"></a>     __main__.ConfigurationError: Could not run curl-config: <span class="o">[</span>Errno <span class="m">2</span><span class="o">]</span> No such file or directory
+<a name="rest_code_dfcb5aa4367b4cdea32f994777718f1d-16"></a>     Complete output from <span class="nb">command</span> python setup.py egg_info:
+<a name="rest_code_dfcb5aa4367b4cdea32f994777718f1d-17"></a>     Traceback <span class="o">(</span>most recent call last<span class="o">)</span>:
+<a name="rest_code_dfcb5aa4367b4cdea32f994777718f1d-18"></a>
+<a name="rest_code_dfcb5aa4367b4cdea32f994777718f1d-19"></a>   File <span class="s2">"&lt;string&gt;"</span>, line <span class="m">17</span>, in &lt;module&gt;
+<a name="rest_code_dfcb5aa4367b4cdea32f994777718f1d-20"></a>
+<a name="rest_code_dfcb5aa4367b4cdea32f994777718f1d-21"></a>   File <span class="s2">"/workspace/virtualenvs/flats/build/pycurl/setup.py"</span>, line <span class="m">563</span>, in &lt;module&gt;
+<a name="rest_code_dfcb5aa4367b4cdea32f994777718f1d-22"></a>
+<a name="rest_code_dfcb5aa4367b4cdea32f994777718f1d-23"></a>     <span class="nv">ext</span> <span class="o">=</span> get_extension<span class="o">()</span>
+<a name="rest_code_dfcb5aa4367b4cdea32f994777718f1d-24"></a>
+<a name="rest_code_dfcb5aa4367b4cdea32f994777718f1d-25"></a>   File <span class="s2">"/workspace/virtualenvs/flats/build/pycurl/setup.py"</span>, line <span class="m">368</span>, in get_extension
+<a name="rest_code_dfcb5aa4367b4cdea32f994777718f1d-26"></a>
+<a name="rest_code_dfcb5aa4367b4cdea32f994777718f1d-27"></a>     <span class="nv">ext_config</span> <span class="o">=</span> ExtensionConfiguration<span class="o">()</span>
+<a name="rest_code_dfcb5aa4367b4cdea32f994777718f1d-28"></a>
+<a name="rest_code_dfcb5aa4367b4cdea32f994777718f1d-29"></a>   File <span class="s2">"/workspace/virtualenvs/flats/build/pycurl/setup.py"</span>, line <span class="m">65</span>, in __init__
+<a name="rest_code_dfcb5aa4367b4cdea32f994777718f1d-30"></a>
+<a name="rest_code_dfcb5aa4367b4cdea32f994777718f1d-31"></a>     self.configure<span class="o">()</span>
+<a name="rest_code_dfcb5aa4367b4cdea32f994777718f1d-32"></a>
+<a name="rest_code_dfcb5aa4367b4cdea32f994777718f1d-33"></a>   File <span class="s2">"/workspace/virtualenvs/flats/build/pycurl/setup.py"</span>, line <span class="m">100</span>, in configure_unix
+<a name="rest_code_dfcb5aa4367b4cdea32f994777718f1d-34"></a>
+<a name="rest_code_dfcb5aa4367b4cdea32f994777718f1d-35"></a>     raise ConfigurationError<span class="o">(</span>msg<span class="o">)</span>
+<a name="rest_code_dfcb5aa4367b4cdea32f994777718f1d-36"></a>
+<a name="rest_code_dfcb5aa4367b4cdea32f994777718f1d-37"></a> __main__.ConfigurationError: Could not run curl-config: <span class="o">[</span>Errno <span class="m">2</span><span class="o">]</span> No such file or directory
+<a name="rest_code_dfcb5aa4367b4cdea32f994777718f1d-38"></a>
+<a name="rest_code_dfcb5aa4367b4cdea32f994777718f1d-39"></a> ----------------------------------------
+<a name="rest_code_dfcb5aa4367b4cdea32f994777718f1d-40"></a> Cleaning up...
+<a name="rest_code_dfcb5aa4367b4cdea32f994777718f1d-41"></a> Command python setup.py egg_info failed with error code <span class="m">1</span> in /workspace/virtualenvs/flats/build/pycurl
+<a name="rest_code_dfcb5aa4367b4cdea32f994777718f1d-42"></a> Storing debug log <span class="k">for</span> failure in /home/greg/.pip/pip.log
+<a name="rest_code_dfcb5aa4367b4cdea32f994777718f1d-43"></a> <span class="o">(</span>flats<span class="o">)</span>➜  projects  pip install pycurl
+</pre>
+<p>Solution:</p>
+<pre class="code bash"><a name="rest_code_1be2cff9818e4467ada19052d3f386e8-1"></a>apt-get install libcurl4-gnutls-dev librtmp-dev
+</pre>
+</div>
+    </div>
+    <aside class="postpromonav"><nav><ul class="pager hidden-print">
+<li class="previous">
+                <a href="rerun.html" rel="prev" title="rerun">Previous post</a>
+            </li>
+            <li class="next">
+                <a href="git_notes.html" rel="next" title="git_notes">Next post</a>
+            </li>
+        </ul></nav></aside><section class="comments hidden-print"><h2>Comments</h2>
+        
+        
+        <div id="disqus_thread"></div>
+        <script>
+        var disqus_shortname ="stencel",
+            disqus_url="http://stencel.io/posts/pycurl_problem.html",
+        disqus_title="pycurl_problem",
+        disqus_identifier="cache/posts/pycurl_problem.html",
+        disqus_config = function () {
+            this.language = "en";
+        };
+        (function() {
+            var dsq = document.createElement('script'); dsq.async = true;
+            dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script><noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a>
+</noscript>
+    <a href="https://disqus.com" class="dsq-brlink" rel="nofollow">Comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+        </section></article><script>var disqus_shortname="stencel";(function(){var a=document.createElement("script");a.async=true;a.src="https://"+disqus_shortname+".disqus.com/count.js";(document.getElementsByTagName("head")[0]||document.getElementsByTagName("body")[0]).appendChild(a)}());</script><footer id="footer"><p>Contents © 2020         <a href="mailto:gstencel@gmail.com">Greg Stencel</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         </p>
+            
+        </footer>
+</div>
+    </section><script src="../assets/js/all-nocdn.js"></script><!-- fancy dates --><script>
+    moment.locale("en");
+    fancydates(0, "YYYY-MM-DD HH:mm");
+    </script><!-- end fancy dates --><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element) {
+            return element.getElementsByTagName('img')[0].alt;
+    }});
+    </script><script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-50641127-1', 'stencel.io');
+  ga('send', 'pageview');
+
+</script><script type="text/javascript" src="../assets/js/tipuesearch_set.js"></script><script type="text/javascript" src="../assets/js/tipuesearch.js"></script><script type="text/javascript">
+$(document).ready(function() {
+     $('#tipue_search_input').tipuesearch({
+         'mode': 'json',
+         'contentLocation': '/assets/js/tipuesearch_content.json',
+         'showUrl': false
+     });
+});
+</script>
+</body>
+</html>

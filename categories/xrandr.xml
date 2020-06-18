@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Greg's Tech Notes (Posts about xrandr)</title><link>http://stencel.io/</link><description></description><atom:link href="http://stencel.io/categories/xrandr.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><copyright>Contents © 2020 &lt;a href="mailto:gstencel@gmail.com"&gt;Greg Stencel&lt;/a&gt; </copyright><lastBuildDate>Thu, 18 Jun 2020 12:06:50 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>xrandr tips</title><link>http://stencel.io/posts/xrandr-tips.html</link><dc:creator>Greg Stencel</dc:creator><description>&lt;div&gt;&lt;p&gt;adding resolution
+1)generate mode
+cvt 2560 1440 60
+➜  blog git:(website) ✗ cvt 2560 1440 60
+# 2560x1440 59.96 Hz (CVT 3.69M9) hsync: 89.52 kHz; pclk: 312.25 MHz
+Modeline "2560x1440_60.00"  312.25  2560 2752 3024 3488  1440 1443 1448 1493 -hsync +vsync&lt;/p&gt;
+&lt;p&gt;2)add it to xrandr
+sudo xrandr --newmode "2560x1440_60.00"  312.25  2560 2752 3024 3488  1440 1443 1448 1493  -hsync +vsync
+setting resolution&lt;/p&gt;
+&lt;p&gt;3)sudo xrandr --addmode VGA-0 "1680x1050_60.00"&lt;/p&gt;
+&lt;p&gt;xrandr -q
+xrandr --verbose&lt;/p&gt;
+&lt;p&gt;xrandr --output HDMI-0 --mode 2560x1440&lt;/p&gt;
+&lt;p&gt;irst generate a "modeline" by using cvt
+Syntax is: cvt width height refreshrate&lt;/p&gt;
+&lt;p&gt;cvt 1680 1050 60
+this gives you:&lt;/p&gt;
+&lt;p&gt;# 1680x1050 59.95 Hz (CVT 1.76MA) hsync: 65.29 kHz; pclk: 146.25 MHz
+Modeline "1680x1050_60.00"  146.25  1680 1784 1960 2240  1050 1053 1059 1089 -hsync +vsync
+Now tell this to xrandr:&lt;/p&gt;
+&lt;p&gt;sudo xrandr --newmode "1680x1050_60.00"  146.25  1680 1784 1960 2240  1050 1053 1059 1089 -&lt;/p&gt;
+&lt;p&gt;First clone the two screens, (the smaller screen will display the top left portion of the virtual screen)&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;xrandr --output VGA --auto --right-of LVDS&lt;/p&gt;
+&lt;p&gt;xrandr --output LVDS --mode 1280x800&lt;/p&gt;
+&lt;p&gt;xrandr --output LVDS --mode 1280x800 --rate 75&lt;/p&gt;
+&lt;p&gt;xrandr --output LVDS --auto&lt;/p&gt;
+&lt;p&gt;xrandr --output LVDS --off --output HDMI-0 --auto&lt;/p&gt;
+&lt;p&gt;xrandr --output VGA1 --mode 1024x768 --rate 60&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;#Laptop right extra Monitor Left&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;xrandr --output VGA1 --left-of LVDS1&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;#Laptop left extra Monitor right&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;xrandr --output LVDS1 --left-of VGA1&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;#This is to set your primary monitor.&lt;/p&gt;
+&lt;p&gt;#This sets your laptop monitor as your primary monitor.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;xrandr --output LVDS1 --primary&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;#This sets your VGA monitor as your primary monitor.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;xrandr --output VGA1 --primary&lt;/p&gt;
+&lt;p&gt;xrandr --output VGA1 --mode 1024x768 --rate 60&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;xrandr --pos &amp;lt;x&amp;gt;x&amp;lt;y&amp;gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;$ xrandr --left-of &amp;lt;output&amp;gt;&lt;/p&gt;
+&lt;p&gt;$ xrandr --right-of &amp;lt;output&amp;gt;&lt;/p&gt;
+&lt;p&gt;$ xrandr --above &amp;lt;output&amp;gt;&lt;/p&gt;
+&lt;p&gt;$ xrandr --below &amp;lt;output&amp;gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Option '-pos' is more flexible which can place output to anywhere, for example:&lt;/p&gt;
+&lt;p&gt;$ xrandr --output VGA1 --pos 200x200
+$ xrandr --output LVDS1 --pos 400x500&lt;/p&gt;
+&lt;p&gt;xrandr -o right&lt;/p&gt;&lt;/div&gt;</description><category>Linux</category><category>xrandr</category><guid>http://stencel.io/posts/xrandr-tips.html</guid><pubDate>Tue, 13 Jan 2015 20:34:57 GMT</pubDate></item></channel></rss>

@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html prefix="        og: http://ogp.me/ns# article: http://ogp.me/ns/article#     " vocab="http://ogp.me/ns" lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+<title>Posts about fabric | Greg's Tech Notes</title>
+<link href="https://fonts.googleapis.com/css?family=Bitter:400,400i,700" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+<link href="../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../rss.xml">
+<link rel="canonical" href="http://stencel.io/categories/fabric.html">
+<!--[if lt IE 9]><script src="../assets/js/html5shiv-printshiv.min.js"></script><![endif]--><link rel="alternate" type="application/rss+xml" title="RSS for tag fabric" hreflang="en" href="fabric.xml">
+</head>
+<body>
+    <a href="#page-content" class="sr-only sr-only-focusable">Skip to main content</a>
+    
+    <section class="social"><ul>
+<li><p style="color:#fff;font-size:3em;">stencel.io</p></li>
+        <li><p style="color:#fff;font-size:2em;">greg's tech notes</p></li>
+            <li>
+                <a href="http://stencel.io/">
+                    <img src="../images/aboutme.png" alt="Greg's Tech Notes" id="logo"></a>
+            </li>
+        
+            <li><a href="../index.html" title="Home"><i class="fa fa-home"></i></a></li>
+            <li><a href="../archive.html" title="Archives"><i class="fa fa-folder-open"></i></a></li>
+            <li><a href="index.html" title="Tags"><i class="fa fa-tags"></i></a></li>
+            <li><a href="https://www.linkedin.com/in/gregstencel/" title="My Linkedin"><i class="fab fa-linkedin"></i></a></li>
+            <li><a href="https://github.com/greg4fun" title="My Github"><i class="fab fa-github"></i></a></li>
+    
+    
+
+        </ul></section><section class="page-content"><div class="content" rel="main">
+            
+
+    <header><h1>Posts about fabric</h1>
+        <div class="metadata">
+            
+                <p class="feedlink">
+                        
+            <a href="fabric.xml" hreflang="en" type="application/rss+xml">RSS feed</a>
+
+                </p>
+
+            
+
+        </div>
+    </header><div class="postindex">
+    <article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="../posts/fabric-auto-deployment-script.html" class="u-url">fabric - auto deployment script</a></h1>
+        <div class="metadata">
+            <p class="dateline"><a href="../posts/fabric-auto-deployment-script.html" rel="bookmark"><i class="fa fa-clock"></i> <time class="published dt-published" datetime="2016-11-02T14:45:29Z" title="2016-11-02 14:45">2016-11-02 14:45</time></a></p>
+            <p class="byline author vcard"> <i class="fa fa-user"></i> <span class="byline-name fn" itemprop="author">
+                Greg Stencel
+            </span></p>
+                <p class="commentline"><i class="fa fa-comment"></i> 
+        
+    <a href="../posts/fabric-auto-deployment-script.html#disqus_thread" data-disqus-identifier="cache/posts/fabric-auto-deployment-script.html">Comments</a>
+
+
+        </p>
+</div>
+    </header><div class="e-content entry-content">
+    <div>
+<p>Recently I wrote fabric deployment scrip maybe someone will find it usefull.</p>
+<p>It enables possibility to run "group execute" task with</p>
+<pre class="code python"><a name="rest_code_5b6b57fde6f7405891fffa9e092f972b-1"></a><span class="n">fab</span> <span class="n">live_servers</span> <span class="n">pull</span> <span class="n">restart</span>
+</pre>
+<p>or single host</p>
+<pre class="code python"><a name="rest_code_953bebeef44b43dfb069346d0a8f9f68-1"></a><span class="n">fab</span> <span class="n">live1</span> <span class="n">pull</span>
+</pre>
+<p>All we need to do is to define group or sinle host as function afterwards I used end update decorator.</p>
+<p>I know there could be also something like duplication of tasks with separate servers fab live1 pull live2
+pull but I believe that fabric was written for distributed systems which has different paths of apps and users
+etc.</p>
+<p>also roledefs with extra dict keys didn't work for me)? I want to keep this simple single/multiple host
+deployment commands like : fab live_servers pull, fab test pull</p>
+<pre class="code python"><a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-1"></a><span class="kn">from</span> <span class="nn">fabric.api</span> <span class="kn">import</span> <span class="n">run</span><span class="p">,</span> <span class="n">env</span><span class="p">,</span> <span class="n">local</span><span class="p">,</span> <span class="n">get</span><span class="p">,</span> <span class="n">cd</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-2"></a><span class="kn">from</span> <span class="nn">fabric.tasks</span> <span class="kn">import</span> <span class="n">execute</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-3"></a><span class="kn">import</span> <span class="nn">inspect</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-4"></a><span class="kn">import</span> <span class="nn">sys</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-5"></a><span class="kn">import</span> <span class="nn">os</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-6"></a><span class="kn">import</span> <span class="nn">re</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-7"></a><span class="kn">from</span> <span class="nn">StringIO</span> <span class="kn">import</span> <span class="n">StringIO</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-8"></a>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-9"></a><span class="c1"># fabfile author: Grzegorz Stencel</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-10"></a><span class="c1"># usage:</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-11"></a><span class="c1"># run: fab help for examples</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-12"></a><span class="c1"># fab staging svnxapp:app=holdings_and_quotes,layout.py,permissions.py restart</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-13"></a><span class="c1"># fab test svnxlib</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-14"></a>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-15"></a><span class="n">SERVER_BRANCHES</span> <span class="o">=</span> <span class="p">{</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-16"></a>    <span class="s1">'live'</span><span class="p">:</span> <span class="s1">'master'</span><span class="p">,</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-17"></a>    <span class="s1">'sit'</span><span class="p">:</span> <span class="s1">'sit'</span><span class="p">,</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-18"></a>    <span class="s1">'uat'</span><span class="p">:</span> <span class="s1">'uat'</span><span class="p">,</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-19"></a>    <span class="s1">'live2'</span><span class="p">:</span><span class="s1">'master'</span><span class="p">,</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-20"></a>    <span class="s1">'live3'</span><span class="p">:</span><span class="s1">'master'</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-21"></a>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-22"></a><span class="p">}</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-23"></a><span class="c1"># MAIN CONF</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-24"></a><span class="n">SERVERS</span> <span class="o">=</span> <span class="p">{</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-25"></a>    <span class="s1">'local'</span><span class="p">:</span> <span class="p">{</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-26"></a>        <span class="s1">'envname'</span><span class="p">:</span> <span class="s1">'local'</span><span class="p">,</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-27"></a>        <span class="s1">'user'</span><span class="p">:</span> <span class="s1">'greg'</span><span class="p">,</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-28"></a>        <span class="s1">'host'</span><span class="p">:</span> <span class="s1">'localhost'</span><span class="p">,</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-29"></a>        <span class="s1">'host_string'</span><span class="p">:</span> <span class="s1">'localhost'</span><span class="p">,</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-30"></a>        <span class="s1">'path'</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'SITE_ROOT'</span><span class="p">,</span> <span class="s1">'/opt/myapp/test'</span><span class="p">),</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-31"></a>        <span class="s1">'www_root'</span><span class="p">:</span> <span class="s1">'http://localhost:8081/'</span><span class="p">,</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-32"></a>        <span class="s1">'retries_before_killing'</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-33"></a>        <span class="s1">'retry_sleep'</span><span class="p">:</span> <span class="mi">2</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-34"></a>    <span class="p">},</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-35"></a>    <span class="s1">'test'</span><span class="p">:</span> <span class="p">{</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-36"></a>        <span class="s1">'envname'</span><span class="p">:</span> <span class="s1">'test'</span><span class="p">,</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-37"></a>        <span class="s1">'user'</span><span class="p">:</span> <span class="s1">'root'</span><span class="p">,</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-38"></a>        <span class="s1">'host'</span><span class="p">:</span> <span class="s1">'myapp-test.stencel.com'</span><span class="p">,</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-39"></a>        <span class="s1">'host_string'</span><span class="p">:</span> <span class="s1">'myapp-test.stencel.com'</span><span class="p">,</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-40"></a>        <span class="s1">'path'</span><span class="p">:</span> <span class="s1">'/var/www/myapp/test/'</span><span class="p">,</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-41"></a>        <span class="s1">'www_root'</span><span class="p">:</span> <span class="s1">'http://myapp-test.stencel.com/'</span><span class="p">,</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-42"></a>        <span class="s1">'retries_before_killing'</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-43"></a>        <span class="s1">'retry_sleep'</span><span class="p">:</span> <span class="mi">2</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-44"></a>    <span class="p">},</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-45"></a>    <span class="s1">'uat'</span><span class="p">:</span> <span class="p">{</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-46"></a>        <span class="s1">'envname'</span><span class="p">:</span> <span class="s1">'uat'</span><span class="p">,</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-47"></a>        <span class="s1">'user'</span><span class="p">:</span> <span class="s1">'myapp'</span><span class="p">,</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-48"></a>        <span class="s1">'host'</span><span class="p">:</span> <span class="s1">'uat.myapp2.stencel.com'</span><span class="p">,</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-49"></a>        <span class="s1">'host_string'</span><span class="p">:</span> <span class="s1">'uat.myapp2.stencel.com'</span><span class="p">,</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-50"></a>        <span class="s1">'key_filename'</span><span class="p">:</span> <span class="s1">'deploy/keys/id_rsa'</span><span class="p">,</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-51"></a>        <span class="s1">'path'</span><span class="p">:</span> <span class="s1">'/opt/myapp/uat/'</span><span class="p">,</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-52"></a>        <span class="s1">'www_root'</span><span class="p">:</span> <span class="s1">'http://uat.myapp2.stencel.com/'</span><span class="p">,</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-53"></a>        <span class="s1">'retries_before_killing'</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-54"></a>        <span class="s1">'retry_sleep'</span><span class="p">:</span> <span class="mi">2</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-55"></a>    <span class="p">},</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-56"></a>    <span class="s1">'sit'</span><span class="p">:</span> <span class="p">{</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-57"></a>        <span class="s1">'envname'</span><span class="p">:</span> <span class="s1">'sit'</span><span class="p">,</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-58"></a>        <span class="s1">'user'</span><span class="p">:</span> <span class="s1">'myapp'</span><span class="p">,</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-59"></a>        <span class="s1">'host'</span><span class="p">:</span> <span class="s1">'sit.myapp2.stencel.com'</span><span class="p">,</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-60"></a>        <span class="s1">'host_string'</span><span class="p">:</span> <span class="s1">'sit.myapp2.stencel.com'</span><span class="p">,</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-61"></a>        <span class="s1">'key_filename'</span><span class="p">:</span> <span class="s1">'deploy/keys/id_rsa'</span><span class="p">,</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-62"></a>        <span class="s1">'path'</span><span class="p">:</span> <span class="s1">'/opt/myapp/sit/'</span><span class="p">,</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-63"></a>        <span class="s1">'www_root'</span><span class="p">:</span> <span class="s1">'http://sit.myapp2.stencel.com/'</span><span class="p">,</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-64"></a>        <span class="s1">'retries_before_killing'</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-65"></a>        <span class="s1">'retry_sleep'</span><span class="p">:</span> <span class="mi">2</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-66"></a>    <span class="p">},</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-67"></a>    <span class="s1">'live'</span><span class="p">:</span> <span class="p">{</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-68"></a>        <span class="s1">'envname'</span><span class="p">:</span> <span class="s1">'live'</span><span class="p">,</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-69"></a>        <span class="s1">'user'</span><span class="p">:</span> <span class="s1">'myapp'</span><span class="p">,</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-70"></a>        <span class="s1">'host'</span><span class="p">:</span> <span class="s1">'10.10.10.10'</span><span class="p">,</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-71"></a>        <span class="s1">'host_string'</span><span class="p">:</span> <span class="s1">'myapp2.stencel.com'</span><span class="p">,</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-72"></a>        <span class="s1">'path'</span><span class="p">:</span> <span class="s1">'/opt/myapp/live/'</span><span class="p">,</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-73"></a>        <span class="s1">'www_root'</span><span class="p">:</span> <span class="s1">'http://myapp2.stencel.com/'</span><span class="p">,</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-74"></a>        <span class="s1">'retries_before_killing'</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-75"></a>        <span class="s1">'retry_sleep'</span><span class="p">:</span> <span class="mi">2</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-76"></a>    <span class="p">},</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-77"></a>    <span class="s1">'live2'</span><span class="p">:</span> <span class="p">{</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-78"></a>        <span class="s1">'envname'</span><span class="p">:</span> <span class="s1">'live2'</span><span class="p">,</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-79"></a>        <span class="s1">'user'</span><span class="p">:</span> <span class="s1">'root'</span><span class="p">,</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-80"></a>        <span class="s1">'host'</span><span class="p">:</span> <span class="s1">'10.10.10.11'</span><span class="p">,</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-81"></a>        <span class="s1">'host_string'</span><span class="p">:</span> <span class="s1">'live2.stencel.com'</span><span class="p">,</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-82"></a>        <span class="s1">'path'</span><span class="p">:</span> <span class="s1">'/var/www/myapp/live/'</span><span class="p">,</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-83"></a>        <span class="s1">'www_root'</span><span class="p">:</span> <span class="s1">'http://myapp2.stencel.com/'</span><span class="p">,</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-84"></a>        <span class="s1">'retries_before_killing'</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-85"></a>        <span class="s1">'retry_sleep'</span><span class="p">:</span> <span class="mi">2</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-86"></a>    <span class="p">},</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-87"></a>    <span class="s1">'live3'</span><span class="p">:</span> <span class="p">{</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-88"></a>        <span class="s1">'envname'</span><span class="p">:</span> <span class="s1">'live3'</span><span class="p">,</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-89"></a>        <span class="s1">'user'</span><span class="p">:</span> <span class="s1">'root'</span><span class="p">,</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-90"></a>        <span class="s1">'host'</span><span class="p">:</span> <span class="s1">'10.10.10.12'</span><span class="p">,</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-91"></a>        <span class="s1">'host_string'</span><span class="p">:</span> <span class="s1">'live3.stencel.com'</span><span class="p">,</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-92"></a>        <span class="s1">'path'</span><span class="p">:</span> <span class="s1">'/var/www/myapp/live/'</span><span class="p">,</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-93"></a>        <span class="s1">'www_root'</span><span class="p">:</span> <span class="s1">'http://myapp2.stencel.com/'</span><span class="p">,</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-94"></a>        <span class="s1">'retries_before_killing'</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-95"></a>        <span class="s1">'retry_sleep'</span><span class="p">:</span> <span class="mi">2</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-96"></a>    <span class="p">},</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-97"></a>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-98"></a><span class="p">}</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-99"></a>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-100"></a><span class="n">LIVE_HOSTS</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'live'</span><span class="p">,</span> <span class="s1">'live2'</span><span class="p">,</span> <span class="s1">'live3'</span><span class="p">]</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-101"></a>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-102"></a>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-103"></a><span class="k">def</span> <span class="nf">list_hosts</span><span class="p">():</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-104"></a>    <span class="sd">"""</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-105"></a><span class="sd">    Lists available myapp hosts</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-106"></a><span class="sd">    """</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-107"></a>    <span class="nb">print</span> <span class="s2">" Single hosts(if you want to pull from svn only to one of them):"</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-108"></a>    <span class="nb">print</span> <span class="s1">'   </span><span class="si">%s</span><span class="s1">'</span> <span class="o">%</span> <span class="s1">'</span><span class="se">\n</span><span class="s1">   '</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">a</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">SERVERS</span><span class="p">])</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-109"></a>    <span class="nb">print</span> <span class="s2">" Multiple hosts"</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-110"></a>    <span class="nb">print</span> <span class="s1">'   live (which contains </span><span class="si">%s</span><span class="s1">)'</span> <span class="o">%</span> <span class="s1">','</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">a</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">LIVE_HOSTS</span><span class="p">])</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-111"></a>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-112"></a>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-113"></a><span class="k">def</span> <span class="nf">test</span><span class="p">():</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-114"></a>    <span class="sd">"""</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-115"></a><span class="sd">    single host definition , "fab test restart" wil restart this one host</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-116"></a>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-117"></a><span class="sd">    """</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-118"></a>    <span class="n">env</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="n">SERVERS</span><span class="p">[</span><span class="s1">'test'</span><span class="p">]))</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-119"></a>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-120"></a>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-121"></a><span class="k">def</span> <span class="nf">localhost</span><span class="p">():</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-122"></a>    <span class="sd">"""</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-123"></a><span class="sd">    single host definition , "fab test restart" wil restart this one host</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-124"></a>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-125"></a><span class="sd">    """</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-126"></a>    <span class="n">env</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="n">SERVERS</span><span class="p">[</span><span class="s1">'local'</span><span class="p">]))</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-127"></a>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-128"></a>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-129"></a><span class="k">def</span> <span class="nf">uat</span><span class="p">():</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-130"></a>    <span class="sd">"""</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-131"></a><span class="sd">    single host definition , "fab uat restart" wil restart this single host</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-132"></a>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-133"></a><span class="sd">    """</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-134"></a>    <span class="n">env</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="n">SERVERS</span><span class="p">[</span><span class="s1">'uat'</span><span class="p">]))</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-135"></a>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-136"></a>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-137"></a><span class="k">def</span> <span class="nf">sit</span><span class="p">():</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-138"></a>    <span class="sd">"""</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-139"></a><span class="sd">    single host</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-140"></a>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-141"></a><span class="sd">    """</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-142"></a>    <span class="n">env</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="n">SERVERS</span><span class="p">[</span><span class="s1">'sit'</span><span class="p">]))</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-143"></a>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-144"></a>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-145"></a><span class="c1">#  SERVERS GRcompanyS DEFINITION</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-146"></a><span class="k">def</span> <span class="nf">live</span><span class="p">():</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-147"></a>    <span class="sd">"""</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-148"></a><span class="sd">    multiple grcompany of hosts - running: "fab live restart" will restart all live servers</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-149"></a>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-150"></a><span class="sd">    """</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-151"></a>    <span class="n">env</span><span class="p">[</span><span class="s1">'hosts'</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">SERVERS</span><span class="p">[</span><span class="n">a</span><span class="p">][</span><span class="s1">'host'</span><span class="p">]</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">LIVE_HOSTS</span><span class="p">]</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-152"></a>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-153"></a>    <span class="c1"># env.update(dict(SERVERS['staging']))</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-154"></a>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-155"></a>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-156"></a><span class="k">def</span> <span class="nf">env_update</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-157"></a>    <span class="sd">"""</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-158"></a><span class="sd">    Decorator - needs to be added to each task in fabricfile - for multiple host task execution</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-159"></a><span class="sd">    """</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-160"></a>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-161"></a>    <span class="k">def</span> <span class="nf">func_wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-162"></a>        <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">hosts</span><span class="p">):</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-163"></a>            <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-164"></a>        <span class="k">else</span><span class="p">:</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-165"></a>            <span class="n">env</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="n">SERVERS</span><span class="p">[</span><span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">SERVERS</span><span class="p">[</span><span class="n">x</span><span class="p">][</span><span class="s1">'host'</span><span class="p">]</span> <span class="o">==</span> <span class="n">env</span><span class="o">.</span><span class="n">host</span><span class="p">,</span> <span class="n">MyApp_SERVERS</span><span class="p">)[</span><span class="mi">0</span><span class="p">]]))</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-166"></a>            <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-167"></a>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-168"></a>    <span class="k">return</span> <span class="n">func_wrapper</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-169"></a>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-170"></a>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-171"></a><span class="nd">@env_update</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-172"></a><span class="k">def</span> <span class="nf">bundle_media</span><span class="p">():</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-173"></a>    <span class="sd">"""</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-174"></a><span class="sd">    bundles media like css and js to one file.</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-175"></a><span class="sd">    example:</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-176"></a><span class="sd">        fab test bundle_media</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-177"></a><span class="sd">    """</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-178"></a>    <span class="c1"># export DJANGO_SETTINGS_MODULE=settings</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-179"></a>    <span class="c1">#run("cd {0} &amp;&amp; source settings/{1}-config.sh &amp;&amp; python scripts/bundle_media.py".format(env.path,env.envname))</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-180"></a>   <span class="n">run</span><span class="p">(</span><span class="s2">"source /usr/share/virtualenvwrapper/virtualenvwrapper.sh &amp;&amp; workon </span><span class="si">{0}</span><span class="s2"> &amp;&amp; python scripts/bundle_media.py"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">"</span><span class="si">%s</span><span class="s2">-myapp"</span> <span class="o">%</span> <span class="n">env</span><span class="o">.</span><span class="n">envname</span> <span class="k">if</span> <span class="n">env</span><span class="o">.</span><span class="n">envname</span><span class="o">&lt;&gt;</span> <span class="s1">'live'</span> <span class="k">else</span> <span class="s1">'MyApp-test'</span><span class="p">))</span> <span class="c1">#change live venv to be live-MyApp</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-181"></a>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-182"></a><span class="k">def</span> <span class="nf">_valid_branch</span><span class="p">(</span><span class="n">env</span><span class="p">):</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-183"></a>    <span class="n">branch</span> <span class="o">=</span> <span class="n">run</span><span class="p">(</span><span class="s2">"cd </span><span class="si">{0}</span><span class="s2"> &amp;&amp; git rev-parse --abbrev-ref HEAD"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">path</span><span class="p">))</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-184"></a>    <span class="k">return</span> <span class="n">branch</span> <span class="o">==</span> <span class="n">SERVER_BRANCHES</span><span class="p">[</span><span class="n">env</span><span class="o">.</span><span class="n">envname</span><span class="p">]</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">env</span><span class="o">.</span><span class="n">envname</span><span class="o">==</span><span class="s1">'local'</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-185"></a>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-186"></a>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-187"></a><span class="nd">@env_update</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-188"></a><span class="k">def</span> <span class="nf">pull</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-189"></a>    <span class="k">if</span> <span class="n">_valid_branch</span><span class="p">(</span><span class="n">env</span><span class="p">):</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-190"></a>        <span class="k">with</span> <span class="n">cd</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">path</span><span class="p">):</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-191"></a>            <span class="n">run</span><span class="p">(</span><span class="s2">"git fetch origin"</span><span class="p">)</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-192"></a>            <span class="n">run</span><span class="p">(</span><span class="s2">"git reset --hard origin/</span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="n">branch</span><span class="p">)</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-193"></a>    <span class="k">else</span><span class="p">:</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-194"></a>        <span class="nb">print</span> <span class="s2">"Error : Server is checked out to wrong branch!!!"</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-195"></a>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-196"></a>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-197"></a>            <span class="c1">#run('git fetch --quiet')</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-198"></a>            <span class="c1">#run('git fetch --tags --quiet')</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-199"></a>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-200"></a><span class="nd">@env_update</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-201"></a><span class="k">def</span> <span class="nf">reload</span><span class="p">():</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-202"></a>    <span class="sd">"""</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-203"></a><span class="sd">    Reload specified servers - kills unused gunicorn workers but waits workers with old code to finish processing.</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-204"></a>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-205"></a><span class="sd">    """</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-206"></a>    <span class="n">bundle_media</span><span class="p">()</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-207"></a>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-208"></a>    <span class="c1">#if env.envname in ('uat', 'staging', 'live'):</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-209"></a>    <span class="n">f</span> <span class="o">=</span> <span class="n">StringIO</span><span class="p">()</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-210"></a>    <span class="n">get</span><span class="p">(</span><span class="s2">"/opt/myapp/</span><span class="si">%s</span><span class="s2">/pid"</span> <span class="o">%</span> <span class="n">env</span><span class="o">.</span><span class="n">envname</span><span class="p">,</span><span class="n">f</span><span class="p">)</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-211"></a>    <span class="n">pid</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s1">'\d+'</span><span class="p">,</span><span class="n">f</span><span class="o">.</span><span class="n">getvalue</span><span class="p">())</span><span class="o">.</span><span class="n">group</span><span class="p">()</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-212"></a>    <span class="n">run</span><span class="p">(</span><span class="s2">"ps aux | grep gunicorn | grep </span><span class="si">%s</span><span class="s2"> | grep master | grep -v grep | awk '{print $2}'"</span> <span class="o">%</span> <span class="n">env</span><span class="o">.</span><span class="n">envname</span><span class="p">)</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-213"></a>    <span class="n">run</span><span class="p">(</span><span class="s2">"kill -HUP </span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="n">pid</span><span class="p">)</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-214"></a>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-215"></a>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-216"></a><span class="nd">@env_update</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-217"></a><span class="k">def</span> <span class="nf">restart</span><span class="p">():</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-218"></a>    <span class="sd">"""</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-219"></a><span class="sd">    Hard restarts specified servers</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-220"></a>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-221"></a><span class="sd">    """</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-222"></a>    <span class="n">bundle_media</span><span class="p">()</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-223"></a>    <span class="n">run</span><span class="p">(</span><span class="s2">"ps aux | grep gunicorn | grep </span><span class="si">%s</span><span class="s2"> | grep master | grep -v grep | awk '{print $2}'"</span> <span class="o">%</span> <span class="n">env</span><span class="o">.</span><span class="n">envname</span><span class="p">)</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-224"></a>    <span class="n">run</span><span class="p">(</span><span class="s2">"supervisorctl stop myapp-</span><span class="si">%s</span><span class="s2"> &amp;&amp; supervisorctl start MyApp-</span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">envname</span><span class="p">,</span><span class="n">env</span><span class="o">.</span><span class="n">envname</span><span class="p">))</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-225"></a>    <span class="n">run</span><span class="p">(</span><span class="s2">"ps aux | grep gunicorn | grep </span><span class="si">%s</span><span class="s2"> | grep master | grep -v grep | awk '{print $2}'"</span> <span class="o">%</span> <span class="n">env</span><span class="o">.</span><span class="n">envname</span><span class="p">)</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-226"></a>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-227"></a>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-228"></a><span class="k">def</span> <span class="nf">help</span><span class="p">():</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-229"></a>    <span class="n">fabric_functions</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'run'</span><span class="p">,</span> <span class="s1">'execute'</span><span class="p">,</span> <span class="s1">'local'</span><span class="p">,</span> <span class="s1">'func_wrapper'</span><span class="p">]</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-230"></a>    <span class="n">functions</span> <span class="o">=</span> <span class="nb">set</span><span class="p">([</span><span class="n">obj</span><span class="o">.</span><span class="vm">__name__</span> <span class="k">if</span> <span class="n">obj</span><span class="o">.</span><span class="vm">__name__</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">fabric_functions</span> <span class="k">else</span> <span class="s1">''</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">obj</span> <span class="ow">in</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-231"></a>                     <span class="n">inspect</span><span class="o">.</span><span class="n">getmembers</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="vm">__name__</span><span class="p">])</span> <span class="k">if</span> <span class="n">inspect</span><span class="o">.</span><span class="n">isfunction</span><span class="p">(</span><span class="n">obj</span><span class="p">)])</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-232"></a>    <span class="n">functions</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s1">''</span><span class="p">)</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-233"></a>    <span class="nb">print</span> <span class="s2">"usage: </span><span class="se">\n</span><span class="s2">  fab [host/grcompany of hosts] [commands] (optional command with arguments command:kwarg=val,arg1,arg2,arg3)"</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-234"></a>    <span class="nb">print</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">available servers:"</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-235"></a>    <span class="n">list_hosts</span><span class="p">()</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-236"></a>    <span class="nb">print</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">commands:</span><span class="se">\n</span><span class="s2">  </span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="s1">', '</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">a</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">functions</span><span class="p">])</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-237"></a>    <span class="nb">print</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">examples:</span><span class="se">\n</span><span class="s2">  staging svnxapp:app=holdings_and_quotes,layout.py,permissions.py restart"</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-238"></a>    <span class="nb">print</span> <span class="s2">"  fab test restart"</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-239"></a>    <span class="nb">print</span> <span class="s2">"  fab staging svnxapp:app=holdings_and_quotes,lib/quote.py,layout.py,models.py"</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-240"></a>    <span class="nb">print</span> <span class="s2">"  fab staging svnxapp:app=holdings_and_quotes,lib/quote.py restart"</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-241"></a>    <span class="nb">print</span> <span class="s2">"  fab test build"</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-242"></a>    <span class="nb">print</span> <span class="s2">"  fab test bundle_media restart"</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-243"></a>    <span class="nb">print</span> <span class="s2">" For svnx whole app (comma in the end):"</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-244"></a>    <span class="nb">print</span> <span class="s2">"  fab test svnxapp:app=medrep,"</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-245"></a>    <span class="nb">print</span> <span class="s2">" For global lib:"</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-246"></a>    <span class="nb">print</span> <span class="s2">"  fab test svnxlib"</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-247"></a>    <span class="nb">print</span> <span class="s2">" For whole global media:"</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-248"></a>    <span class="nb">print</span> <span class="s2">"  fab test svnxmedia:"</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-249"></a>    <span class="nb">print</span> <span class="s2">" For global media file:"</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-250"></a>    <span class="nb">print</span> <span class="s2">"  fab test svnxmedia:javascript"</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-251"></a>    <span class="nb">print</span> <span class="s2">"  fab test svnxmedia:javascript/company/checklist.js"</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-252"></a>    <span class="nb">print</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">If .js file in args like : fab staging svnxapp:app=holdings_and_quotes,media/js/quote.js,layout.py,models.py"</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-253"></a>    <span class="nb">print</span> <span class="s2">"It will bundle media itself"</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-254"></a>    <span class="nb">print</span> <span class="s2">"Restart test staging without params:</span><span class="se">\n</span><span class="s2">  fab restart"</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-255"></a>    <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">functions</span><span class="p">:</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-256"></a>        <span class="nb">print</span> <span class="n">f</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-257"></a>        <span class="nb">print</span> <span class="nb">globals</span><span class="p">()[</span><span class="n">f</span><span class="p">]</span><span class="o">.</span><span class="vm">__doc__</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-258"></a>        <span class="nb">print</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-259"></a>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-260"></a>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-261"></a>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-262"></a><span class="nd">@env_update</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-263"></a><span class="k">def</span> <span class="nf">accessguni</span><span class="p">():</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-264"></a>    <span class="n">run</span><span class="p">(</span><span class="s2">"tail /var/log/myapp/access-</span><span class="si">%s</span><span class="s2">.log"</span> <span class="o">%</span> <span class="n">env</span><span class="o">.</span><span class="n">envname</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="p">)</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-265"></a>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-266"></a><span class="nd">@env_update</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-267"></a><span class="k">def</span> <span class="nf">accessgunilive</span><span class="p">():</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-268"></a>    <span class="n">run</span><span class="p">(</span><span class="s2">"tail -f /var/log/myapp/access-</span><span class="si">%s</span><span class="s2">.log"</span> <span class="o">%</span> <span class="n">env</span><span class="o">.</span><span class="n">envname</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="p">)</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-269"></a>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-270"></a><span class="nd">@env_update</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-271"></a><span class="k">def</span> <span class="nf">errorguni</span><span class="p">():</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-272"></a>    <span class="n">run</span><span class="p">(</span><span class="s2">"tail /var/log/myapp/error-</span><span class="si">%s</span><span class="s2">.log"</span> <span class="o">%</span> <span class="n">env</span><span class="o">.</span><span class="n">envname</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="p">)</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-273"></a>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-274"></a><span class="nd">@env_update</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-275"></a><span class="k">def</span> <span class="nf">errorgunilive</span><span class="p">():</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-276"></a>    <span class="n">run</span><span class="p">(</span><span class="s2">"tail -f /var/log/myapp/error.log"</span> <span class="o">%</span> <span class="n">env</span><span class="o">.</span><span class="n">envname</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="p">)</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-277"></a>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-278"></a><span class="k">def</span> <span class="nf">hostname</span><span class="p">():</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-279"></a>    <span class="n">run</span><span class="p">(</span><span class="s1">'uname -a'</span><span class="p">)</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-280"></a>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-281"></a><span class="nd">@env_update</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-282"></a><span class="k">def</span> <span class="nf">uptime</span><span class="p">():</span>
+<a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-283"></a>    <span class="n">run</span><span class="p">(</span><span class="s1">'uptime'</span><span class="p">)</span>
+</pre>
+</div>
+    </div>
+    </article><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="../posts/fabric.html" class="u-url">Fabric</a></h1>
+        <div class="metadata">
+            <p class="dateline"><a href="../posts/fabric.html" rel="bookmark"><i class="fa fa-clock"></i> <time class="published dt-published" datetime="2014-06-08T14:11:35Z" title="2014-06-08 14:11">2014-06-08 14:11</time></a></p>
+            <p class="byline author vcard"> <i class="fa fa-user"></i> <span class="byline-name fn" itemprop="author">
+                Greg Stencel
+            </span></p>
+                <p class="commentline"><i class="fa fa-comment"></i> 
+        
+    <a href="../posts/fabric.html#disqus_thread" data-disqus-identifier="cache/posts/fabric.html">Comments</a>
+
+
+        </p>
+</div>
+    </header><div class="e-content entry-content">
+    <div>
+<p>fabric execution:::::
+fab -H <a class="reference external" href="mailto:me@host1">me@host1</a>,me@host2,me@host3 function</p>
+Example:
+<small>
+fab -H greg@mmyserver.com get_backup
+</small><p>or alternatively:</p>
+Example:
+<small>
+fab production1 deploy
+</small>
+
+ but then you'll have to production1 defined inside your fabfile.py<pre class="code python"><a name="rest_code_2465e05bc56f4624a4f6b5581698a301-1"></a><span class="k">def</span> <span class="nf">production</span><span class="p">():</span>
+<a name="rest_code_2465e05bc56f4624a4f6b5581698a301-2"></a>     <span class="n">env</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span>
+<a name="rest_code_2465e05bc56f4624a4f6b5581698a301-3"></a>         <span class="n">dest</span><span class="o">=</span><span class="s1">'production'</span><span class="p">,</span>
+<a name="rest_code_2465e05bc56f4624a4f6b5581698a301-4"></a>         <span class="n">hosts</span><span class="o">=</span><span class="p">[</span><span class="s1">'some_ip_address'</span><span class="p">],</span>
+<a name="rest_code_2465e05bc56f4624a4f6b5581698a301-5"></a> <span class="p">))</span>
+<a name="rest_code_2465e05bc56f4624a4f6b5581698a301-6"></a>
+<a name="rest_code_2465e05bc56f4624a4f6b5581698a301-7"></a> <span class="k">def</span> <span class="nf">development</span><span class="p">():</span>
+<a name="rest_code_2465e05bc56f4624a4f6b5581698a301-8"></a>     <span class="n">env</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span>
+<a name="rest_code_2465e05bc56f4624a4f6b5581698a301-9"></a>         <span class="n">dest</span><span class="o">=</span><span class="s1">'development'</span><span class="p">,</span>
+<a name="rest_code_2465e05bc56f4624a4f6b5581698a301-10"></a>         <span class="n">hosts</span><span class="o">=</span><span class="p">[</span><span class="s1">'localhost'</span><span class="p">],</span>
+<a name="rest_code_2465e05bc56f4624a4f6b5581698a301-11"></a> <span class="p">))</span>
+</pre>
+<p><strong>local</strong> - execute a local command means host from which we launch fabric</p>
+<p><strong>run</strong>   - execute a remote command on all specified hosts, user-level permissions</p>
+<p><strong>sudo</strong> - sudo a command on the remote server)</p>
+<p><strong>put</strong> - copy over a local file to a remote destination)</p>
+<p><strong>get</strong> - download a file from the remote server)</p>
+<p><strong>prompt</strong> - prompt user with text and return the input (like raw_input))</p>
+<p><strong>reboot</strong> - reboot the remote system, disconnect, and wait for wait seconds)</p>
+<p>Download some logs</p>
+<p>get(remote_path="/tmp/log_extracts.tar.gz", local_path="/logs/new_log.tar.gz")</p>
+</div>
+    </div>
+    </article>
+</div>
+
+
+
+        
+       <script>var disqus_shortname="stencel";(function(){var a=document.createElement("script");a.async=true;a.src="https://"+disqus_shortname+".disqus.com/count.js";(document.getElementsByTagName("head")[0]||document.getElementsByTagName("body")[0]).appendChild(a)}());</script><footer id="footer"><p>Contents © 2020         <a href="mailto:gstencel@gmail.com">Greg Stencel</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         </p>
+            
+        </footer>
+</div>
+    </section><script src="../assets/js/all-nocdn.js"></script><!-- fancy dates --><script>
+    moment.locale("en");
+    fancydates(0, "YYYY-MM-DD HH:mm");
+    </script><!-- end fancy dates --><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element) {
+            return element.getElementsByTagName('img')[0].alt;
+    }});
+    </script><script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-50641127-1', 'stencel.io');
+  ga('send', 'pageview');
+
+</script><script type="text/javascript" src="../assets/js/tipuesearch_set.js"></script><script type="text/javascript" src="../assets/js/tipuesearch.js"></script><script type="text/javascript">
+$(document).ready(function() {
+     $('#tipue_search_input').tipuesearch({
+         'mode': 'json',
+         'contentLocation': '/assets/js/tipuesearch_content.json',
+         'showUrl': false
+     });
+});
+</script>
+</body>
+</html>

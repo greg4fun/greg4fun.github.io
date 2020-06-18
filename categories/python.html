@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html prefix="        og: http://ogp.me/ns# article: http://ogp.me/ns/article#     " vocab="http://ogp.me/ns" lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+<title>Posts about python | Greg's Tech Notes</title>
+<link href="https://fonts.googleapis.com/css?family=Bitter:400,400i,700" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+<link href="../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../rss.xml">
+<link rel="canonical" href="http://stencel.io/categories/python.html">
+<!--[if lt IE 9]><script src="../assets/js/html5shiv-printshiv.min.js"></script><![endif]--><link rel="alternate" type="application/rss+xml" title="RSS for tag python" hreflang="en" href="python.xml">
+</head>
+<body>
+    <a href="#page-content" class="sr-only sr-only-focusable">Skip to main content</a>
+    
+    <section class="social"><ul>
+<li><p style="color:#fff;font-size:3em;">stencel.io</p></li>
+        <li><p style="color:#fff;font-size:2em;">greg's tech notes</p></li>
+            <li>
+                <a href="http://stencel.io/">
+                    <img src="../images/aboutme.png" alt="Greg's Tech Notes" id="logo"></a>
+            </li>
+        
+            <li><a href="../index.html" title="Home"><i class="fa fa-home"></i></a></li>
+            <li><a href="../archive.html" title="Archives"><i class="fa fa-folder-open"></i></a></li>
+            <li><a href="index.html" title="Tags"><i class="fa fa-tags"></i></a></li>
+            <li><a href="https://www.linkedin.com/in/gregstencel/" title="My Linkedin"><i class="fab fa-linkedin"></i></a></li>
+            <li><a href="https://github.com/greg4fun" title="My Github"><i class="fab fa-github"></i></a></li>
+    
+    
+
+        </ul></section><section class="page-content"><div class="content" rel="main">
+            
+
+    <header><h1>Posts about python</h1>
+        <div class="metadata">
+            
+                <p class="feedlink">
+                        
+            <a href="python.xml" hreflang="en" type="application/rss+xml">RSS feed</a>
+
+                </p>
+
+            
+
+        </div>
+    </header><div class="postindex">
+    <article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="../posts/python-combine-dates-current-date-with-different-hour.html" class="u-url">Python combine dates , current date with different hour</a></h1>
+        <div class="metadata">
+            <p class="dateline"><a href="../posts/python-combine-dates-current-date-with-different-hour.html" rel="bookmark"><i class="fa fa-clock"></i> <time class="published dt-published" datetime="2014-06-04T16:38:10Z" title="2014-06-04 16:38">2014-06-04 16:38</time></a></p>
+            <p class="byline author vcard"> <i class="fa fa-user"></i> <span class="byline-name fn" itemprop="author">
+                Greg Stencel
+            </span></p>
+                <p class="commentline"><i class="fa fa-comment"></i> 
+        
+    <a href="../posts/python-combine-dates-current-date-with-different-hour.html#disqus_thread" data-disqus-identifier="cache/posts/python-combine-dates-current-date-with-different-hour.html">Comments</a>
+
+
+        </p>
+</div>
+    </header><div class="e-content entry-content">
+    <div>
+<p>Specification:
+I want to launch deployment script but not before 18:00 so every user can leave home.
+I want to lunch it today but with different time that datetime.datetime.now() gives
+To do it I think best way is t to combine <strong>date.today</strong> with <strong>time(18,00)</strong> and then compare
+with <strong>datetime.now()</strong>
+Command of lauching is up to us so jsut for tests lets pass it in argvs:</p>
+<p>.:w
+. code-block:: bash</p>
+<blockquote>
+<p>python testtime.py 16 35</p>
+</blockquote>
+<pre class="code python"><a name="rest_code_6b3cd7ca589948d787a40b3a9486e607-1"></a><span class="kn">import</span> <span class="nn">sys</span>
+<a name="rest_code_6b3cd7ca589948d787a40b3a9486e607-2"></a><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">date</span><span class="p">,</span><span class="n">time</span>
+<a name="rest_code_6b3cd7ca589948d787a40b3a9486e607-3"></a>
+<a name="rest_code_6b3cd7ca589948d787a40b3a9486e607-4"></a><span class="n">current_time</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+<a name="rest_code_6b3cd7ca589948d787a40b3a9486e607-5"></a><span class="n">ehour</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<a name="rest_code_6b3cd7ca589948d787a40b3a9486e607-6"></a><span class="n">eminute</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+<a name="rest_code_6b3cd7ca589948d787a40b3a9486e607-7"></a>
+<a name="rest_code_6b3cd7ca589948d787a40b3a9486e607-8"></a><span class="n">exe_time</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">combine</span><span class="p">(</span><span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">(),</span> <span class="n">time</span><span class="p">(</span><span class="n">ehour</span><span class="p">,</span><span class="n">eminute</span><span class="p">))</span>
+<a name="rest_code_6b3cd7ca589948d787a40b3a9486e607-9"></a><span class="c1">#or datetime.(datetime.today().year,datetime.today().month,datetime.today().day,ehour,eminute)</span>
+<a name="rest_code_6b3cd7ca589948d787a40b3a9486e607-10"></a><span class="nb">print</span> <span class="s2">"time left:"</span>
+<a name="rest_code_6b3cd7ca589948d787a40b3a9486e607-11"></a><span class="nb">print</span> <span class="p">(</span><span class="n">exe_time</span> <span class="o">-</span> <span class="n">current_time</span><span class="p">)</span>
+<a name="rest_code_6b3cd7ca589948d787a40b3a9486e607-12"></a>
+<a name="rest_code_6b3cd7ca589948d787a40b3a9486e607-13"></a><span class="k">if</span> <span class="n">exe_time</span><span class="o">&lt;=</span><span class="n">current_time</span><span class="p">:</span>
+<a name="rest_code_6b3cd7ca589948d787a40b3a9486e607-14"></a>    <span class="nb">print</span> <span class="s2">"executing..."</span>
+</pre>
+</div>
+    </div>
+    </article><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="../posts/vim.html" class="u-url">Quick vi / vim tutorial</a></h1>
+        <div class="metadata">
+            <p class="dateline"><a href="../posts/vim.html" rel="bookmark"><i class="fa fa-clock"></i> <time class="published dt-published" datetime="2014-04-24T14:05:12Z" title="2014-04-24 14:05">2014-04-24 14:05</time></a></p>
+            <p class="byline author vcard"> <i class="fa fa-user"></i> <span class="byline-name fn" itemprop="author">
+                Greg Stencel
+            </span></p>
+                <p class="commentline"><i class="fa fa-comment"></i> 
+        
+    <a href="../posts/vim.html#disqus_thread" data-disqus-identifier="cache/posts/vim.html">Comments</a>
+
+
+        </p>
+</div>
+    </header><div class="e-content entry-content">
+    <div>
+<p>This site is written to promote using VIM cause it's free, it has a lot
+of plugins and it can even be python IDE ;) and vi is also on every unix
+like system so logging to your clean instalation server it's good to
+know how to edit conf files.</p>
+<p>If you don't want to read more on this site just have a look at basic
+commands which will be enough to edit and save file:</p>
+<p><strong>Remember</strong> all this commands should be executed within normal mode to
+do so press ESC.</p>
+<kbd>:</kbd><kbd>q</kbd> <kbd>↵</kbd>QUIT (being in normal mode to be sure you can always use <kbd>ESC</kbd> <kbd>:</kbd><kbd>q</kbd><kbd>↵</kbd>) most important command remember it to avaoid being character from famous "VIM quit joke" how to generate cat /dev/urandom: <br><kbd>:</kbd><kbd>q</kbd><kbd>!</kbd> <kbd>↵</kbd>quit without saving <br><kbd>:</kbd><kbd>w</kbd><kbd>q</kbd><kbd>↵</kbd> - save and quit<br><kbd>y</kbd><kbd>y</kbd> - copy line<br><kbd>p</kbd> - paste line<br><kbd>i</kbd> - insert mode after that you're no longer in normal mode you can than start typig text<br><kbd>h</kbd> <kbd>j</kbd> <kbd>k</kbd> <kbd>l</kbd> - left down up right or you can use arrows in vim<br>
+you can also find undo <kbd>u</kbd> nad redo <kbd>ctrl</kbd><kbd>r</kbd> useful<br><p>I was inspired by <a class="reference external" href="https://github.com/onjin/vim-startup">Onjin</a> when I
+saw him typing in vim I was impressed of how his thoughts became text
+and functions in VIM so fast without even using a mouse :).</p>
+<p>It takes a while to switch from another editor and get its habits (it
+took one month for me and I tried 3 times) but after all you will be
+happy using lightweight VIM.</p>
+<p>To use vim you need to know that there are <strong>five modes</strong> (normal,
+insert, visual, select, command-line, Ex-mode)</p>
+<p>There are 4 main modes you'll be using probably:</p>
+<ul class="simple">
+<li><p><strong>Normal</strong> - usually VIm starts in this mode where you can navigate
+through whole file and modify text. To get to this mode press ESC.</p></li>
+<li><p><strong>Insert</strong> : this mode is like it says - for inserting new text you
+can go to this mode by pressing i or a (being in normal mode ESC)</p></li>
+<li><p><strong>Visual</strong> : you can select text in this mode by pressing v (being in
+normal mode ESC) and moving for selection</p></li>
+<li><p><strong>Command-line</strong> : you activate it by pressing : (being in normal
+mode ESC)</p></li>
+</ul>
+<div class="alert alert-info">Tip: Capital letters like <kbd>A</kbd> need to followed by <kbd>Shift</kbd> </div>
+<div class="section" id="editing-enter-commands-below-being-in-normal-mode">
+<h2>Editing (enter commands below being in normal mode):</h2>
+<blockquote>
+<kbd>i</kbd>  -  enter insert mode and place cursor at <b>current position</b> to start typing<br><br><p><img alt="image0" src="../images/i.gif"></p>
+</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd> I </kbd> - enter insert mode and place cursor at <b>start of the line</b> to start typing<p><img alt="imageI" src="../images/I.gif"></p>
+</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>a</kbd> - enter insert mode and place cursor <b>after current position</b>\ to start typing<br><br><p><img alt="image5" src="../images/a.gif"></p>
+</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>A</kbd> - enter insert mode and place cursor at the <b>end of line</b> to start typing<br><br><p><img alt="image5A" src="../images/A.gif"></p>
+</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>e</kbd><kbd>a</kbd> - append at end of word<br><br><p><img alt="image6" src="../images/ea.gif"></p>
+</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>r</kbd> - replace a single character (does not use insert mode)</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>J</kbd> - join line below to the current one<br><br><p><img alt="image7" src="../images/J2.gif"></p>
+</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>c</kbd><kbd>c</kbd> - change (replace) an entire line</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>c</kbd><kbd>w</kbd> - change (replace) to the end of word</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>c</kbd><kbd>$</kbd> - change (replace) to the end of line</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>s</kbd> - delete character at cursor and subsitute text</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>S</kbd> - delete line at cursor and substitute text (same as cc)</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>d</kbd><kbd>$</kbd>  or<kbd>D</kbd> - delete after cursor<kbd>xp</kbd> - transpose two letters (delete and paste, technically)</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>u</kbd> - undo</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>Ctrl</kbd><kbd> r</kbd> - redo</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>.</kbd> - repeat last command</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>ESC</kbd> - exit insert mode</blockquote>
+<hr class="docutils">
+<div class="section" id="indedation">
+<h3>Indedation</h3>
+<blockquote>
+<p class="bg-success">
+ Examples:<br><br>
+
+   :s/\n/ /g - replace all spaces with enter in current line<br>
+   :%s/\n/ /g -replace all spaces with enter in all lines<br>
+   :%s/\n/ /cg - replace all spaces with enter in all lines but with confirmation<br></p>
+</blockquote>
+</div>
+<hr class="docutils">
+<div class="section" id="id1">
+<h3>Indedation</h3>
+<blockquote>
+<kbd>v</kbd> then select block you want indent and press number of indedations<kbd>2</kbd><kbd>&gt;</kbd> -  execute indentation on the selected block</blockquote>
+</div>
+<div class="section" id="marking-text-visual-mode">
+<h3>Marking text (visual mode)</h3>
+<blockquote>
+<kbd>v</kbd> - mark lines with starting visual mode</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>d</kbd> - (after starting selection with v ) cut selected text</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>y</kbd> - (after starting selection with v ) copy (yank) selected text</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>p</kbd> - (after cutting or copying selection) paste selected text after cursor</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>P</kbd> - (after cutting or copying selection) paste selected text before cursor example of all 4 commands above:<br><br><p><img alt="image8" src="../images/yankpaste.gif"></p>
+</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>V</kbd> - start Linewise visual mode<br><br><p><img alt="image9" src="../images/VisualLine.gif"></p>
+</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>o</kbd> - move to other end of marked area<br><br><p><img alt="image10" src="../images/o.gif"></p>
+</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>Ctrl</kbd><kbd>v</kbd> - start visual block mode</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>O</kbd> - move to Other corner of block<br><br><p><img alt="image11" src="../images/visualblock.gif"></p>
+</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>a</kbd><kbd>w</kbd> - mark a word (being in visual mode)<br><br><p><img alt="image12" src="../images/select_word_2.gif"></p>
+</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>a</kbd><kbd>b</kbd> - a () block (with braces) (or vab from normal mode)<br><br><p><img alt="image13" src="../images/mark_brackets.gif"></p>
+</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>a</kbd><kbd>B</kbd> - a {} block (with brackets)<br><br><p><img alt="image14" src="../images/selecr_brackets_6.gif"></p>
+</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>i</kbd><kbd>b</kbd> - inner () block</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>i</kbd><kbd>B</kbd> - inner {} block</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>&gt;</kbd> - shift right</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>&lt;</kbd> - shift left</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>y</kbd> - yank (copy) marked text</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>d</kbd> - delete marked text</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>~</kbd> - switch case</blockquote>
+</div>
+<div class="section" id="layout-windows">
+<h3>Layout/windows:</h3>
+<blockquote>
+<kbd>Ctrl</kbd><kbd>w</kbd><kbd>w</kbd> - swith between windows</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>Ctrl </kbd><kbd>w </kbd><kbd>⇧</kbd> - move cursor up a window example using ctr ww and ctr w arrows in example before switching windows ESC was pressed to enter <b>normal</b> mode:<br><br><p><img alt="image15" src="../images/ctrlww.gif"></p>
+</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>ctrl </kbd><kbd>w +</kbd> - increase size of current window</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>ctrl</kbd><kbd>w</kbd><kbd>-</kbd> - decrease size of current window<br><br><p><img alt="image16" src="../images/rezise_window.gif"></p>
+</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>ctrl</kbd><kbd>w</kbd><kbd>\</kbd><kbd>_</kbd> - maximize current window</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>ctrl</kbd><kbd>w</kbd><kbd>=</kbd> -  make all equal size<br><br><p><img alt="image17" src="../images/resize_window2.gif"></p>
+</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>1</kbd><kbd>0</kbd><kbd>ctrl</kbd><kbd>w</kbd><kbd>+</kbd> - increase window size by 10 lines</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>:vsplit file</kbd> - vertical split</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>:sview</kbd> - same as split, but readonly</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>:hide</kbd> - close current window</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>:only</kbd> - keep only this window open</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>:ls</kbd> - show current buffers</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>:b 2</kbd> - open buffer #2 in this window</blockquote>
+</div>
+<div class="section" id="movement">
+<h3>Movement:</h3>
+<blockquote>
+<kbd>w</kbd> - next word by punctation <br><br><p><img alt="image20" src="../images/w_2.gif"></p>
+</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>W</kbd> - next word by spaces<br><br><p><img alt="image21" src="../images/W_1.gif"></p>
+</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>b</kbd> - back word by punctation</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>B</kbd> - back word by spaces</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>e</kbd> - end word by punctation</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>E</kbd> - end word by spaces</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>h</kbd> - move left</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>j</kbd> - move down</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>k</kbd> - move up</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>l</kbd> - move right</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>^</kbd> - first non-blank character of line</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>)</kbd> - zero) start of line</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>$</kbd> - end of line</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>G</kbd> - Go To command (prefix with number 4j moves down 4 lines.</blockquote>
+</div>
+<hr class="docutils">
+<div class="section" id="operations-on-file">
+<h3>Operations on file:</h3>
+<blockquote>
+<kbd>:e</kbd> - open file in new buffer</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>:w</kbd> - write file to disk - save</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>:w filename</kbd>  save as</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>ZZ</kbd> - write file to disk and quit like :wq</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>:wq</kbd> - save file and quit</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>:n</kbd> - edit a new file</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>:n!</kbd> - edit new file without saving current changes</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>:q!</kbd> - quit without changes</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>:q</kbd> - quit editing file</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>:e .</kbd> - directory explorer</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>:split</kbd> - filename - split window and load another file</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>:sview file</kbd> - same as split, but readonly</blockquote>
+<hr class="docutils">
+<p>Split window:</p>
+<blockquote>
+<kbd>Ctrl</kbd><kbd>W</kbd><kbd>s</kbd> - horizontal splitting<br><kbd>Ctrl</kbd><kbd>W</kbd><kbd>v</kbd> - for vertical splitting<br><kbd>Ctrl</kbd><kbd>w</kbd><kbd>q</kbd> - close window<br>
+</blockquote>
+<p>Split window:
+repeat insert in blockview
+ctrlv - select block
+then I -text ESC</p>
+</div>
+</div>
+<div class="section" id="macros-recording">
+<h2>Macros - recording</h2>
+</div>
+</div>
+    </div>
+    </article>
+</div>
+
+
+
+        
+       <script>var disqus_shortname="stencel";(function(){var a=document.createElement("script");a.async=true;a.src="https://"+disqus_shortname+".disqus.com/count.js";(document.getElementsByTagName("head")[0]||document.getElementsByTagName("body")[0]).appendChild(a)}());</script><footer id="footer"><p>Contents © 2020         <a href="mailto:gstencel@gmail.com">Greg Stencel</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         </p>
+            
+        </footer>
+</div>
+    </section><script src="../assets/js/all-nocdn.js"></script><!-- fancy dates --><script>
+    moment.locale("en");
+    fancydates(0, "YYYY-MM-DD HH:mm");
+    </script><!-- end fancy dates --><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element) {
+            return element.getElementsByTagName('img')[0].alt;
+    }});
+    </script><script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-50641127-1', 'stencel.io');
+  ga('send', 'pageview');
+
+</script><script type="text/javascript" src="../assets/js/tipuesearch_set.js"></script><script type="text/javascript" src="../assets/js/tipuesearch.js"></script><script type="text/javascript">
+$(document).ready(function() {
+     $('#tipue_search_input').tipuesearch({
+         'mode': 'json',
+         'contentLocation': '/assets/js/tipuesearch_content.json',
+         'showUrl': false
+     });
+});
+</script>
+</body>
+</html>

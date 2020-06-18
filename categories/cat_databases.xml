@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Greg's Tech Notes (Posts about Databases)</title><link>http://stencel.io/</link><description></description><atom:link href="http://stencel.io/categories/cat_databases.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><copyright>Contents © 2020 &lt;a href="mailto:gstencel@gmail.com"&gt;Greg Stencel&lt;/a&gt; </copyright><lastBuildDate>Thu, 18 Jun 2020 12:06:50 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>mysql update with random values from list</title><link>http://stencel.io/posts/mysql-update-with-random-values-from-list.html</link><dc:creator>Greg Stencel</dc:creator><description>&lt;p&gt;“UPDATE book set year = ELT(1+FLOOR(RAND()*3), 2012,2013,2014)”&lt;/p&gt;</description><category>Databases</category><category>MySQL</category><guid>http://stencel.io/posts/mysql-update-with-random-values-from-list.html</guid><pubDate>Tue, 28 Oct 2014 19:57:25 GMT</pubDate></item><item><title>postgres-terminate-connection</title><link>http://stencel.io/posts/postgres-terminate-connection.html</link><dc:creator>Greg Stencel</dc:creator><description>&lt;pre class="code psql"&gt;&lt;a name="rest_code_da837c1663b14082b84327ebf74d878b-1"&gt;&lt;/a&gt;&lt;span class="k"&gt;select&lt;/span&gt; &lt;span class="n"&gt;pg_terminate_backend&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;pid&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;a name="rest_code_da837c1663b14082b84327ebf74d878b-2"&gt;&lt;/a&gt;&lt;span class="k"&gt;from&lt;/span&gt; &lt;span class="n"&gt;pg_stat_activity&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/pre&gt;</description><guid>http://stencel.io/posts/postgres-terminate-connection.html</guid><pubDate>Tue, 13 May 2014 18:23:47 GMT</pubDate></item><item><title>MySQL</title><link>http://stencel.io/posts/mysql.html</link><dc:creator>Greg Stencel</dc:creator><description>&lt;div class="section" id="mysql-tips"&gt;
+&lt;h2&gt;MySQL tips:&lt;/h2&gt;
+&lt;p&gt;Create database with charset utf8&lt;/p&gt;
+&lt;pre class="code sql"&gt;&lt;a name="rest_code_5e65d2fa11894b2ebc9e94fb861decb3-1"&gt;&lt;/a&gt;&lt;span class="k"&gt;CREATE&lt;/span&gt; &lt;span class="k"&gt;DATABASE&lt;/span&gt; &lt;span class="n"&gt;mynew_db_name&lt;/span&gt; &lt;span class="nb"&gt;CHARACTER&lt;/span&gt; &lt;span class="k"&gt;SET&lt;/span&gt; &lt;span class="n"&gt;utf8&lt;/span&gt; &lt;span class="k"&gt;COLLATE&lt;/span&gt; &lt;span class="n"&gt;utf8_general_ci&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/pre&gt;&lt;p&gt;Grant everything to local user on all tables&lt;/p&gt;
+&lt;pre class="code sql"&gt;&lt;a name="rest_code_5c098611efa2403e9575d1c4a655561d-1"&gt;&lt;/a&gt;&lt;span class="k"&gt;GRANT&lt;/span&gt; &lt;span class="k"&gt;ALL&lt;/span&gt; &lt;span class="k"&gt;PRIVILEGES&lt;/span&gt; &lt;span class="k"&gt;ON&lt;/span&gt; &lt;span class="n"&gt;db_name&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="k"&gt;TO&lt;/span&gt; &lt;span class="n"&gt;my_user&lt;/span&gt;&lt;span class="o"&gt;@&lt;/span&gt;&lt;span class="n"&gt;localhost&lt;/span&gt; &lt;span class="n"&gt;IDENTIFIED&lt;/span&gt; &lt;span class="k"&gt;BY&lt;/span&gt; &lt;span class="s1"&gt;'my_secret_password'&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/pre&gt;&lt;p&gt;Grant everything to remote user on all tables&lt;/p&gt;
+&lt;pre class="code sql"&gt;&lt;a name="rest_code_dda2d745d6f9448dbeb7dad2b890f936-1"&gt;&lt;/a&gt;&lt;span class="k"&gt;GRANT&lt;/span&gt; &lt;span class="k"&gt;ALL&lt;/span&gt; &lt;span class="k"&gt;PRIVILEGES&lt;/span&gt; &lt;span class="k"&gt;ON&lt;/span&gt;  &lt;span class="n"&gt;db_name&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="k"&gt;TO&lt;/span&gt; &lt;span class="n"&gt;my_user&lt;/span&gt;&lt;span class="o"&gt;@&lt;/span&gt;&lt;span class="s1"&gt;'IP_of_host_user_connects_from'&lt;/span&gt; &lt;span class="n"&gt;IDENTIFIED&lt;/span&gt; &lt;span class="k"&gt;BY&lt;/span&gt; &lt;span class="s1"&gt;'my_secret_password'&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/pre&gt;&lt;p&gt;If you want to add only &lt;strong&gt;SELECT&lt;/strong&gt; or something else instead of &lt;strong&gt;ALL&lt;/strong&gt; there are other available privileges like:&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;SELECT, UPDATE, ALTER, CREATE, DELETE, DROP, SHOW DATABASES&lt;/strong&gt;
+CREATE TEMPORARY TABLES, EXECUTE, FILE, GRANT OPTION, INDEX, INSERT, LOCK TABLES, PROCESS, REFERENCES, RELOAD, REPLICATION CLIENT, REPLICATION SLAVE, SHUTDOWN, SUPER, USAGE&lt;/p&gt;
+&lt;p&gt;After all you want to reload privileges because when mysqld starts, it reads all grant table contents into memory. The in-memory tables become effective for access control at that point.
+To tell the server to reload the grant tables, perform a flush-privileges operation.&lt;/p&gt;
+&lt;p&gt;Execute sql :&lt;/p&gt;
+&lt;pre class="code sql"&gt;&lt;a name="rest_code_4d1289a1d02e4ea7987a10b28a9bea78-1"&gt;&lt;/a&gt;&lt;span class="n"&gt;FLUSH&lt;/span&gt; &lt;span class="k"&gt;PRIVILEGES&lt;/span&gt; &lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/pre&gt;&lt;p&gt;or you can even do it from shell by&lt;/p&gt;
+&lt;pre class="code bash"&gt;&lt;a name="rest_code_a2ec35acfadc4c07bad48586809c3b79-1"&gt;&lt;/a&gt;$ mysqladmin flush-privileges
+&lt;/pre&gt;&lt;p&gt;or&lt;/p&gt;
+&lt;pre class="code bash"&gt;&lt;a name="rest_code_fa4fce6967f8439b9340a00dbdf5c25e-1"&gt;&lt;/a&gt;$ mysqladmin reload
+&lt;/pre&gt;&lt;/div&gt;</description><guid>http://stencel.io/posts/mysql.html</guid><pubDate>Thu, 08 May 2014 12:49:38 GMT</pubDate></item><item><title>postgres</title><link>http://stencel.io/posts/postgres.html</link><dc:creator>Greg Stencel</dc:creator><description>&lt;div class="section" id="quick-tip"&gt;
+&lt;h2&gt;Quick tip:&lt;/h2&gt;
+&lt;p&gt;I started with MySQL db (not speaking of Delphi ADO or something like this )
+Now because of my job I had to switch to Postgres and I thought
+"ok but it's SQL so it will be the same" - not really I had a lot of
+problems like in the beginning like user privileges owners of databases and tables, showing tables , showing databases
+So if youre switchng from mysql it can help you for beginning:&lt;/p&gt;
+&lt;p&gt;So first problem was my user access - I couldnt access postgres even through root :)
+so after clean installation if you want to launch psql client for postgres just su as postgres after that you can create
+your own super user or user having privileges to specific database&lt;/p&gt;
+&lt;pre class="code bash"&gt;&lt;a name="rest_code_b3e2f166a29d4535a77a3467f4a12c29-1"&gt;&lt;/a&gt;$ su postgres
+&lt;a name="rest_code_b3e2f166a29d4535a77a3467f4a12c29-2"&gt;&lt;/a&gt;$ psql
+&lt;/pre&gt;&lt;p&gt;and then you should be able to do everything&lt;/p&gt;
+&lt;p&gt;To see databases "&lt;strong&gt;show databases;&lt;/strong&gt;" didn't work anymore :) in postgres&lt;/p&gt;
+&lt;pre class="code psql"&gt;&lt;a name="rest_code_48e7766fba93432fa7e08c3a97e7d91c-1"&gt;&lt;/a&gt;&lt;span class="kp"&gt;\list&lt;/span&gt;
+&lt;a name="rest_code_48e7766fba93432fa7e08c3a97e7d91c-2"&gt;&lt;/a&gt;&lt;span class="go"&gt;\l&lt;/span&gt;
+&lt;/pre&gt;&lt;p&gt;connect to database:&lt;/p&gt;
+&lt;pre class="code psql"&gt;&lt;a name="rest_code_d98f4470d60d42ac9b517ac17c49fb1f-1"&gt;&lt;/a&gt;&lt;span class="kp"&gt;\c&lt;/span&gt; &lt;span class="ss"&gt;db_name&lt;/span&gt;
+&lt;/pre&gt;&lt;p&gt;&lt;strong&gt;show tables;&lt;/strong&gt; in database:&lt;/p&gt;
+&lt;pre class="code psql"&gt;&lt;a name="rest_code_a9338a387026455dafd04d3a58009f0e-1"&gt;&lt;/a&gt;&lt;span class="kp"&gt;\dt&lt;/span&gt;
+&lt;/pre&gt;&lt;p&gt;&lt;strong&gt;Explain&lt;/strong&gt; or &lt;strong&gt;describe&lt;/strong&gt; table:&lt;/p&gt;
+&lt;pre class="code psql"&gt;&lt;a name="rest_code_dbd9e41ddeda48599857acacd889063a-1"&gt;&lt;/a&gt;&lt;span class="kp"&gt;\d+&lt;/span&gt; &lt;span class="ss"&gt;table_name&lt;/span&gt;
+&lt;/pre&gt;&lt;p&gt;Show all shortcuts:&lt;/p&gt;
+&lt;pre class="code psql"&gt;&lt;a name="rest_code_5f9e850f64d7435585d3acbe49f8e27c-1"&gt;&lt;/a&gt;&lt;span class="kp"&gt;\?&lt;/span&gt;
+&lt;/pre&gt;&lt;div class="section" id="backup"&gt;
+&lt;h3&gt;Backup&lt;/h3&gt;
+&lt;p&gt;To dump database to sql script with inserts etc use pg_dump remember (it wont dump user privileges):&lt;/p&gt;
+&lt;pre class="code psql"&gt;&lt;a name="rest_code_627e31ee7ce94830a987ef9382f2cc00-1"&gt;&lt;/a&gt;&lt;span class="n"&gt;pg_dump&lt;/span&gt; &lt;span class="n"&gt;my_database&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;my_database&lt;/span&gt;&lt;span class="mf"&gt;.&lt;/span&gt;&lt;span class="n"&gt;pgdump&lt;/span&gt;
+&lt;/pre&gt;&lt;p&gt;The better way of dumping database is pg_dumpall it dumps database users and groups, tablespaces, access permissions that apply to databases as a whole.&lt;/p&gt;
+&lt;pre class="code psql"&gt;&lt;a name="rest_code_c474a713543843d3869fc3836db618e0-1"&gt;&lt;/a&gt;&lt;span class="n"&gt;pg_dumpall&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;my_dump&lt;/span&gt;&lt;span class="mf"&gt;.&lt;/span&gt;&lt;span class="n"&gt;pgdump&lt;/span&gt;
+&lt;/pre&gt;&lt;p&gt;If you want to move your users of postgres to different server you can:&lt;/p&gt;
+&lt;pre class="code psql"&gt;&lt;a name="rest_code_0c5a028fe7d2414d84fd66b534af7319-1"&gt;&lt;/a&gt;&lt;span class="n"&gt;pg_dumpall&lt;/span&gt; &lt;span class="c1"&gt;--roles-only &amp;gt; my_users.pgdump&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;div class="section" id="restore"&gt;
+&lt;h3&gt;Restore&lt;/h3&gt;
+&lt;p&gt;TO simply restore backup pgdump sql file :&lt;/p&gt;
+&lt;pre class="code psql"&gt;&lt;a name="rest_code_25bfd60ed04d4d1494f44540a63a0164-1"&gt;&lt;/a&gt;&lt;span class="n"&gt;psql&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;my_database&lt;/span&gt;&lt;span class="mf"&gt;.&lt;/span&gt;&lt;span class="n"&gt;pgdump&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;div class="section" id="access-privileges"&gt;
+&lt;h3&gt;Access Privileges:&lt;/h3&gt;
+&lt;p&gt;Another way is about accessing postgresql if you worked with mysql you could just provide : grant all privileges on db to &lt;a class="reference external" href="mailto:user_name@localhost"&gt;user_name@localhost&lt;/a&gt; or &lt;a class="reference external" href="mailto:user_name@'10.0.0.1"&gt;user_name@'10.0.0.1&lt;/a&gt;' here it's not the same. Privileges can be configured in low level pg_hba.conf file where you provide who(sys user) who(db_user) where_from . Adding user in postgres:&lt;/p&gt;
+&lt;p&gt;Create user:&lt;/p&gt;
+&lt;pre class="code psql"&gt;&lt;a name="rest_code_230aaac8a2b44e819419c427a3d123e9-1"&gt;&lt;/a&gt;&lt;span class="k"&gt;create&lt;/span&gt; &lt;span class="k"&gt;user&lt;/span&gt; &lt;span class="n"&gt;my_name&lt;/span&gt; &lt;span class="k"&gt;with&lt;/span&gt; &lt;span class="k"&gt;password&lt;/span&gt; &lt;span class="s1"&gt;'secret'&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/pre&gt;&lt;p&gt;change owner of db:&lt;/p&gt;
+&lt;pre class="code psql"&gt;&lt;a name="rest_code_41b1fe56dee54de99da599a7c90c20a2-1"&gt;&lt;/a&gt;&lt;span class="k"&gt;alter&lt;/span&gt; &lt;span class="k"&gt;database&lt;/span&gt; &lt;span class="n"&gt;mydatabase&lt;/span&gt;  &lt;span class="k"&gt;owner&lt;/span&gt; &lt;span class="k"&gt;to&lt;/span&gt; &lt;span class="n"&gt;new_owner_name&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/pre&gt;&lt;p&gt;change owner of tables:&lt;/p&gt;
+&lt;pre class="code psql"&gt;&lt;a name="rest_code_9df21f3e90dd44c3b0435783a3843643-1"&gt;&lt;/a&gt;&lt;span class="k"&gt;REASSIGN&lt;/span&gt; &lt;span class="k"&gt;OWNED&lt;/span&gt; &lt;span class="k"&gt;BY&lt;/span&gt; &lt;span class="n"&gt;old_role&lt;/span&gt; &lt;span class="k"&gt;TO&lt;/span&gt; &lt;span class="n"&gt;new_role&lt;/span&gt;
+&lt;/pre&gt;&lt;p&gt;rename db&lt;/p&gt;
+&lt;pre class="code psql"&gt;&lt;a name="rest_code_ab104e5980104c1fa8278d27752a9946-1"&gt;&lt;/a&gt;&lt;span class="k"&gt;alter&lt;/span&gt;  &lt;span class="k"&gt;database&lt;/span&gt; &lt;span class="n"&gt;production&lt;/span&gt; &lt;span class="k"&gt;rename&lt;/span&gt; &lt;span class="k"&gt;to&lt;/span&gt; &lt;span class="n"&gt;production_delete&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;</description><guid>http://stencel.io/posts/postgres.html</guid><pubDate>Thu, 08 May 2014 10:20:29 GMT</pubDate></item></channel></rss>
