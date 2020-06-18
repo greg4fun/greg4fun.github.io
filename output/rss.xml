@@ -1,0 +1,707 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Greg's Tech Notes</title><link>http://stencel.io/</link><description>Tech notes and tips</description><atom:link href="http://stencel.io/rss.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><copyright>Contents © 2020 &lt;a href="mailto:gstencel@gmail.com"&gt;Greg Stencel&lt;/a&gt; </copyright><lastBuildDate>Thu, 18 Jun 2020 12:06:50 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Build fully working zabbix server with database in seconds thanks to docker</title><link>http://stencel.io/posts/build-fully-working-zabbix-server-with-database-in-seconds-thanks-to-docker.html</link><dc:creator>Greg Stencel</dc:creator><description>&lt;div&gt;&lt;p&gt;To install zabbix server quickly zabbix comes with help as they have prebuild their product with docker images.
+There is lots of official zabbix images on dockerhub so it can just overwhelm you.
+There are mixes of all different possibilities like zabbix with mysql or postgres or either sqlite,
+zabbix served bt nginx or apache or java gateway.
+Depending on stack which is closest to you you can easily build docker-compose that will just run selected stack in
+seconds.
+My pick was nginx mysql so to set up fully running zabbix server we need 3 images&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;p&gt;mysql-server&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;zabbix-web  - web interface&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;zabbix-server - main zabbix process responsible for polling and trapping data and sending notifications to users.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;In addition you can add postfix mail server for notifying users but its not
+a must as you can use your own mail server if so - just remove postfix service from example below.&lt;/p&gt;
+&lt;p&gt;Notice(you may want to use some specific versions or alpine versions for production env)&lt;/p&gt;
+&lt;p&gt;Create some directory (directory name is crucial here for visibility and future maitenance
+of your containers and volumes or networks as the name will be used as prefix
+for docker containers created by docker-compose and also volumes directories
+so it will be easier to identify in future which volume belongs to which stack
+In Ubuntu volumes are usually being kept in/var/lib/docker/volumes but you can mount any directory from host by
+just specifying absolute or relative path in service configuration so for instance for mysql in
+example to mount mysql_data_dir just outside of our containers folder&lt;/p&gt;
+&lt;pre class="code bash"&gt;&lt;a name="rest_code_ada2736a3948419e8f78eed3f3f5c008-1"&gt;&lt;/a&gt;volumes:
+&lt;a name="rest_code_ada2736a3948419e8f78eed3f3f5c008-2"&gt;&lt;/a&gt;  - &lt;span class="s1"&gt;'../mysql_data_dir:/var/lib/mysql'&lt;/span&gt;
+&lt;/pre&gt;&lt;p&gt;Now within directory create docker-compose.yml with selected technologies in my case it is:
+#docker-compose.yml&lt;/p&gt;
+&lt;pre class="code bash"&gt;&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-1"&gt;&lt;/a&gt;version: &lt;span class="s1"&gt;'3'&lt;/span&gt;
+&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-2"&gt;&lt;/a&gt;
+&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-3"&gt;&lt;/a&gt;services:
+&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-4"&gt;&lt;/a&gt;  db:
+&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-5"&gt;&lt;/a&gt;    image: mysql:latest
+&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-6"&gt;&lt;/a&gt;    restart: always
+&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-7"&gt;&lt;/a&gt;    expose:
+&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-8"&gt;&lt;/a&gt;      - &lt;span class="s1"&gt;'3336'&lt;/span&gt;
+&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-9"&gt;&lt;/a&gt;    environment:
+&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-10"&gt;&lt;/a&gt;      MYSQL_ROOT_PASSWORD: &lt;span class="s1"&gt;'my_secret_password'&lt;/span&gt;
+&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-11"&gt;&lt;/a&gt;      MYSQL_USER: &lt;span class="s1"&gt;'zabbixuser'&lt;/span&gt;
+&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-12"&gt;&lt;/a&gt;      MYSQL_PASSWORD: &lt;span class="s1"&gt;'zabbix_password'&lt;/span&gt;
+&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-13"&gt;&lt;/a&gt;      MYSQL_ROOT_HOST: &lt;span class="s1"&gt;'%'&lt;/span&gt;
+&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-14"&gt;&lt;/a&gt;    volumes:
+&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-15"&gt;&lt;/a&gt;      - &lt;span class="s1"&gt;'mysql_data_dir:/var/lib/mysql'&lt;/span&gt;
+&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-16"&gt;&lt;/a&gt;
+&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-17"&gt;&lt;/a&gt;
+&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-18"&gt;&lt;/a&gt;  zabbix-server:
+&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-19"&gt;&lt;/a&gt;    image: zabbix/zabbix-server-mysql
+&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-20"&gt;&lt;/a&gt;    links:
+&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-21"&gt;&lt;/a&gt;      - &lt;span class="s2"&gt;"db:mysql"&lt;/span&gt;
+&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-22"&gt;&lt;/a&gt;      - &lt;span class="s2"&gt;"postfix:postfix"&lt;/span&gt;
+&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-23"&gt;&lt;/a&gt;    environment:
+&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-24"&gt;&lt;/a&gt;      MYSQL_ROOT_PASSWORD: &lt;span class="s1"&gt;'my_secret_password'&lt;/span&gt;
+&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-25"&gt;&lt;/a&gt;      MYSQL_USER: &lt;span class="s1"&gt;'zabbixuser'&lt;/span&gt;
+&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-26"&gt;&lt;/a&gt;      MYSQL_PASSWORD: &lt;span class="s1"&gt;'zabbixpassassword'&lt;/span&gt;
+&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-27"&gt;&lt;/a&gt;      DB_SERVER_HOST: &lt;span class="s1"&gt;'mysql'&lt;/span&gt;
+&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-28"&gt;&lt;/a&gt;
+&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-29"&gt;&lt;/a&gt;
+&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-30"&gt;&lt;/a&gt;  zabbix-web:
+&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-31"&gt;&lt;/a&gt;    image: zabbix/zabbix-web-nginx-mysql
+&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-32"&gt;&lt;/a&gt;    ports:
+&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-33"&gt;&lt;/a&gt;      - &lt;span class="s1"&gt;'7777:80'&lt;/span&gt;
+&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-34"&gt;&lt;/a&gt;    links:
+&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-35"&gt;&lt;/a&gt;      - &lt;span class="s2"&gt;"db:mysql"&lt;/span&gt;
+&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-36"&gt;&lt;/a&gt;      - &lt;span class="s2"&gt;"zabbix-server:zabbix-server"&lt;/span&gt;
+&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-37"&gt;&lt;/a&gt;      - &lt;span class="s2"&gt;"postfix:postfix"&lt;/span&gt;
+&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-38"&gt;&lt;/a&gt;    environment:
+&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-39"&gt;&lt;/a&gt;      MYSQL_ROOT_PASSWORD: &lt;span class="s1"&gt;'my_secret_password'&lt;/span&gt;
+&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-40"&gt;&lt;/a&gt;      MYSQL_USER: &lt;span class="s1"&gt;'zabbixuser'&lt;/span&gt;
+&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-41"&gt;&lt;/a&gt;      MYSQL_PASSWORD: &lt;span class="s1"&gt;'zabbixpassassword'&lt;/span&gt;
+&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-42"&gt;&lt;/a&gt;      DB_SERVER_HOST: &lt;span class="s1"&gt;'mysql'&lt;/span&gt;
+&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-43"&gt;&lt;/a&gt;      ZBX_SERVER_HOST: &lt;span class="s2"&gt;"zabbix-server"&lt;/span&gt;
+&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-44"&gt;&lt;/a&gt;      PHP_TZ: &lt;span class="s2"&gt;"Europe/London"&lt;/span&gt;
+&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-45"&gt;&lt;/a&gt;  postfix:
+&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-46"&gt;&lt;/a&gt;    image: catatnight/postfix
+&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-47"&gt;&lt;/a&gt;    hostname: support
+&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-48"&gt;&lt;/a&gt;    environment:
+&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-49"&gt;&lt;/a&gt;      - &lt;span class="nv"&gt;maildomain&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;mydomain.com
+&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-50"&gt;&lt;/a&gt;      - &lt;span class="nv"&gt;smtp_user&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;admin:my_password
+&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-51"&gt;&lt;/a&gt;    ports:
+&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-52"&gt;&lt;/a&gt;      - &lt;span class="s2"&gt;"25:25"&lt;/span&gt;
+&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-53"&gt;&lt;/a&gt;    expose:
+&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-54"&gt;&lt;/a&gt;      - &lt;span class="s2"&gt;"25"&lt;/span&gt;
+&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-55"&gt;&lt;/a&gt;    volumes:
+&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-56"&gt;&lt;/a&gt;      - /etc/nginx/ssl/postfix:/etc/postfix/certs
+&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-57"&gt;&lt;/a&gt;      - /etc/nginx/ssl/postfix:/etc/opendkim/domainkeys
+&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-58"&gt;&lt;/a&gt;volumes:
+&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-59"&gt;&lt;/a&gt;  mysql_data_dir:
+&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-60"&gt;&lt;/a&gt;    driver: &lt;span class="nb"&gt;local&lt;/span&gt;
+&lt;/pre&gt;&lt;p&gt;The above solution is just enough to start zabbix server up and running in couple seconds.
+To do it just run:
+.. code-block:: bash&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;sudo docker-compose up&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Thats it!!!
+You now have your zabbix running on port 7777&lt;/p&gt;
+&lt;p&gt;So what happened here docker-compose up has build and runned 3 containers
+by running zabbix container it discovered there are no tables in mysql and has built them.&lt;/p&gt;
+&lt;p&gt;Now you just need to add agents/servers you want to monitor.
+Check out adding agent in separate post&lt;/p&gt;
+&lt;p&gt;Versions:
+(versions I've used in this example Feb 2018):&lt;/p&gt;
+&lt;p&gt;Docker-compose: 1.17.0, build ac53b73
+Docker: 17.09.1-ce, build 19e2cf6
+Kernel: 4.13.0-36-generic
+System: Ubuntu 16.04.3 LTS&lt;/p&gt;&lt;/div&gt;</description><category>DevOps</category><category>docker</category><category>docker-compose</category><category>monitoring</category><category>zabbix</category><guid>http://stencel.io/posts/build-fully-working-zabbix-server-with-database-in-seconds-thanks-to-docker.html</guid><pubDate>Fri, 16 Mar 2018 17:47:56 GMT</pubDate></item><item><title>Adding zabbix agent to server</title><link>http://stencel.io/posts/adding-zabbix-agent-to-server.html</link><dc:creator>Greg Stencel</dc:creator><description>&lt;div&gt;&lt;p&gt;Zabbix is very powerfull tool which its using agents (or SNMP) to monitor server resources.
+Adding agent is easy but I had couple problems doing that when I used agent straight from my
+ubuntus (16.04.3) repo as there was no encryption functionality in this agent well I guess so as
+agent didn't recognize tls psk configuration so not very nice as by installing agent straight form repo
+with "sudo apt-get update &amp;amp;&amp;amp; sudo apt-get install zabbix-agent" I had limited functionality and unencrypted server-agent traffic.
+So there are 2 options we can install zabbix agent or use zabbix agent docker container.
+Adding zabbix agent to host system.
+For current day 3.2 is the latest so please change latest accordingly of how this artcile is old.
+wget &lt;a class="reference external" href="http://repo.zabbix.com/zabbix/3.2/ubuntu/pool/main/z/zabbix-release/zabbix-release_3.2-1+xenial_all.deb"&gt;http://repo.zabbix.com/zabbix/3.2/ubuntu/pool/main/z/zabbix-release/zabbix-release_3.2-1+xenial_all.deb&lt;/a&gt;
+sudo dpkg -i zabbix-release_3.2-1+xenial_all.deb
+sudo apt-get update
+apt-get purge zabbix-agent #remove previous if installed
+apt-get install zabbix-agent&lt;/p&gt;
+&lt;p&gt;Now there are 3 basic options that need to be changed in agent config file:
+/etc/zabbix/zabbix_agentd.conf&lt;/p&gt;
+&lt;p&gt;Server=ip of zabbix server
+ServerActive=ip of zabbix server
+Hostname=My host name&lt;/p&gt;
+&lt;p&gt;sudo service zabbix-agent restart&lt;/p&gt;
+&lt;div class="section" id="add-host-to-server-through-web-interface"&gt;
+&lt;h2&gt;Add host to server through web interface:&lt;/h2&gt;
+&lt;p&gt;In server go to Configuration-&amp;gt; Hosts -&amp;gt; Create host
+type in host name
+visible name
+public IP address opf your agent.Select group and add agent.
+Next is to select templates so add services you need to monitor (here linux + mysql : Template DB MySQL, Template OS Linux)
+after saving you should see green ZBX available label on Hosts screen
+Notice : I couldnt see zbx agent green icon until I added linux template / or zabbix agent template.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="seurity-setting-up-psk-encryption"&gt;
+&lt;h2&gt;Seurity - Setting up PSK encryption:&lt;/h2&gt;
+&lt;p&gt;sh -c "openssl rand -hex 32 &amp;gt; /etc/zabbix/zabbix_agentd.psk"
+Now add below lines to /etc/zabbix/zabbix_agentd.conf
+TLSConnect=psk
+TLSAccept=psk
+#each identity id must be different for each serverr connected to one zabbix server
+TLSPSKIdentity=PSK SOMETHING
+TLSPSKFile=/etc/zabbix/zabbix_agentd.psk
+sudo service zabbix-agent restart
+Get generated key string:
+cat /etc/zabbix/zabbix_agentd.psk
+and add encryption in zabbix server web interface :
+In server go to Configuration-&amp;gt; Hosts -&amp;gt; my host-&amp;gt;encryption&lt;/p&gt;
+&lt;p&gt;Select:
+Connections to host PSK
+connections from host PSK
+PSK identity: PSK SOMETHING (same as in zabbixagent config file)
+PSK: the hash generated (content of /etc/zabbix/zabbix_agentd.psk file on agent )
+now there should be greebn psk lablel and all our traffice will be encrypted&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="adding-mysql-monitoring-option"&gt;
+&lt;h2&gt;Adding mysql monitoring option:&lt;/h2&gt;
+&lt;p&gt;add user credentials for mysqlclient on agent server:
+mysql &amp;gt; grant all privileges on &lt;em&gt;.&lt;/em&gt; to zabbix@'%' identified by 'zabbixuserpassword';
+use localhost or host you will be accessing mysql from % is just for test purpose to eliminate
+authentication problems.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Out of the topic - something about mysql remote connections and security:
+My best practice is not to have any remote access like @'%' to mysql on any server I manage
+its just dangerous and anyone can try bruteforcing and try to connect to our mysql server.
+Another way I saw in many places if admin creates @'%' accesses they use it without any encryption so there is
+plain text traffic comming from mysql-server/postgres straight to users computer which is not good (MITM etc).
+The best would be to have your mysql server set up with ssl certificate but its not popular practice as may be
+time consuming for setting up and for connecting to such server (preatty easu in mysql-workbench).
+Faster way to encrypt your mysql confidential data traffic is to use ssh tunnel but there is
+a limitation here user that needs access to mysql data needs to have ssh access to the server
+if this is an option just define users with localhost as source like &lt;a class="reference external" href="mailto:my_db_user@localhost"&gt;my_db_user@localhost&lt;/a&gt;
+this is safer as you cant guarantee mysql users competence so best practice is to prevent having '%',
+to double secure this method do not to expose 3306 to the public and only allow localhost(unix socket) and 127.0.0.1
+(remember mysqlclient unixsocket/ ip connection) to be able to connect through this port.
+In dockerized mysql instances when I need it to be visible I just do ports config like
+127.0.0.0:3306:3306 then it will be visible to host machine only.
+but if user wont have ssh access to the server then only option you have is using ssl cert.
+So remember having user@'%' or even &lt;a class="reference external" href="mailto:user@'some_ip"&gt;user@'some_ip&lt;/a&gt;' you still without ssl or ssh the traffic from mysql-server
+is still unencrypted.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Ok comming back to mysql monitoring config:
+add client to my.cnf in /etc/mysql or to /etc/mysql/conf.d/mysql.cnf&lt;/p&gt;
+&lt;p&gt;[client]
+user = zabbix
+password = zabbixuserpassword
+port = 3326
+host = 127.0.0.1&lt;/p&gt;
+&lt;p&gt;add myu.cnf&lt;/p&gt;
+&lt;p&gt;mkdir -p /var/lib/zabbix/
+cd /var/lib/zabbix
+ln -sv /etc/mysql/my.cnf&lt;/p&gt;
+&lt;p&gt;service zabbix-agent restart&lt;/p&gt;
+&lt;p&gt;Now you can add mysql template items in zabbix server .&lt;/p&gt;
+&lt;p&gt;select linux templates to see agent visibility&lt;/p&gt;
+&lt;p&gt;bug in default userparameter_mysql agent file&lt;/p&gt;
+&lt;p&gt;cat /etc/zabbix/zabbix_agentd.d/userparameter_mysql.conf
+redirect error to stdout to grep later&lt;/p&gt;
+&lt;p&gt;UserParameter=mysql.ping,HOME=/var/lib/zabbix mysqladmin ping 2&amp;gt;&amp;amp;1 | grep -c alive
+previously was
+UserParameter=mysql.ping,HOME=/var/lib/zabbix mysqladmin ping | grep -c alive
+so grep didnt work&lt;/p&gt;
+&lt;p&gt;Write your post here.&lt;/p&gt;
+&lt;/div&gt;&lt;/div&gt;</description><category>DevOps</category><category>docker</category><category>docker-compose</category><category>monitoring</category><category>zabbix</category><guid>http://stencel.io/posts/adding-zabbix-agent-to-server.html</guid><pubDate>Fri, 16 Mar 2018 09:27:50 GMT</pubDate></item><item><title>Zabbix stack with docker-compose.yml</title><link>http://stencel.io/posts/zabbix-stack-with-docker-composeyml.html</link><dc:creator>Greg Stencel</dc:creator><description>&lt;div class="section" id="fully-working-zabbix-server-solution-with-ui-and-database-in-seconds"&gt;
+&lt;h2&gt;Fully working zabbix server solution with UI and database in seconds&lt;/h2&gt;
+&lt;p&gt;I wanted to install zabbix server quickly with docker but amount of zabbix images (created by zabbix) on dockerhub just overwhelmed me.
+To set up running zabbix server we need 3 images
+* choice of sql DB
+* zabbix-web  - web interface
+* zabbix-server - main zabbix process responsible for polling and trapping data and sending notifications to users.&lt;/p&gt;
+&lt;p&gt;My choice of database was MySQL so I created docker-compose file to have full stack of running zabbix server:&lt;/p&gt;
+&lt;p&gt;Notice(you may want to use alpine versions for production env)
+docker-compose.yml:&lt;/p&gt;
+&lt;pre class="code bash"&gt;&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-1"&gt;&lt;/a&gt;version: &lt;span class="s1"&gt;'3'&lt;/span&gt;
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-2"&gt;&lt;/a&gt;
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-3"&gt;&lt;/a&gt;services:
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-4"&gt;&lt;/a&gt;  db:
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-5"&gt;&lt;/a&gt;    image: mysql:latest
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-6"&gt;&lt;/a&gt;    restart: always
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-7"&gt;&lt;/a&gt;    expose:
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-8"&gt;&lt;/a&gt;      - &lt;span class="s1"&gt;'3336'&lt;/span&gt;
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-9"&gt;&lt;/a&gt;    environment:
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-10"&gt;&lt;/a&gt;      MYSQL_ROOT_PASSWORD: &lt;span class="s1"&gt;'my_secret_password'&lt;/span&gt;
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-11"&gt;&lt;/a&gt;      MYSQL_USER: &lt;span class="s1"&gt;'zabbixuser'&lt;/span&gt;
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-12"&gt;&lt;/a&gt;      MYSQL_PASSWORD: &lt;span class="s1"&gt;'zabbixpass'&lt;/span&gt;
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-13"&gt;&lt;/a&gt;      MYSQL_ROOT_HOST: &lt;span class="s1"&gt;'%'&lt;/span&gt;
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-14"&gt;&lt;/a&gt;    volumes:
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-15"&gt;&lt;/a&gt;      - &lt;span class="s1"&gt;'mysql_data_dir:/var/lib/mysql'&lt;/span&gt;
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-16"&gt;&lt;/a&gt;
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-17"&gt;&lt;/a&gt;
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-18"&gt;&lt;/a&gt;  zabbix-server:
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-19"&gt;&lt;/a&gt;    image: zabbix/zabbix-server-mysql
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-20"&gt;&lt;/a&gt;    links:
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-21"&gt;&lt;/a&gt;      - &lt;span class="s2"&gt;"db:mysql"&lt;/span&gt;
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-22"&gt;&lt;/a&gt;      - &lt;span class="s2"&gt;"postfix:postfix"&lt;/span&gt;
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-23"&gt;&lt;/a&gt;    environment:
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-24"&gt;&lt;/a&gt;      MYSQL_ROOT_PASSWORD: &lt;span class="s1"&gt;'my_secret_password'&lt;/span&gt;
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-25"&gt;&lt;/a&gt;      MYSQL_USER: &lt;span class="s1"&gt;'zabbixuser'&lt;/span&gt;
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-26"&gt;&lt;/a&gt;      MYSQL_PASSWORD: &lt;span class="s1"&gt;'zabbixpass'&lt;/span&gt;
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-27"&gt;&lt;/a&gt;      DB_SERVER_HOST: &lt;span class="s1"&gt;'mysql'&lt;/span&gt;
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-28"&gt;&lt;/a&gt;
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-29"&gt;&lt;/a&gt;
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-30"&gt;&lt;/a&gt;  zabbix-web:
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-31"&gt;&lt;/a&gt;    image: zabbix/zabbix-web-nginx-mysql
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-32"&gt;&lt;/a&gt;    ports:
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-33"&gt;&lt;/a&gt;      - &lt;span class="s1"&gt;'7777:80'&lt;/span&gt;
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-34"&gt;&lt;/a&gt;    links:
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-35"&gt;&lt;/a&gt;      - &lt;span class="s2"&gt;"db:mysql"&lt;/span&gt;
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-36"&gt;&lt;/a&gt;      - &lt;span class="s2"&gt;"zabbix-server:zabbix-server"&lt;/span&gt;
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-37"&gt;&lt;/a&gt;      - &lt;span class="s2"&gt;"postfix:postfix"&lt;/span&gt;
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-38"&gt;&lt;/a&gt;    environment:
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-39"&gt;&lt;/a&gt;      MYSQL_ROOT_PASSWORD: &lt;span class="s1"&gt;'secret'&lt;/span&gt;
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-40"&gt;&lt;/a&gt;      MYSQL_USER: &lt;span class="s1"&gt;'zabbixuser'&lt;/span&gt;
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-41"&gt;&lt;/a&gt;      MYSQL_PASSWORD: &lt;span class="s1"&gt;'myzabbixpass'&lt;/span&gt;
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-42"&gt;&lt;/a&gt;      DB_SERVER_HOST: &lt;span class="s1"&gt;'mysql'&lt;/span&gt;
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-43"&gt;&lt;/a&gt;      ZBX_SERVER_HOST: &lt;span class="s2"&gt;"zabbix-server"&lt;/span&gt;
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-44"&gt;&lt;/a&gt;      PHP_TZ: &lt;span class="s2"&gt;"Europe/London"&lt;/span&gt;
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-45"&gt;&lt;/a&gt;  postfix:
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-46"&gt;&lt;/a&gt;    image: catatnight/postfix
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-47"&gt;&lt;/a&gt;    hostname: support
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-48"&gt;&lt;/a&gt;    environment:
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-49"&gt;&lt;/a&gt;      - &lt;span class="nv"&gt;maildomain&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;domain.com
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-50"&gt;&lt;/a&gt;      - &lt;span class="nv"&gt;smtp_user&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;admin:password
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-51"&gt;&lt;/a&gt;    ports:
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-52"&gt;&lt;/a&gt;      - &lt;span class="s2"&gt;"25:25"&lt;/span&gt;
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-53"&gt;&lt;/a&gt;    &lt;span class="c1"&gt;#  - "465:465"&lt;/span&gt;
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-54"&gt;&lt;/a&gt;    &lt;span class="c1"&gt;#  - "587:587"&lt;/span&gt;
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-55"&gt;&lt;/a&gt;    expose:
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-56"&gt;&lt;/a&gt;      - &lt;span class="s2"&gt;"25"&lt;/span&gt;
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-57"&gt;&lt;/a&gt;    &lt;span class="c1"&gt;#  - "465"&lt;/span&gt;
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-58"&gt;&lt;/a&gt;    &lt;span class="c1"&gt;#  - "587"&lt;/span&gt;
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-59"&gt;&lt;/a&gt;    volumes:
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-60"&gt;&lt;/a&gt;      - /etc/nginx/ssl/postfix:/etc/postfix/certs
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-61"&gt;&lt;/a&gt;      - /etc/nginx/ssl/postfix:/etc/opendkim/domainkeys
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-62"&gt;&lt;/a&gt;volumes:
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-63"&gt;&lt;/a&gt;  mysql_data_dir:
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-64"&gt;&lt;/a&gt;    driver: &lt;span class="nb"&gt;local&lt;/span&gt;
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-65"&gt;&lt;/a&gt;
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-66"&gt;&lt;/a&gt;      &lt;span class="c1"&gt;#- ./deployment/config_files/main-postfix-live.cf:/etc/postfix/main.cf&lt;/span&gt;
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-67"&gt;&lt;/a&gt;    &lt;span class="c1"&gt;#networks:&lt;/span&gt;
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-68"&gt;&lt;/a&gt;    &lt;span class="c1"&gt;#  - backend&lt;/span&gt;
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-69"&gt;&lt;/a&gt;    &lt;span class="c1"&gt;#entrypoint: /docker-entrypoint.sh&lt;/span&gt;
+&lt;/pre&gt;&lt;p&gt;The above solution is just enough to start zabbix server up and
+running in couple seconds. To run it just put yml file into some directory (directory is important as volume created for mysql will have this dir name as prefix) volumes are usually stored in /var/lib/docker/volumes and run:&lt;/p&gt;
+&lt;pre class="code bash"&gt;&lt;a name="rest_code_c1d62686342e4600906a92bd69f87161-1"&gt;&lt;/a&gt;sudo docker-compose up
+&lt;/pre&gt;&lt;p&gt;Thats it!!!
+You now have your zabbix running on port 7777&lt;/p&gt;
+&lt;p&gt;So what happened here docker-compose up has build and runned 3 containers
+by running zabbix container it discovered there are no tables in mysql and has built them.&lt;/p&gt;
+&lt;p&gt;Now you just need to add agents/servers you want to monitor.
+Check out adding agent in separate post [here]&lt;/p&gt;
+&lt;p&gt;Versions:
+(versions I've used in this example Feb 2018):&lt;/p&gt;
+&lt;p&gt;Docker-compose: 1.17.0, build ac53b73
+Docker: 17.09.1-ce, build 19e2cf6
+Kernel: 4.13.0-36-generic&lt;/p&gt;
+&lt;/div&gt;</description><category>draft</category><guid>http://stencel.io/posts/zabbix-stack-with-docker-composeyml.html</guid><pubDate>Thu, 15 Mar 2018 17:14:48 GMT</pubDate></item><item><title>GIT commants I've found useful</title><link>http://stencel.io/posts/git-commants-ive-found-useful.html</link><dc:creator>Greg Stencel</dc:creator><description>&lt;div&gt;&lt;p&gt;Check files changed between branches&lt;/p&gt;
+&lt;pre class="code bash"&gt;&lt;a name="rest_code_d40cf9ba000e49ad9fa942308d70e80b-1"&gt;&lt;/a&gt;git diff --name-status master..devel
+&lt;/pre&gt;&lt;p&gt;Check changes on file form different branch/commit&lt;/p&gt;
+&lt;pre class="code bash"&gt;&lt;a name="rest_code_69cf40be8c5e4adaa0be87845d29e8e1-1"&gt;&lt;/a&gt;git diff commit_hash -- filename
+&lt;/pre&gt;&lt;p&gt;Same as above between 2 branches/commits&lt;/p&gt;
+&lt;pre class="code bash"&gt;&lt;a name="rest_code_566fb3ffe18446fbb9b340337d0ca359-1"&gt;&lt;/a&gt;git diff commit_hash master -- filename
+&lt;/pre&gt;&lt;p&gt;Check full file history&lt;/p&gt;
+&lt;pre class="code bash"&gt;&lt;a name="rest_code_1b6608d8bcc34ce5928c385d19b468ff-1"&gt;&lt;/a&gt;git log -p -- filename
+&lt;/pre&gt;&lt;p&gt;Check who broke production server :&lt;/p&gt;
+&lt;pre class="code bash"&gt;&lt;a name="rest_code_71be663ab2cc45889015531384d6f8c7-1"&gt;&lt;/a&gt;git blame filename
+&lt;/pre&gt;&lt;p&gt;Merge as one commit (need to commit afterwards) its not default like in normal merge:&lt;/p&gt;
+&lt;pre class="code bash"&gt;&lt;a name="rest_code_dcf31ae6635242ceba27c2cf5c2ee355-1"&gt;&lt;/a&gt;git merge --squash branch
+&lt;/pre&gt;&lt;p&gt;List of commits in git local storage&lt;/p&gt;
+&lt;pre class="code bash"&gt;&lt;a name="rest_code_50641311c5624d75a36806c4a3a907c7-1"&gt;&lt;/a&gt;git reflog
+&lt;/pre&gt;&lt;p&gt;Take(checkout) file from different branch/commit&lt;/p&gt;
+&lt;pre class="code bash"&gt;&lt;a name="rest_code_bec2d9bbf3cc49fbbe8fce6d7e14001e-1"&gt;&lt;/a&gt;git checkout develop -- filename
+&lt;a name="rest_code_bec2d9bbf3cc49fbbe8fce6d7e14001e-2"&gt;&lt;/a&gt;git checkout commit_hash -- filename
+&lt;/pre&gt;&lt;p&gt;Reset current branch to remote:&lt;/p&gt;
+&lt;pre class="code bash"&gt;&lt;a name="rest_code_25ba452d12324e5cb787ae77a048079d-1"&gt;&lt;/a&gt;git reset --hard origin/current_branch
+&lt;a name="rest_code_25ba452d12324e5cb787ae77a048079d-2"&gt;&lt;/a&gt;git reset --hard origin/master
+&lt;/pre&gt;&lt;p&gt;Save and depracate changes which were not commited&lt;/p&gt;
+&lt;pre class="code bash"&gt;&lt;a name="rest_code_1dfa2b6cb17646af976e567e31506a3d-1"&gt;&lt;/a&gt;git stash
+&lt;a name="rest_code_1dfa2b6cb17646af976e567e31506a3d-2"&gt;&lt;/a&gt;git stash save -a
+&lt;/pre&gt;&lt;p&gt;Restore stash (by picking selected)&lt;/p&gt;
+&lt;pre class="code bash"&gt;&lt;a name="rest_code_51948ab4ef854e44a21e1a7bab2e0c0e-1"&gt;&lt;/a&gt;git stash list
+&lt;a name="rest_code_51948ab4ef854e44a21e1a7bab2e0c0e-2"&gt;&lt;/a&gt;git stash pop &lt;span class="o"&gt;{&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="o"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;</description><guid>http://stencel.io/posts/git-commants-ive-found-useful.html</guid><pubDate>Thu, 03 Nov 2016 10:46:51 GMT</pubDate></item><item><title>fabric - auto deployment script</title><link>http://stencel.io/posts/fabric-auto-deployment-script.html</link><dc:creator>Greg Stencel</dc:creator><description>&lt;div&gt;&lt;p&gt;Recently I wrote fabric deployment scrip maybe someone will find it usefull.&lt;/p&gt;
+&lt;p&gt;It enables possibility to run "group execute" task with&lt;/p&gt;
+&lt;pre class="code python"&gt;&lt;a name="rest_code_5b6b57fde6f7405891fffa9e092f972b-1"&gt;&lt;/a&gt;&lt;span class="n"&gt;fab&lt;/span&gt; &lt;span class="n"&gt;live_servers&lt;/span&gt; &lt;span class="n"&gt;pull&lt;/span&gt; &lt;span class="n"&gt;restart&lt;/span&gt;
+&lt;/pre&gt;&lt;p&gt;or single host&lt;/p&gt;
+&lt;pre class="code python"&gt;&lt;a name="rest_code_953bebeef44b43dfb069346d0a8f9f68-1"&gt;&lt;/a&gt;&lt;span class="n"&gt;fab&lt;/span&gt; &lt;span class="n"&gt;live1&lt;/span&gt; &lt;span class="n"&gt;pull&lt;/span&gt;
+&lt;/pre&gt;&lt;p&gt;All we need to do is to define group or sinle host as function afterwards I used end update decorator.&lt;/p&gt;
+&lt;p&gt;I know there could be also something like duplication of tasks with separate servers fab live1 pull live2
+pull but I believe that fabric was written for distributed systems which has different paths of apps and users
+etc.&lt;/p&gt;
+&lt;p&gt;also roledefs with extra dict keys didn't work for me)? I want to keep this simple single/multiple host
+deployment commands like : fab live_servers pull, fab test pull&lt;/p&gt;
+&lt;pre class="code python"&gt;&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-1"&gt;&lt;/a&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;fabric.api&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;run&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;env&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;local&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;get&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;cd&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-2"&gt;&lt;/a&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;fabric.tasks&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;execute&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-3"&gt;&lt;/a&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;inspect&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-4"&gt;&lt;/a&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;sys&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-5"&gt;&lt;/a&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;os&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-6"&gt;&lt;/a&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;re&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-7"&gt;&lt;/a&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;StringIO&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;StringIO&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-8"&gt;&lt;/a&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-9"&gt;&lt;/a&gt;&lt;span class="c1"&gt;# fabfile author: Grzegorz Stencel&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-10"&gt;&lt;/a&gt;&lt;span class="c1"&gt;# usage:&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-11"&gt;&lt;/a&gt;&lt;span class="c1"&gt;# run: fab help for examples&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-12"&gt;&lt;/a&gt;&lt;span class="c1"&gt;# fab staging svnxapp:app=holdings_and_quotes,layout.py,permissions.py restart&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-13"&gt;&lt;/a&gt;&lt;span class="c1"&gt;# fab test svnxlib&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-14"&gt;&lt;/a&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-15"&gt;&lt;/a&gt;&lt;span class="n"&gt;SERVER_BRANCHES&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-16"&gt;&lt;/a&gt;    &lt;span class="s1"&gt;'live'&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;'master'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-17"&gt;&lt;/a&gt;    &lt;span class="s1"&gt;'sit'&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;'sit'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-18"&gt;&lt;/a&gt;    &lt;span class="s1"&gt;'uat'&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;'uat'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-19"&gt;&lt;/a&gt;    &lt;span class="s1"&gt;'live2'&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="s1"&gt;'master'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-20"&gt;&lt;/a&gt;    &lt;span class="s1"&gt;'live3'&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="s1"&gt;'master'&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-21"&gt;&lt;/a&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-22"&gt;&lt;/a&gt;&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-23"&gt;&lt;/a&gt;&lt;span class="c1"&gt;# MAIN CONF&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-24"&gt;&lt;/a&gt;&lt;span class="n"&gt;SERVERS&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-25"&gt;&lt;/a&gt;    &lt;span class="s1"&gt;'local'&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-26"&gt;&lt;/a&gt;        &lt;span class="s1"&gt;'envname'&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;'local'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-27"&gt;&lt;/a&gt;        &lt;span class="s1"&gt;'user'&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;'greg'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-28"&gt;&lt;/a&gt;        &lt;span class="s1"&gt;'host'&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;'localhost'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-29"&gt;&lt;/a&gt;        &lt;span class="s1"&gt;'host_string'&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;'localhost'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-30"&gt;&lt;/a&gt;        &lt;span class="s1"&gt;'path'&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;os&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;environ&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;'SITE_ROOT'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;'/opt/myapp/test'&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-31"&gt;&lt;/a&gt;        &lt;span class="s1"&gt;'www_root'&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;'http://localhost:8081/'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-32"&gt;&lt;/a&gt;        &lt;span class="s1"&gt;'retries_before_killing'&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-33"&gt;&lt;/a&gt;        &lt;span class="s1"&gt;'retry_sleep'&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-34"&gt;&lt;/a&gt;    &lt;span class="p"&gt;},&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-35"&gt;&lt;/a&gt;    &lt;span class="s1"&gt;'test'&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-36"&gt;&lt;/a&gt;        &lt;span class="s1"&gt;'envname'&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;'test'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-37"&gt;&lt;/a&gt;        &lt;span class="s1"&gt;'user'&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;'root'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-38"&gt;&lt;/a&gt;        &lt;span class="s1"&gt;'host'&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;'myapp-test.stencel.com'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-39"&gt;&lt;/a&gt;        &lt;span class="s1"&gt;'host_string'&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;'myapp-test.stencel.com'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-40"&gt;&lt;/a&gt;        &lt;span class="s1"&gt;'path'&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;'/var/www/myapp/test/'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-41"&gt;&lt;/a&gt;        &lt;span class="s1"&gt;'www_root'&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;'http://myapp-test.stencel.com/'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-42"&gt;&lt;/a&gt;        &lt;span class="s1"&gt;'retries_before_killing'&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-43"&gt;&lt;/a&gt;        &lt;span class="s1"&gt;'retry_sleep'&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-44"&gt;&lt;/a&gt;    &lt;span class="p"&gt;},&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-45"&gt;&lt;/a&gt;    &lt;span class="s1"&gt;'uat'&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-46"&gt;&lt;/a&gt;        &lt;span class="s1"&gt;'envname'&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;'uat'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-47"&gt;&lt;/a&gt;        &lt;span class="s1"&gt;'user'&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;'myapp'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-48"&gt;&lt;/a&gt;        &lt;span class="s1"&gt;'host'&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;'uat.myapp2.stencel.com'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-49"&gt;&lt;/a&gt;        &lt;span class="s1"&gt;'host_string'&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;'uat.myapp2.stencel.com'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-50"&gt;&lt;/a&gt;        &lt;span class="s1"&gt;'key_filename'&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;'deploy/keys/id_rsa'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-51"&gt;&lt;/a&gt;        &lt;span class="s1"&gt;'path'&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;'/opt/myapp/uat/'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-52"&gt;&lt;/a&gt;        &lt;span class="s1"&gt;'www_root'&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;'http://uat.myapp2.stencel.com/'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-53"&gt;&lt;/a&gt;        &lt;span class="s1"&gt;'retries_before_killing'&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-54"&gt;&lt;/a&gt;        &lt;span class="s1"&gt;'retry_sleep'&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-55"&gt;&lt;/a&gt;    &lt;span class="p"&gt;},&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-56"&gt;&lt;/a&gt;    &lt;span class="s1"&gt;'sit'&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-57"&gt;&lt;/a&gt;        &lt;span class="s1"&gt;'envname'&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;'sit'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-58"&gt;&lt;/a&gt;        &lt;span class="s1"&gt;'user'&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;'myapp'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-59"&gt;&lt;/a&gt;        &lt;span class="s1"&gt;'host'&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;'sit.myapp2.stencel.com'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-60"&gt;&lt;/a&gt;        &lt;span class="s1"&gt;'host_string'&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;'sit.myapp2.stencel.com'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-61"&gt;&lt;/a&gt;        &lt;span class="s1"&gt;'key_filename'&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;'deploy/keys/id_rsa'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-62"&gt;&lt;/a&gt;        &lt;span class="s1"&gt;'path'&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;'/opt/myapp/sit/'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-63"&gt;&lt;/a&gt;        &lt;span class="s1"&gt;'www_root'&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;'http://sit.myapp2.stencel.com/'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-64"&gt;&lt;/a&gt;        &lt;span class="s1"&gt;'retries_before_killing'&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-65"&gt;&lt;/a&gt;        &lt;span class="s1"&gt;'retry_sleep'&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-66"&gt;&lt;/a&gt;    &lt;span class="p"&gt;},&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-67"&gt;&lt;/a&gt;    &lt;span class="s1"&gt;'live'&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-68"&gt;&lt;/a&gt;        &lt;span class="s1"&gt;'envname'&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;'live'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-69"&gt;&lt;/a&gt;        &lt;span class="s1"&gt;'user'&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;'myapp'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-70"&gt;&lt;/a&gt;        &lt;span class="s1"&gt;'host'&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;'10.10.10.10'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-71"&gt;&lt;/a&gt;        &lt;span class="s1"&gt;'host_string'&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;'myapp2.stencel.com'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-72"&gt;&lt;/a&gt;        &lt;span class="s1"&gt;'path'&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;'/opt/myapp/live/'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-73"&gt;&lt;/a&gt;        &lt;span class="s1"&gt;'www_root'&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;'http://myapp2.stencel.com/'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-74"&gt;&lt;/a&gt;        &lt;span class="s1"&gt;'retries_before_killing'&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-75"&gt;&lt;/a&gt;        &lt;span class="s1"&gt;'retry_sleep'&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-76"&gt;&lt;/a&gt;    &lt;span class="p"&gt;},&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-77"&gt;&lt;/a&gt;    &lt;span class="s1"&gt;'live2'&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-78"&gt;&lt;/a&gt;        &lt;span class="s1"&gt;'envname'&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;'live2'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-79"&gt;&lt;/a&gt;        &lt;span class="s1"&gt;'user'&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;'root'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-80"&gt;&lt;/a&gt;        &lt;span class="s1"&gt;'host'&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;'10.10.10.11'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-81"&gt;&lt;/a&gt;        &lt;span class="s1"&gt;'host_string'&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;'live2.stencel.com'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-82"&gt;&lt;/a&gt;        &lt;span class="s1"&gt;'path'&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;'/var/www/myapp/live/'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-83"&gt;&lt;/a&gt;        &lt;span class="s1"&gt;'www_root'&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;'http://myapp2.stencel.com/'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-84"&gt;&lt;/a&gt;        &lt;span class="s1"&gt;'retries_before_killing'&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-85"&gt;&lt;/a&gt;        &lt;span class="s1"&gt;'retry_sleep'&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-86"&gt;&lt;/a&gt;    &lt;span class="p"&gt;},&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-87"&gt;&lt;/a&gt;    &lt;span class="s1"&gt;'live3'&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-88"&gt;&lt;/a&gt;        &lt;span class="s1"&gt;'envname'&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;'live3'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-89"&gt;&lt;/a&gt;        &lt;span class="s1"&gt;'user'&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;'root'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-90"&gt;&lt;/a&gt;        &lt;span class="s1"&gt;'host'&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;'10.10.10.12'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-91"&gt;&lt;/a&gt;        &lt;span class="s1"&gt;'host_string'&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;'live3.stencel.com'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-92"&gt;&lt;/a&gt;        &lt;span class="s1"&gt;'path'&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;'/var/www/myapp/live/'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-93"&gt;&lt;/a&gt;        &lt;span class="s1"&gt;'www_root'&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;'http://myapp2.stencel.com/'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-94"&gt;&lt;/a&gt;        &lt;span class="s1"&gt;'retries_before_killing'&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-95"&gt;&lt;/a&gt;        &lt;span class="s1"&gt;'retry_sleep'&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-96"&gt;&lt;/a&gt;    &lt;span class="p"&gt;},&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-97"&gt;&lt;/a&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-98"&gt;&lt;/a&gt;&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-99"&gt;&lt;/a&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-100"&gt;&lt;/a&gt;&lt;span class="n"&gt;LIVE_HOSTS&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;'live'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;'live2'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;'live3'&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-101"&gt;&lt;/a&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-102"&gt;&lt;/a&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-103"&gt;&lt;/a&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;list_hosts&lt;/span&gt;&lt;span class="p"&gt;():&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-104"&gt;&lt;/a&gt;    &lt;span class="sd"&gt;"""&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-105"&gt;&lt;/a&gt;&lt;span class="sd"&gt;    Lists available myapp hosts&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-106"&gt;&lt;/a&gt;&lt;span class="sd"&gt;    """&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-107"&gt;&lt;/a&gt;    &lt;span class="nb"&gt;print&lt;/span&gt; &lt;span class="s2"&gt;" Single hosts(if you want to pull from svn only to one of them):"&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-108"&gt;&lt;/a&gt;    &lt;span class="nb"&gt;print&lt;/span&gt; &lt;span class="s1"&gt;'   &lt;/span&gt;&lt;span class="si"&gt;%s&lt;/span&gt;&lt;span class="s1"&gt;'&lt;/span&gt; &lt;span class="o"&gt;%&lt;/span&gt; &lt;span class="s1"&gt;'&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s1"&gt;   '&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;join&lt;/span&gt;&lt;span class="p"&gt;([&lt;/span&gt;&lt;span class="n"&gt;a&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;SERVERS&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-109"&gt;&lt;/a&gt;    &lt;span class="nb"&gt;print&lt;/span&gt; &lt;span class="s2"&gt;" Multiple hosts"&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-110"&gt;&lt;/a&gt;    &lt;span class="nb"&gt;print&lt;/span&gt; &lt;span class="s1"&gt;'   live (which contains &lt;/span&gt;&lt;span class="si"&gt;%s&lt;/span&gt;&lt;span class="s1"&gt;)'&lt;/span&gt; &lt;span class="o"&gt;%&lt;/span&gt; &lt;span class="s1"&gt;','&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;join&lt;/span&gt;&lt;span class="p"&gt;([&lt;/span&gt;&lt;span class="n"&gt;a&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;LIVE_HOSTS&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-111"&gt;&lt;/a&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-112"&gt;&lt;/a&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-113"&gt;&lt;/a&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;test&lt;/span&gt;&lt;span class="p"&gt;():&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-114"&gt;&lt;/a&gt;    &lt;span class="sd"&gt;"""&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-115"&gt;&lt;/a&gt;&lt;span class="sd"&gt;    single host definition , "fab test restart" wil restart this one host&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-116"&gt;&lt;/a&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-117"&gt;&lt;/a&gt;&lt;span class="sd"&gt;    """&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-118"&gt;&lt;/a&gt;    &lt;span class="n"&gt;env&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;update&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;dict&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;SERVERS&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;'test'&lt;/span&gt;&lt;span class="p"&gt;]))&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-119"&gt;&lt;/a&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-120"&gt;&lt;/a&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-121"&gt;&lt;/a&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;localhost&lt;/span&gt;&lt;span class="p"&gt;():&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-122"&gt;&lt;/a&gt;    &lt;span class="sd"&gt;"""&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-123"&gt;&lt;/a&gt;&lt;span class="sd"&gt;    single host definition , "fab test restart" wil restart this one host&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-124"&gt;&lt;/a&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-125"&gt;&lt;/a&gt;&lt;span class="sd"&gt;    """&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-126"&gt;&lt;/a&gt;    &lt;span class="n"&gt;env&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;update&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;dict&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;SERVERS&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;'local'&lt;/span&gt;&lt;span class="p"&gt;]))&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-127"&gt;&lt;/a&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-128"&gt;&lt;/a&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-129"&gt;&lt;/a&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;uat&lt;/span&gt;&lt;span class="p"&gt;():&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-130"&gt;&lt;/a&gt;    &lt;span class="sd"&gt;"""&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-131"&gt;&lt;/a&gt;&lt;span class="sd"&gt;    single host definition , "fab uat restart" wil restart this single host&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-132"&gt;&lt;/a&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-133"&gt;&lt;/a&gt;&lt;span class="sd"&gt;    """&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-134"&gt;&lt;/a&gt;    &lt;span class="n"&gt;env&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;update&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;dict&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;SERVERS&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;'uat'&lt;/span&gt;&lt;span class="p"&gt;]))&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-135"&gt;&lt;/a&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-136"&gt;&lt;/a&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-137"&gt;&lt;/a&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;sit&lt;/span&gt;&lt;span class="p"&gt;():&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-138"&gt;&lt;/a&gt;    &lt;span class="sd"&gt;"""&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-139"&gt;&lt;/a&gt;&lt;span class="sd"&gt;    single host&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-140"&gt;&lt;/a&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-141"&gt;&lt;/a&gt;&lt;span class="sd"&gt;    """&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-142"&gt;&lt;/a&gt;    &lt;span class="n"&gt;env&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;update&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;dict&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;SERVERS&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;'sit'&lt;/span&gt;&lt;span class="p"&gt;]))&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-143"&gt;&lt;/a&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-144"&gt;&lt;/a&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-145"&gt;&lt;/a&gt;&lt;span class="c1"&gt;#  SERVERS GRcompanyS DEFINITION&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-146"&gt;&lt;/a&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;live&lt;/span&gt;&lt;span class="p"&gt;():&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-147"&gt;&lt;/a&gt;    &lt;span class="sd"&gt;"""&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-148"&gt;&lt;/a&gt;&lt;span class="sd"&gt;    multiple grcompany of hosts - running: "fab live restart" will restart all live servers&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-149"&gt;&lt;/a&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-150"&gt;&lt;/a&gt;&lt;span class="sd"&gt;    """&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-151"&gt;&lt;/a&gt;    &lt;span class="n"&gt;env&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;'hosts'&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;SERVERS&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="p"&gt;][&lt;/span&gt;&lt;span class="s1"&gt;'host'&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;LIVE_HOSTS&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-152"&gt;&lt;/a&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-153"&gt;&lt;/a&gt;    &lt;span class="c1"&gt;# env.update(dict(SERVERS['staging']))&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-154"&gt;&lt;/a&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-155"&gt;&lt;/a&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-156"&gt;&lt;/a&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;env_update&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;func&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-157"&gt;&lt;/a&gt;    &lt;span class="sd"&gt;"""&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-158"&gt;&lt;/a&gt;&lt;span class="sd"&gt;    Decorator - needs to be added to each task in fabricfile - for multiple host task execution&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-159"&gt;&lt;/a&gt;&lt;span class="sd"&gt;    """&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-160"&gt;&lt;/a&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-161"&gt;&lt;/a&gt;    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;func_wrapper&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;**&lt;/span&gt;&lt;span class="n"&gt;kwargs&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-162"&gt;&lt;/a&gt;        &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="ow"&gt;not&lt;/span&gt; &lt;span class="nb"&gt;len&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;env&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;hosts&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-163"&gt;&lt;/a&gt;            &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;func&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;**&lt;/span&gt;&lt;span class="n"&gt;kwargs&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-164"&gt;&lt;/a&gt;        &lt;span class="k"&gt;else&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-165"&gt;&lt;/a&gt;            &lt;span class="n"&gt;env&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;update&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;dict&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;SERVERS&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="nb"&gt;filter&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;lambda&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;SERVERS&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;][&lt;/span&gt;&lt;span class="s1"&gt;'host'&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="n"&gt;env&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;host&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;MyApp_SERVERS&lt;/span&gt;&lt;span class="p"&gt;)[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]]))&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-166"&gt;&lt;/a&gt;            &lt;span class="n"&gt;func&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;**&lt;/span&gt;&lt;span class="n"&gt;kwargs&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-167"&gt;&lt;/a&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-168"&gt;&lt;/a&gt;    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;func_wrapper&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-169"&gt;&lt;/a&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-170"&gt;&lt;/a&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-171"&gt;&lt;/a&gt;&lt;span class="nd"&gt;@env_update&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-172"&gt;&lt;/a&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;bundle_media&lt;/span&gt;&lt;span class="p"&gt;():&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-173"&gt;&lt;/a&gt;    &lt;span class="sd"&gt;"""&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-174"&gt;&lt;/a&gt;&lt;span class="sd"&gt;    bundles media like css and js to one file.&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-175"&gt;&lt;/a&gt;&lt;span class="sd"&gt;    example:&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-176"&gt;&lt;/a&gt;&lt;span class="sd"&gt;        fab test bundle_media&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-177"&gt;&lt;/a&gt;&lt;span class="sd"&gt;    """&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-178"&gt;&lt;/a&gt;    &lt;span class="c1"&gt;# export DJANGO_SETTINGS_MODULE=settings&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-179"&gt;&lt;/a&gt;    &lt;span class="c1"&gt;#run("cd {0} &amp;amp;&amp;amp; source settings/{1}-config.sh &amp;amp;&amp;amp; python scripts/bundle_media.py".format(env.path,env.envname))&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-180"&gt;&lt;/a&gt;   &lt;span class="n"&gt;run&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"source /usr/share/virtualenvwrapper/virtualenvwrapper.sh &amp;amp;&amp;amp; workon &lt;/span&gt;&lt;span class="si"&gt;{0}&lt;/span&gt;&lt;span class="s2"&gt; &amp;amp;&amp;amp; python scripts/bundle_media.py"&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;format&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="si"&gt;%s&lt;/span&gt;&lt;span class="s2"&gt;-myapp"&lt;/span&gt; &lt;span class="o"&gt;%&lt;/span&gt; &lt;span class="n"&gt;env&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;envname&lt;/span&gt; &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;env&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;envname&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&amp;gt;&lt;/span&gt; &lt;span class="s1"&gt;'live'&lt;/span&gt; &lt;span class="k"&gt;else&lt;/span&gt; &lt;span class="s1"&gt;'MyApp-test'&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt; &lt;span class="c1"&gt;#change live venv to be live-MyApp&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-181"&gt;&lt;/a&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-182"&gt;&lt;/a&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;_valid_branch&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;env&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-183"&gt;&lt;/a&gt;    &lt;span class="n"&gt;branch&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;run&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"cd &lt;/span&gt;&lt;span class="si"&gt;{0}&lt;/span&gt;&lt;span class="s2"&gt; &amp;amp;&amp;amp; git rev-parse --abbrev-ref HEAD"&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;format&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;env&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;path&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-184"&gt;&lt;/a&gt;    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;branch&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="n"&gt;SERVER_BRANCHES&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;env&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;envname&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="ow"&gt;and&lt;/span&gt; &lt;span class="ow"&gt;not&lt;/span&gt; &lt;span class="n"&gt;env&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;envname&lt;/span&gt;&lt;span class="o"&gt;==&lt;/span&gt;&lt;span class="s1"&gt;'local'&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-185"&gt;&lt;/a&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-186"&gt;&lt;/a&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-187"&gt;&lt;/a&gt;&lt;span class="nd"&gt;@env_update&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-188"&gt;&lt;/a&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;pull&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;**&lt;/span&gt;&lt;span class="n"&gt;kwargs&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-189"&gt;&lt;/a&gt;    &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;_valid_branch&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;env&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-190"&gt;&lt;/a&gt;        &lt;span class="k"&gt;with&lt;/span&gt; &lt;span class="n"&gt;cd&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;env&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;path&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-191"&gt;&lt;/a&gt;            &lt;span class="n"&gt;run&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"git fetch origin"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-192"&gt;&lt;/a&gt;            &lt;span class="n"&gt;run&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"git reset --hard origin/&lt;/span&gt;&lt;span class="si"&gt;%s&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt; &lt;span class="o"&gt;%&lt;/span&gt; &lt;span class="n"&gt;branch&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-193"&gt;&lt;/a&gt;    &lt;span class="k"&gt;else&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-194"&gt;&lt;/a&gt;        &lt;span class="nb"&gt;print&lt;/span&gt; &lt;span class="s2"&gt;"Error : Server is checked out to wrong branch!!!"&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-195"&gt;&lt;/a&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-196"&gt;&lt;/a&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-197"&gt;&lt;/a&gt;            &lt;span class="c1"&gt;#run('git fetch --quiet')&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-198"&gt;&lt;/a&gt;            &lt;span class="c1"&gt;#run('git fetch --tags --quiet')&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-199"&gt;&lt;/a&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-200"&gt;&lt;/a&gt;&lt;span class="nd"&gt;@env_update&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-201"&gt;&lt;/a&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;reload&lt;/span&gt;&lt;span class="p"&gt;():&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-202"&gt;&lt;/a&gt;    &lt;span class="sd"&gt;"""&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-203"&gt;&lt;/a&gt;&lt;span class="sd"&gt;    Reload specified servers - kills unused gunicorn workers but waits workers with old code to finish processing.&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-204"&gt;&lt;/a&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-205"&gt;&lt;/a&gt;&lt;span class="sd"&gt;    """&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-206"&gt;&lt;/a&gt;    &lt;span class="n"&gt;bundle_media&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-207"&gt;&lt;/a&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-208"&gt;&lt;/a&gt;    &lt;span class="c1"&gt;#if env.envname in ('uat', 'staging', 'live'):&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-209"&gt;&lt;/a&gt;    &lt;span class="n"&gt;f&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;StringIO&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-210"&gt;&lt;/a&gt;    &lt;span class="n"&gt;get&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"/opt/myapp/&lt;/span&gt;&lt;span class="si"&gt;%s&lt;/span&gt;&lt;span class="s2"&gt;/pid"&lt;/span&gt; &lt;span class="o"&gt;%&lt;/span&gt; &lt;span class="n"&gt;env&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;envname&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-211"&gt;&lt;/a&gt;    &lt;span class="n"&gt;pid&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;re&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;search&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="sa"&gt;r&lt;/span&gt;&lt;span class="s1"&gt;'\d+'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;getvalue&lt;/span&gt;&lt;span class="p"&gt;())&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;group&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-212"&gt;&lt;/a&gt;    &lt;span class="n"&gt;run&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"ps aux | grep gunicorn | grep &lt;/span&gt;&lt;span class="si"&gt;%s&lt;/span&gt;&lt;span class="s2"&gt; | grep master | grep -v grep | awk '{print $2}'"&lt;/span&gt; &lt;span class="o"&gt;%&lt;/span&gt; &lt;span class="n"&gt;env&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;envname&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-213"&gt;&lt;/a&gt;    &lt;span class="n"&gt;run&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"kill -HUP &lt;/span&gt;&lt;span class="si"&gt;%s&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt; &lt;span class="o"&gt;%&lt;/span&gt; &lt;span class="n"&gt;pid&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-214"&gt;&lt;/a&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-215"&gt;&lt;/a&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-216"&gt;&lt;/a&gt;&lt;span class="nd"&gt;@env_update&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-217"&gt;&lt;/a&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;restart&lt;/span&gt;&lt;span class="p"&gt;():&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-218"&gt;&lt;/a&gt;    &lt;span class="sd"&gt;"""&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-219"&gt;&lt;/a&gt;&lt;span class="sd"&gt;    Hard restarts specified servers&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-220"&gt;&lt;/a&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-221"&gt;&lt;/a&gt;&lt;span class="sd"&gt;    """&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-222"&gt;&lt;/a&gt;    &lt;span class="n"&gt;bundle_media&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-223"&gt;&lt;/a&gt;    &lt;span class="n"&gt;run&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"ps aux | grep gunicorn | grep &lt;/span&gt;&lt;span class="si"&gt;%s&lt;/span&gt;&lt;span class="s2"&gt; | grep master | grep -v grep | awk '{print $2}'"&lt;/span&gt; &lt;span class="o"&gt;%&lt;/span&gt; &lt;span class="n"&gt;env&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;envname&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-224"&gt;&lt;/a&gt;    &lt;span class="n"&gt;run&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"supervisorctl stop myapp-&lt;/span&gt;&lt;span class="si"&gt;%s&lt;/span&gt;&lt;span class="s2"&gt; &amp;amp;&amp;amp; supervisorctl start MyApp-&lt;/span&gt;&lt;span class="si"&gt;%s&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt; &lt;span class="o"&gt;%&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;env&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;envname&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;env&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;envname&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-225"&gt;&lt;/a&gt;    &lt;span class="n"&gt;run&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"ps aux | grep gunicorn | grep &lt;/span&gt;&lt;span class="si"&gt;%s&lt;/span&gt;&lt;span class="s2"&gt; | grep master | grep -v grep | awk '{print $2}'"&lt;/span&gt; &lt;span class="o"&gt;%&lt;/span&gt; &lt;span class="n"&gt;env&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;envname&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-226"&gt;&lt;/a&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-227"&gt;&lt;/a&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-228"&gt;&lt;/a&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;help&lt;/span&gt;&lt;span class="p"&gt;():&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-229"&gt;&lt;/a&gt;    &lt;span class="n"&gt;fabric_functions&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;'run'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;'execute'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;'local'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;'func_wrapper'&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-230"&gt;&lt;/a&gt;    &lt;span class="n"&gt;functions&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;set&lt;/span&gt;&lt;span class="p"&gt;([&lt;/span&gt;&lt;span class="n"&gt;obj&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="vm"&gt;__name__&lt;/span&gt; &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;obj&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="vm"&gt;__name__&lt;/span&gt; &lt;span class="ow"&gt;not&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;fabric_functions&lt;/span&gt; &lt;span class="k"&gt;else&lt;/span&gt; &lt;span class="s1"&gt;''&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;obj&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-231"&gt;&lt;/a&gt;                     &lt;span class="n"&gt;inspect&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;getmembers&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;sys&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;modules&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="vm"&gt;__name__&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt; &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;inspect&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;isfunction&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;obj&lt;/span&gt;&lt;span class="p"&gt;)])&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-232"&gt;&lt;/a&gt;    &lt;span class="n"&gt;functions&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;remove&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;''&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-233"&gt;&lt;/a&gt;    &lt;span class="nb"&gt;print&lt;/span&gt; &lt;span class="s2"&gt;"usage: &lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s2"&gt;  fab [host/grcompany of hosts] [commands] (optional command with arguments command:kwarg=val,arg1,arg2,arg3)"&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-234"&gt;&lt;/a&gt;    &lt;span class="nb"&gt;print&lt;/span&gt; &lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s2"&gt;available servers:"&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-235"&gt;&lt;/a&gt;    &lt;span class="n"&gt;list_hosts&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-236"&gt;&lt;/a&gt;    &lt;span class="nb"&gt;print&lt;/span&gt; &lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s2"&gt;commands:&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s2"&gt;  &lt;/span&gt;&lt;span class="si"&gt;%s&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt; &lt;span class="o"&gt;%&lt;/span&gt; &lt;span class="s1"&gt;', '&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;join&lt;/span&gt;&lt;span class="p"&gt;([&lt;/span&gt;&lt;span class="n"&gt;a&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;functions&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-237"&gt;&lt;/a&gt;    &lt;span class="nb"&gt;print&lt;/span&gt; &lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s2"&gt;examples:&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s2"&gt;  staging svnxapp:app=holdings_and_quotes,layout.py,permissions.py restart"&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-238"&gt;&lt;/a&gt;    &lt;span class="nb"&gt;print&lt;/span&gt; &lt;span class="s2"&gt;"  fab test restart"&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-239"&gt;&lt;/a&gt;    &lt;span class="nb"&gt;print&lt;/span&gt; &lt;span class="s2"&gt;"  fab staging svnxapp:app=holdings_and_quotes,lib/quote.py,layout.py,models.py"&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-240"&gt;&lt;/a&gt;    &lt;span class="nb"&gt;print&lt;/span&gt; &lt;span class="s2"&gt;"  fab staging svnxapp:app=holdings_and_quotes,lib/quote.py restart"&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-241"&gt;&lt;/a&gt;    &lt;span class="nb"&gt;print&lt;/span&gt; &lt;span class="s2"&gt;"  fab test build"&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-242"&gt;&lt;/a&gt;    &lt;span class="nb"&gt;print&lt;/span&gt; &lt;span class="s2"&gt;"  fab test bundle_media restart"&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-243"&gt;&lt;/a&gt;    &lt;span class="nb"&gt;print&lt;/span&gt; &lt;span class="s2"&gt;" For svnx whole app (comma in the end):"&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-244"&gt;&lt;/a&gt;    &lt;span class="nb"&gt;print&lt;/span&gt; &lt;span class="s2"&gt;"  fab test svnxapp:app=medrep,"&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-245"&gt;&lt;/a&gt;    &lt;span class="nb"&gt;print&lt;/span&gt; &lt;span class="s2"&gt;" For global lib:"&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-246"&gt;&lt;/a&gt;    &lt;span class="nb"&gt;print&lt;/span&gt; &lt;span class="s2"&gt;"  fab test svnxlib"&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-247"&gt;&lt;/a&gt;    &lt;span class="nb"&gt;print&lt;/span&gt; &lt;span class="s2"&gt;" For whole global media:"&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-248"&gt;&lt;/a&gt;    &lt;span class="nb"&gt;print&lt;/span&gt; &lt;span class="s2"&gt;"  fab test svnxmedia:"&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-249"&gt;&lt;/a&gt;    &lt;span class="nb"&gt;print&lt;/span&gt; &lt;span class="s2"&gt;" For global media file:"&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-250"&gt;&lt;/a&gt;    &lt;span class="nb"&gt;print&lt;/span&gt; &lt;span class="s2"&gt;"  fab test svnxmedia:javascript"&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-251"&gt;&lt;/a&gt;    &lt;span class="nb"&gt;print&lt;/span&gt; &lt;span class="s2"&gt;"  fab test svnxmedia:javascript/company/checklist.js"&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-252"&gt;&lt;/a&gt;    &lt;span class="nb"&gt;print&lt;/span&gt; &lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s2"&gt;If .js file in args like : fab staging svnxapp:app=holdings_and_quotes,media/js/quote.js,layout.py,models.py"&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-253"&gt;&lt;/a&gt;    &lt;span class="nb"&gt;print&lt;/span&gt; &lt;span class="s2"&gt;"It will bundle media itself"&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-254"&gt;&lt;/a&gt;    &lt;span class="nb"&gt;print&lt;/span&gt; &lt;span class="s2"&gt;"Restart test staging without params:&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s2"&gt;  fab restart"&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-255"&gt;&lt;/a&gt;    &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;f&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;functions&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-256"&gt;&lt;/a&gt;        &lt;span class="nb"&gt;print&lt;/span&gt; &lt;span class="n"&gt;f&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-257"&gt;&lt;/a&gt;        &lt;span class="nb"&gt;print&lt;/span&gt; &lt;span class="nb"&gt;globals&lt;/span&gt;&lt;span class="p"&gt;()[&lt;/span&gt;&lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="vm"&gt;__doc__&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-258"&gt;&lt;/a&gt;        &lt;span class="nb"&gt;print&lt;/span&gt; &lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-259"&gt;&lt;/a&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-260"&gt;&lt;/a&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-261"&gt;&lt;/a&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-262"&gt;&lt;/a&gt;&lt;span class="nd"&gt;@env_update&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-263"&gt;&lt;/a&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;accessguni&lt;/span&gt;&lt;span class="p"&gt;():&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-264"&gt;&lt;/a&gt;    &lt;span class="n"&gt;run&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"tail /var/log/myapp/access-&lt;/span&gt;&lt;span class="si"&gt;%s&lt;/span&gt;&lt;span class="s2"&gt;.log"&lt;/span&gt; &lt;span class="o"&gt;%&lt;/span&gt; &lt;span class="n"&gt;env&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;envname&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;upper&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;)&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-265"&gt;&lt;/a&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-266"&gt;&lt;/a&gt;&lt;span class="nd"&gt;@env_update&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-267"&gt;&lt;/a&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;accessgunilive&lt;/span&gt;&lt;span class="p"&gt;():&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-268"&gt;&lt;/a&gt;    &lt;span class="n"&gt;run&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"tail -f /var/log/myapp/access-&lt;/span&gt;&lt;span class="si"&gt;%s&lt;/span&gt;&lt;span class="s2"&gt;.log"&lt;/span&gt; &lt;span class="o"&gt;%&lt;/span&gt; &lt;span class="n"&gt;env&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;envname&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;upper&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;)&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-269"&gt;&lt;/a&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-270"&gt;&lt;/a&gt;&lt;span class="nd"&gt;@env_update&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-271"&gt;&lt;/a&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;errorguni&lt;/span&gt;&lt;span class="p"&gt;():&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-272"&gt;&lt;/a&gt;    &lt;span class="n"&gt;run&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"tail /var/log/myapp/error-&lt;/span&gt;&lt;span class="si"&gt;%s&lt;/span&gt;&lt;span class="s2"&gt;.log"&lt;/span&gt; &lt;span class="o"&gt;%&lt;/span&gt; &lt;span class="n"&gt;env&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;envname&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;upper&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;)&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-273"&gt;&lt;/a&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-274"&gt;&lt;/a&gt;&lt;span class="nd"&gt;@env_update&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-275"&gt;&lt;/a&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;errorgunilive&lt;/span&gt;&lt;span class="p"&gt;():&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-276"&gt;&lt;/a&gt;    &lt;span class="n"&gt;run&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"tail -f /var/log/myapp/error.log"&lt;/span&gt; &lt;span class="o"&gt;%&lt;/span&gt; &lt;span class="n"&gt;env&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;envname&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;upper&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;)&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-277"&gt;&lt;/a&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-278"&gt;&lt;/a&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;hostname&lt;/span&gt;&lt;span class="p"&gt;():&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-279"&gt;&lt;/a&gt;    &lt;span class="n"&gt;run&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;'uname -a'&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-280"&gt;&lt;/a&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-281"&gt;&lt;/a&gt;&lt;span class="nd"&gt;@env_update&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-282"&gt;&lt;/a&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;uptime&lt;/span&gt;&lt;span class="p"&gt;():&lt;/span&gt;
+&lt;a name="rest_code_5025a06c642341c2b8e8c0674d26a9ba-283"&gt;&lt;/a&gt;    &lt;span class="n"&gt;run&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;'uptime'&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;</description><category>DevOps</category><category>fabric</category><guid>http://stencel.io/posts/fabric-auto-deployment-script.html</guid><pubDate>Wed, 02 Nov 2016 14:45:29 GMT</pubDate></item><item><title>Nikola error: command 'x86_64-linux-gnu-gcc' failed with exit status 1</title><link>http://stencel.io/posts/nikola-error-command-x86_64-linux-gnu-gcc-failed-with-exit-status-1.html</link><dc:creator>Greg Stencel</dc:creator><description>&lt;p&gt;this helped
+sudo apt-get install libxml2-dev libxslt1-dev&lt;/p&gt;</description><guid>http://stencel.io/posts/nikola-error-command-x86_64-linux-gnu-gcc-failed-with-exit-status-1.html</guid><pubDate>Thu, 12 Mar 2015 21:14:24 GMT</pubDate></item><item><title>comodo-positive-ssl-sec_error_unknown_issuer-firefox</title><link>http://stencel.io/posts/comodo-positive-ssl-sec_error_unknown_issuer-firefox.html</link><dc:creator>Greg Stencel</dc:creator><description>&lt;div&gt;&lt;p&gt;Tempted by post on official google admins blog &lt;a class="reference external" href="http://googlewebmastercentral.blogspot.co.uk/2014/08/https-as-ranking-signal.html"&gt;http://googlewebmastercentral.blogspot.co.uk/2014/08/https-as-ranking-signal.html&lt;/a&gt;
+it's about higher ranking when having https. So I have recently bought cheap ssl certificate from known issuer COMODO
+and upgraded my server with it but it caused several problems when I redirected from 80 to 443 some 3rd party apps (like
+userena for django) created loops but I found solution quickly it was to put USERENA_USE_HTTPS=True in settings.py but
+it still sends more forgot password mails than it should but it's different story.&lt;/p&gt;
+&lt;p&gt;Comming back to point if you are experiencing error "sec_error_unknown_issuer" in firefox
+after implementing COMODO Positive-SSL certificate this solution may help you.
+Don't know exactly but I read that it has something to do with chain certificates
+they should be bundled inside you website certificate.
+And remember you have to do it in right order because first one should be your servers certificate
+cause it's signed with key) and nginx or whatever you use may have problems after reloading service.&lt;/p&gt;
+&lt;p&gt;My command for bundling was:&lt;/p&gt;
+&lt;p&gt;cat exerceo_pl.crt COMODORSADomainValidationSecureServerCA.crt COMODORSAAddTrustCA.crt AddTrustExternalCARoot.crt &amp;gt;
+exerceo_pl.bundled.crt
+after that I had just to point my nginx.conf to new bundled certificate.
+And after all reaload of nginx fixed my unknow issuer firefox problem.&lt;/p&gt;&lt;/div&gt;</description><guid>http://stencel.io/posts/comodo-positive-ssl-sec_error_unknown_issuer-firefox.html</guid><pubDate>Thu, 12 Mar 2015 10:26:23 GMT</pubDate></item><item><title>xrandr tips</title><link>http://stencel.io/posts/xrandr-tips.html</link><dc:creator>Greg Stencel</dc:creator><description>&lt;div&gt;&lt;p&gt;adding resolution
+1)generate mode
+cvt 2560 1440 60
+➜  blog git:(website) ✗ cvt 2560 1440 60
+# 2560x1440 59.96 Hz (CVT 3.69M9) hsync: 89.52 kHz; pclk: 312.25 MHz
+Modeline "2560x1440_60.00"  312.25  2560 2752 3024 3488  1440 1443 1448 1493 -hsync +vsync&lt;/p&gt;
+&lt;p&gt;2)add it to xrandr
+sudo xrandr --newmode "2560x1440_60.00"  312.25  2560 2752 3024 3488  1440 1443 1448 1493  -hsync +vsync
+setting resolution&lt;/p&gt;
+&lt;p&gt;3)sudo xrandr --addmode VGA-0 "1680x1050_60.00"&lt;/p&gt;
+&lt;p&gt;xrandr -q
+xrandr --verbose&lt;/p&gt;
+&lt;p&gt;xrandr --output HDMI-0 --mode 2560x1440&lt;/p&gt;
+&lt;p&gt;irst generate a "modeline" by using cvt
+Syntax is: cvt width height refreshrate&lt;/p&gt;
+&lt;p&gt;cvt 1680 1050 60
+this gives you:&lt;/p&gt;
+&lt;p&gt;# 1680x1050 59.95 Hz (CVT 1.76MA) hsync: 65.29 kHz; pclk: 146.25 MHz
+Modeline "1680x1050_60.00"  146.25  1680 1784 1960 2240  1050 1053 1059 1089 -hsync +vsync
+Now tell this to xrandr:&lt;/p&gt;
+&lt;p&gt;sudo xrandr --newmode "1680x1050_60.00"  146.25  1680 1784 1960 2240  1050 1053 1059 1089 -&lt;/p&gt;
+&lt;p&gt;First clone the two screens, (the smaller screen will display the top left portion of the virtual screen)&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;xrandr --output VGA --auto --right-of LVDS&lt;/p&gt;
+&lt;p&gt;xrandr --output LVDS --mode 1280x800&lt;/p&gt;
+&lt;p&gt;xrandr --output LVDS --mode 1280x800 --rate 75&lt;/p&gt;
+&lt;p&gt;xrandr --output LVDS --auto&lt;/p&gt;
+&lt;p&gt;xrandr --output LVDS --off --output HDMI-0 --auto&lt;/p&gt;
+&lt;p&gt;xrandr --output VGA1 --mode 1024x768 --rate 60&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;#Laptop right extra Monitor Left&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;xrandr --output VGA1 --left-of LVDS1&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;#Laptop left extra Monitor right&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;xrandr --output LVDS1 --left-of VGA1&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;#This is to set your primary monitor.&lt;/p&gt;
+&lt;p&gt;#This sets your laptop monitor as your primary monitor.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;xrandr --output LVDS1 --primary&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;#This sets your VGA monitor as your primary monitor.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;xrandr --output VGA1 --primary&lt;/p&gt;
+&lt;p&gt;xrandr --output VGA1 --mode 1024x768 --rate 60&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;xrandr --pos &amp;lt;x&amp;gt;x&amp;lt;y&amp;gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;$ xrandr --left-of &amp;lt;output&amp;gt;&lt;/p&gt;
+&lt;p&gt;$ xrandr --right-of &amp;lt;output&amp;gt;&lt;/p&gt;
+&lt;p&gt;$ xrandr --above &amp;lt;output&amp;gt;&lt;/p&gt;
+&lt;p&gt;$ xrandr --below &amp;lt;output&amp;gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Option '-pos' is more flexible which can place output to anywhere, for example:&lt;/p&gt;
+&lt;p&gt;$ xrandr --output VGA1 --pos 200x200
+$ xrandr --output LVDS1 --pos 400x500&lt;/p&gt;
+&lt;p&gt;xrandr -o right&lt;/p&gt;&lt;/div&gt;</description><category>Linux</category><category>xrandr</category><guid>http://stencel.io/posts/xrandr-tips.html</guid><pubDate>Tue, 13 Jan 2015 20:34:57 GMT</pubDate></item><item><title>Django Display choices defined in models in template</title><link>http://stencel.io/posts/django-display-choices-defined-in-models-in-template.html</link><dc:creator>Greg Stencel</dc:creator><description>&lt;div&gt;&lt;p&gt;example:
+Having model:&lt;/p&gt;
+&lt;pre class="code python"&gt;&lt;a name="rest_code_40978344353f4c66b2502f69dc0ae083-1"&gt;&lt;/a&gt;&lt;span class="n"&gt;GENDER&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;
+&lt;a name="rest_code_40978344353f4c66b2502f69dc0ae083-2"&gt;&lt;/a&gt;    &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt; &lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;'Male'&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
+&lt;a name="rest_code_40978344353f4c66b2502f69dc0ae083-3"&gt;&lt;/a&gt;    &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt; &lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;'Female'&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
+&lt;a name="rest_code_40978344353f4c66b2502f69dc0ae083-4"&gt;&lt;/a&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;a name="rest_code_40978344353f4c66b2502f69dc0ae083-5"&gt;&lt;/a&gt;
+&lt;a name="rest_code_40978344353f4c66b2502f69dc0ae083-6"&gt;&lt;/a&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Profile&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;UserenaBaseProfile&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+&lt;a name="rest_code_40978344353f4c66b2502f69dc0ae083-7"&gt;&lt;/a&gt;    &lt;span class="n"&gt;name&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;models&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;CharField&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;max_length&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;100&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;null&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kc"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;blank&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kc"&gt;True&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;a name="rest_code_40978344353f4c66b2502f69dc0ae083-8"&gt;&lt;/a&gt;    &lt;span class="n"&gt;surname&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;models&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;CharField&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;max_length&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;100&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;null&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kc"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;blank&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kc"&gt;True&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;a name="rest_code_40978344353f4c66b2502f69dc0ae083-9"&gt;&lt;/a&gt;    &lt;span class="n"&gt;sex&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;models&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;NullBooleanField&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;blank&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kc"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;null&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kc"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;choices&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;GENDER&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;a name="rest_code_40978344353f4c66b2502f69dc0ae083-10"&gt;&lt;/a&gt;    &lt;span class="n"&gt;born&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;models&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;DateTimeField&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;blank&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kc"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;null&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kc"&gt;True&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;a name="rest_code_40978344353f4c66b2502f69dc0ae083-11"&gt;&lt;/a&gt;
+&lt;a name="rest_code_40978344353f4c66b2502f69dc0ae083-12"&gt;&lt;/a&gt;    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;__unicode__&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+&lt;a name="rest_code_40978344353f4c66b2502f69dc0ae083-13"&gt;&lt;/a&gt;        &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="nb"&gt;str&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;p&gt;we can display Male or Female choice value in template by:&lt;/p&gt;
+&lt;pre class="code python"&gt;&lt;a name="rest_code_6d4765740c364b49b1ff1e31f57edd91-1"&gt;&lt;/a&gt;&lt;span class="p"&gt;{{&lt;/span&gt;&lt;span class="n"&gt;profile&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get_sex_display&lt;/span&gt;&lt;span class="p"&gt;}}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;</description><guid>http://stencel.io/posts/django-display-choices-defined-in-models-in-template.html</guid><pubDate>Sun, 02 Nov 2014 14:14:56 GMT</pubDate></item><item><title>mysql update with random values from list</title><link>http://stencel.io/posts/mysql-update-with-random-values-from-list.html</link><dc:creator>Greg Stencel</dc:creator><description>&lt;p&gt;“UPDATE book set year = ELT(1+FLOOR(RAND()*3), 2012,2013,2014)”&lt;/p&gt;</description><category>Databases</category><category>MySQL</category><guid>http://stencel.io/posts/mysql-update-with-random-values-from-list.html</guid><pubDate>Tue, 28 Oct 2014 19:57:25 GMT</pubDate></item></channel></rss>

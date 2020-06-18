@@ -1,0 +1,31 @@
+<p>fabric execution:::::
+fab -H <a class="reference external" href="mailto:me&#64;host1">me&#64;host1</a>,me&#64;host2,me&#64;host3 function</p>
+Example:
+<small>
+fab -H greg@mmyserver.com get_backup
+</small><p>or alternatively:</p>
+Example:
+<small>
+fab production1 deploy
+</small>
+
+ but then you'll have to production1 defined inside your fabfile.py<pre class="code python"><a name="rest_code_2465e05bc56f4624a4f6b5581698a301-1"></a><span class="k">def</span> <span class="nf">production</span><span class="p">():</span>
+<a name="rest_code_2465e05bc56f4624a4f6b5581698a301-2"></a>     <span class="n">env</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span>
+<a name="rest_code_2465e05bc56f4624a4f6b5581698a301-3"></a>         <span class="n">dest</span><span class="o">=</span><span class="s1">&#39;production&#39;</span><span class="p">,</span>
+<a name="rest_code_2465e05bc56f4624a4f6b5581698a301-4"></a>         <span class="n">hosts</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;some_ip_address&#39;</span><span class="p">],</span>
+<a name="rest_code_2465e05bc56f4624a4f6b5581698a301-5"></a> <span class="p">))</span>
+<a name="rest_code_2465e05bc56f4624a4f6b5581698a301-6"></a>
+<a name="rest_code_2465e05bc56f4624a4f6b5581698a301-7"></a> <span class="k">def</span> <span class="nf">development</span><span class="p">():</span>
+<a name="rest_code_2465e05bc56f4624a4f6b5581698a301-8"></a>     <span class="n">env</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span>
+<a name="rest_code_2465e05bc56f4624a4f6b5581698a301-9"></a>         <span class="n">dest</span><span class="o">=</span><span class="s1">&#39;development&#39;</span><span class="p">,</span>
+<a name="rest_code_2465e05bc56f4624a4f6b5581698a301-10"></a>         <span class="n">hosts</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;localhost&#39;</span><span class="p">],</span>
+<a name="rest_code_2465e05bc56f4624a4f6b5581698a301-11"></a> <span class="p">))</span>
+</pre><p><strong>local</strong> - execute a local command means host from which we launch fabric</p>
+<p><strong>run</strong>   - execute a remote command on all specified hosts, user-level permissions</p>
+<p><strong>sudo</strong> - sudo a command on the remote server)</p>
+<p><strong>put</strong> - copy over a local file to a remote destination)</p>
+<p><strong>get</strong> - download a file from the remote server)</p>
+<p><strong>prompt</strong> - prompt user with text and return the input (like raw_input))</p>
+<p><strong>reboot</strong> - reboot the remote system, disconnect, and wait for wait seconds)</p>
+<p>Download some logs</p>
+<p>get(remote_path=&quot;/tmp/log_extracts.tar.gz&quot;, local_path=&quot;/logs/new_log.tar.gz&quot;)</p>

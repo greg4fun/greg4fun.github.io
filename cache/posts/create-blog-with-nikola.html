@@ -1,0 +1,17 @@
+<p>Sometimes blogs are not so bad to write your thoughts. This is good place to come back for solution we've found previously spending hours searching for it .</p>
+<p>If we want to have more options to edit blog style or anything or host it on our server or github there are a lot of
+blog generators .
+One of them is Nikola
+.. link:http://getnikola.com/</p>
+<p>First of all just install nikola with pip on your system (best way is to use python virtualenv for python applications)</p>
+<pre class="code bash"><a name="rest_code_7af7977e51ce41c780bcce35c44c7162-1"></a>pip install nikola
+</pre><p>then start new blog</p>
+<pre class="code bash"><a name="rest_code_26069020f55d49a18993629a188ed7c4-1"></a>nikola init my_blog
+</pre><p>You can choose between themes <a class="reference external" href="http://themes.getnikola.com/">http://themes.getnikola.com/</a>
+to list available themes</p>
+<pre class="code bash"><a name="rest_code_4696566cc3eb407da284c8f3c316dba1-1"></a>nikola install_theme -l
+</pre><p>there is also possibility to use bootswatch theme <a class="reference external" href="http://bootswatch.com/">http://bootswatch.com/</a>
+remember not all themes works with bootswatch</p>
+<pre class="code bash"><a name="rest_code_9951252e911a4766aa178bb6b0665a2a-1"></a>nikola install_theme bootstrap3-jinja
+<a name="rest_code_9951252e911a4766aa178bb6b0665a2a-2"></a>nikola bootswatch_theme -n custom_theme -s amelia -p bootstrap3-jinja
+</pre>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Greg's Tech Notes (Posts about Linux, Bash)</title><link>http://stencel.io/</link><description></description><atom:link href="http://stencel.io/categories/cat_linux-bash.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><copyright>Contents © 2020 &lt;a href="mailto:gstencel@gmail.com"&gt;Greg Stencel&lt;/a&gt; </copyright><lastBuildDate>Thu, 18 Jun 2020 12:06:50 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Easy admin joke</title><link>http://stencel.io/posts/easy-admin-joke.html</link><dc:creator>Greg Stencel</dc:creator><description>&lt;div&gt;&lt;p&gt;When I first got admin access ages ago on shared server I wanted to do something funny
+to my coleague so I thought to display something on his screen.&lt;/p&gt;
+&lt;p&gt;Remembering everything in Linux filesystem is a file or a directory
+I read about pseudoterminals "pts"  they are inside /dev directory&lt;/p&gt;
+&lt;p&gt;Yea yea I know 3 rules of admin : Respect the privacy of others. Think before you type. With great power comes great responsibility bla bla bla ...&lt;/p&gt;
+&lt;p&gt;To do this joke just check who is logged in and on which pts is he :&lt;/p&gt;
+&lt;pre class="code bash"&gt;&lt;a name="rest_code_84c78a16839e4ba095e5f5453362c6ae-1"&gt;&lt;/a&gt;$ who
+&lt;a name="rest_code_84c78a16839e4ba095e5f5453362c6ae-2"&gt;&lt;/a&gt;greg     pts/3        &lt;span class="m"&gt;2012&lt;/span&gt;-03-10 &lt;span class="m"&gt;1&lt;/span&gt;:26 &lt;span class="o"&gt;(&lt;/span&gt;:0&lt;span class="o"&gt;)&lt;/span&gt;
+&lt;a name="rest_code_84c78a16839e4ba095e5f5453362c6ae-3"&gt;&lt;/a&gt;mark     pts/5        &lt;span class="m"&gt;2012&lt;/span&gt;-03-10 &lt;span class="m"&gt;10&lt;/span&gt;:29 &lt;span class="o"&gt;(&lt;/span&gt;:0&lt;span class="o"&gt;)&lt;/span&gt;
+&lt;a name="rest_code_84c78a16839e4ba095e5f5453362c6ae-4"&gt;&lt;/a&gt;jenny    pts/7        &lt;span class="m"&gt;2012&lt;/span&gt;-03-10 &lt;span class="m"&gt;13&lt;/span&gt;:06 &lt;span class="o"&gt;(&lt;/span&gt;:0&lt;span class="o"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;p&gt;So now, we know that Mark is working on pts/5 so lets send him message :)&lt;/p&gt;
+&lt;pre class="code bash"&gt;&lt;a name="rest_code_493c3d2bf6c145438d77279381171a89-1"&gt;&lt;/a&gt;$ &lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"In 5 minutes in toilet /Jenny"&lt;/span&gt; &amp;gt; /dev/pts/5
+&lt;/pre&gt;&lt;p&gt;To "clean evidences" :D ( remember that guy working on this terminal will lost his current works he's working on this
+specific terminal)&lt;/p&gt;
+&lt;pre class="code bash"&gt;&lt;a name="rest_code_64b26a0706804ce898aec3df938f6fef-1"&gt;&lt;/a&gt;$ cat /dev/urandom &amp;gt; /dev/pts/5
+&lt;/pre&gt;&lt;/div&gt;</description><category>Linux</category><guid>http://stencel.io/posts/easy-admin-joke.html</guid><pubDate>Sat, 10 May 2014 12:31:04 GMT</pubDate></item></channel></rss>

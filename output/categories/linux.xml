@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Greg's Tech Notes (Posts about Linux)</title><link>http://stencel.io/</link><description></description><atom:link href="http://stencel.io/categories/linux.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><copyright>Contents © 2020 &lt;a href="mailto:gstencel@gmail.com"&gt;Greg Stencel&lt;/a&gt; </copyright><lastBuildDate>Thu, 18 Jun 2020 12:06:50 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>xrandr tips</title><link>http://stencel.io/posts/xrandr-tips.html</link><dc:creator>Greg Stencel</dc:creator><description>&lt;div&gt;&lt;p&gt;adding resolution
+1)generate mode
+cvt 2560 1440 60
+➜  blog git:(website) ✗ cvt 2560 1440 60
+# 2560x1440 59.96 Hz (CVT 3.69M9) hsync: 89.52 kHz; pclk: 312.25 MHz
+Modeline "2560x1440_60.00"  312.25  2560 2752 3024 3488  1440 1443 1448 1493 -hsync +vsync&lt;/p&gt;
+&lt;p&gt;2)add it to xrandr
+sudo xrandr --newmode "2560x1440_60.00"  312.25  2560 2752 3024 3488  1440 1443 1448 1493  -hsync +vsync
+setting resolution&lt;/p&gt;
+&lt;p&gt;3)sudo xrandr --addmode VGA-0 "1680x1050_60.00"&lt;/p&gt;
+&lt;p&gt;xrandr -q
+xrandr --verbose&lt;/p&gt;
+&lt;p&gt;xrandr --output HDMI-0 --mode 2560x1440&lt;/p&gt;
+&lt;p&gt;irst generate a "modeline" by using cvt
+Syntax is: cvt width height refreshrate&lt;/p&gt;
+&lt;p&gt;cvt 1680 1050 60
+this gives you:&lt;/p&gt;
+&lt;p&gt;# 1680x1050 59.95 Hz (CVT 1.76MA) hsync: 65.29 kHz; pclk: 146.25 MHz
+Modeline "1680x1050_60.00"  146.25  1680 1784 1960 2240  1050 1053 1059 1089 -hsync +vsync
+Now tell this to xrandr:&lt;/p&gt;
+&lt;p&gt;sudo xrandr --newmode "1680x1050_60.00"  146.25  1680 1784 1960 2240  1050 1053 1059 1089 -&lt;/p&gt;
+&lt;p&gt;First clone the two screens, (the smaller screen will display the top left portion of the virtual screen)&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;xrandr --output VGA --auto --right-of LVDS&lt;/p&gt;
+&lt;p&gt;xrandr --output LVDS --mode 1280x800&lt;/p&gt;
+&lt;p&gt;xrandr --output LVDS --mode 1280x800 --rate 75&lt;/p&gt;
+&lt;p&gt;xrandr --output LVDS --auto&lt;/p&gt;
+&lt;p&gt;xrandr --output LVDS --off --output HDMI-0 --auto&lt;/p&gt;
+&lt;p&gt;xrandr --output VGA1 --mode 1024x768 --rate 60&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;#Laptop right extra Monitor Left&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;xrandr --output VGA1 --left-of LVDS1&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;#Laptop left extra Monitor right&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;xrandr --output LVDS1 --left-of VGA1&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;#This is to set your primary monitor.&lt;/p&gt;
+&lt;p&gt;#This sets your laptop monitor as your primary monitor.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;xrandr --output LVDS1 --primary&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;#This sets your VGA monitor as your primary monitor.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;xrandr --output VGA1 --primary&lt;/p&gt;
+&lt;p&gt;xrandr --output VGA1 --mode 1024x768 --rate 60&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;xrandr --pos &amp;lt;x&amp;gt;x&amp;lt;y&amp;gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;$ xrandr --left-of &amp;lt;output&amp;gt;&lt;/p&gt;
+&lt;p&gt;$ xrandr --right-of &amp;lt;output&amp;gt;&lt;/p&gt;
+&lt;p&gt;$ xrandr --above &amp;lt;output&amp;gt;&lt;/p&gt;
+&lt;p&gt;$ xrandr --below &amp;lt;output&amp;gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Option '-pos' is more flexible which can place output to anywhere, for example:&lt;/p&gt;
+&lt;p&gt;$ xrandr --output VGA1 --pos 200x200
+$ xrandr --output LVDS1 --pos 400x500&lt;/p&gt;
+&lt;p&gt;xrandr -o right&lt;/p&gt;&lt;/div&gt;</description><category>Linux</category><category>xrandr</category><guid>http://stencel.io/posts/xrandr-tips.html</guid><pubDate>Tue, 13 Jan 2015 20:34:57 GMT</pubDate></item><item><title>Linux diplay size of each subdirectory</title><link>http://stencel.io/posts/linux-diplay-size-of-each-subdirectory.html</link><dc:creator>Greg Stencel</dc:creator><description>&lt;div&gt;&lt;p&gt;To display total size of each subdirectory&lt;/p&gt;
+&lt;pre class="code bash"&gt;&lt;a name="rest_code_adc96efe997b4ec8ac06358516003878-1"&gt;&lt;/a&gt;du -sh *
+&lt;/pre&gt;&lt;p&gt;-h human readable displays MB and GB instead of milions and bilions of bytes :)
+-s summarize total size of dir&lt;/p&gt;&lt;/div&gt;</description><category>bash</category><category>Linux</category><guid>http://stencel.io/posts/linux-diplay-size-of-each-subdirectory.html</guid><pubDate>Tue, 01 Jul 2014 12:31:07 GMT</pubDate></item><item><title>ssh reverse tunneling</title><link>http://stencel.io/posts/ssh-reverse-tunneling.html</link><dc:creator>Greg Stencel</dc:creator><description>&lt;div&gt;&lt;p&gt;When you want someone to connect to your NAT-ed or Firewalled server and&lt;/p&gt;
+&lt;p&gt;you run out of ideas ond options or you even dont have&lt;/p&gt;
+&lt;p&gt;you dont have access to Firewall or VPN server to configure&lt;/p&gt;
+&lt;p&gt;anything - you can always try to use reverse ssh tunnel.&lt;/p&gt;
+&lt;p&gt;The only one condition is that you must be able to ssh from your server to public host( the one other guy wants to connect)&lt;/p&gt;
+&lt;p&gt;This is how it works:&lt;/p&gt;
+&lt;p&gt;[Server]  &amp;lt;----&amp;gt; [ FIREWALL/NAT SERVER ] &amp;lt;----&amp;gt; [ BOB HOST with public ip 80.80.80.80]&lt;/p&gt;&lt;/div&gt;</description><category>Linux</category><category>reverse ssh tunnel</category><category>ssh</category><guid>http://stencel.io/posts/ssh-reverse-tunneling.html</guid><pubDate>Mon, 16 Jun 2014 15:07:02 GMT</pubDate></item><item><title>List all users crontab jobs</title><link>http://stencel.io/posts/list-all-users-crontab-jobs.html</link><dc:creator>Greg Stencel</dc:creator><description>&lt;pre class="code bash"&gt;&lt;a name="rest_code_0015819660534c3aa6904a3074ef11d9-1"&gt;&lt;/a&gt;&lt;span class="k"&gt;for&lt;/span&gt; usr in &lt;span class="k"&gt;$(&lt;/span&gt;cut -f1 -d: /etc/passwd&lt;span class="k"&gt;)&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt; &lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="nv"&gt;$usr&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; crontab -u &lt;span class="nv"&gt;$usr&lt;/span&gt; -l&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="k"&gt;done&lt;/span&gt;
+&lt;/pre&gt;</description><category>Linux</category><guid>http://stencel.io/posts/list-all-users-crontab-jobs.html</guid><pubDate>Mon, 19 May 2014 11:50:10 GMT</pubDate></item><item><title>Linux suspended jobs</title><link>http://stencel.io/posts/linux-suspended-jobs.html</link><dc:creator>Greg Stencel</dc:creator><description>&lt;div&gt;&lt;p&gt;If you suspended job by accident with ctrl+z you can always resume by fg here more examples:&lt;/p&gt;
+&lt;kbd&gt;crtl&lt;/kbd&gt;&lt;kbd&gt;z&lt;/kbd&gt; suspend&lt;br&gt;
+
+jobs - list the current jobs&lt;br&gt;
+
+fg - resume the job that's next in the queue&lt;br&gt;
+fg %[number] - resume job [number]&lt;br&gt;
+bg - Push the next job in the queue into the background&lt;br&gt;
+bg %[number] - Push the job [number] into the background&lt;br&gt;
+kill %[number] - Kill the job numbered [number]&lt;br&gt;
+kill -[signal] %[number] - Send the signal [signal] to job number [number]&lt;br&gt;
+disown %[number] - you won't be owner of process anymore so it will be alive after leaving terminal&lt;br&gt;
+%vim &lt;br&gt;&lt;/div&gt;</description><category>Linux</category><guid>http://stencel.io/posts/linux-suspended-jobs.html</guid><pubDate>Sat, 17 May 2014 19:31:32 GMT</pubDate></item><item><title>running-scripts-in-background-linux</title><link>http://stencel.io/posts/running-scripts-in-background-linux.html</link><dc:creator>Greg Stencel</dc:creator><description>&lt;div&gt;&lt;p&gt;I used to execute a lot of commands with &amp;amp; at the end. But once I used plowshare and it didnt work because &amp;amp; works until
+you wont log out .So my solution (I know I could use nohup :) ) was screen. Screen is the best tool admin can use when working
+remotely. It can be usefull when you're in place with big packet loss and you often lost connection so when you're
+restoring database  you should be in screen session because when something will disconnect you you can alwas log in and
+connect to screen session in which restoring is taking place.&lt;/p&gt;
+&lt;p&gt;So executing&lt;/p&gt;
+&lt;pre class="code bash"&gt;&lt;a name="rest_code_0d90cf72a376442bb18c6a9a0c1175e8-1"&gt;&lt;/a&gt;$./my_script.sh &lt;span class="p"&gt;&amp;amp;&lt;/span&gt;
+&lt;/pre&gt;&lt;p&gt;will be only running when your session is still active so when you'll logout it will be killed.&lt;/p&gt;
+&lt;p&gt;To run it independent from your presence on server do it with nohup:&lt;/p&gt;
+&lt;pre class="code bash"&gt;&lt;a name="rest_code_92809d3a2898450d99eed922dfeb03f4-1"&gt;&lt;/a&gt;$ nohup ./my_script.sh &lt;span class="p"&gt;&amp;amp;&lt;/span&gt;
+&lt;/pre&gt;&lt;p&gt;To launch screen :&lt;/p&gt;
+&lt;pre class="code bash"&gt;&lt;a name="rest_code_b4450ae4d6ba42d99edc9d2fb7a818b9-1"&gt;&lt;/a&gt;$ screen
+&lt;/pre&gt;&lt;p&gt;Best practice is to launch screen with its name :&lt;/p&gt;
+&lt;pre class="code bash"&gt;&lt;a name="rest_code_27065407db19484d93bfa6b72008a4b6-1"&gt;&lt;/a&gt;$ screen -S my_own_screen_name
+&lt;/pre&gt;Then if you want detach screen to get back later
+
+&lt;kbd&gt;Ctrl&lt;/kbd&gt;&lt;kbd&gt;a&lt;/kbd&gt;&lt;kbd&gt;d&lt;/kbd&gt;
+
+If you want terminate screen just
+&lt;kbd&gt;Ctrl&lt;/kbd&gt;&lt;kbd&gt;d&lt;/kbd&gt; or exit&lt;p&gt;then you can resume it with:&lt;/p&gt;
+&lt;pre class="code bash"&gt;&lt;a name="rest_code_dfdd8264def6424b820eaab115805962-1"&gt;&lt;/a&gt;$ screen -r my_own_screen_name
+&lt;/pre&gt;&lt;p&gt;To list all available screens :&lt;/p&gt;
+&lt;pre class="code bash"&gt;&lt;a name="rest_code_8cf8cba0e91a4202a3da26ea8a810016-1"&gt;&lt;/a&gt;$ screen -ls
+&lt;/pre&gt;&lt;p&gt;To attach to already attached screen:&lt;/p&gt;
+&lt;pre class="code bash"&gt;&lt;a name="rest_code_dbaf39056b5c47e9a2c1beb86b09c5cf-1"&gt;&lt;/a&gt;$ screen -x my_own_screen_name
+&lt;/pre&gt;&lt;p&gt;To attach to attached screen and detach others:&lt;/p&gt;
+&lt;pre class="code bash"&gt;&lt;a name="rest_code_70630b7f079b4a64b24000e084fcfae1-1"&gt;&lt;/a&gt;$ screen -r -d my_own_screen_name
+&lt;/pre&gt;&lt;p&gt;To rename existing screen:&lt;/p&gt;
+(being attached):
+
+&lt;kbd&gt;Ctrl&lt;/kbd&gt;&lt;kbd&gt;a&lt;/kbd&gt;:sessionname my_screen_name&lt;kbd&gt;Enter&lt;/kbd&gt;&lt;/div&gt;</description><category>bash</category><category>Linux</category><guid>http://stencel.io/posts/running-scripts-in-background-linux.html</guid><pubDate>Tue, 13 May 2014 14:01:14 GMT</pubDate></item><item><title>Easy admin joke</title><link>http://stencel.io/posts/easy-admin-joke.html</link><dc:creator>Greg Stencel</dc:creator><description>&lt;div&gt;&lt;p&gt;When I first got admin access ages ago on shared server I wanted to do something funny
+to my coleague so I thought to display something on his screen.&lt;/p&gt;
+&lt;p&gt;Remembering everything in Linux filesystem is a file or a directory
+I read about pseudoterminals "pts"  they are inside /dev directory&lt;/p&gt;
+&lt;p&gt;Yea yea I know 3 rules of admin : Respect the privacy of others. Think before you type. With great power comes great responsibility bla bla bla ...&lt;/p&gt;
+&lt;p&gt;To do this joke just check who is logged in and on which pts is he :&lt;/p&gt;
+&lt;pre class="code bash"&gt;&lt;a name="rest_code_84c78a16839e4ba095e5f5453362c6ae-1"&gt;&lt;/a&gt;$ who
+&lt;a name="rest_code_84c78a16839e4ba095e5f5453362c6ae-2"&gt;&lt;/a&gt;greg     pts/3        &lt;span class="m"&gt;2012&lt;/span&gt;-03-10 &lt;span class="m"&gt;1&lt;/span&gt;:26 &lt;span class="o"&gt;(&lt;/span&gt;:0&lt;span class="o"&gt;)&lt;/span&gt;
+&lt;a name="rest_code_84c78a16839e4ba095e5f5453362c6ae-3"&gt;&lt;/a&gt;mark     pts/5        &lt;span class="m"&gt;2012&lt;/span&gt;-03-10 &lt;span class="m"&gt;10&lt;/span&gt;:29 &lt;span class="o"&gt;(&lt;/span&gt;:0&lt;span class="o"&gt;)&lt;/span&gt;
+&lt;a name="rest_code_84c78a16839e4ba095e5f5453362c6ae-4"&gt;&lt;/a&gt;jenny    pts/7        &lt;span class="m"&gt;2012&lt;/span&gt;-03-10 &lt;span class="m"&gt;13&lt;/span&gt;:06 &lt;span class="o"&gt;(&lt;/span&gt;:0&lt;span class="o"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;p&gt;So now, we know that Mark is working on pts/5 so lets send him message :)&lt;/p&gt;
+&lt;pre class="code bash"&gt;&lt;a name="rest_code_493c3d2bf6c145438d77279381171a89-1"&gt;&lt;/a&gt;$ &lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"In 5 minutes in toilet /Jenny"&lt;/span&gt; &amp;gt; /dev/pts/5
+&lt;/pre&gt;&lt;p&gt;To "clean evidences" :D ( remember that guy working on this terminal will lost his current works he's working on this
+specific terminal)&lt;/p&gt;
+&lt;pre class="code bash"&gt;&lt;a name="rest_code_64b26a0706804ce898aec3df938f6fef-1"&gt;&lt;/a&gt;$ cat /dev/urandom &amp;gt; /dev/pts/5
+&lt;/pre&gt;&lt;/div&gt;</description><category>Linux</category><guid>http://stencel.io/posts/easy-admin-joke.html</guid><pubDate>Sat, 10 May 2014 12:31:04 GMT</pubDate></item></channel></rss>

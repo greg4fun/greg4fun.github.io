@@ -1,0 +1,320 @@
+<p>This site is written to promote using VIM cause it's free, it has a lot
+of plugins and it can even be python IDE ;) and vi is also on every unix
+like system so logging to your clean instalation server it's good to
+know how to edit conf files.</p>
+<p>If you don't want to read more on this site just have a look at basic
+commands which will be enough to edit and save file:</p>
+<p><strong>Remember</strong> all this commands should be executed within normal mode to
+do so press ESC.</p>
+<kbd>:</kbd><kbd>q</kbd> <kbd>&#8629;</kbd>QUIT (being in normal mode to be sure you can always use <kbd>ESC</kbd> <kbd>:</kbd><kbd>q</kbd><kbd>&#8629;</kbd>) most important command remember it to avaoid being character from famous "VIM quit joke" how to generate cat /dev/urandom: <br>
+<kbd>:</kbd><kbd>q</kbd><kbd>!</kbd> <kbd>&#8629;</kbd>quit without saving <br>
+<kbd>:</kbd><kbd>w</kbd><kbd>q</kbd><kbd>&#8629;</kbd> - save and quit<br>
+<kbd>y</kbd><kbd>y</kbd> - copy line<br>
+<kbd>p</kbd> - paste line<br>
+<kbd>i</kbd> - insert mode after that you're no longer in normal mode you can than start typig text<br>
+<kbd>h</kbd> <kbd>j</kbd> <kbd>k</kbd> <kbd>l</kbd> - left down up right or you can use arrows in vim<br>
+you can also find undo <kbd>u</kbd> nad redo <kbd>ctrl</kbd><kbd>r</kbd> useful<br><p>I was inspired by <a class="reference external" href="https://github.com/onjin/vim-startup">Onjin</a> when I
+saw him typing in vim I was impressed of how his thoughts became text
+and functions in VIM so fast without even using a mouse :).</p>
+<p>It takes a while to switch from another editor and get its habits (it
+took one month for me and I tried 3 times) but after all you will be
+happy using lightweight VIM.</p>
+<p>To use vim you need to know that there are <strong>five modes</strong> (normal,
+insert, visual, select, command-line, Ex-mode)</p>
+<p>There are 4 main modes you'll be using probably:</p>
+<ul class="simple">
+<li><p><strong>Normal</strong> - usually VIm starts in this mode where you can navigate
+through whole file and modify text. To get to this mode press ESC.</p></li>
+<li><p><strong>Insert</strong> : this mode is like it says - for inserting new text you
+can go to this mode by pressing i or a (being in normal mode ESC)</p></li>
+<li><p><strong>Visual</strong> : you can select text in this mode by pressing v (being in
+normal mode ESC) and moving for selection</p></li>
+<li><p><strong>Command-line</strong> : you activate it by pressing : (being in normal
+mode ESC)</p></li>
+</ul>
+<div class="alert alert-info">Tip: Capital letters like <kbd>A</kbd> need to followed by <kbd>Shift</kbd> </div><div class="section" id="editing-enter-commands-below-being-in-normal-mode">
+<h1>Editing (enter commands below being in normal mode):</h1>
+<blockquote>
+<kbd>i</kbd>  -  enter insert mode and place cursor at <b>current position</b> to start typing<br><br><p><img alt="image0" src="/images/i.gif" /></p>
+</blockquote>
+<hr class="docutils" />
+<blockquote>
+<kbd> I </kbd> - enter insert mode and place cursor at <b>start of the line</b> to start typing<p><img alt="imageI" src="/images/I.gif" /></p>
+</blockquote>
+<hr class="docutils" />
+<blockquote>
+<kbd>a</kbd> - enter insert mode and place cursor <b>after current position</b>\ to start typing<br><br><p><img alt="image5" src="/images/a.gif" /></p>
+</blockquote>
+<hr class="docutils" />
+<blockquote>
+<kbd>A</kbd> - enter insert mode and place cursor at the <b>end of line</b> to start typing<br><br><p><img alt="image5A" src="/images/A.gif" /></p>
+</blockquote>
+<hr class="docutils" />
+<blockquote>
+<kbd>e</kbd><kbd>a</kbd> - append at end of word<br><br><p><img alt="image6" src="/images/ea.gif" /></p>
+</blockquote>
+<hr class="docutils" />
+<blockquote>
+<kbd>r</kbd> - replace a single character (does not use insert mode)</blockquote>
+<hr class="docutils" />
+<blockquote>
+<kbd>J</kbd> - join line below to the current one<br><br><p><img alt="image7" src="/images/J2.gif" /></p>
+</blockquote>
+<hr class="docutils" />
+<blockquote>
+<kbd>c</kbd><kbd>c</kbd> - change (replace) an entire line</blockquote>
+<hr class="docutils" />
+<blockquote>
+<kbd>c</kbd><kbd>w</kbd> - change (replace) to the end of word</blockquote>
+<hr class="docutils" />
+<blockquote>
+<kbd>c</kbd><kbd>$</kbd> - change (replace) to the end of line</blockquote>
+<hr class="docutils" />
+<blockquote>
+<kbd>s</kbd> - delete character at cursor and subsitute text</blockquote>
+<hr class="docutils" />
+<blockquote>
+<kbd>S</kbd> - delete line at cursor and substitute text (same as cc)</blockquote>
+<hr class="docutils" />
+<blockquote>
+<kbd>d</kbd><kbd>$</kbd>  or<kbd>D</kbd> - delete after cursor<kbd>xp</kbd> - transpose two letters (delete and paste, technically)</blockquote>
+<hr class="docutils" />
+<blockquote>
+<kbd>u</kbd> - undo</blockquote>
+<hr class="docutils" />
+<blockquote>
+<kbd>Ctrl</kbd><kbd> r</kbd> - redo</blockquote>
+<hr class="docutils" />
+<blockquote>
+<kbd>.</kbd> - repeat last command</blockquote>
+<hr class="docutils" />
+<blockquote>
+<kbd>ESC</kbd> - exit insert mode</blockquote>
+<hr class="docutils" />
+<div class="section" id="indedation">
+<h2>Indedation</h2>
+<blockquote>
+<p class="bg-success">
+ Examples:<br><br>
+
+   :s/\n/ /g - replace all spaces with enter in current line<br>
+   :%s/\n/ /g -replace all spaces with enter in all lines<br>
+   :%s/\n/ /cg - replace all spaces with enter in all lines but with confirmation<br>
+
+ </p></blockquote>
+</div>
+<hr class="docutils" />
+<div class="section" id="id1">
+<h2>Indedation</h2>
+<blockquote>
+<kbd>v</kbd> then select block you want indent and press number of indedations<kbd>2</kbd><kbd>></kbd> -  execute indentation on the selected block</blockquote>
+</div>
+<div class="section" id="marking-text-visual-mode">
+<h2>Marking text (visual mode)</h2>
+<blockquote>
+<kbd>v</kbd> - mark lines with starting visual mode</blockquote>
+<hr class="docutils" />
+<blockquote>
+<kbd>d</kbd> - (after starting selection with v ) cut selected text</blockquote>
+<hr class="docutils" />
+<blockquote>
+<kbd>y</kbd> - (after starting selection with v ) copy (yank) selected text</blockquote>
+<hr class="docutils" />
+<blockquote>
+<kbd>p</kbd> - (after cutting or copying selection) paste selected text after cursor</blockquote>
+<hr class="docutils" />
+<blockquote>
+<kbd>P</kbd> - (after cutting or copying selection) paste selected text before cursor example of all 4 commands above:<br><br><p><img alt="image8" src="/images/yankpaste.gif" /></p>
+</blockquote>
+<hr class="docutils" />
+<blockquote>
+<kbd>V</kbd> - start Linewise visual mode<br><br><p><img alt="image9" src="/images/VisualLine.gif" /></p>
+</blockquote>
+<hr class="docutils" />
+<blockquote>
+<kbd>o</kbd> - move to other end of marked area<br><br><p><img alt="image10" src="/images/o.gif" /></p>
+</blockquote>
+<hr class="docutils" />
+<blockquote>
+<kbd>Ctrl</kbd><kbd>v</kbd> - start visual block mode</blockquote>
+<hr class="docutils" />
+<blockquote>
+<kbd>O</kbd> - move to Other corner of block<br><br><p><img alt="image11" src="/images/visualblock.gif" /></p>
+</blockquote>
+<hr class="docutils" />
+<blockquote>
+<kbd>a</kbd><kbd>w</kbd> - mark a word (being in visual mode)<br><br><p><img alt="image12" src="/images/select_word_2.gif" /></p>
+</blockquote>
+<hr class="docutils" />
+<blockquote>
+<kbd>a</kbd><kbd>b</kbd> - a () block (with braces) (or vab from normal mode)<br><br><p><img alt="image13" src="/images/mark_brackets.gif" /></p>
+</blockquote>
+<hr class="docutils" />
+<blockquote>
+<kbd>a</kbd><kbd>B</kbd> - a {} block (with brackets)<br><br><p><img alt="image14" src="/images/selecr_brackets_6.gif" /></p>
+</blockquote>
+<hr class="docutils" />
+<blockquote>
+<kbd>i</kbd><kbd>b</kbd> - inner () block</blockquote>
+<hr class="docutils" />
+<blockquote>
+<kbd>i</kbd><kbd>B</kbd> - inner {} block</blockquote>
+<hr class="docutils" />
+<blockquote>
+<kbd>&gt;</kbd> - shift right</blockquote>
+<hr class="docutils" />
+<blockquote>
+<kbd>&lt;</kbd> - shift left</blockquote>
+<hr class="docutils" />
+<blockquote>
+<kbd>y</kbd> - yank (copy) marked text</blockquote>
+<hr class="docutils" />
+<blockquote>
+<kbd>d</kbd> - delete marked text</blockquote>
+<hr class="docutils" />
+<blockquote>
+<kbd>~</kbd> - switch case</blockquote>
+</div>
+<div class="section" id="layout-windows">
+<h2>Layout/windows:</h2>
+<blockquote>
+<kbd>Ctrl</kbd><kbd>w</kbd><kbd>w</kbd> - swith between windows</blockquote>
+<hr class="docutils" />
+<blockquote>
+<kbd>Ctrl </kbd><kbd>w </kbd><kbd>&#8679;</kbd> - move cursor up a window example using ctr ww and ctr w arrows in example before switching windows ESC was pressed to enter <b>normal</b> mode:<br><br><p><img alt="image15" src="/images/ctrlww.gif" /></p>
+</blockquote>
+<hr class="docutils" />
+<blockquote>
+<kbd>ctrl </kbd><kbd>w +</kbd> - increase size of current window</blockquote>
+<hr class="docutils" />
+<blockquote>
+<kbd>ctrl</kbd><kbd>w</kbd><kbd>-</kbd> - decrease size of current window<br><br><p><img alt="image16" src="/images/rezise_window.gif" /></p>
+</blockquote>
+<hr class="docutils" />
+<blockquote>
+<kbd>ctrl</kbd><kbd>w</kbd><kbd>\</kbd><kbd>_</kbd> - maximize current window</blockquote>
+<hr class="docutils" />
+<blockquote>
+<kbd>ctrl</kbd><kbd>w</kbd><kbd>=</kbd> -  make all equal size<br><br><p><img alt="image17" src="/images/resize_window2.gif" /></p>
+</blockquote>
+<hr class="docutils" />
+<blockquote>
+<kbd>1</kbd><kbd>0</kbd><kbd>ctrl</kbd><kbd>w</kbd><kbd>+</kbd> - increase window size by 10 lines</blockquote>
+<hr class="docutils" />
+<blockquote>
+<kbd>:vsplit file</kbd> - vertical split</blockquote>
+<hr class="docutils" />
+<blockquote>
+<kbd>:sview</kbd> - same as split, but readonly</blockquote>
+<hr class="docutils" />
+<blockquote>
+<kbd>:hide</kbd> - close current window</blockquote>
+<hr class="docutils" />
+<blockquote>
+<kbd>:only</kbd> - keep only this window open</blockquote>
+<hr class="docutils" />
+<blockquote>
+<kbd>:ls</kbd> - show current buffers</blockquote>
+<hr class="docutils" />
+<blockquote>
+<kbd>:b 2</kbd> - open buffer #2 in this window</blockquote>
+</div>
+<div class="section" id="movement">
+<h2>Movement:</h2>
+<blockquote>
+<kbd>w</kbd> - next word by punctation <br><br><p><img alt="image20" src="/images/w_2.gif" /></p>
+</blockquote>
+<hr class="docutils" />
+<blockquote>
+<kbd>W</kbd> - next word by spaces<br><br><p><img alt="image21" src="/images/W_1.gif" /></p>
+</blockquote>
+<hr class="docutils" />
+<blockquote>
+<kbd>b</kbd> - back word by punctation</blockquote>
+<hr class="docutils" />
+<blockquote>
+<kbd>B</kbd> - back word by spaces</blockquote>
+<hr class="docutils" />
+<blockquote>
+<kbd>e</kbd> - end word by punctation</blockquote>
+<hr class="docutils" />
+<blockquote>
+<kbd>E</kbd> - end word by spaces</blockquote>
+<hr class="docutils" />
+<blockquote>
+<kbd>h</kbd> - move left</blockquote>
+<hr class="docutils" />
+<blockquote>
+<kbd>j</kbd> - move down</blockquote>
+<hr class="docutils" />
+<blockquote>
+<kbd>k</kbd> - move up</blockquote>
+<hr class="docutils" />
+<blockquote>
+<kbd>l</kbd> - move right</blockquote>
+<hr class="docutils" />
+<blockquote>
+<kbd>^</kbd> - first non-blank character of line</blockquote>
+<hr class="docutils" />
+<blockquote>
+<kbd>)</kbd> - zero) start of line</blockquote>
+<hr class="docutils" />
+<blockquote>
+<kbd>$</kbd> - end of line</blockquote>
+<hr class="docutils" />
+<blockquote>
+<kbd>G</kbd> - Go To command (prefix with number 4j moves down 4 lines.</blockquote>
+</div>
+<hr class="docutils" />
+<div class="section" id="operations-on-file">
+<h2>Operations on file:</h2>
+<blockquote>
+<kbd>:e</kbd> - open file in new buffer</blockquote>
+<hr class="docutils" />
+<blockquote>
+<kbd>:w</kbd> - write file to disk - save</blockquote>
+<hr class="docutils" />
+<blockquote>
+<kbd>:w filename</kbd>  save as</blockquote>
+<hr class="docutils" />
+<blockquote>
+<kbd>ZZ</kbd> - write file to disk and quit like :wq</blockquote>
+<hr class="docutils" />
+<blockquote>
+<kbd>:wq</kbd> - save file and quit</blockquote>
+<hr class="docutils" />
+<blockquote>
+<kbd>:n</kbd> - edit a new file</blockquote>
+<hr class="docutils" />
+<blockquote>
+<kbd>:n!</kbd> - edit new file without saving current changes</blockquote>
+<hr class="docutils" />
+<blockquote>
+<kbd>:q!</kbd> - quit without changes</blockquote>
+<hr class="docutils" />
+<blockquote>
+<kbd>:q</kbd> - quit editing file</blockquote>
+<hr class="docutils" />
+<blockquote>
+<kbd>:e .</kbd> - directory explorer</blockquote>
+<hr class="docutils" />
+<blockquote>
+<kbd>:split</kbd> - filename - split window and load another file</blockquote>
+<hr class="docutils" />
+<blockquote>
+<kbd>:sview file</kbd> - same as split, but readonly</blockquote>
+<hr class="docutils" />
+<p>Split window:</p>
+<blockquote>
+<kbd>Ctrl</kbd><kbd>W</kbd><kbd>s</kbd> - horizontal splitting<br>
+<kbd>Ctrl</kbd><kbd>W</kbd><kbd>v</kbd> - for vertical splitting<br>
+<kbd>Ctrl</kbd><kbd>w</kbd><kbd>q</kbd> - close window<br></blockquote>
+<p>Split window:
+repeat insert in blockview
+ctrlv - select block
+then I -text ESC</p>
+</div>
+</div>
+<div class="section" id="macros-recording">
+<h1>Macros - recording</h1>
+</div>

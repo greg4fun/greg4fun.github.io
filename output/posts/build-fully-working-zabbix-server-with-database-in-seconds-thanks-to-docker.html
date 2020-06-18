@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html prefix="        og: http://ogp.me/ns# article: http://ogp.me/ns/article#     " vocab="http://ogp.me/ns" lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+<title>Build fully working zabbix server with database in seconds thanks to docker | Greg's Tech Notes</title>
+<link href="https://fonts.googleapis.com/css?family=Bitter:400,400i,700" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+<link href="../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../rss.xml">
+<link rel="canonical" href="http://stencel.io/posts/build-fully-working-zabbix-server-with-database-in-seconds-thanks-to-docker.html">
+<!--[if lt IE 9]><script src="../assets/js/html5shiv-printshiv.min.js"></script><![endif]--><meta name="author" content="Greg Stencel">
+<link rel="prev" href="adding-zabbix-agent-to-server.html" title="Adding zabbix agent to server" type="text/html">
+<meta property="og:site_name" content="Greg's Tech Notes">
+<meta property="og:title" content="Build fully working zabbix server with database in seconds thanks to d">
+<meta property="og:url" content="http://stencel.io/posts/build-fully-working-zabbix-server-with-database-in-seconds-thanks-to-docker.html">
+<meta property="og:description" content="To install zabbix server quickly zabbix comes with help as they have prebuild their product with docker images.
+There is lots of official zabbix images on dockerhub so it can just overwhelm you.
+There">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2018-03-16T17:47:56Z">
+<meta property="article:tag" content="DevOps">
+<meta property="article:tag" content="docker">
+<meta property="article:tag" content="docker-compose">
+<meta property="article:tag" content="monitoring">
+<meta property="article:tag" content="zabbix">
+</head>
+<body>
+    <a href="#page-content" class="sr-only sr-only-focusable">Skip to main content</a>
+    
+    <section class="social"><ul>
+<li><p style="color:#fff;font-size:3em;">stencel.io</p></li>
+        <li><p style="color:#fff;font-size:2em;">greg's tech notes</p></li>
+            <li>
+                <a href="http://stencel.io/">
+                    <img src="../images/aboutme.png" alt="Greg's Tech Notes" id="logo"></a>
+            </li>
+        
+            <li><a href="../index.html" title="Home"><i class="fa fa-home"></i></a></li>
+            <li><a href="../archive.html" title="Archives"><i class="fa fa-folder-open"></i></a></li>
+            <li><a href="../categories/index.html" title="Tags"><i class="fa fa-tags"></i></a></li>
+            <li><a href="https://www.linkedin.com/in/gregstencel/" title="My Linkedin"><i class="fab fa-linkedin"></i></a></li>
+            <li><a href="https://github.com/greg4fun" title="My Github"><i class="fab fa-github"></i></a></li>
+    
+    
+
+        </ul></section><section class="page-content"><div class="content" rel="main">
+            
+<article class="post-text h-entry hentry postpage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="#" class="u-url">Build fully working zabbix server with database in seconds thanks to docker</a></h1>
+
+        <div class="metadata">
+            <p class="dateline"><a href="#" rel="bookmark"><i class="fa fa-clock"></i> <time class="published dt-published" datetime="2018-03-16T17:47:56Z" itemprop="datePublished" title="2018-03-16 17:47">2018-03-16 17:47</time></a></p>
+            <p class="byline author vcard"> <i class="fa fa-user"></i> <span class="byline-name fn" itemprop="author">
+                    Greg Stencel
+            </span></p>
+                <p class="commentline"><i class="far fa-comment"></i>
+        
+    <a href="build-fully-working-zabbix-server-with-database-in-seconds-thanks-to-docker.html#disqus_thread" data-disqus-identifier="cache/posts/build-fully-working-zabbix-server-with-database-in-seconds-thanks-to-docker.html">Comments</a>
+
+
+            
+        </p>
+<p class="sourceline"><a href="build-fully-working-zabbix-server-with-database-in-seconds-thanks-to-docker.rst" class="sourcelink"><i class="fa fa-file-code"></i> Source</a></p>
+
+            
+
+            
+    <div class="tags">
+<h3 class="metadata-title">
+<i class="fa fa-tags"></i> Tags:</h3>
+        <ul itemprop="keywords" class="tags-ul">
+<li><a class="tag p-category" href="../categories/devops.html" rel="tag">DevOps</a></li>
+            <li><a class="tag p-category" href="../categories/docker.html" rel="tag">docker</a></li>
+            <li><a class="tag p-category" href="../categories/docker-compose.html" rel="tag">docker-compose</a></li>
+            <li><a class="tag p-category" href="../categories/monitoring.html" rel="tag">monitoring</a></li>
+            <li><a class="tag p-category" href="../categories/zabbix.html" rel="tag">zabbix</a></li>
+        </ul>
+</div>
+
+        </div>
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+    <div>
+<p>To install zabbix server quickly zabbix comes with help as they have prebuild their product with docker images.
+There is lots of official zabbix images on dockerhub so it can just overwhelm you.
+There are mixes of all different possibilities like zabbix with mysql or postgres or either sqlite,
+zabbix served bt nginx or apache or java gateway.
+Depending on stack which is closest to you you can easily build docker-compose that will just run selected stack in
+seconds.
+My pick was nginx mysql so to set up fully running zabbix server we need 3 images</p>
+<ul class="simple">
+<li><p>mysql-server</p></li>
+<li><p>zabbix-web  - web interface</p></li>
+<li><p>zabbix-server - main zabbix process responsible for polling and trapping data and sending notifications to users.</p></li>
+</ul>
+<p>In addition you can add postfix mail server for notifying users but its not
+a must as you can use your own mail server if so - just remove postfix service from example below.</p>
+<p>Notice(you may want to use some specific versions or alpine versions for production env)</p>
+<p>Create some directory (directory name is crucial here for visibility and future maitenance
+of your containers and volumes or networks as the name will be used as prefix
+for docker containers created by docker-compose and also volumes directories
+so it will be easier to identify in future which volume belongs to which stack
+In Ubuntu volumes are usually being kept in/var/lib/docker/volumes but you can mount any directory from host by
+just specifying absolute or relative path in service configuration so for instance for mysql in
+example to mount mysql_data_dir just outside of our containers folder</p>
+<pre class="code bash"><a name="rest_code_ada2736a3948419e8f78eed3f3f5c008-1"></a>volumes:
+<a name="rest_code_ada2736a3948419e8f78eed3f3f5c008-2"></a>  - <span class="s1">'../mysql_data_dir:/var/lib/mysql'</span>
+</pre>
+<p>Now within directory create docker-compose.yml with selected technologies in my case it is:
+#docker-compose.yml</p>
+<pre class="code bash"><a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-1"></a>version: <span class="s1">'3'</span>
+<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-2"></a>
+<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-3"></a>services:
+<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-4"></a>  db:
+<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-5"></a>    image: mysql:latest
+<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-6"></a>    restart: always
+<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-7"></a>    expose:
+<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-8"></a>      - <span class="s1">'3336'</span>
+<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-9"></a>    environment:
+<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-10"></a>      MYSQL_ROOT_PASSWORD: <span class="s1">'my_secret_password'</span>
+<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-11"></a>      MYSQL_USER: <span class="s1">'zabbixuser'</span>
+<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-12"></a>      MYSQL_PASSWORD: <span class="s1">'zabbix_password'</span>
+<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-13"></a>      MYSQL_ROOT_HOST: <span class="s1">'%'</span>
+<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-14"></a>    volumes:
+<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-15"></a>      - <span class="s1">'mysql_data_dir:/var/lib/mysql'</span>
+<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-16"></a>
+<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-17"></a>
+<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-18"></a>  zabbix-server:
+<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-19"></a>    image: zabbix/zabbix-server-mysql
+<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-20"></a>    links:
+<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-21"></a>      - <span class="s2">"db:mysql"</span>
+<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-22"></a>      - <span class="s2">"postfix:postfix"</span>
+<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-23"></a>    environment:
+<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-24"></a>      MYSQL_ROOT_PASSWORD: <span class="s1">'my_secret_password'</span>
+<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-25"></a>      MYSQL_USER: <span class="s1">'zabbixuser'</span>
+<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-26"></a>      MYSQL_PASSWORD: <span class="s1">'zabbixpassassword'</span>
+<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-27"></a>      DB_SERVER_HOST: <span class="s1">'mysql'</span>
+<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-28"></a>
+<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-29"></a>
+<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-30"></a>  zabbix-web:
+<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-31"></a>    image: zabbix/zabbix-web-nginx-mysql
+<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-32"></a>    ports:
+<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-33"></a>      - <span class="s1">'7777:80'</span>
+<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-34"></a>    links:
+<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-35"></a>      - <span class="s2">"db:mysql"</span>
+<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-36"></a>      - <span class="s2">"zabbix-server:zabbix-server"</span>
+<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-37"></a>      - <span class="s2">"postfix:postfix"</span>
+<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-38"></a>    environment:
+<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-39"></a>      MYSQL_ROOT_PASSWORD: <span class="s1">'my_secret_password'</span>
+<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-40"></a>      MYSQL_USER: <span class="s1">'zabbixuser'</span>
+<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-41"></a>      MYSQL_PASSWORD: <span class="s1">'zabbixpassassword'</span>
+<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-42"></a>      DB_SERVER_HOST: <span class="s1">'mysql'</span>
+<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-43"></a>      ZBX_SERVER_HOST: <span class="s2">"zabbix-server"</span>
+<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-44"></a>      PHP_TZ: <span class="s2">"Europe/London"</span>
+<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-45"></a>  postfix:
+<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-46"></a>    image: catatnight/postfix
+<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-47"></a>    hostname: support
+<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-48"></a>    environment:
+<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-49"></a>      - <span class="nv">maildomain</span><span class="o">=</span>mydomain.com
+<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-50"></a>      - <span class="nv">smtp_user</span><span class="o">=</span>admin:my_password
+<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-51"></a>    ports:
+<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-52"></a>      - <span class="s2">"25:25"</span>
+<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-53"></a>    expose:
+<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-54"></a>      - <span class="s2">"25"</span>
+<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-55"></a>    volumes:
+<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-56"></a>      - /etc/nginx/ssl/postfix:/etc/postfix/certs
+<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-57"></a>      - /etc/nginx/ssl/postfix:/etc/opendkim/domainkeys
+<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-58"></a>volumes:
+<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-59"></a>  mysql_data_dir:
+<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-60"></a>    driver: <span class="nb">local</span>
+</pre>
+<p>The above solution is just enough to start zabbix server up and running in couple seconds.
+To do it just run:
+.. code-block:: bash</p>
+<blockquote>
+<p>sudo docker-compose up</p>
+</blockquote>
+<p>Thats it!!!
+You now have your zabbix running on port 7777</p>
+<p>So what happened here docker-compose up has build and runned 3 containers
+by running zabbix container it discovered there are no tables in mysql and has built them.</p>
+<p>Now you just need to add agents/servers you want to monitor.
+Check out adding agent in separate post</p>
+<p>Versions:
+(versions I've used in this example Feb 2018):</p>
+<p>Docker-compose: 1.17.0, build ac53b73
+Docker: 17.09.1-ce, build 19e2cf6
+Kernel: 4.13.0-36-generic
+System: Ubuntu 16.04.3 LTS</p>
+</div>
+    </div>
+    <aside class="postpromonav"><nav><ul class="pager hidden-print">
+<li class="previous">
+                <a href="adding-zabbix-agent-to-server.html" rel="prev" title="Adding zabbix agent to server">Previous post</a>
+            </li>
+        </ul></nav></aside><section class="comments hidden-print"><h2>Comments</h2>
+        
+        
+        <div id="disqus_thread"></div>
+        <script>
+        var disqus_shortname ="stencel",
+            disqus_url="http://stencel.io/posts/build-fully-working-zabbix-server-with-database-in-seconds-thanks-to-docker.html",
+        disqus_title="Build fully working zabbix server with database in seconds thanks to docker",
+        disqus_identifier="cache/posts/build-fully-working-zabbix-server-with-database-in-seconds-thanks-to-docker.html",
+        disqus_config = function () {
+            this.language = "en";
+        };
+        (function() {
+            var dsq = document.createElement('script'); dsq.async = true;
+            dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script><noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a>
+</noscript>
+    <a href="https://disqus.com" class="dsq-brlink" rel="nofollow">Comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+        </section></article><script>var disqus_shortname="stencel";(function(){var a=document.createElement("script");a.async=true;a.src="https://"+disqus_shortname+".disqus.com/count.js";(document.getElementsByTagName("head")[0]||document.getElementsByTagName("body")[0]).appendChild(a)}());</script><footer id="footer"><p>Contents © 2020         <a href="mailto:gstencel@gmail.com">Greg Stencel</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         </p>
+            
+        </footer>
+</div>
+    </section><script src="../assets/js/all-nocdn.js"></script><!-- fancy dates --><script>
+    moment.locale("en");
+    fancydates(0, "YYYY-MM-DD HH:mm");
+    </script><!-- end fancy dates --><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element) {
+            return element.getElementsByTagName('img')[0].alt;
+    }});
+    </script><script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-50641127-1', 'stencel.io');
+  ga('send', 'pageview');
+
+</script><script type="text/javascript" src="../assets/js/tipuesearch_set.js"></script><script type="text/javascript" src="../assets/js/tipuesearch.js"></script><script type="text/javascript">
+$(document).ready(function() {
+     $('#tipue_search_input').tipuesearch({
+         'mode': 'json',
+         'contentLocation': '/assets/js/tipuesearch_content.json',
+         'showUrl': false
+     });
+});
+</script>
+</body>
+</html>

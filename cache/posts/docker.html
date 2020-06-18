@@ -1,0 +1,90 @@
+<div class="section" id="first-download-download-pre-build-image">
+<h1>First download download pre build image :</h1>
+<p>sudo docker pull ubuntu</p>
+</div>
+<div class="section" id="run-pseudo-tty">
+<h1>run pseudo tty:</h1>
+<p>sudo docker run -t -i ubuntu /bin/bash</p>
+</div>
+<div class="section" id="get-image-of-running-docker">
+<h1>get image of running docker:</h1>
+<p>sudo docker ps</p>
+<p>output:
+➜  ~  sudo docker ps
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+c4fbc80d8926        ubuntu:14.04        /bin/bash           3 minutes ago       Up 3 minutes                            berserk_nobel
+➜  ~
+save container as your image:
+=============================
+sudo docker commit c4fbc80d8926 myimage_name</p>
+</div>
+<div class="section" id="running-our-image">
+<h1>Running our image:</h1>
+<p>sudo docker run -t -i myimage_name /bin/bash</p>
+</div>
+<div class="section" id="deploying-your-app-and-dependicies">
+<h1>Deploying your app and dependicies:</h1>
+<p>watch out to save container before you quit bash inside docker instance
+find container id and save</p>
+</div>
+<div class="section" id="diff-image-container">
+<h1>Diff image container:</h1>
+<p>sudo docker diff</p>
+</div>
+<div class="section" id="start-docker-container-with-name">
+<h1>Start docker container with name:</h1>
+<p>sudo docker run -i -t --name=&quot;IWAPPS2&quot; iwapps /bin/bash</p>
+</div>
+<div class="section" id="commit-with-name">
+<h1>Commit with name :</h1>
+<p>sudo docker commit IWAPPS2 local -a &quot;greg&quot; -m &quot;First image commit&quot;</p>
+<p>Actually, images are stored within /var/lib/docker/aufs/diff</p>
+<blockquote>
+<p>OUP  sudo docker ps
+CONTAINER ID        IMAGE               COMMAND             CREATED              STATUS              PORTS
+NAMES
+95585eb7ea3c        cc68531a3552        /bin/bash           About a minute ago   Up About a minute
+mad_ptolemy
+➜  OUP  sudo docker commit 95585eb7ea3c iwps2 -a &quot;greg&quot; -m &quot;First image commit&quot;
+c86eeb858bedf779105f759ca62d10ea59e01884e985e447d9ddf7f65ee32e3c
+➜  OUP  sudo docker images
+REPOSITORY          TAG                 IMAGE ID            CREATED             VIRTUAL SIZE
+iwps2               latest              c86eeb858bed        5 seconds ago       617.5 MB
+local               latest              539a99ee88ee        22 minutes ago      348.5 MB
+&lt;none&gt;              &lt;none&gt;              d8f374aecae4        2 hours ago         348.1 MB
+iwapps              latest              85e0ae955062        4 hours ago         348.1 MB
+ubuntu              utopic              b8d67033ed07        23 hours ago        286.6 MB
+ubuntu              14.10               b8d67033ed07        23 hours ago        286.6 MB
+ubuntu              trusty              1357f421be38        23 hours ago        192.7 MB
+ubuntu              latest              1357f421be38        23 hours ago        192.7 MB
+ubuntu              14.04               1357f421be38        23 hours ago        192.7 MB
+ubuntu              14.04.1             1357f421be38        23 hours ago        192.7 MB
+ubuntu              12.04               2bed76595591        23 hours ago        120.2 MB
+ubuntu              12.04.5             2bed76595591        23 hours ago        120.2 MB
+ubuntu              precise             2bed76595591        23 hours ago        120.2 MB
+&lt;none&gt;              &lt;none&gt;              96864a7d2df3        3 weeks ago         205.1 MB
+ubuntu              12.10               c5881f11ded9        3 months ago        172.2 MB
+ubuntu              quantal             c5881f11ded9        3 months ago        172.2 MB
+ubuntu              raring              463ff6be4238        3 months ago        169.4 MB
+ubuntu              13.04               463ff6be4238        3 months ago        169.4 MB
+ubuntu              saucy               195eb90b5349        3 months ago        184.7 MB
+ubuntu              13.10               195eb90b5349        3 months ago        184.7 MB
+ubun</p>
+</blockquote>
+<p>pt
+The images are stored in /var/lib/docker/graph/&lt;id&gt;/layer.</p>
+<p>Note that images are just diffs from the parent image. The parent ID is stored with the image's metadata /var/lib/docker/graph/&lt;id&gt;/json.</p>
+<p>When you docker run an image. AUFS will 'merge' all layers into one usable file system.</p>
+<p>docker inspect
+docker images --no-trunc=true</p>
+<p>Running an interactive shell
+sudo docker run -i -t ubuntu /bin/bash</p>
+<p>sudo baobab /var/lib/docker</p>
+<p>docker pull ubuntu
+docker run -i -t ubuntu:14.04 /bin/bash
+sudo docker info
+sudo docker version
+sudo docker search ubuntu
+sudo docker pull ubuntu
+sudo docker images</p>
+</div>

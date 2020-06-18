@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html prefix="        og: http://ogp.me/ns# article: http://ogp.me/ns/article#     " vocab="http://ogp.me/ns" lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+<title>xrandr tips | Greg's Tech Notes</title>
+<link href="https://fonts.googleapis.com/css?family=Bitter:400,400i,700" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+<link href="../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../rss.xml">
+<link rel="canonical" href="http://stencel.io/posts/xrandr-tips.html">
+<!--[if lt IE 9]><script src="../assets/js/html5shiv-printshiv.min.js"></script><![endif]--><meta name="author" content="Greg Stencel">
+<link rel="prev" href="django-display-choices-defined-in-models-in-template.html" title="Django Display choices defined in models in template" type="text/html">
+<link rel="next" href="comodo-positive-ssl-sec_error_unknown_issuer-firefox.html" title="comodo-positive-ssl-sec_error_unknown_issuer-firefox" type="text/html">
+<meta property="og:site_name" content="Greg's Tech Notes">
+<meta property="og:title" content="xrandr tips">
+<meta property="og:url" content="http://stencel.io/posts/xrandr-tips.html">
+<meta property="og:description" content='adding resolution
+1)generate mode
+cvt 2560 1440 60
+➜  blog git:(website) ✗ cvt 2560 1440 60
+# 2560x1440 59.96 Hz (CVT 3.69M9) hsync: 89.52 kHz; pclk: 312.25 MHz
+Modeline "2560x1440_60.00"  312.25  256'>
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2015-01-13T20:34:57Z">
+<meta property="article:tag" content="Linux">
+<meta property="article:tag" content="xrandr">
+</head>
+<body>
+    <a href="#page-content" class="sr-only sr-only-focusable">Skip to main content</a>
+    
+    <section class="social"><ul>
+<li><p style="color:#fff;font-size:3em;">stencel.io</p></li>
+        <li><p style="color:#fff;font-size:2em;">greg's tech notes</p></li>
+            <li>
+                <a href="http://stencel.io/">
+                    <img src="../images/aboutme.png" alt="Greg's Tech Notes" id="logo"></a>
+            </li>
+        
+            <li><a href="../index.html" title="Home"><i class="fa fa-home"></i></a></li>
+            <li><a href="../archive.html" title="Archives"><i class="fa fa-folder-open"></i></a></li>
+            <li><a href="../categories/index.html" title="Tags"><i class="fa fa-tags"></i></a></li>
+            <li><a href="https://www.linkedin.com/in/gregstencel/" title="My Linkedin"><i class="fab fa-linkedin"></i></a></li>
+            <li><a href="https://github.com/greg4fun" title="My Github"><i class="fab fa-github"></i></a></li>
+    
+    
+
+        </ul></section><section class="page-content"><div class="content" rel="main">
+            
+<article class="post-text h-entry hentry postpage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="#" class="u-url">xrandr tips</a></h1>
+
+        <div class="metadata">
+            <p class="dateline"><a href="#" rel="bookmark"><i class="fa fa-clock"></i> <time class="published dt-published" datetime="2015-01-13T20:34:57Z" itemprop="datePublished" title="2015-01-13 20:34">2015-01-13 20:34</time></a></p>
+            <p class="byline author vcard"> <i class="fa fa-user"></i> <span class="byline-name fn" itemprop="author">
+                    Greg Stencel
+            </span></p>
+                <p class="commentline"><i class="far fa-comment"></i>
+        
+    <a href="xrandr-tips.html#disqus_thread" data-disqus-identifier="cache/posts/xrandr-tips.html">Comments</a>
+
+
+            
+        </p>
+<p class="sourceline"><a href="xrandr-tips.rst" class="sourcelink"><i class="fa fa-file-code"></i> Source</a></p>
+
+            
+
+            
+    <div class="tags">
+<h3 class="metadata-title">
+<i class="fa fa-tags"></i> Tags:</h3>
+        <ul itemprop="keywords" class="tags-ul">
+<li><a class="tag p-category" href="../categories/linux.html" rel="tag">Linux</a></li>
+            <li><a class="tag p-category" href="../categories/xrandr.html" rel="tag">xrandr</a></li>
+        </ul>
+</div>
+
+        </div>
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+    <div>
+<p>adding resolution
+1)generate mode
+cvt 2560 1440 60
+➜  blog git:(website) ✗ cvt 2560 1440 60
+# 2560x1440 59.96 Hz (CVT 3.69M9) hsync: 89.52 kHz; pclk: 312.25 MHz
+Modeline "2560x1440_60.00"  312.25  2560 2752 3024 3488  1440 1443 1448 1493 -hsync +vsync</p>
+<p>2)add it to xrandr
+sudo xrandr --newmode "2560x1440_60.00"  312.25  2560 2752 3024 3488  1440 1443 1448 1493  -hsync +vsync
+setting resolution</p>
+<p>3)sudo xrandr --addmode VGA-0 "1680x1050_60.00"</p>
+<p>xrandr -q
+xrandr --verbose</p>
+<p>xrandr --output HDMI-0 --mode 2560x1440</p>
+<p>irst generate a "modeline" by using cvt
+Syntax is: cvt width height refreshrate</p>
+<p>cvt 1680 1050 60
+this gives you:</p>
+<p># 1680x1050 59.95 Hz (CVT 1.76MA) hsync: 65.29 kHz; pclk: 146.25 MHz
+Modeline "1680x1050_60.00"  146.25  1680 1784 1960 2240  1050 1053 1059 1089 -hsync +vsync
+Now tell this to xrandr:</p>
+<p>sudo xrandr --newmode "1680x1050_60.00"  146.25  1680 1784 1960 2240  1050 1053 1059 1089 -</p>
+<p>First clone the two screens, (the smaller screen will display the top left portion of the virtual screen)</p>
+<blockquote>
+<p>xrandr --output VGA --auto --right-of LVDS</p>
+<p>xrandr --output LVDS --mode 1280x800</p>
+<p>xrandr --output LVDS --mode 1280x800 --rate 75</p>
+<p>xrandr --output LVDS --auto</p>
+<p>xrandr --output LVDS --off --output HDMI-0 --auto</p>
+<p>xrandr --output VGA1 --mode 1024x768 --rate 60</p>
+</blockquote>
+<p>#Laptop right extra Monitor Left</p>
+<blockquote>
+<p>xrandr --output VGA1 --left-of LVDS1</p>
+</blockquote>
+<p>#Laptop left extra Monitor right</p>
+<blockquote>
+<p>xrandr --output LVDS1 --left-of VGA1</p>
+</blockquote>
+<p>#This is to set your primary monitor.</p>
+<p>#This sets your laptop monitor as your primary monitor.</p>
+<blockquote>
+<p>xrandr --output LVDS1 --primary</p>
+</blockquote>
+<p>#This sets your VGA monitor as your primary monitor.</p>
+<blockquote>
+<p>xrandr --output VGA1 --primary</p>
+<p>xrandr --output VGA1 --mode 1024x768 --rate 60</p>
+</blockquote>
+<p>xrandr --pos &lt;x&gt;x&lt;y&gt;</p>
+<blockquote>
+<p>$ xrandr --left-of &lt;output&gt;</p>
+<p>$ xrandr --right-of &lt;output&gt;</p>
+<p>$ xrandr --above &lt;output&gt;</p>
+<p>$ xrandr --below &lt;output&gt;</p>
+</blockquote>
+<p>Option '-pos' is more flexible which can place output to anywhere, for example:</p>
+<p>$ xrandr --output VGA1 --pos 200x200
+$ xrandr --output LVDS1 --pos 400x500</p>
+<p>xrandr -o right</p>
+</div>
+    </div>
+    <aside class="postpromonav"><nav><ul class="pager hidden-print">
+<li class="previous">
+                <a href="django-display-choices-defined-in-models-in-template.html" rel="prev" title="Django Display choices defined in models in template">Previous post</a>
+            </li>
+            <li class="next">
+                <a href="comodo-positive-ssl-sec_error_unknown_issuer-firefox.html" rel="next" title="comodo-positive-ssl-sec_error_unknown_issuer-firefox">Next post</a>
+            </li>
+        </ul></nav></aside><section class="comments hidden-print"><h2>Comments</h2>
+        
+        
+        <div id="disqus_thread"></div>
+        <script>
+        var disqus_shortname ="stencel",
+            disqus_url="http://stencel.io/posts/xrandr-tips.html",
+        disqus_title="xrandr tips",
+        disqus_identifier="cache/posts/xrandr-tips.html",
+        disqus_config = function () {
+            this.language = "en";
+        };
+        (function() {
+            var dsq = document.createElement('script'); dsq.async = true;
+            dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script><noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a>
+</noscript>
+    <a href="https://disqus.com" class="dsq-brlink" rel="nofollow">Comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+        </section></article><script>var disqus_shortname="stencel";(function(){var a=document.createElement("script");a.async=true;a.src="https://"+disqus_shortname+".disqus.com/count.js";(document.getElementsByTagName("head")[0]||document.getElementsByTagName("body")[0]).appendChild(a)}());</script><footer id="footer"><p>Contents © 2020         <a href="mailto:gstencel@gmail.com">Greg Stencel</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         </p>
+            
+        </footer>
+</div>
+    </section><script src="../assets/js/all-nocdn.js"></script><!-- fancy dates --><script>
+    moment.locale("en");
+    fancydates(0, "YYYY-MM-DD HH:mm");
+    </script><!-- end fancy dates --><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element) {
+            return element.getElementsByTagName('img')[0].alt;
+    }});
+    </script><script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-50641127-1', 'stencel.io');
+  ga('send', 'pageview');
+
+</script><script type="text/javascript" src="../assets/js/tipuesearch_set.js"></script><script type="text/javascript" src="../assets/js/tipuesearch.js"></script><script type="text/javascript">
+$(document).ready(function() {
+     $('#tipue_search_input').tipuesearch({
+         'mode': 'json',
+         'contentLocation': '/assets/js/tipuesearch_content.json',
+         'showUrl': false
+     });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,26 @@
+<p>Specification:
+I want to launch deployment script but not before 18:00 so every user can leave home.
+I want to lunch it today but with different time that datetime.datetime.now() gives
+To do it I think best way is t to combine <strong>date.today</strong> with <strong>time(18,00)</strong> and then compare
+with <strong>datetime.now()</strong>
+Command of lauching is up to us so jsut for tests lets pass it in argvs:</p>
+<p>.:w
+. code-block:: bash</p>
+<blockquote>
+<p>python testtime.py 16 35</p>
+</blockquote>
+<pre class="code python"><a name="rest_code_6b3cd7ca589948d787a40b3a9486e607-1"></a><span class="kn">import</span> <span class="nn">sys</span>
+<a name="rest_code_6b3cd7ca589948d787a40b3a9486e607-2"></a><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">date</span><span class="p">,</span><span class="n">time</span>
+<a name="rest_code_6b3cd7ca589948d787a40b3a9486e607-3"></a>
+<a name="rest_code_6b3cd7ca589948d787a40b3a9486e607-4"></a><span class="n">current_time</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+<a name="rest_code_6b3cd7ca589948d787a40b3a9486e607-5"></a><span class="n">ehour</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<a name="rest_code_6b3cd7ca589948d787a40b3a9486e607-6"></a><span class="n">eminute</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+<a name="rest_code_6b3cd7ca589948d787a40b3a9486e607-7"></a>
+<a name="rest_code_6b3cd7ca589948d787a40b3a9486e607-8"></a><span class="n">exe_time</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">combine</span><span class="p">(</span><span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">(),</span> <span class="n">time</span><span class="p">(</span><span class="n">ehour</span><span class="p">,</span><span class="n">eminute</span><span class="p">))</span>
+<a name="rest_code_6b3cd7ca589948d787a40b3a9486e607-9"></a><span class="c1">#or datetime.(datetime.today().year,datetime.today().month,datetime.today().day,ehour,eminute)</span>
+<a name="rest_code_6b3cd7ca589948d787a40b3a9486e607-10"></a><span class="nb">print</span> <span class="s2">&quot;time left:&quot;</span>
+<a name="rest_code_6b3cd7ca589948d787a40b3a9486e607-11"></a><span class="nb">print</span> <span class="p">(</span><span class="n">exe_time</span> <span class="o">-</span> <span class="n">current_time</span><span class="p">)</span>
+<a name="rest_code_6b3cd7ca589948d787a40b3a9486e607-12"></a>
+<a name="rest_code_6b3cd7ca589948d787a40b3a9486e607-13"></a><span class="k">if</span> <span class="n">exe_time</span><span class="o">&lt;=</span><span class="n">current_time</span><span class="p">:</span>
+<a name="rest_code_6b3cd7ca589948d787a40b3a9486e607-14"></a>    <span class="nb">print</span> <span class="s2">&quot;executing...&quot;</span>
+</pre>

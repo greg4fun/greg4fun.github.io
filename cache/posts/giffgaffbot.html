@@ -1,0 +1,71 @@
+<blockquote>
+<p>Last time I wanted to buy new Samsung Galaxy S 5 I liked blue one
+but there was no preorder option on giffgaff website (it was cheapest there)
+so to notify me I wrote a bot in pycurl and placed job in cron to send me an email
+when ot will be in stock.</p>
+</blockquote>
+<p>Cut of sourcefragment from giffgaff webpage:</p>
+<pre class="code html"><a name="rest_code_f863787be5f3415fa1c6998b2ed9b413-1"></a><span class="p">&lt;</span><span class="nt">form</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;frmBuyPhone&quot;</span> <span class="na">action</span><span class="o">=</span><span class="s">&quot;/samsung/samsung-galaxy-s5/phone-plans&quot;</span> <span class="na">method</span><span class="o">=</span><span class="s">&quot;post&quot;</span> <span class="na">data-color-memory-mapping</span><span class="o">=</span><span class="s">&#39;</span>
+<a name="rest_code_f863787be5f3415fa1c6998b2ed9b413-2"></a><span class="s">{&quot;black&quot;:{&quot;16&quot;:{&quot;price&quot;:&quot;517&quot;,&quot;sku&quot;:&quot;GG1SAS5BBN&quot;,&quot;stock&quot;:1,&quot;isLoanAvailable&quot;:true,&quot;minMonthlyPayment&quot;:2139,&quot;minAPR&quot;:970}},</span>
+<a name="rest_code_f863787be5f3415fa1c6998b2ed9b413-3"></a><span class="s"> &quot;white&quot;:{&quot;16&quot;:{&quot;price&quot;:&quot;517&quot;,&quot;sku&quot;:&quot;GG1SAS5WWN&quot;,&quot;stock&quot;:1,&quot;isLoanAvailable&quot;:true,&quot;minMonthlyPayment&quot;:2139,&quot;minAPR&quot;:970}},</span>
+<a name="rest_code_f863787be5f3415fa1c6998b2ed9b413-4"></a><span class="s"> &quot;blue&quot;:{&quot;16&quot;:{&quot;price&quot;:&quot;517&quot;,&quot;sku&quot;:&quot;GG1SAS5BLN&quot;,&quot;stock&quot;:1,&quot;isLoanAvailable&quot;:true,&quot;minMonthlyPayment&quot;:2139,&quot;minAPR&quot;:970}},</span>
+<a name="rest_code_f863787be5f3415fa1c6998b2ed9b413-5"></a><span class="s"> &quot;gold&quot;:{&quot;16&quot;:{&quot;price&quot;:&quot;517&quot;,&quot;sku&quot;:&quot;GG1SAGS5GN&quot;,&quot;stock&quot;:1,&quot;isLoanAvailable&quot;:true,&quot;minMonthlyPayment&quot;:2139,&quot;minAPR&quot;:970}}}&#39;</span>
+<a name="rest_code_f863787be5f3415fa1c6998b2ed9b413-6"></a><span class="na">data-loan-mapping</span><span class="o">=</span><span class="s">&#39;{&quot;GG1SAS5BBN&quot;:{&quot;5000&quot;:{&quot;24&quot;:{&quot;deal_id&quot;:&quot;7049&quot;,&quot;apr&quot;:970,&quot;loan_amount&quot;:46700,&quot;monthly_payment&quot;:2139,&quot;total_payment&quot;:56336},&quot;18&quot;:{&quot;deal_id&quot;:&quot;7053&quot;,&quot;apr&quot;:1140,&quot;loan_amount&quot;:46700,&quot;monthly_payment&quot;:2821,&quot;total_payment&quot;:55778},&quot;12&quot;:{&quot;deal_id&quot;:&quot;7057&quot;,&quot;apr&quot;:1470,&quot;loan_amount&quot;:46700,&quot;monthly_payment&quot;:4187,&quot;total_payment&quot;:55244},&quot;6&quot;:{&quot;deal_id&quot;:&quot;7061&quot;,&quot;apr&quot;:2580,&quot;loan_amount&quot;:46700,&quot;monthly_payment&quot;:8317,&quot;total_payment&quot;:54902}}</span>
+</pre><p>The bot looks like this :</p>
+<table class="codetable"><tr><td class="linenos"><div class="linenodiv"><pre><a href="#rest_code_a3cb269c5aaa4c60865489f541600936-1"> 1</a>
+<a href="#rest_code_a3cb269c5aaa4c60865489f541600936-2"> 2</a>
+<a href="#rest_code_a3cb269c5aaa4c60865489f541600936-3"> 3</a>
+<a href="#rest_code_a3cb269c5aaa4c60865489f541600936-4"> 4</a>
+<a href="#rest_code_a3cb269c5aaa4c60865489f541600936-5"> 5</a>
+<a href="#rest_code_a3cb269c5aaa4c60865489f541600936-6"> 6</a>
+<a href="#rest_code_a3cb269c5aaa4c60865489f541600936-7"> 7</a>
+<a href="#rest_code_a3cb269c5aaa4c60865489f541600936-8"> 8</a>
+<a href="#rest_code_a3cb269c5aaa4c60865489f541600936-9"> 9</a>
+<a href="#rest_code_a3cb269c5aaa4c60865489f541600936-10">10</a>
+<a href="#rest_code_a3cb269c5aaa4c60865489f541600936-11">11</a>
+<a href="#rest_code_a3cb269c5aaa4c60865489f541600936-12">12</a>
+<a href="#rest_code_a3cb269c5aaa4c60865489f541600936-13">13</a>
+<a href="#rest_code_a3cb269c5aaa4c60865489f541600936-14">14</a>
+<a href="#rest_code_a3cb269c5aaa4c60865489f541600936-15">15</a>
+<a href="#rest_code_a3cb269c5aaa4c60865489f541600936-16">16</a>
+<a href="#rest_code_a3cb269c5aaa4c60865489f541600936-17">17</a>
+<a href="#rest_code_a3cb269c5aaa4c60865489f541600936-18">18</a>
+<a href="#rest_code_a3cb269c5aaa4c60865489f541600936-19">19</a>
+<a href="#rest_code_a3cb269c5aaa4c60865489f541600936-20">20</a>
+<a href="#rest_code_a3cb269c5aaa4c60865489f541600936-21">21</a>
+<a href="#rest_code_a3cb269c5aaa4c60865489f541600936-22">22</a>
+<a href="#rest_code_a3cb269c5aaa4c60865489f541600936-23">23</a>
+<a href="#rest_code_a3cb269c5aaa4c60865489f541600936-24">24</a>
+<a href="#rest_code_a3cb269c5aaa4c60865489f541600936-25">25</a>
+<a href="#rest_code_a3cb269c5aaa4c60865489f541600936-26">26</a>
+<a href="#rest_code_a3cb269c5aaa4c60865489f541600936-27">27</a>
+<a href="#rest_code_a3cb269c5aaa4c60865489f541600936-28">28</a></pre></div></td><td class="code"><pre class="code python"><a name="rest_code_a3cb269c5aaa4c60865489f541600936-1"></a> <span class="c1">#!/usr/bin/env python</span>
+<a name="rest_code_a3cb269c5aaa4c60865489f541600936-2"></a> <span class="kn">import</span> <span class="nn">pycurl</span>
+<a name="rest_code_a3cb269c5aaa4c60865489f541600936-3"></a> <span class="kn">import</span> <span class="nn">sys</span>
+<a name="rest_code_a3cb269c5aaa4c60865489f541600936-4"></a> <span class="kn">import</span> <span class="nn">cStringIO</span>
+<a name="rest_code_a3cb269c5aaa4c60865489f541600936-5"></a> <span class="kn">import</span> <span class="nn">re</span>
+<a name="rest_code_a3cb269c5aaa4c60865489f541600936-6"></a> <span class="kn">import</span> <span class="nn">os</span>
+<a name="rest_code_a3cb269c5aaa4c60865489f541600936-7"></a> <span class="n">buf</span> <span class="o">=</span> <span class="n">cStringIO</span><span class="o">.</span><span class="n">StringIO</span><span class="p">()</span>
+<a name="rest_code_a3cb269c5aaa4c60865489f541600936-8"></a> <span class="n">ch</span> <span class="o">=</span> <span class="n">pycurl</span><span class="o">.</span><span class="n">Curl</span><span class="p">()</span>
+<a name="rest_code_a3cb269c5aaa4c60865489f541600936-9"></a> <span class="n">ch</span><span class="o">.</span><span class="n">setopt</span><span class="p">(</span><span class="n">pycurl</span><span class="o">.</span><span class="n">VERBOSE</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<a name="rest_code_a3cb269c5aaa4c60865489f541600936-10"></a> <span class="n">ch</span><span class="o">.</span><span class="n">setopt</span><span class="p">(</span><span class="n">pycurl</span><span class="o">.</span><span class="n">WRITEFUNCTION</span><span class="p">,</span> <span class="n">buf</span><span class="o">.</span><span class="n">write</span><span class="p">)</span>
+<a name="rest_code_a3cb269c5aaa4c60865489f541600936-11"></a> <span class="n">ch</span><span class="o">.</span><span class="n">setopt</span><span class="p">(</span><span class="n">pycurl</span><span class="o">.</span><span class="n">COOKIEJAR</span><span class="p">,</span> <span class="s1">&#39;Ocookie.txt&#39;</span><span class="p">)</span>
+<a name="rest_code_a3cb269c5aaa4c60865489f541600936-12"></a> <span class="n">ch</span><span class="o">.</span><span class="n">setopt</span><span class="p">(</span><span class="n">pycurl</span><span class="o">.</span><span class="n">USERAGENT</span><span class="p">,</span><span class="s2">&quot;Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1; BTRS122288; .NET CLR 1.1.4322; .NET CLR 2.0.50727; .NET CLR 3.0.4506.2152; .NET CLR 3.5.30729; InfoPath.3)&quot;</span><span class="p">)</span>
+<a name="rest_code_a3cb269c5aaa4c60865489f541600936-13"></a> <span class="k">def</span> <span class="nf">get_products</span><span class="p">(</span><span class="n">url</span><span class="p">):</span>
+<a name="rest_code_a3cb269c5aaa4c60865489f541600936-14"></a>     <span class="n">ch</span><span class="o">.</span><span class="n">setopt</span><span class="p">(</span><span class="n">pycurl</span><span class="o">.</span><span class="n">URL</span><span class="p">,</span> <span class="n">url</span><span class="p">)</span>
+<a name="rest_code_a3cb269c5aaa4c60865489f541600936-15"></a>     <span class="n">ch</span><span class="o">.</span><span class="n">perform</span><span class="p">()</span>
+<a name="rest_code_a3cb269c5aaa4c60865489f541600936-16"></a>     <span class="n">buf</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+<a name="rest_code_a3cb269c5aaa4c60865489f541600936-17"></a>     <span class="n">newdata</span> <span class="o">=</span> <span class="n">buf</span><span class="o">.</span><span class="n">getvalue</span><span class="p">()</span>
+<a name="rest_code_a3cb269c5aaa4c60865489f541600936-18"></a>     <span class="n">newdata</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s2">&quot;data-color-memory-mapping.*&quot;</span><span class="p">,</span> <span class="n">newdata</span><span class="p">)</span><span class="o">.</span><span class="n">group</span><span class="p">()</span>
+<a name="rest_code_a3cb269c5aaa4c60865489f541600936-19"></a>     <span class="n">newdata</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s2">&quot;blue.*&quot;</span><span class="p">,</span> <span class="n">newdata</span><span class="p">)</span><span class="o">.</span><span class="n">group</span><span class="p">()</span>
+<a name="rest_code_a3cb269c5aaa4c60865489f541600936-20"></a>     <span class="n">newdata</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s2">&quot;stock.:([0-9]{0,2})&quot;</span><span class="p">,</span> <span class="n">newdata</span><span class="p">)</span>
+<a name="rest_code_a3cb269c5aaa4c60865489f541600936-21"></a>     <span class="n">newdata</span> <span class="o">=</span> <span class="n">newdata</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<a name="rest_code_a3cb269c5aaa4c60865489f541600936-22"></a>     <span class="k">if</span> <span class="nb">int</span><span class="p">(</span><span class="n">newdata</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+<a name="rest_code_a3cb269c5aaa4c60865489f541600936-23"></a>         <span class="nb">print</span> <span class="s2">&quot;not in stock&quot;</span>
+<a name="rest_code_a3cb269c5aaa4c60865489f541600936-24"></a>     <span class="k">else</span><span class="p">:</span>
+<a name="rest_code_a3cb269c5aaa4c60865489f541600936-25"></a>         <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="s2">&quot;echo &#39;in stock  </span><span class="si">%s</span><span class="s2">&#39; | /usr/sbin/sendmail mymail@gmail.com&quot;</span> <span class="o">%</span> <span class="n">newdata</span><span class="p">)</span>
+<a name="rest_code_a3cb269c5aaa4c60865489f541600936-26"></a>         <span class="nb">print</span> <span class="s2">&quot;in stock&quot;</span>
+<a name="rest_code_a3cb269c5aaa4c60865489f541600936-27"></a>
+<a name="rest_code_a3cb269c5aaa4c60865489f541600936-28"></a> <span class="n">get_products</span><span class="p">(</span><span class="s1">&#39;http://giffgaff.com/samsung/samsung-galaxy-s5/phone-details&#39;</span><span class="p">)</span>
+</pre></td></tr></table><p>and added job to crontab to check every 5 minutes</p>
+<p>*/5 * * * * /workspace/projects/checkbot/readweb.py</p>

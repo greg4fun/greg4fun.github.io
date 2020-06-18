@@ -1,0 +1,2 @@
+<pre class="code bash"><a name="rest_code_0015819660534c3aa6904a3074ef11d9-1"></a><span class="k">for</span> usr in <span class="k">$(</span>cut -f1 -d: /etc/passwd<span class="k">)</span><span class="p">;</span> <span class="k">do</span> <span class="nb">echo</span> <span class="nv">$usr</span><span class="p">;</span> crontab -u <span class="nv">$usr</span> -l<span class="p">;</span> <span class="k">done</span>
+</pre>

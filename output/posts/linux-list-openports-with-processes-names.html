@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html prefix="        og: http://ogp.me/ns# article: http://ogp.me/ns/article#     " vocab="http://ogp.me/ns" lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+<title>Linux list openports with processes names | Greg's Tech Notes</title>
+<link href="https://fonts.googleapis.com/css?family=Bitter:400,400i,700" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+<link href="../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../rss.xml">
+<link rel="canonical" href="http://stencel.io/posts/linux-list-openports-with-processes-names.html">
+<!--[if lt IE 9]><script src="../assets/js/html5shiv-printshiv.min.js"></script><![endif]--><meta name="author" content="Greg Stencel">
+<link rel="prev" href="linux-diplay-size-of-each-subdirectory.html" title="Linux diplay size of each subdirectory" type="text/html">
+<link rel="next" href="setting-up-django-gunicorn-and-supervise-daemontools.html" title="Setting up django, gunicorn and supervise (daemontools)" type="text/html">
+<meta property="og:site_name" content="Greg's Tech Notes">
+<meta property="og:title" content="Linux list openports with processes names">
+<meta property="og:url" content="http://stencel.io/posts/linux-list-openports-with-processes-names.html">
+<meta property="og:description" content="netstat -putln
+-p the PID and name of the program to which each socket belongs.
+-u udp
+-t tcp
+-l only listening sockets.  (These are omitted by default.)
+-n numeric port number
+(Not all processes coul">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2014-07-02T13:53:47Z">
+</head>
+<body>
+    <a href="#page-content" class="sr-only sr-only-focusable">Skip to main content</a>
+    
+    <section class="social"><ul>
+<li><p style="color:#fff;font-size:3em;">stencel.io</p></li>
+        <li><p style="color:#fff;font-size:2em;">greg's tech notes</p></li>
+            <li>
+                <a href="http://stencel.io/">
+                    <img src="../images/aboutme.png" alt="Greg's Tech Notes" id="logo"></a>
+            </li>
+        
+            <li><a href="../index.html" title="Home"><i class="fa fa-home"></i></a></li>
+            <li><a href="../archive.html" title="Archives"><i class="fa fa-folder-open"></i></a></li>
+            <li><a href="../categories/index.html" title="Tags"><i class="fa fa-tags"></i></a></li>
+            <li><a href="https://www.linkedin.com/in/gregstencel/" title="My Linkedin"><i class="fab fa-linkedin"></i></a></li>
+            <li><a href="https://github.com/greg4fun" title="My Github"><i class="fab fa-github"></i></a></li>
+    
+    
+
+        </ul></section><section class="page-content"><div class="content" rel="main">
+            
+<article class="post-text h-entry hentry postpage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="#" class="u-url">Linux list openports with processes names</a></h1>
+
+        <div class="metadata">
+            <p class="dateline"><a href="#" rel="bookmark"><i class="fa fa-clock"></i> <time class="published dt-published" datetime="2014-07-02T13:53:47Z" itemprop="datePublished" title="2014-07-02 13:53">2014-07-02 13:53</time></a></p>
+            <p class="byline author vcard"> <i class="fa fa-user"></i> <span class="byline-name fn" itemprop="author">
+                    Greg Stencel
+            </span></p>
+                <p class="commentline"><i class="far fa-comment"></i>
+        
+    <a href="linux-list-openports-with-processes-names.html#disqus_thread" data-disqus-identifier="cache/posts/linux-list-openports-with-processes-names.html">Comments</a>
+
+
+            
+        </p>
+<p class="sourceline"><a href="linux-list-openports-with-processes-names.rst" class="sourcelink"><i class="fa fa-file-code"></i> Source</a></p>
+
+            
+
+            
+
+        </div>
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+    <div>
+<pre class="code bash"><a name="rest_code_55f51ea82eb34d2e9526ae721001c161-1"></a>netstat -putln
+</pre>
+<p>-p the PID and name of the program to which each socket belongs.</p>
+<p>-u udp</p>
+<p>-t tcp</p>
+<p>-l only listening sockets.  (These are omitted by default.)</p>
+<p>-n numeric port number</p>
+<pre class="code bash"><a name="rest_code_f78909e593da45a6b7ad4533164b8cdf-1"></a><span class="o">(</span>Not all processes could be identified, non-owned process info
+<a name="rest_code_f78909e593da45a6b7ad4533164b8cdf-2"></a> will not be shown, you would have to be root to see it all.<span class="o">)</span>
+<a name="rest_code_f78909e593da45a6b7ad4533164b8cdf-3"></a> Active Internet connections <span class="o">(</span>only servers<span class="o">)</span>
+<a name="rest_code_f78909e593da45a6b7ad4533164b8cdf-4"></a> Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name
+<a name="rest_code_f78909e593da45a6b7ad4533164b8cdf-5"></a> tcp        <span class="m">0</span>      <span class="m">0</span> <span class="m">0</span>.0.0.0:22              <span class="m">0</span>.0.0.0:*               LISTEN      -
+<a name="rest_code_f78909e593da45a6b7ad4533164b8cdf-6"></a> tcp        <span class="m">0</span>      <span class="m">0</span> <span class="m">127</span>.0.0.1:631           <span class="m">0</span>.0.0.0:*               LISTEN      -
+<a name="rest_code_f78909e593da45a6b7ad4533164b8cdf-7"></a> tcp        <span class="m">0</span>      <span class="m">0</span> <span class="m">0</span>.0.0.0:25              <span class="m">0</span>.0.0.0:*               LISTEN      -
+<a name="rest_code_f78909e593da45a6b7ad4533164b8cdf-8"></a> tcp        <span class="m">0</span>      <span class="m">0</span> <span class="m">127</span>.0.0.1:5433          <span class="m">0</span>.0.0.0:*               LISTEN      -
+<a name="rest_code_f78909e593da45a6b7ad4533164b8cdf-9"></a> tcp        <span class="m">0</span>      <span class="m">0</span> <span class="m">0</span>.0.0.0:902             <span class="m">0</span>.0.0.0:*               LISTEN      -
+<a name="rest_code_f78909e593da45a6b7ad4533164b8cdf-10"></a> tcp        <span class="m">0</span>      <span class="m">0</span> <span class="m">127</span>.0.0.1:3306          <span class="m">0</span>.0.0.0:*               LISTEN      -
+<a name="rest_code_f78909e593da45a6b7ad4533164b8cdf-11"></a> tcp        <span class="m">0</span>      <span class="m">0</span> <span class="m">0</span>.0.0.0:9418            <span class="m">0</span>.0.0.0:*               LISTEN      -
+<a name="rest_code_f78909e593da45a6b7ad4533164b8cdf-12"></a> tcp        <span class="m">0</span>      <span class="m">0</span> <span class="m">127</span>.0.0.1:2222          <span class="m">0</span>.0.0.0:*               LISTEN      -
+<a name="rest_code_f78909e593da45a6b7ad4533164b8cdf-13"></a> tcp        <span class="m">0</span>      <span class="m">0</span> <span class="m">0</span>.0.0.0:9614            <span class="m">0</span>.0.0.0:*               LISTEN      -
+<a name="rest_code_f78909e593da45a6b7ad4533164b8cdf-14"></a> tcp        <span class="m">0</span>      <span class="m">0</span> <span class="m">0</span>.0.0.0:80              <span class="m">0</span>.0.0.0:*               LISTEN      -
+<a name="rest_code_f78909e593da45a6b7ad4533164b8cdf-15"></a> tcp        <span class="m">0</span>      <span class="m">0</span> <span class="m">127</span>.0.0.1:5939          <span class="m">0</span>.0.0.0:*               LISTEN      -
+<a name="rest_code_f78909e593da45a6b7ad4533164b8cdf-16"></a> tcp6       <span class="m">0</span>      <span class="m">0</span> :::22                   :::*                    LISTEN      -
+<a name="rest_code_f78909e593da45a6b7ad4533164b8cdf-17"></a> tcp6       <span class="m">0</span>      <span class="m">0</span> ::1:631                 :::*                    LISTEN      -
+<a name="rest_code_f78909e593da45a6b7ad4533164b8cdf-18"></a> tcp6       <span class="m">0</span>      <span class="m">0</span> :::25                   :::*                    LISTEN      -
+<a name="rest_code_f78909e593da45a6b7ad4533164b8cdf-19"></a> tcp6       <span class="m">0</span>      <span class="m">0</span> :::9418                 :::*                    LISTEN      -
+<a name="rest_code_f78909e593da45a6b7ad4533164b8cdf-20"></a> udp     <span class="m">5376</span>      <span class="m">0</span> <span class="m">0</span>.0.0.0:5353            <span class="m">0</span>.0.0.0:*                           <span class="m">2934</span>/libpepflashpla
+<a name="rest_code_f78909e593da45a6b7ad4533164b8cdf-21"></a> udp        <span class="m">0</span>      <span class="m">0</span> <span class="m">0</span>.0.0.0:5353            <span class="m">0</span>.0.0.0:*                           -
+<a name="rest_code_f78909e593da45a6b7ad4533164b8cdf-22"></a> udp        <span class="m">0</span>      <span class="m">0</span> <span class="m">0</span>.0.0.0:46482           <span class="m">0</span>.0.0.0:*                           -
+<a name="rest_code_f78909e593da45a6b7ad4533164b8cdf-23"></a> udp        <span class="m">0</span>      <span class="m">0</span> <span class="m">0</span>.0.0.0:631             <span class="m">0</span>.0.0.0:*                           -
+<a name="rest_code_f78909e593da45a6b7ad4533164b8cdf-24"></a> udp6       <span class="m">0</span>      <span class="m">0</span> :::5353                 :::*                                -
+<a name="rest_code_f78909e593da45a6b7ad4533164b8cdf-25"></a> udp6       <span class="m">0</span>      <span class="m">0</span> :::57898
+</pre>
+</div>
+    </div>
+    <aside class="postpromonav"><nav><ul class="pager hidden-print">
+<li class="previous">
+                <a href="linux-diplay-size-of-each-subdirectory.html" rel="prev" title="Linux diplay size of each subdirectory">Previous post</a>
+            </li>
+            <li class="next">
+                <a href="setting-up-django-gunicorn-and-supervise-daemontools.html" rel="next" title="Setting up django, gunicorn and supervise (daemontools)">Next post</a>
+            </li>
+        </ul></nav></aside><section class="comments hidden-print"><h2>Comments</h2>
+        
+        
+        <div id="disqus_thread"></div>
+        <script>
+        var disqus_shortname ="stencel",
+            disqus_url="http://stencel.io/posts/linux-list-openports-with-processes-names.html",
+        disqus_title="Linux list openports with processes names",
+        disqus_identifier="cache/posts/linux-list-openports-with-processes-names.html",
+        disqus_config = function () {
+            this.language = "en";
+        };
+        (function() {
+            var dsq = document.createElement('script'); dsq.async = true;
+            dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script><noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a>
+</noscript>
+    <a href="https://disqus.com" class="dsq-brlink" rel="nofollow">Comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+        </section></article><script>var disqus_shortname="stencel";(function(){var a=document.createElement("script");a.async=true;a.src="https://"+disqus_shortname+".disqus.com/count.js";(document.getElementsByTagName("head")[0]||document.getElementsByTagName("body")[0]).appendChild(a)}());</script><footer id="footer"><p>Contents © 2020         <a href="mailto:gstencel@gmail.com">Greg Stencel</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         </p>
+            
+        </footer>
+</div>
+    </section><script src="../assets/js/all-nocdn.js"></script><!-- fancy dates --><script>
+    moment.locale("en");
+    fancydates(0, "YYYY-MM-DD HH:mm");
+    </script><!-- end fancy dates --><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element) {
+            return element.getElementsByTagName('img')[0].alt;
+    }});
+    </script><script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-50641127-1', 'stencel.io');
+  ga('send', 'pageview');
+
+</script><script type="text/javascript" src="../assets/js/tipuesearch_set.js"></script><script type="text/javascript" src="../assets/js/tipuesearch.js"></script><script type="text/javascript">
+$(document).ready(function() {
+     $('#tipue_search_input').tipuesearch({
+         'mode': 'json',
+         'contentLocation': '/assets/js/tipuesearch_content.json',
+         'showUrl': false
+     });
+});
+</script>
+</body>
+</html>

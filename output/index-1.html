@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html prefix="        og: http://ogp.me/ns# article: http://ogp.me/ns/article#     " vocab="http://ogp.me/ns" lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="description" content="Tech notes and tips">
+<meta name="viewport" content="width=device-width">
+<title>Greg's Tech Notes (old posts, page 1) | Greg's Tech Notes</title>
+<link href="https://fonts.googleapis.com/css?family=Bitter:400,400i,700" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+<link href="assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="rss.xml">
+<link rel="canonical" href="http://stencel.io/index-1.html">
+<link rel="prev" href="index-2.html" type="text/html">
+<!--[if lt IE 9]><script src="assets/js/html5shiv-printshiv.min.js"></script><![endif]-->
+</head>
+<body>
+    <a href="#page-content" class="sr-only sr-only-focusable">Skip to main content</a>
+    
+    <section class="social"><ul>
+<li><p style="color:#fff;font-size:3em;">stencel.io</p></li>
+        <li><p style="color:#fff;font-size:2em;">greg's tech notes</p></li>
+            <li>
+                <a href="http://stencel.io/">
+                    <img src="images/aboutme.png" alt="Greg's Tech Notes" id="logo"></a>
+            </li>
+        
+            <li><a href="index.html" title="Home"><i class="fa fa-home"></i></a></li>
+            <li><a href="archive.html" title="Archives"><i class="fa fa-folder-open"></i></a></li>
+            <li><a href="categories/index.html" title="Tags"><i class="fa fa-tags"></i></a></li>
+            <li><a href="https://www.linkedin.com/in/gregstencel/" title="My Linkedin"><i class="fab fa-linkedin"></i></a></li>
+            <li><a href="https://github.com/greg4fun" title="My Github"><i class="fab fa-github"></i></a></li>
+    
+    
+
+        </ul></section><section class="page-content"><div class="content" rel="main">
+            
+
+    
+
+
+    
+<div class="postindex">
+    <article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="posts/postgres-terminate-connection.html" class="u-url">postgres-terminate-connection</a></h1>
+        <div class="metadata">
+            <p class="dateline"><a href="posts/postgres-terminate-connection.html" rel="bookmark"><i class="fa fa-clock"></i> <time class="published dt-published" datetime="2014-05-13T18:23:47Z" title="2014-05-13 18:23">2014-05-13 18:23</time></a></p>
+            <p class="byline author vcard"> <i class="fa fa-user"></i> <span class="byline-name fn" itemprop="author">
+                Greg Stencel
+            </span></p>
+                <p class="commentline"><i class="fa fa-comment"></i> 
+        
+    <a href="posts/postgres-terminate-connection.html#disqus_thread" data-disqus-identifier="cache/posts/postgres-terminate-connection.html">Comments</a>
+
+
+        </p>
+</div>
+    </header><div class="e-content entry-content">
+    <pre class="code psql"><a name="rest_code_da837c1663b14082b84327ebf74d878b-1"></a><span class="k">select</span> <span class="n">pg_terminate_backend</span><span class="p">(</span><span class="n">pid</span><span class="p">)</span>
+<a name="rest_code_da837c1663b14082b84327ebf74d878b-2"></a><span class="k">from</span> <span class="n">pg_stat_activity</span><span class="p">;</span>
+</pre>
+    </div>
+    </article><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="posts/watch.html" class="u-url">watch</a></h1>
+        <div class="metadata">
+            <p class="dateline"><a href="posts/watch.html" rel="bookmark"><i class="fa fa-clock"></i> <time class="published dt-published" datetime="2014-05-13T17:58:55Z" title="2014-05-13 17:58">2014-05-13 17:58</time></a></p>
+            <p class="byline author vcard"> <i class="fa fa-user"></i> <span class="byline-name fn" itemprop="author">
+                Greg Stencel
+            </span></p>
+                <p class="commentline"><i class="fa fa-comment"></i> 
+        
+    <a href="posts/watch.html#disqus_thread" data-disqus-identifier="cache/posts/watch.html">Comments</a>
+
+
+        </p>
+</div>
+    </header><div class="e-content entry-content">
+    <p>Watch specified processes every second
+watch -n 1 'ps aux | grep ssh'</p>
+    </div>
+    </article><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="posts/running-scripts-in-background-linux.html" class="u-url">running-scripts-in-background-linux</a></h1>
+        <div class="metadata">
+            <p class="dateline"><a href="posts/running-scripts-in-background-linux.html" rel="bookmark"><i class="fa fa-clock"></i> <time class="published dt-published" datetime="2014-05-13T14:01:14Z" title="2014-05-13 14:01">2014-05-13 14:01</time></a></p>
+            <p class="byline author vcard"> <i class="fa fa-user"></i> <span class="byline-name fn" itemprop="author">
+                Greg Stencel
+            </span></p>
+                <p class="commentline"><i class="fa fa-comment"></i> 
+        
+    <a href="posts/running-scripts-in-background-linux.html#disqus_thread" data-disqus-identifier="cache/posts/running-scripts-in-background-linux.html">Comments</a>
+
+
+        </p>
+</div>
+    </header><div class="e-content entry-content">
+    <div>
+<p>I used to execute a lot of commands with &amp; at the end. But once I used plowshare and it didnt work because &amp; works until
+you wont log out .So my solution (I know I could use nohup :) ) was screen. Screen is the best tool admin can use when working
+remotely. It can be usefull when you're in place with big packet loss and you often lost connection so when you're
+restoring database  you should be in screen session because when something will disconnect you you can alwas log in and
+connect to screen session in which restoring is taking place.</p>
+<p>So executing</p>
+<pre class="code bash"><a name="rest_code_0d90cf72a376442bb18c6a9a0c1175e8-1"></a>$./my_script.sh <span class="p">&amp;</span>
+</pre>
+<p>will be only running when your session is still active so when you'll logout it will be killed.</p>
+<p>To run it independent from your presence on server do it with nohup:</p>
+<pre class="code bash"><a name="rest_code_92809d3a2898450d99eed922dfeb03f4-1"></a>$ nohup ./my_script.sh <span class="p">&amp;</span>
+</pre>
+<p>To launch screen :</p>
+<pre class="code bash"><a name="rest_code_b4450ae4d6ba42d99edc9d2fb7a818b9-1"></a>$ screen
+</pre>
+<p>Best practice is to launch screen with its name :</p>
+<pre class="code bash"><a name="rest_code_27065407db19484d93bfa6b72008a4b6-1"></a>$ screen -S my_own_screen_name
+</pre>Then if you want detach screen to get back later
+
+<kbd>Ctrl</kbd><kbd>a</kbd><kbd>d</kbd>
+
+If you want terminate screen just
+<kbd>Ctrl</kbd><kbd>d</kbd> or exit<p>then you can resume it with:</p>
+<pre class="code bash"><a name="rest_code_dfdd8264def6424b820eaab115805962-1"></a>$ screen -r my_own_screen_name
+</pre>
+<p>To list all available screens :</p>
+<pre class="code bash"><a name="rest_code_8cf8cba0e91a4202a3da26ea8a810016-1"></a>$ screen -ls
+</pre>
+<p>To attach to already attached screen:</p>
+<pre class="code bash"><a name="rest_code_dbaf39056b5c47e9a2c1beb86b09c5cf-1"></a>$ screen -x my_own_screen_name
+</pre>
+<p>To attach to attached screen and detach others:</p>
+<pre class="code bash"><a name="rest_code_70630b7f079b4a64b24000e084fcfae1-1"></a>$ screen -r -d my_own_screen_name
+</pre>
+<p>To rename existing screen:</p>
+(being attached):
+
+<kbd>Ctrl</kbd><kbd>a</kbd>:sessionname my_screen_name<kbd>Enter</kbd>
+</div>
+    </div>
+    </article><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="posts/easy-admin-joke.html" class="u-url">Easy admin joke</a></h1>
+        <div class="metadata">
+            <p class="dateline"><a href="posts/easy-admin-joke.html" rel="bookmark"><i class="fa fa-clock"></i> <time class="published dt-published" datetime="2014-05-10T12:31:04Z" title="2014-05-10 12:31">2014-05-10 12:31</time></a></p>
+            <p class="byline author vcard"> <i class="fa fa-user"></i> <span class="byline-name fn" itemprop="author">
+                Greg Stencel
+            </span></p>
+                <p class="commentline"><i class="fa fa-comment"></i> 
+        
+    <a href="posts/easy-admin-joke.html#disqus_thread" data-disqus-identifier="cache/posts/easy-admin-joke.html">Comments</a>
+
+
+        </p>
+</div>
+    </header><div class="e-content entry-content">
+    <div>
+<p>When I first got admin access ages ago on shared server I wanted to do something funny
+to my coleague so I thought to display something on his screen.</p>
+<p>Remembering everything in Linux filesystem is a file or a directory
+I read about pseudoterminals "pts"  they are inside /dev directory</p>
+<p>Yea yea I know 3 rules of admin : Respect the privacy of others. Think before you type. With great power comes great responsibility bla bla bla ...</p>
+<p>To do this joke just check who is logged in and on which pts is he :</p>
+<pre class="code bash"><a name="rest_code_84c78a16839e4ba095e5f5453362c6ae-1"></a>$ who
+<a name="rest_code_84c78a16839e4ba095e5f5453362c6ae-2"></a>greg     pts/3        <span class="m">2012</span>-03-10 <span class="m">1</span>:26 <span class="o">(</span>:0<span class="o">)</span>
+<a name="rest_code_84c78a16839e4ba095e5f5453362c6ae-3"></a>mark     pts/5        <span class="m">2012</span>-03-10 <span class="m">10</span>:29 <span class="o">(</span>:0<span class="o">)</span>
+<a name="rest_code_84c78a16839e4ba095e5f5453362c6ae-4"></a>jenny    pts/7        <span class="m">2012</span>-03-10 <span class="m">13</span>:06 <span class="o">(</span>:0<span class="o">)</span>
+</pre>
+<p>So now, we know that Mark is working on pts/5 so lets send him message :)</p>
+<pre class="code bash"><a name="rest_code_493c3d2bf6c145438d77279381171a89-1"></a>$ <span class="nb">echo</span> <span class="s2">"In 5 minutes in toilet /Jenny"</span> &gt; /dev/pts/5
+</pre>
+<p>To "clean evidences" :D ( remember that guy working on this terminal will lost his current works he's working on this
+specific terminal)</p>
+<pre class="code bash"><a name="rest_code_64b26a0706804ce898aec3df938f6fef-1"></a>$ cat /dev/urandom &gt; /dev/pts/5
+</pre>
+</div>
+    </div>
+    </article><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="posts/mysql.html" class="u-url">MySQL</a></h1>
+        <div class="metadata">
+            <p class="dateline"><a href="posts/mysql.html" rel="bookmark"><i class="fa fa-clock"></i> <time class="published dt-published" datetime="2014-05-08T12:49:38Z" title="2014-05-08 12:49">2014-05-08 12:49</time></a></p>
+            <p class="byline author vcard"> <i class="fa fa-user"></i> <span class="byline-name fn" itemprop="author">
+                Greg Stencel
+            </span></p>
+                <p class="commentline"><i class="fa fa-comment"></i> 
+        
+    <a href="posts/mysql.html#disqus_thread" data-disqus-identifier="cache/posts/mysql.html">Comments</a>
+
+
+        </p>
+</div>
+    </header><div class="e-content entry-content">
+    <div class="section" id="mysql-tips">
+<h2>MySQL tips:</h2>
+<p>Create database with charset utf8</p>
+<pre class="code sql"><a name="rest_code_5e65d2fa11894b2ebc9e94fb861decb3-1"></a><span class="k">CREATE</span> <span class="k">DATABASE</span> <span class="n">mynew_db_name</span> <span class="nb">CHARACTER</span> <span class="k">SET</span> <span class="n">utf8</span> <span class="k">COLLATE</span> <span class="n">utf8_general_ci</span><span class="p">;</span>
+</pre>
+<p>Grant everything to local user on all tables</p>
+<pre class="code sql"><a name="rest_code_5c098611efa2403e9575d1c4a655561d-1"></a><span class="k">GRANT</span> <span class="k">ALL</span> <span class="k">PRIVILEGES</span> <span class="k">ON</span> <span class="n">db_name</span><span class="p">.</span><span class="o">*</span> <span class="k">TO</span> <span class="n">my_user</span><span class="o">@</span><span class="n">localhost</span> <span class="n">IDENTIFIED</span> <span class="k">BY</span> <span class="s1">'my_secret_password'</span><span class="p">;</span>
+</pre>
+<p>Grant everything to remote user on all tables</p>
+<pre class="code sql"><a name="rest_code_dda2d745d6f9448dbeb7dad2b890f936-1"></a><span class="k">GRANT</span> <span class="k">ALL</span> <span class="k">PRIVILEGES</span> <span class="k">ON</span>  <span class="n">db_name</span><span class="p">.</span><span class="o">*</span> <span class="k">TO</span> <span class="n">my_user</span><span class="o">@</span><span class="s1">'IP_of_host_user_connects_from'</span> <span class="n">IDENTIFIED</span> <span class="k">BY</span> <span class="s1">'my_secret_password'</span><span class="p">;</span>
+</pre>
+<p>If you want to add only <strong>SELECT</strong> or something else instead of <strong>ALL</strong> there are other available privileges like:</p>
+<p><strong>SELECT, UPDATE, ALTER, CREATE, DELETE, DROP, SHOW DATABASES</strong>
+CREATE TEMPORARY TABLES, EXECUTE, FILE, GRANT OPTION, INDEX, INSERT, LOCK TABLES, PROCESS, REFERENCES, RELOAD, REPLICATION CLIENT, REPLICATION SLAVE, SHUTDOWN, SUPER, USAGE</p>
+<p>After all you want to reload privileges because when mysqld starts, it reads all grant table contents into memory. The in-memory tables become effective for access control at that point.
+To tell the server to reload the grant tables, perform a flush-privileges operation.</p>
+<p>Execute sql :</p>
+<pre class="code sql"><a name="rest_code_4d1289a1d02e4ea7987a10b28a9bea78-1"></a><span class="n">FLUSH</span> <span class="k">PRIVILEGES</span> <span class="p">;</span>
+</pre>
+<p>or you can even do it from shell by</p>
+<pre class="code bash"><a name="rest_code_a2ec35acfadc4c07bad48586809c3b79-1"></a>$ mysqladmin flush-privileges
+</pre>
+<p>or</p>
+<pre class="code bash"><a name="rest_code_fa4fce6967f8439b9340a00dbdf5c25e-1"></a>$ mysqladmin reload
+</pre>
+</div>
+    </div>
+    </article><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="posts/postgres.html" class="u-url">postgres</a></h1>
+        <div class="metadata">
+            <p class="dateline"><a href="posts/postgres.html" rel="bookmark"><i class="fa fa-clock"></i> <time class="published dt-published" datetime="2014-05-08T10:20:29Z" title="2014-05-08 10:20">2014-05-08 10:20</time></a></p>
+            <p class="byline author vcard"> <i class="fa fa-user"></i> <span class="byline-name fn" itemprop="author">
+                Greg Stencel
+            </span></p>
+                <p class="commentline"><i class="fa fa-comment"></i> 
+        
+    <a href="posts/postgres.html#disqus_thread" data-disqus-identifier="cache/posts/postgres.html">Comments</a>
+
+
+        </p>
+</div>
+    </header><div class="e-content entry-content">
+    <div class="section" id="quick-tip">
+<h2>Quick tip:</h2>
+<p>I started with MySQL db (not speaking of Delphi ADO or something like this )
+Now because of my job I had to switch to Postgres and I thought
+"ok but it's SQL so it will be the same" - not really I had a lot of
+problems like in the beginning like user privileges owners of databases and tables, showing tables , showing databases
+So if youre switchng from mysql it can help you for beginning:</p>
+<p>So first problem was my user access - I couldnt access postgres even through root :)
+so after clean installation if you want to launch psql client for postgres just su as postgres after that you can create
+your own super user or user having privileges to specific database</p>
+<pre class="code bash"><a name="rest_code_b3e2f166a29d4535a77a3467f4a12c29-1"></a>$ su postgres
+<a name="rest_code_b3e2f166a29d4535a77a3467f4a12c29-2"></a>$ psql
+</pre>
+<p>and then you should be able to do everything</p>
+<p>To see databases "<strong>show databases;</strong>" didn't work anymore :) in postgres</p>
+<pre class="code psql"><a name="rest_code_48e7766fba93432fa7e08c3a97e7d91c-1"></a><span class="kp">\list</span>
+<a name="rest_code_48e7766fba93432fa7e08c3a97e7d91c-2"></a><span class="go">\l</span>
+</pre>
+<p>connect to database:</p>
+<pre class="code psql"><a name="rest_code_d98f4470d60d42ac9b517ac17c49fb1f-1"></a><span class="kp">\c</span> <span class="ss">db_name</span>
+</pre>
+<p><strong>show tables;</strong> in database:</p>
+<pre class="code psql"><a name="rest_code_a9338a387026455dafd04d3a58009f0e-1"></a><span class="kp">\dt</span>
+</pre>
+<p><strong>Explain</strong> or <strong>describe</strong> table:</p>
+<pre class="code psql"><a name="rest_code_dbd9e41ddeda48599857acacd889063a-1"></a><span class="kp">\d+</span> <span class="ss">table_name</span>
+</pre>
+<p>Show all shortcuts:</p>
+<pre class="code psql"><a name="rest_code_5f9e850f64d7435585d3acbe49f8e27c-1"></a><span class="kp">\?</span>
+</pre>
+<div class="section" id="backup">
+<h3>Backup</h3>
+<p>To dump database to sql script with inserts etc use pg_dump remember (it wont dump user privileges):</p>
+<pre class="code psql"><a name="rest_code_627e31ee7ce94830a987ef9382f2cc00-1"></a><span class="n">pg_dump</span> <span class="n">my_database</span> <span class="o">&gt;</span> <span class="n">my_database</span><span class="mf">.</span><span class="n">pgdump</span>
+</pre>
+<p>The better way of dumping database is pg_dumpall it dumps database users and groups, tablespaces, access permissions that apply to databases as a whole.</p>
+<pre class="code psql"><a name="rest_code_c474a713543843d3869fc3836db618e0-1"></a><span class="n">pg_dumpall</span> <span class="o">&gt;</span> <span class="n">my_dump</span><span class="mf">.</span><span class="n">pgdump</span>
+</pre>
+<p>If you want to move your users of postgres to different server you can:</p>
+<pre class="code psql"><a name="rest_code_0c5a028fe7d2414d84fd66b534af7319-1"></a><span class="n">pg_dumpall</span> <span class="c1">--roles-only &gt; my_users.pgdump</span>
+</pre>
+</div>
+<div class="section" id="restore">
+<h3>Restore</h3>
+<p>TO simply restore backup pgdump sql file :</p>
+<pre class="code psql"><a name="rest_code_25bfd60ed04d4d1494f44540a63a0164-1"></a><span class="n">psql</span> <span class="o">&lt;</span> <span class="n">my_database</span><span class="mf">.</span><span class="n">pgdump</span>
+</pre>
+</div>
+<div class="section" id="access-privileges">
+<h3>Access Privileges:</h3>
+<p>Another way is about accessing postgresql if you worked with mysql you could just provide : grant all privileges on db to <a class="reference external" href="mailto:user_name@localhost">user_name@localhost</a> or <a class="reference external" href="mailto:user_name@'10.0.0.1">user_name@'10.0.0.1</a>' here it's not the same. Privileges can be configured in low level pg_hba.conf file where you provide who(sys user) who(db_user) where_from . Adding user in postgres:</p>
+<p>Create user:</p>
+<pre class="code psql"><a name="rest_code_230aaac8a2b44e819419c427a3d123e9-1"></a><span class="k">create</span> <span class="k">user</span> <span class="n">my_name</span> <span class="k">with</span> <span class="k">password</span> <span class="s1">'secret'</span><span class="p">;</span>
+</pre>
+<p>change owner of db:</p>
+<pre class="code psql"><a name="rest_code_41b1fe56dee54de99da599a7c90c20a2-1"></a><span class="k">alter</span> <span class="k">database</span> <span class="n">mydatabase</span>  <span class="k">owner</span> <span class="k">to</span> <span class="n">new_owner_name</span><span class="p">;</span>
+</pre>
+<p>change owner of tables:</p>
+<pre class="code psql"><a name="rest_code_9df21f3e90dd44c3b0435783a3843643-1"></a><span class="k">REASSIGN</span> <span class="k">OWNED</span> <span class="k">BY</span> <span class="n">old_role</span> <span class="k">TO</span> <span class="n">new_role</span>
+</pre>
+<p>rename db</p>
+<pre class="code psql"><a name="rest_code_ab104e5980104c1fa8278d27752a9946-1"></a><span class="k">alter</span>  <span class="k">database</span> <span class="n">production</span> <span class="k">rename</span> <span class="k">to</span> <span class="n">production_delete</span><span class="p">;</span>
+</pre>
+</div>
+</div>
+    </div>
+    </article><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="posts/drone-aerial-photos.html" class="u-url">Drone - Aerial photos</a></h1>
+        <div class="metadata">
+            <p class="dateline"><a href="posts/drone-aerial-photos.html" rel="bookmark"><i class="fa fa-clock"></i> <time class="published dt-published" datetime="2014-05-03T16:24:06Z" title="2014-05-03 16:24">2014-05-03 16:24</time></a></p>
+            <p class="byline author vcard"> <i class="fa fa-user"></i> <span class="byline-name fn" itemprop="author">
+                Greg Stencel
+            </span></p>
+                <p class="commentline"><i class="fa fa-comment"></i> 
+        
+    <a href="posts/drone-aerial-photos.html#disqus_thread" data-disqus-identifier="cache/posts/drone-aerial-photos.html">Comments</a>
+
+
+        </p>
+</div>
+    </header><div class="e-content entry-content">
+    <div>
+<div class="section" id="dji-phantom-2-zenmuse-gimbal-h3-3d-gopro-hero-black-3">
+<h2>DJI Phantom 2 + Zenmuse gimbal h3-3d + Gopro Hero Black  3+</h2>
+</div>
+<div class="section" id="kensington-gardens-09-06-2014">
+<h2>Kensington Gardens 09.06.2014</h2>
+<p>Cameraman : DJI Phantom 2</p>
+<p>Camera: Zenmuse gimbal h3-3d + Gopro Hero Black  3+</p>
+<div class="text-error">In order to use the media directive, you must install the "micawber" Python package.</div>
+<div class="text-error">In order to use the media directive, you must install the "micawber" Python package.</div>
+<div class="text-error">In order to use the media directive, you must install the "micawber" Python package.</div>
+<div class="text-error">In order to use the media directive, you must install the "micawber" Python package.</div>
+<div class="text-error">In order to use the media directive, you must install the "micawber" Python package.</div>
+<div class="section" id="kensington-gardens-and-curious-dog">
+<h3>Kensington gardens and curious dog</h3>
+<div class="text-error">In order to use the media directive, you must install the "micawber" Python package.</div>
+</div>
+<div class="section" id="sunny-river-thames">
+<h3>Sunny River Thames</h3>
+<div class="text-error">In order to use the media directive, you must install the "micawber" Python package.</div>
+<div class="text-error">In order to use the media directive, you must install the "micawber" Python package.</div>
+</div>
+<div class="section" id="kensington-gardens">
+<h3>Kensington Gardens</h3>
+<div class="text-error">In order to use the media directive, you must install the "micawber" Python package.</div>
+</div>
+<div class="section" id="river-thames">
+<h3>River Thames</h3>
+<div class="text-error">In order to use the media directive, you must install the "micawber" Python package.</div>
+<div class="text-error">In order to use the media directive, you must install the "micawber" Python package.</div>
+<div class="text-error">In order to use the media directive, you must install the "micawber" Python package.</div>
+<div class="text-error">In order to use the media directive, you must install the "micawber" Python package.</div>
+</div>
+</div>
+<div class="section" id="ar-drone-2-with-stock-hd-camera">
+<h2>Ar drone 2 with stock HD camera</h2>
+<div class="section" id="castle">
+<h3>Castle</h3>
+<div class="youtube-video">
+<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/AIFGflhxFbc?rel=0&amp;wmode=transparent" frameborder="0" allow="encrypted-media" allowfullscreen></iframe>
+</div>
+<div class="youtube-video">
+<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/Prnm-o4NtdU?rel=0&amp;wmode=transparent" frameborder="0" allow="encrypted-media" allowfullscreen></iframe>
+</div>
+<div class="youtube-video">
+<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/0EtdEkAK3rs?rel=0&amp;wmode=transparent" frameborder="0" allow="encrypted-media" allowfullscreen></iframe>
+</div>
+</div>
+<div class="section" id="church">
+<h3>Church</h3>
+<div class="youtube-video">
+<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/-nEuKzdRwX4?rel=0&amp;wmode=transparent" frameborder="0" allow="encrypted-media" allowfullscreen></iframe>
+</div>
+<div class="youtube-video">
+<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/KR8fVsqIRng?rel=0&amp;wmode=transparent" frameborder="0" allow="encrypted-media" allowfullscreen></iframe>
+</div>
+</div>
+<div class="section" id="stupid-drone-chooses-freedom">
+<h3>Stupid drone chooses freedom</h3>
+<div class="youtube-video">
+<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/-9CCI-VL7Mo?rel=0&amp;wmode=transparent" frameborder="0" allow="encrypted-media" allowfullscreen></iframe>
+</div>
+</div>
+<div class="section" id="kensington-park-london">
+<h3>Kensington park London</h3>
+<div class="youtube-video">
+<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/gIleGKcFgEg?rel=0&amp;wmode=transparent" frameborder="0" allow="encrypted-media" allowfullscreen></iframe>
+</div>
+<div class="youtube-video">
+<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/HJalPw2WjjA?rel=0&amp;wmode=transparent" frameborder="0" allow="encrypted-media" allowfullscreen></iframe>
+</div>
+<div class="youtube-video">
+<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/4yLfOKhHokU?rel=0&amp;wmode=transparent" frameborder="0" allow="encrypted-media" allowfullscreen></iframe>
+</div>
+</div>
+<div class="section" id="drone-attacked-by-birds">
+<h3>Drone attacked by birds</h3>
+<div class="youtube-video">
+<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/RRLy7NZzsTU?rel=0&amp;wmode=transparent" frameborder="0" allow="encrypted-media" allowfullscreen></iframe>
+</div>
+</div>
+</div>
+</div>
+    </div>
+    </article><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="posts/shell_productivity.html" class="u-url">shell_productivity</a></h1>
+        <div class="metadata">
+            <p class="dateline"><a href="posts/shell_productivity.html" rel="bookmark"><i class="fa fa-clock"></i> <time class="published dt-published" datetime="2014-04-28T12:11:12Z" title="2014-04-28 12:11">2014-04-28 12:11</time></a></p>
+            <p class="byline author vcard"> <i class="fa fa-user"></i> <span class="byline-name fn" itemprop="author">
+                Greg Stencel
+            </span></p>
+                <p class="commentline"><i class="fa fa-comment"></i> 
+        
+    <a href="posts/shell_productivity.html#disqus_thread" data-disqus-identifier="cache/posts/shell_productivity.html">Comments</a>
+
+
+        </p>
+</div>
+    </header><div class="e-content entry-content">
+    <div class="section" id="bash-zsh-terminal-productivity">
+<h2>Bash / ZSH Terminal productivity</h2>
+<p>:w</p>
+<kbd>ctrl</kbd><kbd>u</kbd> clear whole line <br><kbd>ctrl</kbd><kbd>k</kbd> clear everything after curson<br><kbd>ctrl</kbd><kbd>w</kbd> clear everything before curson<br><kbd>ctrl</kbd><kbd>a</kbd> set cursor at the beginning (home)<br><kbd>ctrl</kbd><kbd>e</kbd> set cursor at the end (end)<br><kbd>ctrl</kbd><kbd>y</kbd> undo last clear or repeat after second hit<br><kbd>ctrl</kbd><kbd>l</kbd> clears screen <br><kbd>ctrl</kbd><kbd>r</kbd> search in you history commands type twice to select next candidate<br><kbd>ESC</kbd><kbd>t</kbd> Swap the last two words before the cursor<br><kbd>Alt</kbd><kbd>f</kbd> Move cursor every word forward<br><kbd>Alt</kbd><kbd>b</kbd> Move cursoor every word backward<br><kbd>ctrl</kbd><kbd>_</kbd> Undo the last change</div>
+    </div>
+    </article><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="posts/giffgaffbot.html" class="u-url">giffgaffbot</a></h1>
+        <div class="metadata">
+            <p class="dateline"><a href="posts/giffgaffbot.html" rel="bookmark"><i class="fa fa-clock"></i> <time class="published dt-published" datetime="2014-04-26T19:36:46Z" title="2014-04-26 19:36">2014-04-26 19:36</time></a></p>
+            <p class="byline author vcard"> <i class="fa fa-user"></i> <span class="byline-name fn" itemprop="author">
+                Greg Stencel
+            </span></p>
+                <p class="commentline"><i class="fa fa-comment"></i> 
+        
+    <a href="posts/giffgaffbot.html#disqus_thread" data-disqus-identifier="cache/posts/giffgaffbot.html">Comments</a>
+
+
+        </p>
+</div>
+    </header><div class="e-content entry-content">
+    <div>
+<blockquote>
+<p>Last time I wanted to buy new Samsung Galaxy S 5 I liked blue one
+but there was no preorder option on giffgaff website (it was cheapest there)
+so to notify me I wrote a bot in pycurl and placed job in cron to send me an email
+when ot will be in stock.</p>
+</blockquote>
+<p>Cut of sourcefragment from giffgaff webpage:</p>
+<pre class="code html"><a name="rest_code_f863787be5f3415fa1c6998b2ed9b413-1"></a><span class="p">&lt;</span><span class="nt">form</span> <span class="na">id</span><span class="o">=</span><span class="s">"frmBuyPhone"</span> <span class="na">action</span><span class="o">=</span><span class="s">"/samsung/samsung-galaxy-s5/phone-plans"</span> <span class="na">method</span><span class="o">=</span><span class="s">"post"</span> <span class="na">data-color-memory-mapping</span><span class="o">=</span><span class="s">'</span>
+<a name="rest_code_f863787be5f3415fa1c6998b2ed9b413-2"></a><span class="s">{"black":{"16":{"price":"517","sku":"GG1SAS5BBN","stock":1,"isLoanAvailable":true,"minMonthlyPayment":2139,"minAPR":970}},</span>
+<a name="rest_code_f863787be5f3415fa1c6998b2ed9b413-3"></a><span class="s"> "white":{"16":{"price":"517","sku":"GG1SAS5WWN","stock":1,"isLoanAvailable":true,"minMonthlyPayment":2139,"minAPR":970}},</span>
+<a name="rest_code_f863787be5f3415fa1c6998b2ed9b413-4"></a><span class="s"> "blue":{"16":{"price":"517","sku":"GG1SAS5BLN","stock":1,"isLoanAvailable":true,"minMonthlyPayment":2139,"minAPR":970}},</span>
+<a name="rest_code_f863787be5f3415fa1c6998b2ed9b413-5"></a><span class="s"> "gold":{"16":{"price":"517","sku":"GG1SAGS5GN","stock":1,"isLoanAvailable":true,"minMonthlyPayment":2139,"minAPR":970}}}'</span>
+<a name="rest_code_f863787be5f3415fa1c6998b2ed9b413-6"></a><span class="na">data-loan-mapping</span><span class="o">=</span><span class="s">'{"GG1SAS5BBN":{"5000":{"24":{"deal_id":"7049","apr":970,"loan_amount":46700,"monthly_payment":2139,"total_payment":56336},"18":{"deal_id":"7053","apr":1140,"loan_amount":46700,"monthly_payment":2821,"total_payment":55778},"12":{"deal_id":"7057","apr":1470,"loan_amount":46700,"monthly_payment":4187,"total_payment":55244},"6":{"deal_id":"7061","apr":2580,"loan_amount":46700,"monthly_payment":8317,"total_payment":54902}}</span>
+</pre>
+<p>The bot looks like this :</p>
+<table class="codetable"><tr>
+<td class="linenos"><div class="linenodiv"><pre><a href="posts/giffgaffbot.html#rest_code_a3cb269c5aaa4c60865489f541600936-1"> 1</a>
+<a href="posts/giffgaffbot.html#rest_code_a3cb269c5aaa4c60865489f541600936-2"> 2</a>
+<a href="posts/giffgaffbot.html#rest_code_a3cb269c5aaa4c60865489f541600936-3"> 3</a>
+<a href="posts/giffgaffbot.html#rest_code_a3cb269c5aaa4c60865489f541600936-4"> 4</a>
+<a href="posts/giffgaffbot.html#rest_code_a3cb269c5aaa4c60865489f541600936-5"> 5</a>
+<a href="posts/giffgaffbot.html#rest_code_a3cb269c5aaa4c60865489f541600936-6"> 6</a>
+<a href="posts/giffgaffbot.html#rest_code_a3cb269c5aaa4c60865489f541600936-7"> 7</a>
+<a href="posts/giffgaffbot.html#rest_code_a3cb269c5aaa4c60865489f541600936-8"> 8</a>
+<a href="posts/giffgaffbot.html#rest_code_a3cb269c5aaa4c60865489f541600936-9"> 9</a>
+<a href="posts/giffgaffbot.html#rest_code_a3cb269c5aaa4c60865489f541600936-10">10</a>
+<a href="posts/giffgaffbot.html#rest_code_a3cb269c5aaa4c60865489f541600936-11">11</a>
+<a href="posts/giffgaffbot.html#rest_code_a3cb269c5aaa4c60865489f541600936-12">12</a>
+<a href="posts/giffgaffbot.html#rest_code_a3cb269c5aaa4c60865489f541600936-13">13</a>
+<a href="posts/giffgaffbot.html#rest_code_a3cb269c5aaa4c60865489f541600936-14">14</a>
+<a href="posts/giffgaffbot.html#rest_code_a3cb269c5aaa4c60865489f541600936-15">15</a>
+<a href="posts/giffgaffbot.html#rest_code_a3cb269c5aaa4c60865489f541600936-16">16</a>
+<a href="posts/giffgaffbot.html#rest_code_a3cb269c5aaa4c60865489f541600936-17">17</a>
+<a href="posts/giffgaffbot.html#rest_code_a3cb269c5aaa4c60865489f541600936-18">18</a>
+<a href="posts/giffgaffbot.html#rest_code_a3cb269c5aaa4c60865489f541600936-19">19</a>
+<a href="posts/giffgaffbot.html#rest_code_a3cb269c5aaa4c60865489f541600936-20">20</a>
+<a href="posts/giffgaffbot.html#rest_code_a3cb269c5aaa4c60865489f541600936-21">21</a>
+<a href="posts/giffgaffbot.html#rest_code_a3cb269c5aaa4c60865489f541600936-22">22</a>
+<a href="posts/giffgaffbot.html#rest_code_a3cb269c5aaa4c60865489f541600936-23">23</a>
+<a href="posts/giffgaffbot.html#rest_code_a3cb269c5aaa4c60865489f541600936-24">24</a>
+<a href="posts/giffgaffbot.html#rest_code_a3cb269c5aaa4c60865489f541600936-25">25</a>
+<a href="posts/giffgaffbot.html#rest_code_a3cb269c5aaa4c60865489f541600936-26">26</a>
+<a href="posts/giffgaffbot.html#rest_code_a3cb269c5aaa4c60865489f541600936-27">27</a>
+<a href="posts/giffgaffbot.html#rest_code_a3cb269c5aaa4c60865489f541600936-28">28</a></pre></div></td>
+<td class="code"><pre class="code python"><a name="rest_code_a3cb269c5aaa4c60865489f541600936-1"></a> <span class="c1">#!/usr/bin/env python</span>
+<a name="rest_code_a3cb269c5aaa4c60865489f541600936-2"></a> <span class="kn">import</span> <span class="nn">pycurl</span>
+<a name="rest_code_a3cb269c5aaa4c60865489f541600936-3"></a> <span class="kn">import</span> <span class="nn">sys</span>
+<a name="rest_code_a3cb269c5aaa4c60865489f541600936-4"></a> <span class="kn">import</span> <span class="nn">cStringIO</span>
+<a name="rest_code_a3cb269c5aaa4c60865489f541600936-5"></a> <span class="kn">import</span> <span class="nn">re</span>
+<a name="rest_code_a3cb269c5aaa4c60865489f541600936-6"></a> <span class="kn">import</span> <span class="nn">os</span>
+<a name="rest_code_a3cb269c5aaa4c60865489f541600936-7"></a> <span class="n">buf</span> <span class="o">=</span> <span class="n">cStringIO</span><span class="o">.</span><span class="n">StringIO</span><span class="p">()</span>
+<a name="rest_code_a3cb269c5aaa4c60865489f541600936-8"></a> <span class="n">ch</span> <span class="o">=</span> <span class="n">pycurl</span><span class="o">.</span><span class="n">Curl</span><span class="p">()</span>
+<a name="rest_code_a3cb269c5aaa4c60865489f541600936-9"></a> <span class="n">ch</span><span class="o">.</span><span class="n">setopt</span><span class="p">(</span><span class="n">pycurl</span><span class="o">.</span><span class="n">VERBOSE</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<a name="rest_code_a3cb269c5aaa4c60865489f541600936-10"></a> <span class="n">ch</span><span class="o">.</span><span class="n">setopt</span><span class="p">(</span><span class="n">pycurl</span><span class="o">.</span><span class="n">WRITEFUNCTION</span><span class="p">,</span> <span class="n">buf</span><span class="o">.</span><span class="n">write</span><span class="p">)</span>
+<a name="rest_code_a3cb269c5aaa4c60865489f541600936-11"></a> <span class="n">ch</span><span class="o">.</span><span class="n">setopt</span><span class="p">(</span><span class="n">pycurl</span><span class="o">.</span><span class="n">COOKIEJAR</span><span class="p">,</span> <span class="s1">'Ocookie.txt'</span><span class="p">)</span>
+<a name="rest_code_a3cb269c5aaa4c60865489f541600936-12"></a> <span class="n">ch</span><span class="o">.</span><span class="n">setopt</span><span class="p">(</span><span class="n">pycurl</span><span class="o">.</span><span class="n">USERAGENT</span><span class="p">,</span><span class="s2">"Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1; BTRS122288; .NET CLR 1.1.4322; .NET CLR 2.0.50727; .NET CLR 3.0.4506.2152; .NET CLR 3.5.30729; InfoPath.3)"</span><span class="p">)</span>
+<a name="rest_code_a3cb269c5aaa4c60865489f541600936-13"></a> <span class="k">def</span> <span class="nf">get_products</span><span class="p">(</span><span class="n">url</span><span class="p">):</span>
+<a name="rest_code_a3cb269c5aaa4c60865489f541600936-14"></a>     <span class="n">ch</span><span class="o">.</span><span class="n">setopt</span><span class="p">(</span><span class="n">pycurl</span><span class="o">.</span><span class="n">URL</span><span class="p">,</span> <span class="n">url</span><span class="p">)</span>
+<a name="rest_code_a3cb269c5aaa4c60865489f541600936-15"></a>     <span class="n">ch</span><span class="o">.</span><span class="n">perform</span><span class="p">()</span>
+<a name="rest_code_a3cb269c5aaa4c60865489f541600936-16"></a>     <span class="n">buf</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+<a name="rest_code_a3cb269c5aaa4c60865489f541600936-17"></a>     <span class="n">newdata</span> <span class="o">=</span> <span class="n">buf</span><span class="o">.</span><span class="n">getvalue</span><span class="p">()</span>
+<a name="rest_code_a3cb269c5aaa4c60865489f541600936-18"></a>     <span class="n">newdata</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s2">"data-color-memory-mapping.*"</span><span class="p">,</span> <span class="n">newdata</span><span class="p">)</span><span class="o">.</span><span class="n">group</span><span class="p">()</span>
+<a name="rest_code_a3cb269c5aaa4c60865489f541600936-19"></a>     <span class="n">newdata</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s2">"blue.*"</span><span class="p">,</span> <span class="n">newdata</span><span class="p">)</span><span class="o">.</span><span class="n">group</span><span class="p">()</span>
+<a name="rest_code_a3cb269c5aaa4c60865489f541600936-20"></a>     <span class="n">newdata</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s2">"stock.:([0-9]{0,2})"</span><span class="p">,</span> <span class="n">newdata</span><span class="p">)</span>
+<a name="rest_code_a3cb269c5aaa4c60865489f541600936-21"></a>     <span class="n">newdata</span> <span class="o">=</span> <span class="n">newdata</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<a name="rest_code_a3cb269c5aaa4c60865489f541600936-22"></a>     <span class="k">if</span> <span class="nb">int</span><span class="p">(</span><span class="n">newdata</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+<a name="rest_code_a3cb269c5aaa4c60865489f541600936-23"></a>         <span class="nb">print</span> <span class="s2">"not in stock"</span>
+<a name="rest_code_a3cb269c5aaa4c60865489f541600936-24"></a>     <span class="k">else</span><span class="p">:</span>
+<a name="rest_code_a3cb269c5aaa4c60865489f541600936-25"></a>         <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="s2">"echo 'in stock  </span><span class="si">%s</span><span class="s2">' | /usr/sbin/sendmail mymail@gmail.com"</span> <span class="o">%</span> <span class="n">newdata</span><span class="p">)</span>
+<a name="rest_code_a3cb269c5aaa4c60865489f541600936-26"></a>         <span class="nb">print</span> <span class="s2">"in stock"</span>
+<a name="rest_code_a3cb269c5aaa4c60865489f541600936-27"></a>
+<a name="rest_code_a3cb269c5aaa4c60865489f541600936-28"></a> <span class="n">get_products</span><span class="p">(</span><span class="s1">'http://giffgaff.com/samsung/samsung-galaxy-s5/phone-details'</span><span class="p">)</span>
+</pre></td>
+</tr></table>
+<p>and added job to crontab to check every 5 minutes</p>
+<p>*/5 * * * * /workspace/projects/checkbot/readweb.py</p>
+</div>
+    </div>
+    </article><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="posts/vim.html" class="u-url">Quick vi / vim tutorial</a></h1>
+        <div class="metadata">
+            <p class="dateline"><a href="posts/vim.html" rel="bookmark"><i class="fa fa-clock"></i> <time class="published dt-published" datetime="2014-04-24T14:05:12Z" title="2014-04-24 14:05">2014-04-24 14:05</time></a></p>
+            <p class="byline author vcard"> <i class="fa fa-user"></i> <span class="byline-name fn" itemprop="author">
+                Greg Stencel
+            </span></p>
+                <p class="commentline"><i class="fa fa-comment"></i> 
+        
+    <a href="posts/vim.html#disqus_thread" data-disqus-identifier="cache/posts/vim.html">Comments</a>
+
+
+        </p>
+</div>
+    </header><div class="e-content entry-content">
+    <div>
+<p>This site is written to promote using VIM cause it's free, it has a lot
+of plugins and it can even be python IDE ;) and vi is also on every unix
+like system so logging to your clean instalation server it's good to
+know how to edit conf files.</p>
+<p>If you don't want to read more on this site just have a look at basic
+commands which will be enough to edit and save file:</p>
+<p><strong>Remember</strong> all this commands should be executed within normal mode to
+do so press ESC.</p>
+<kbd>:</kbd><kbd>q</kbd> <kbd>↵</kbd>QUIT (being in normal mode to be sure you can always use <kbd>ESC</kbd> <kbd>:</kbd><kbd>q</kbd><kbd>↵</kbd>) most important command remember it to avaoid being character from famous "VIM quit joke" how to generate cat /dev/urandom: <br><kbd>:</kbd><kbd>q</kbd><kbd>!</kbd> <kbd>↵</kbd>quit without saving <br><kbd>:</kbd><kbd>w</kbd><kbd>q</kbd><kbd>↵</kbd> - save and quit<br><kbd>y</kbd><kbd>y</kbd> - copy line<br><kbd>p</kbd> - paste line<br><kbd>i</kbd> - insert mode after that you're no longer in normal mode you can than start typig text<br><kbd>h</kbd> <kbd>j</kbd> <kbd>k</kbd> <kbd>l</kbd> - left down up right or you can use arrows in vim<br>
+you can also find undo <kbd>u</kbd> nad redo <kbd>ctrl</kbd><kbd>r</kbd> useful<br><p>I was inspired by <a class="reference external" href="https://github.com/onjin/vim-startup">Onjin</a> when I
+saw him typing in vim I was impressed of how his thoughts became text
+and functions in VIM so fast without even using a mouse :).</p>
+<p>It takes a while to switch from another editor and get its habits (it
+took one month for me and I tried 3 times) but after all you will be
+happy using lightweight VIM.</p>
+<p>To use vim you need to know that there are <strong>five modes</strong> (normal,
+insert, visual, select, command-line, Ex-mode)</p>
+<p>There are 4 main modes you'll be using probably:</p>
+<ul class="simple">
+<li><p><strong>Normal</strong> - usually VIm starts in this mode where you can navigate
+through whole file and modify text. To get to this mode press ESC.</p></li>
+<li><p><strong>Insert</strong> : this mode is like it says - for inserting new text you
+can go to this mode by pressing i or a (being in normal mode ESC)</p></li>
+<li><p><strong>Visual</strong> : you can select text in this mode by pressing v (being in
+normal mode ESC) and moving for selection</p></li>
+<li><p><strong>Command-line</strong> : you activate it by pressing : (being in normal
+mode ESC)</p></li>
+</ul>
+<div class="alert alert-info">Tip: Capital letters like <kbd>A</kbd> need to followed by <kbd>Shift</kbd> </div>
+<div class="section" id="editing-enter-commands-below-being-in-normal-mode">
+<h2>Editing (enter commands below being in normal mode):</h2>
+<blockquote>
+<kbd>i</kbd>  -  enter insert mode and place cursor at <b>current position</b> to start typing<br><br><p><img alt="image0" src="images/i.gif"></p>
+</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd> I </kbd> - enter insert mode and place cursor at <b>start of the line</b> to start typing<p><img alt="imageI" src="images/I.gif"></p>
+</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>a</kbd> - enter insert mode and place cursor <b>after current position</b>\ to start typing<br><br><p><img alt="image5" src="images/a.gif"></p>
+</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>A</kbd> - enter insert mode and place cursor at the <b>end of line</b> to start typing<br><br><p><img alt="image5A" src="images/A.gif"></p>
+</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>e</kbd><kbd>a</kbd> - append at end of word<br><br><p><img alt="image6" src="images/ea.gif"></p>
+</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>r</kbd> - replace a single character (does not use insert mode)</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>J</kbd> - join line below to the current one<br><br><p><img alt="image7" src="images/J2.gif"></p>
+</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>c</kbd><kbd>c</kbd> - change (replace) an entire line</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>c</kbd><kbd>w</kbd> - change (replace) to the end of word</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>c</kbd><kbd>$</kbd> - change (replace) to the end of line</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>s</kbd> - delete character at cursor and subsitute text</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>S</kbd> - delete line at cursor and substitute text (same as cc)</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>d</kbd><kbd>$</kbd>  or<kbd>D</kbd> - delete after cursor<kbd>xp</kbd> - transpose two letters (delete and paste, technically)</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>u</kbd> - undo</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>Ctrl</kbd><kbd> r</kbd> - redo</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>.</kbd> - repeat last command</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>ESC</kbd> - exit insert mode</blockquote>
+<hr class="docutils">
+<div class="section" id="indedation">
+<h3>Indedation</h3>
+<blockquote>
+<p class="bg-success">
+ Examples:<br><br>
+
+   :s/\n/ /g - replace all spaces with enter in current line<br>
+   :%s/\n/ /g -replace all spaces with enter in all lines<br>
+   :%s/\n/ /cg - replace all spaces with enter in all lines but with confirmation<br></p>
+</blockquote>
+</div>
+<hr class="docutils">
+<div class="section" id="id1">
+<h3>Indedation</h3>
+<blockquote>
+<kbd>v</kbd> then select block you want indent and press number of indedations<kbd>2</kbd><kbd>&gt;</kbd> -  execute indentation on the selected block</blockquote>
+</div>
+<div class="section" id="marking-text-visual-mode">
+<h3>Marking text (visual mode)</h3>
+<blockquote>
+<kbd>v</kbd> - mark lines with starting visual mode</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>d</kbd> - (after starting selection with v ) cut selected text</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>y</kbd> - (after starting selection with v ) copy (yank) selected text</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>p</kbd> - (after cutting or copying selection) paste selected text after cursor</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>P</kbd> - (after cutting or copying selection) paste selected text before cursor example of all 4 commands above:<br><br><p><img alt="image8" src="images/yankpaste.gif"></p>
+</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>V</kbd> - start Linewise visual mode<br><br><p><img alt="image9" src="images/VisualLine.gif"></p>
+</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>o</kbd> - move to other end of marked area<br><br><p><img alt="image10" src="images/o.gif"></p>
+</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>Ctrl</kbd><kbd>v</kbd> - start visual block mode</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>O</kbd> - move to Other corner of block<br><br><p><img alt="image11" src="images/visualblock.gif"></p>
+</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>a</kbd><kbd>w</kbd> - mark a word (being in visual mode)<br><br><p><img alt="image12" src="images/select_word_2.gif"></p>
+</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>a</kbd><kbd>b</kbd> - a () block (with braces) (or vab from normal mode)<br><br><p><img alt="image13" src="images/mark_brackets.gif"></p>
+</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>a</kbd><kbd>B</kbd> - a {} block (with brackets)<br><br><p><img alt="image14" src="images/selecr_brackets_6.gif"></p>
+</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>i</kbd><kbd>b</kbd> - inner () block</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>i</kbd><kbd>B</kbd> - inner {} block</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>&gt;</kbd> - shift right</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>&lt;</kbd> - shift left</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>y</kbd> - yank (copy) marked text</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>d</kbd> - delete marked text</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>~</kbd> - switch case</blockquote>
+</div>
+<div class="section" id="layout-windows">
+<h3>Layout/windows:</h3>
+<blockquote>
+<kbd>Ctrl</kbd><kbd>w</kbd><kbd>w</kbd> - swith between windows</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>Ctrl </kbd><kbd>w </kbd><kbd>⇧</kbd> - move cursor up a window example using ctr ww and ctr w arrows in example before switching windows ESC was pressed to enter <b>normal</b> mode:<br><br><p><img alt="image15" src="images/ctrlww.gif"></p>
+</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>ctrl </kbd><kbd>w +</kbd> - increase size of current window</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>ctrl</kbd><kbd>w</kbd><kbd>-</kbd> - decrease size of current window<br><br><p><img alt="image16" src="images/rezise_window.gif"></p>
+</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>ctrl</kbd><kbd>w</kbd><kbd>\</kbd><kbd>_</kbd> - maximize current window</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>ctrl</kbd><kbd>w</kbd><kbd>=</kbd> -  make all equal size<br><br><p><img alt="image17" src="images/resize_window2.gif"></p>
+</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>1</kbd><kbd>0</kbd><kbd>ctrl</kbd><kbd>w</kbd><kbd>+</kbd> - increase window size by 10 lines</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>:vsplit file</kbd> - vertical split</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>:sview</kbd> - same as split, but readonly</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>:hide</kbd> - close current window</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>:only</kbd> - keep only this window open</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>:ls</kbd> - show current buffers</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>:b 2</kbd> - open buffer #2 in this window</blockquote>
+</div>
+<div class="section" id="movement">
+<h3>Movement:</h3>
+<blockquote>
+<kbd>w</kbd> - next word by punctation <br><br><p><img alt="image20" src="images/w_2.gif"></p>
+</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>W</kbd> - next word by spaces<br><br><p><img alt="image21" src="images/W_1.gif"></p>
+</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>b</kbd> - back word by punctation</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>B</kbd> - back word by spaces</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>e</kbd> - end word by punctation</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>E</kbd> - end word by spaces</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>h</kbd> - move left</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>j</kbd> - move down</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>k</kbd> - move up</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>l</kbd> - move right</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>^</kbd> - first non-blank character of line</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>)</kbd> - zero) start of line</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>$</kbd> - end of line</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>G</kbd> - Go To command (prefix with number 4j moves down 4 lines.</blockquote>
+</div>
+<hr class="docutils">
+<div class="section" id="operations-on-file">
+<h3>Operations on file:</h3>
+<blockquote>
+<kbd>:e</kbd> - open file in new buffer</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>:w</kbd> - write file to disk - save</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>:w filename</kbd>  save as</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>ZZ</kbd> - write file to disk and quit like :wq</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>:wq</kbd> - save file and quit</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>:n</kbd> - edit a new file</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>:n!</kbd> - edit new file without saving current changes</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>:q!</kbd> - quit without changes</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>:q</kbd> - quit editing file</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>:e .</kbd> - directory explorer</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>:split</kbd> - filename - split window and load another file</blockquote>
+<hr class="docutils">
+<blockquote>
+<kbd>:sview file</kbd> - same as split, but readonly</blockquote>
+<hr class="docutils">
+<p>Split window:</p>
+<blockquote>
+<kbd>Ctrl</kbd><kbd>W</kbd><kbd>s</kbd> - horizontal splitting<br><kbd>Ctrl</kbd><kbd>W</kbd><kbd>v</kbd> - for vertical splitting<br><kbd>Ctrl</kbd><kbd>w</kbd><kbd>q</kbd> - close window<br>
+</blockquote>
+<p>Split window:
+repeat insert in blockview
+ctrlv - select block
+then I -text ESC</p>
+</div>
+</div>
+<div class="section" id="macros-recording">
+<h2>Macros - recording</h2>
+</div>
+</div>
+    </div>
+    </article>
+</div>
+
+        <nav class="postindexpager"><ul class="pager">
+<li class="previous">
+                <a href="index-2.html" rel="prev">Newer posts</a>
+            </li>
+        </ul></nav><script>var disqus_shortname="stencel";(function(){var a=document.createElement("script");a.async=true;a.src="https://"+disqus_shortname+".disqus.com/count.js";(document.getElementsByTagName("head")[0]||document.getElementsByTagName("body")[0]).appendChild(a)}());</script><footer id="footer"><p>Contents © 2020         <a href="mailto:gstencel@gmail.com">Greg Stencel</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         </p>
+            
+        </footer>
+</div>
+    </section><script src="assets/js/all-nocdn.js"></script><!-- fancy dates --><script>
+    moment.locale("en");
+    fancydates(0, "YYYY-MM-DD HH:mm");
+    </script><!-- end fancy dates --><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element) {
+            return element.getElementsByTagName('img')[0].alt;
+    }});
+    </script><script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-50641127-1', 'stencel.io');
+  ga('send', 'pageview');
+
+</script><script type="text/javascript" src="assets/js/tipuesearch_set.js"></script><script type="text/javascript" src="assets/js/tipuesearch.js"></script><script type="text/javascript">
+$(document).ready(function() {
+     $('#tipue_search_input').tipuesearch({
+         'mode': 'json',
+         'contentLocation': '/assets/js/tipuesearch_content.json',
+         'showUrl': false
+     });
+});
+</script>
+</body>
+</html>

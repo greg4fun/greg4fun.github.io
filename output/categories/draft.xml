@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Greg's Tech Notes (Posts about draft)</title><link>http://stencel.io/</link><description></description><atom:link href="http://stencel.io/categories/draft.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><copyright>Contents © 2020 &lt;a href="mailto:gstencel@gmail.com"&gt;Greg Stencel&lt;/a&gt; </copyright><lastBuildDate>Thu, 18 Jun 2020 12:06:50 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Zabbix stack with docker-compose.yml</title><link>http://stencel.io/posts/zabbix-stack-with-docker-composeyml.html</link><dc:creator>Greg Stencel</dc:creator><description>&lt;div class="section" id="fully-working-zabbix-server-solution-with-ui-and-database-in-seconds"&gt;
+&lt;h2&gt;Fully working zabbix server solution with UI and database in seconds&lt;/h2&gt;
+&lt;p&gt;I wanted to install zabbix server quickly with docker but amount of zabbix images (created by zabbix) on dockerhub just overwhelmed me.
+To set up running zabbix server we need 3 images
+* choice of sql DB
+* zabbix-web  - web interface
+* zabbix-server - main zabbix process responsible for polling and trapping data and sending notifications to users.&lt;/p&gt;
+&lt;p&gt;My choice of database was MySQL so I created docker-compose file to have full stack of running zabbix server:&lt;/p&gt;
+&lt;p&gt;Notice(you may want to use alpine versions for production env)
+docker-compose.yml:&lt;/p&gt;
+&lt;pre class="code bash"&gt;&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-1"&gt;&lt;/a&gt;version: &lt;span class="s1"&gt;'3'&lt;/span&gt;
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-2"&gt;&lt;/a&gt;
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-3"&gt;&lt;/a&gt;services:
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-4"&gt;&lt;/a&gt;  db:
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-5"&gt;&lt;/a&gt;    image: mysql:latest
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-6"&gt;&lt;/a&gt;    restart: always
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-7"&gt;&lt;/a&gt;    expose:
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-8"&gt;&lt;/a&gt;      - &lt;span class="s1"&gt;'3336'&lt;/span&gt;
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-9"&gt;&lt;/a&gt;    environment:
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-10"&gt;&lt;/a&gt;      MYSQL_ROOT_PASSWORD: &lt;span class="s1"&gt;'my_secret_password'&lt;/span&gt;
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-11"&gt;&lt;/a&gt;      MYSQL_USER: &lt;span class="s1"&gt;'zabbixuser'&lt;/span&gt;
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-12"&gt;&lt;/a&gt;      MYSQL_PASSWORD: &lt;span class="s1"&gt;'zabbixpass'&lt;/span&gt;
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-13"&gt;&lt;/a&gt;      MYSQL_ROOT_HOST: &lt;span class="s1"&gt;'%'&lt;/span&gt;
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-14"&gt;&lt;/a&gt;    volumes:
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-15"&gt;&lt;/a&gt;      - &lt;span class="s1"&gt;'mysql_data_dir:/var/lib/mysql'&lt;/span&gt;
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-16"&gt;&lt;/a&gt;
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-17"&gt;&lt;/a&gt;
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-18"&gt;&lt;/a&gt;  zabbix-server:
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-19"&gt;&lt;/a&gt;    image: zabbix/zabbix-server-mysql
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-20"&gt;&lt;/a&gt;    links:
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-21"&gt;&lt;/a&gt;      - &lt;span class="s2"&gt;"db:mysql"&lt;/span&gt;
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-22"&gt;&lt;/a&gt;      - &lt;span class="s2"&gt;"postfix:postfix"&lt;/span&gt;
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-23"&gt;&lt;/a&gt;    environment:
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-24"&gt;&lt;/a&gt;      MYSQL_ROOT_PASSWORD: &lt;span class="s1"&gt;'my_secret_password'&lt;/span&gt;
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-25"&gt;&lt;/a&gt;      MYSQL_USER: &lt;span class="s1"&gt;'zabbixuser'&lt;/span&gt;
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-26"&gt;&lt;/a&gt;      MYSQL_PASSWORD: &lt;span class="s1"&gt;'zabbixpass'&lt;/span&gt;
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-27"&gt;&lt;/a&gt;      DB_SERVER_HOST: &lt;span class="s1"&gt;'mysql'&lt;/span&gt;
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-28"&gt;&lt;/a&gt;
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-29"&gt;&lt;/a&gt;
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-30"&gt;&lt;/a&gt;  zabbix-web:
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-31"&gt;&lt;/a&gt;    image: zabbix/zabbix-web-nginx-mysql
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-32"&gt;&lt;/a&gt;    ports:
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-33"&gt;&lt;/a&gt;      - &lt;span class="s1"&gt;'7777:80'&lt;/span&gt;
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-34"&gt;&lt;/a&gt;    links:
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-35"&gt;&lt;/a&gt;      - &lt;span class="s2"&gt;"db:mysql"&lt;/span&gt;
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-36"&gt;&lt;/a&gt;      - &lt;span class="s2"&gt;"zabbix-server:zabbix-server"&lt;/span&gt;
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-37"&gt;&lt;/a&gt;      - &lt;span class="s2"&gt;"postfix:postfix"&lt;/span&gt;
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-38"&gt;&lt;/a&gt;    environment:
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-39"&gt;&lt;/a&gt;      MYSQL_ROOT_PASSWORD: &lt;span class="s1"&gt;'secret'&lt;/span&gt;
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-40"&gt;&lt;/a&gt;      MYSQL_USER: &lt;span class="s1"&gt;'zabbixuser'&lt;/span&gt;
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-41"&gt;&lt;/a&gt;      MYSQL_PASSWORD: &lt;span class="s1"&gt;'myzabbixpass'&lt;/span&gt;
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-42"&gt;&lt;/a&gt;      DB_SERVER_HOST: &lt;span class="s1"&gt;'mysql'&lt;/span&gt;
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-43"&gt;&lt;/a&gt;      ZBX_SERVER_HOST: &lt;span class="s2"&gt;"zabbix-server"&lt;/span&gt;
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-44"&gt;&lt;/a&gt;      PHP_TZ: &lt;span class="s2"&gt;"Europe/London"&lt;/span&gt;
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-45"&gt;&lt;/a&gt;  postfix:
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-46"&gt;&lt;/a&gt;    image: catatnight/postfix
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-47"&gt;&lt;/a&gt;    hostname: support
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-48"&gt;&lt;/a&gt;    environment:
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-49"&gt;&lt;/a&gt;      - &lt;span class="nv"&gt;maildomain&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;domain.com
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-50"&gt;&lt;/a&gt;      - &lt;span class="nv"&gt;smtp_user&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;admin:password
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-51"&gt;&lt;/a&gt;    ports:
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-52"&gt;&lt;/a&gt;      - &lt;span class="s2"&gt;"25:25"&lt;/span&gt;
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-53"&gt;&lt;/a&gt;    &lt;span class="c1"&gt;#  - "465:465"&lt;/span&gt;
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-54"&gt;&lt;/a&gt;    &lt;span class="c1"&gt;#  - "587:587"&lt;/span&gt;
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-55"&gt;&lt;/a&gt;    expose:
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-56"&gt;&lt;/a&gt;      - &lt;span class="s2"&gt;"25"&lt;/span&gt;
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-57"&gt;&lt;/a&gt;    &lt;span class="c1"&gt;#  - "465"&lt;/span&gt;
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-58"&gt;&lt;/a&gt;    &lt;span class="c1"&gt;#  - "587"&lt;/span&gt;
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-59"&gt;&lt;/a&gt;    volumes:
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-60"&gt;&lt;/a&gt;      - /etc/nginx/ssl/postfix:/etc/postfix/certs
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-61"&gt;&lt;/a&gt;      - /etc/nginx/ssl/postfix:/etc/opendkim/domainkeys
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-62"&gt;&lt;/a&gt;volumes:
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-63"&gt;&lt;/a&gt;  mysql_data_dir:
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-64"&gt;&lt;/a&gt;    driver: &lt;span class="nb"&gt;local&lt;/span&gt;
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-65"&gt;&lt;/a&gt;
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-66"&gt;&lt;/a&gt;      &lt;span class="c1"&gt;#- ./deployment/config_files/main-postfix-live.cf:/etc/postfix/main.cf&lt;/span&gt;
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-67"&gt;&lt;/a&gt;    &lt;span class="c1"&gt;#networks:&lt;/span&gt;
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-68"&gt;&lt;/a&gt;    &lt;span class="c1"&gt;#  - backend&lt;/span&gt;
+&lt;a name="rest_code_ae94a7895adb44748fbff001edaaaf17-69"&gt;&lt;/a&gt;    &lt;span class="c1"&gt;#entrypoint: /docker-entrypoint.sh&lt;/span&gt;
+&lt;/pre&gt;&lt;p&gt;The above solution is just enough to start zabbix server up and
+running in couple seconds. To run it just put yml file into some directory (directory is important as volume created for mysql will have this dir name as prefix) volumes are usually stored in /var/lib/docker/volumes and run:&lt;/p&gt;
+&lt;pre class="code bash"&gt;&lt;a name="rest_code_c1d62686342e4600906a92bd69f87161-1"&gt;&lt;/a&gt;sudo docker-compose up
+&lt;/pre&gt;&lt;p&gt;Thats it!!!
+You now have your zabbix running on port 7777&lt;/p&gt;
+&lt;p&gt;So what happened here docker-compose up has build and runned 3 containers
+by running zabbix container it discovered there are no tables in mysql and has built them.&lt;/p&gt;
+&lt;p&gt;Now you just need to add agents/servers you want to monitor.
+Check out adding agent in separate post [here]&lt;/p&gt;
+&lt;p&gt;Versions:
+(versions I've used in this example Feb 2018):&lt;/p&gt;
+&lt;p&gt;Docker-compose: 1.17.0, build ac53b73
+Docker: 17.09.1-ce, build 19e2cf6
+Kernel: 4.13.0-36-generic&lt;/p&gt;
+&lt;/div&gt;</description><category>draft</category><guid>http://stencel.io/posts/zabbix-stack-with-docker-composeyml.html</guid><pubDate>Thu, 15 Mar 2018 17:14:48 GMT</pubDate></item><item><title>Setting up django, gunicorn and supervise (daemontools)</title><link>http://stencel.io/posts/setting-up-django-gunicorn-and-supervise-daemontools.html</link><dc:creator>Greg Stencel</dc:creator><description>&lt;div&gt;&lt;p&gt;Manuals about supervise are very laconic
+Install supervise script
+apt-get install daemontools&lt;/p&gt;
+&lt;p&gt;So firts you need to create run script and put it for example to /etc/service
+dir and then instide this dir run svscan *&lt;/p&gt;
+&lt;p&gt;:w&lt;/p&gt;&lt;/div&gt;</description><category>draft</category><guid>http://stencel.io/posts/setting-up-django-gunicorn-and-supervise-daemontools.html</guid><pubDate>Mon, 07 Jul 2014 23:36:33 GMT</pubDate></item><item><title>Update field value with another field value within same table</title><link>http://stencel.io/posts/update-field-value-with-another-field-value-within-same-table.html</link><dc:creator>Greg Stencel</dc:creator><description>&lt;p&gt;update food_food set total_carbs = IF(total_carbs is NULL or total_carbs='',sugars,total_carbs) ;&lt;/p&gt;</description><category>draft</category><guid>http://stencel.io/posts/update-field-value-with-another-field-value-within-same-table.html</guid><pubDate>Sun, 15 Jun 2014 16:29:28 GMT</pubDate></item><item><title>Vagrant create your own base box</title><link>http://stencel.io/posts/vagrant-create-your-own-base-box.html</link><dc:creator>Greg Stencel</dc:creator><description>&lt;div&gt;&lt;p&gt;apt-get install vim
+sudo update-alternatives --config editor
+ensure you have sudo installed&lt;/p&gt;
+&lt;p&gt;apt-get install sudo&lt;/p&gt;
+&lt;p&gt;add vagrant to sudoers file and passwordless login
+vagrant ALL=(ALL) NOPASSWD:ALL&lt;/p&gt;
+&lt;p&gt;mkdir -p /home/vagrant/.ssh
+wget --no-check-certificate &lt;a class="reference external" href="https://raw.github.com/mitchellh/vagrant/master/keys/vagrant.pub"&gt;https://raw.github.com/mitchellh/vagrant/master/keys/vagrant.pub&lt;/a&gt; -O /home/vagrant/.ssh/authorized_keys
+Ensure we have the correct permissions set
+chmod 0700 /home/vagrant/.ssh
+chmod 0600 /home/vagrant/.ssh/authorized_keys
+chown -R vagrant /home/vagrant/.ssh&lt;/p&gt;
+&lt;p&gt;apt-get install -y openssh-server&lt;/p&gt;
+&lt;dl class="simple"&gt;
+&lt;dt&gt;$ sudo apt-get install -y build-essential linux-headers-server&lt;/dt&gt;
+&lt;dd&gt;&lt;p&gt;# Mount guest additions ISO via virtualbox window then run...
+$ sudo mount /dev/cdrom /media/cdrom
+$ sudo /media/cdrom/VBoxLinuxAdditions.run
+$ sudo umount /media/cdrom
+$ sudo apt-get clean&lt;/p&gt;
+&lt;/dd&gt;
+&lt;/dl&gt;
+&lt;p&gt;Make sure that GRUB_TIMEOUT is set to “1”, GRUB_HIDDEN_TIMEOUT_QUIET is set to “true”, and GRUB_CMDLINE_LINUX_DEFAULT is set tp “quiet.” Save &amp;amp; close the file then update GRUB.
+sudo vi /etc/default/grub
+$ sudo update-grub&lt;/p&gt;
+&lt;dl class="simple"&gt;
+&lt;dt&gt;sudo dd if=/dev/zero of=/EMPTY bs=1M&lt;/dt&gt;
+&lt;dd&gt;&lt;p&gt;$ sudo rm -f /EMPTY
+# Shutdown the machine
+$ sudo shutdown -h now&lt;/p&gt;
+&lt;/dd&gt;
+&lt;/dl&gt;
+&lt;p&gt;The next command will actually create our box. The directory where you run this command is where the box file will be created.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;$ vagrant package --base vagrant-{distro}-{version}&lt;/p&gt;
+&lt;/blockquote&gt;&lt;/div&gt;</description><category>draft</category><guid>http://stencel.io/posts/vagrant-create-your-own-base-box.html</guid><pubDate>Thu, 12 Jun 2014 11:18:05 GMT</pubDate></item><item><title>Postgres connect through ssh tunnel</title><link>http://stencel.io/posts/postgres-connect-through-ssh-tunnel.html</link><dc:creator>Greg Stencel</dc:creator><description>&lt;div&gt;&lt;p&gt;There is possibility to use local pgadmin3 instance even if remote connection on postgresql server is not granted.
+To do so powerfull ssh tunneling comes with help :
+c:w
+reate ssh connection where
+$ ssh -L 63333:mad-erp04:5432 greg@mad-erp04.made.com
+$ ssh -L 63333:localhost:5432 joe@foo.com
+It is possible to use SSH to encrypt the network connection between clients and a PostgreSQL server. Done properly, this provides an adequately secure network connection, even for non-SSL-capable clients.&lt;/p&gt;
+&lt;p&gt;First make sure that an SSH server is running properly on the same machine as the PostgreSQL server and that you can log in using ssh as some user. Then you can establish a secure tunnel with a command like this from the client machine:&lt;/p&gt;
+&lt;p&gt;ssh -L 63333:localhost:5432 joe@foo.com
+The first number in the -L argument, 63333, is the port number of your end of the tunnel; it can be any unused port. (IANA reserves ports 49152 through 65535 for private use.) The second number, 5432, is the remote end of the tunnel: the port number your server is using. The name or IP address between the port numbers is the host with the database server you are going to connect to, as seen from the host you are logging in to, which is foo.com in this example. In order to connect to the database server using this tunnel, you connect to port 63333 on the local machine:&lt;/p&gt;
+&lt;p&gt;psql -h localhost -p 63333 postgres
+To the database server it will then look as though you are really user joe on host foo.com connecting to localhost in that context, and it will use whatever authentication procedure was configured for connections from this user and host. Note that the server will not think the connection is SSL-encrypted, since in fact it is not encrypted between the SSH server and the PostgreSQL server. This should not pose any extra security risk as long as they are on the same machine.&lt;/p&gt;
+&lt;p&gt;In order for the tunnel setup to succeed you must be allowed to connect via ssh as &lt;a class="reference external" href="mailto:joe@foo.com"&gt;joe@foo.com&lt;/a&gt;, just as if you had attempted to use ssh to create a terminal session.&lt;/p&gt;
+&lt;p&gt;You could also have set up the port forwarding as&lt;/p&gt;
+&lt;p&gt;ssh -L 63333:foo.com:5432 joe@foo.com
+but then the database server will see the connection as coming in on its foo.com interface, which is not opened by the default setting listen_addresses = 'localhost'. This is usually not what you want.&lt;/p&gt;
+&lt;p&gt;If you have to "hop" to the database server via some login host, one possible setup could look like this:&lt;/p&gt;
+&lt;p&gt;ssh -L 63333:db.foo.com:5432 joe@shell.foo.com
+Note that this way the connection from shell.foo.com to db.foo.com will not be encrypted by the SSH tunnel. SSH offers quite a few configuration possibilities when the network is restricted in various ways. Please refer to the SSH documentation for details.&lt;/p&gt;&lt;/div&gt;</description><category>draft</category><guid>http://stencel.io/posts/postgres-connect-through-ssh-tunnel.html</guid><pubDate>Wed, 14 May 2014 11:59:12 GMT</pubDate></item><item><title>watch</title><link>http://stencel.io/posts/watch.html</link><dc:creator>Greg Stencel</dc:creator><description>&lt;p&gt;Watch specified processes every second
+watch -n 1 'ps aux | grep ssh'&lt;/p&gt;</description><category>draft</category><guid>http://stencel.io/posts/watch.html</guid><pubDate>Tue, 13 May 2014 17:58:55 GMT</pubDate></item></channel></rss>

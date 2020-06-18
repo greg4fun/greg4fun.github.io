@@ -1,0 +1,20 @@
+<div class="section" id="mysql-tips">
+<h1>MySQL tips:</h1>
+<p>Create database with charset utf8</p>
+<pre class="code sql"><a name="rest_code_5e65d2fa11894b2ebc9e94fb861decb3-1"></a><span class="k">CREATE</span> <span class="k">DATABASE</span> <span class="n">mynew_db_name</span> <span class="nb">CHARACTER</span> <span class="k">SET</span> <span class="n">utf8</span> <span class="k">COLLATE</span> <span class="n">utf8_general_ci</span><span class="p">;</span>
+</pre><p>Grant everything to local user on all tables</p>
+<pre class="code sql"><a name="rest_code_5c098611efa2403e9575d1c4a655561d-1"></a><span class="k">GRANT</span> <span class="k">ALL</span> <span class="k">PRIVILEGES</span> <span class="k">ON</span> <span class="n">db_name</span><span class="p">.</span><span class="o">*</span> <span class="k">TO</span> <span class="n">my_user</span><span class="o">@</span><span class="n">localhost</span> <span class="n">IDENTIFIED</span> <span class="k">BY</span> <span class="s1">&#39;my_secret_password&#39;</span><span class="p">;</span>
+</pre><p>Grant everything to remote user on all tables</p>
+<pre class="code sql"><a name="rest_code_dda2d745d6f9448dbeb7dad2b890f936-1"></a><span class="k">GRANT</span> <span class="k">ALL</span> <span class="k">PRIVILEGES</span> <span class="k">ON</span>  <span class="n">db_name</span><span class="p">.</span><span class="o">*</span> <span class="k">TO</span> <span class="n">my_user</span><span class="o">@</span><span class="s1">&#39;IP_of_host_user_connects_from&#39;</span> <span class="n">IDENTIFIED</span> <span class="k">BY</span> <span class="s1">&#39;my_secret_password&#39;</span><span class="p">;</span>
+</pre><p>If you want to add only <strong>SELECT</strong> or something else instead of <strong>ALL</strong> there are other available privileges like:</p>
+<p><strong>SELECT, UPDATE, ALTER, CREATE, DELETE, DROP, SHOW DATABASES</strong>
+CREATE TEMPORARY TABLES, EXECUTE, FILE, GRANT OPTION, INDEX, INSERT, LOCK TABLES, PROCESS, REFERENCES, RELOAD, REPLICATION CLIENT, REPLICATION SLAVE, SHUTDOWN, SUPER, USAGE</p>
+<p>After all you want to reload privileges because when mysqld starts, it reads all grant table contents into memory. The in-memory tables become effective for access control at that point.
+To tell the server to reload the grant tables, perform a flush-privileges operation.</p>
+<p>Execute sql :</p>
+<pre class="code sql"><a name="rest_code_4d1289a1d02e4ea7987a10b28a9bea78-1"></a><span class="n">FLUSH</span> <span class="k">PRIVILEGES</span> <span class="p">;</span>
+</pre><p>or you can even do it from shell by</p>
+<pre class="code bash"><a name="rest_code_a2ec35acfadc4c07bad48586809c3b79-1"></a>$ mysqladmin flush-privileges
+</pre><p>or</p>
+<pre class="code bash"><a name="rest_code_fa4fce6967f8439b9340a00dbdf5c25e-1"></a>$ mysqladmin reload
+</pre></div>

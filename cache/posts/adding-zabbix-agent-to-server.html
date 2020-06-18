@@ -1,0 +1,99 @@
+<p>Zabbix is very powerfull tool which its using agents (or SNMP) to monitor server resources.
+Adding agent is easy but I had couple problems doing that when I used agent straight from my
+ubuntus (16.04.3) repo as there was no encryption functionality in this agent well I guess so as
+agent didn't recognize tls psk configuration so not very nice as by installing agent straight form repo
+with &quot;sudo apt-get update &amp;&amp; sudo apt-get install zabbix-agent&quot; I had limited functionality and unencrypted server-agent traffic.
+So there are 2 options we can install zabbix agent or use zabbix agent docker container.
+Adding zabbix agent to host system.
+For current day 3.2 is the latest so please change latest accordingly of how this artcile is old.
+wget <a class="reference external" href="http://repo.zabbix.com/zabbix/3.2/ubuntu/pool/main/z/zabbix-release/zabbix-release_3.2-1+xenial_all.deb">http://repo.zabbix.com/zabbix/3.2/ubuntu/pool/main/z/zabbix-release/zabbix-release_3.2-1+xenial_all.deb</a>
+sudo dpkg -i zabbix-release_3.2-1+xenial_all.deb
+sudo apt-get update
+apt-get purge zabbix-agent #remove previous if installed
+apt-get install zabbix-agent</p>
+<p>Now there are 3 basic options that need to be changed in agent config file:
+/etc/zabbix/zabbix_agentd.conf</p>
+<p>Server=ip of zabbix server
+ServerActive=ip of zabbix server
+Hostname=My host name</p>
+<p>sudo service zabbix-agent restart</p>
+<div class="section" id="add-host-to-server-through-web-interface">
+<h1>Add host to server through web interface:</h1>
+<p>In server go to Configuration-&gt; Hosts -&gt; Create host
+type in host name
+visible name
+public IP address opf your agent.Select group and add agent.
+Next is to select templates so add services you need to monitor (here linux + mysql : Template DB MySQL, Template OS Linux)
+after saving you should see green ZBX available label on Hosts screen
+Notice : I couldnt see zbx agent green icon until I added linux template / or zabbix agent template.</p>
+</div>
+<div class="section" id="seurity-setting-up-psk-encryption">
+<h1>Seurity - Setting up PSK encryption:</h1>
+<p>sh -c &quot;openssl rand -hex 32 &gt; /etc/zabbix/zabbix_agentd.psk&quot;
+Now add below lines to /etc/zabbix/zabbix_agentd.conf
+TLSConnect=psk
+TLSAccept=psk
+#each identity id must be different for each serverr connected to one zabbix server
+TLSPSKIdentity=PSK SOMETHING
+TLSPSKFile=/etc/zabbix/zabbix_agentd.psk
+sudo service zabbix-agent restart
+Get generated key string:
+cat /etc/zabbix/zabbix_agentd.psk
+and add encryption in zabbix server web interface :
+In server go to Configuration-&gt; Hosts -&gt; my host-&gt;encryption</p>
+<p>Select:
+Connections to host PSK
+connections from host PSK
+PSK identity: PSK SOMETHING (same as in zabbixagent config file)
+PSK: the hash generated (content of /etc/zabbix/zabbix_agentd.psk file on agent )
+now there should be greebn psk lablel and all our traffice will be encrypted</p>
+</div>
+<div class="section" id="adding-mysql-monitoring-option">
+<h1>Adding mysql monitoring option:</h1>
+<p>add user credentials for mysqlclient on agent server:
+mysql &gt; grant all privileges on <em>.</em> to zabbix&#64;'%' identified by 'zabbixuserpassword';
+use localhost or host you will be accessing mysql from % is just for test purpose to eliminate
+authentication problems.</p>
+<blockquote>
+<p>Out of the topic - something about mysql remote connections and security:
+My best practice is not to have any remote access like &#64;'%' to mysql on any server I manage
+its just dangerous and anyone can try bruteforcing and try to connect to our mysql server.
+Another way I saw in many places if admin creates &#64;'%' accesses they use it without any encryption so there is
+plain text traffic comming from mysql-server/postgres straight to users computer which is not good (MITM etc).
+The best would be to have your mysql server set up with ssl certificate but its not popular practice as may be
+time consuming for setting up and for connecting to such server (preatty easu in mysql-workbench).
+Faster way to encrypt your mysql confidential data traffic is to use ssh tunnel but there is
+a limitation here user that needs access to mysql data needs to have ssh access to the server
+if this is an option just define users with localhost as source like <a class="reference external" href="mailto:my_db_user&#64;localhost">my_db_user&#64;localhost</a>
+this is safer as you cant guarantee mysql users competence so best practice is to prevent having '%',
+to double secure this method do not to expose 3306 to the public and only allow localhost(unix socket) and 127.0.0.1
+(remember mysqlclient unixsocket/ ip connection) to be able to connect through this port.
+In dockerized mysql instances when I need it to be visible I just do ports config like
+127.0.0.0:3306:3306 then it will be visible to host machine only.
+but if user wont have ssh access to the server then only option you have is using ssl cert.
+So remember having user&#64;'%' or even <a class="reference external" href="mailto:user&#64;'some_ip">user&#64;'some_ip</a>' you still without ssl or ssh the traffic from mysql-server
+is still unencrypted.</p>
+</blockquote>
+<p>Ok comming back to mysql monitoring config:
+add client to my.cnf in /etc/mysql or to /etc/mysql/conf.d/mysql.cnf</p>
+<p>[client]
+user = zabbix
+password = zabbixuserpassword
+port = 3326
+host = 127.0.0.1</p>
+<p>add myu.cnf</p>
+<p>mkdir -p /var/lib/zabbix/
+cd /var/lib/zabbix
+ln -sv /etc/mysql/my.cnf</p>
+<p>service zabbix-agent restart</p>
+<p>Now you can add mysql template items in zabbix server .</p>
+<p>select linux templates to see agent visibility</p>
+<p>bug in default userparameter_mysql agent file</p>
+<p>cat /etc/zabbix/zabbix_agentd.d/userparameter_mysql.conf
+redirect error to stdout to grep later</p>
+<p>UserParameter=mysql.ping,HOME=/var/lib/zabbix mysqladmin ping 2&gt;&amp;1 | grep -c alive
+previously was
+UserParameter=mysql.ping,HOME=/var/lib/zabbix mysqladmin ping | grep -c alive
+so grep didnt work</p>
+<p>Write your post here.</p>
+</div>

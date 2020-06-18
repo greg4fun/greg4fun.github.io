@@ -1,0 +1,27 @@
+<p>Check files changed between branches</p>
+<pre class="code bash"><a name="rest_code_d40cf9ba000e49ad9fa942308d70e80b-1"></a>git diff --name-status master..devel
+</pre><p>Check changes on file form different branch/commit</p>
+<pre class="code bash"><a name="rest_code_69cf40be8c5e4adaa0be87845d29e8e1-1"></a>git diff commit_hash -- filename
+</pre><p>Same as above between 2 branches/commits</p>
+<pre class="code bash"><a name="rest_code_566fb3ffe18446fbb9b340337d0ca359-1"></a>git diff commit_hash master -- filename
+</pre><p>Check full file history</p>
+<pre class="code bash"><a name="rest_code_1b6608d8bcc34ce5928c385d19b468ff-1"></a>git log -p -- filename
+</pre><p>Check who broke production server :</p>
+<pre class="code bash"><a name="rest_code_71be663ab2cc45889015531384d6f8c7-1"></a>git blame filename
+</pre><p>Merge as one commit (need to commit afterwards) its not default like in normal merge:</p>
+<pre class="code bash"><a name="rest_code_dcf31ae6635242ceba27c2cf5c2ee355-1"></a>git merge --squash branch
+</pre><p>List of commits in git local storage</p>
+<pre class="code bash"><a name="rest_code_50641311c5624d75a36806c4a3a907c7-1"></a>git reflog
+</pre><p>Take(checkout) file from different branch/commit</p>
+<pre class="code bash"><a name="rest_code_bec2d9bbf3cc49fbbe8fce6d7e14001e-1"></a>git checkout develop -- filename
+<a name="rest_code_bec2d9bbf3cc49fbbe8fce6d7e14001e-2"></a>git checkout commit_hash -- filename
+</pre><p>Reset current branch to remote:</p>
+<pre class="code bash"><a name="rest_code_25ba452d12324e5cb787ae77a048079d-1"></a>git reset --hard origin/current_branch
+<a name="rest_code_25ba452d12324e5cb787ae77a048079d-2"></a>git reset --hard origin/master
+</pre><p>Save and depracate changes which were not commited</p>
+<pre class="code bash"><a name="rest_code_1dfa2b6cb17646af976e567e31506a3d-1"></a>git stash
+<a name="rest_code_1dfa2b6cb17646af976e567e31506a3d-2"></a>git stash save -a
+</pre><p>Restore stash (by picking selected)</p>
+<pre class="code bash"><a name="rest_code_51948ab4ef854e44a21e1a7bab2e0c0e-1"></a>git stash list
+<a name="rest_code_51948ab4ef854e44a21e1a7bab2e0c0e-2"></a>git stash pop <span class="o">{</span><span class="m">0</span><span class="o">}</span>
+</pre>

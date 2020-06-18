@@ -1,0 +1,18 @@
+<p>git diff --cached     /what is about to be committed
+git status   brief summary of the situation with
+git log At any point you can view the history of your changes usingggit log -pit log -p</p>
+<p>git log  -pIf you also want to see complete diffs at each step, use</p>
+<p>git log --stat --summaryOften the overview of the change is useful to get a feel of each step:w</p>
+<p>remove wrongly commited large files
+➜  my_project git:(master) ✗ git filter-branch --tree-filter 'rm -rf site_media/help' HEAD
+Rewrite 22d1cead6a67d68939da2eef48c5372b36651a5c (70/70)
+Ref 'refs/heads/master' was rewritten</p>
+<p>restore deleted uncommited file
+git status
+git checkout -- filename</p>
+<p>The output tells you what you need to do. git reset HEAD cc.properties etc.</p>
+<p>This will unstage the rm operation. After that, running a git status again will tell you that you need to do a git checkout -- cc.properties to get the file back.</p>
+<p>Update: I have this in my config file</p>
+<p>$ git config alias.unstage
+reset HEAD
+which I usually use to unstage stuff.</p>

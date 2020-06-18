@@ -1,0 +1,16 @@
+<p>Tempted by post on official google admins blog <a class="reference external" href="http://googlewebmastercentral.blogspot.co.uk/2014/08/https-as-ranking-signal.html">http://googlewebmastercentral.blogspot.co.uk/2014/08/https-as-ranking-signal.html</a>
+it's about higher ranking when having https. So I have recently bought cheap ssl certificate from known issuer COMODO
+and upgraded my server with it but it caused several problems when I redirected from 80 to 443 some 3rd party apps (like
+userena for django) created loops but I found solution quickly it was to put USERENA_USE_HTTPS=True in settings.py but
+it still sends more forgot password mails than it should but it's different story.</p>
+<p>Comming back to point if you are experiencing error &quot;sec_error_unknown_issuer&quot; in firefox
+after implementing COMODO Positive-SSL certificate this solution may help you.
+Don't know exactly but I read that it has something to do with chain certificates
+they should be bundled inside you website certificate.
+And remember you have to do it in right order because first one should be your servers certificate
+cause it's signed with key) and nginx or whatever you use may have problems after reloading service.</p>
+<p>My command for bundling was:</p>
+<p>cat exerceo_pl.crt COMODORSADomainValidationSecureServerCA.crt COMODORSAAddTrustCA.crt AddTrustExternalCARoot.crt &gt;
+exerceo_pl.bundled.crt
+after that I had just to point my nginx.conf to new bundled certificate.
+And after all reaload of nginx fixed my unknow issuer firefox problem.</p>

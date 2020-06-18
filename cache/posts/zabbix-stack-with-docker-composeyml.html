@@ -1,0 +1,94 @@
+<div class="section" id="fully-working-zabbix-server-solution-with-ui-and-database-in-seconds">
+<h1>Fully working zabbix server solution with UI and database in seconds</h1>
+<p>I wanted to install zabbix server quickly with docker but amount of zabbix images (created by zabbix) on dockerhub just overwhelmed me.
+To set up running zabbix server we need 3 images
+* choice of sql DB
+* zabbix-web  - web interface
+* zabbix-server - main zabbix process responsible for polling and trapping data and sending notifications to users.</p>
+<p>My choice of database was MySQL so I created docker-compose file to have full stack of running zabbix server:</p>
+<p>Notice(you may want to use alpine versions for production env)
+docker-compose.yml:</p>
+<pre class="code bash"><a name="rest_code_ae94a7895adb44748fbff001edaaaf17-1"></a>version: <span class="s1">&#39;3&#39;</span>
+<a name="rest_code_ae94a7895adb44748fbff001edaaaf17-2"></a>
+<a name="rest_code_ae94a7895adb44748fbff001edaaaf17-3"></a>services:
+<a name="rest_code_ae94a7895adb44748fbff001edaaaf17-4"></a>  db:
+<a name="rest_code_ae94a7895adb44748fbff001edaaaf17-5"></a>    image: mysql:latest
+<a name="rest_code_ae94a7895adb44748fbff001edaaaf17-6"></a>    restart: always
+<a name="rest_code_ae94a7895adb44748fbff001edaaaf17-7"></a>    expose:
+<a name="rest_code_ae94a7895adb44748fbff001edaaaf17-8"></a>      - <span class="s1">&#39;3336&#39;</span>
+<a name="rest_code_ae94a7895adb44748fbff001edaaaf17-9"></a>    environment:
+<a name="rest_code_ae94a7895adb44748fbff001edaaaf17-10"></a>      MYSQL_ROOT_PASSWORD: <span class="s1">&#39;my_secret_password&#39;</span>
+<a name="rest_code_ae94a7895adb44748fbff001edaaaf17-11"></a>      MYSQL_USER: <span class="s1">&#39;zabbixuser&#39;</span>
+<a name="rest_code_ae94a7895adb44748fbff001edaaaf17-12"></a>      MYSQL_PASSWORD: <span class="s1">&#39;zabbixpass&#39;</span>
+<a name="rest_code_ae94a7895adb44748fbff001edaaaf17-13"></a>      MYSQL_ROOT_HOST: <span class="s1">&#39;%&#39;</span>
+<a name="rest_code_ae94a7895adb44748fbff001edaaaf17-14"></a>    volumes:
+<a name="rest_code_ae94a7895adb44748fbff001edaaaf17-15"></a>      - <span class="s1">&#39;mysql_data_dir:/var/lib/mysql&#39;</span>
+<a name="rest_code_ae94a7895adb44748fbff001edaaaf17-16"></a>
+<a name="rest_code_ae94a7895adb44748fbff001edaaaf17-17"></a>
+<a name="rest_code_ae94a7895adb44748fbff001edaaaf17-18"></a>  zabbix-server:
+<a name="rest_code_ae94a7895adb44748fbff001edaaaf17-19"></a>    image: zabbix/zabbix-server-mysql
+<a name="rest_code_ae94a7895adb44748fbff001edaaaf17-20"></a>    links:
+<a name="rest_code_ae94a7895adb44748fbff001edaaaf17-21"></a>      - <span class="s2">&quot;db:mysql&quot;</span>
+<a name="rest_code_ae94a7895adb44748fbff001edaaaf17-22"></a>      - <span class="s2">&quot;postfix:postfix&quot;</span>
+<a name="rest_code_ae94a7895adb44748fbff001edaaaf17-23"></a>    environment:
+<a name="rest_code_ae94a7895adb44748fbff001edaaaf17-24"></a>      MYSQL_ROOT_PASSWORD: <span class="s1">&#39;my_secret_password&#39;</span>
+<a name="rest_code_ae94a7895adb44748fbff001edaaaf17-25"></a>      MYSQL_USER: <span class="s1">&#39;zabbixuser&#39;</span>
+<a name="rest_code_ae94a7895adb44748fbff001edaaaf17-26"></a>      MYSQL_PASSWORD: <span class="s1">&#39;zabbixpass&#39;</span>
+<a name="rest_code_ae94a7895adb44748fbff001edaaaf17-27"></a>      DB_SERVER_HOST: <span class="s1">&#39;mysql&#39;</span>
+<a name="rest_code_ae94a7895adb44748fbff001edaaaf17-28"></a>
+<a name="rest_code_ae94a7895adb44748fbff001edaaaf17-29"></a>
+<a name="rest_code_ae94a7895adb44748fbff001edaaaf17-30"></a>  zabbix-web:
+<a name="rest_code_ae94a7895adb44748fbff001edaaaf17-31"></a>    image: zabbix/zabbix-web-nginx-mysql
+<a name="rest_code_ae94a7895adb44748fbff001edaaaf17-32"></a>    ports:
+<a name="rest_code_ae94a7895adb44748fbff001edaaaf17-33"></a>      - <span class="s1">&#39;7777:80&#39;</span>
+<a name="rest_code_ae94a7895adb44748fbff001edaaaf17-34"></a>    links:
+<a name="rest_code_ae94a7895adb44748fbff001edaaaf17-35"></a>      - <span class="s2">&quot;db:mysql&quot;</span>
+<a name="rest_code_ae94a7895adb44748fbff001edaaaf17-36"></a>      - <span class="s2">&quot;zabbix-server:zabbix-server&quot;</span>
+<a name="rest_code_ae94a7895adb44748fbff001edaaaf17-37"></a>      - <span class="s2">&quot;postfix:postfix&quot;</span>
+<a name="rest_code_ae94a7895adb44748fbff001edaaaf17-38"></a>    environment:
+<a name="rest_code_ae94a7895adb44748fbff001edaaaf17-39"></a>      MYSQL_ROOT_PASSWORD: <span class="s1">&#39;secret&#39;</span>
+<a name="rest_code_ae94a7895adb44748fbff001edaaaf17-40"></a>      MYSQL_USER: <span class="s1">&#39;zabbixuser&#39;</span>
+<a name="rest_code_ae94a7895adb44748fbff001edaaaf17-41"></a>      MYSQL_PASSWORD: <span class="s1">&#39;myzabbixpass&#39;</span>
+<a name="rest_code_ae94a7895adb44748fbff001edaaaf17-42"></a>      DB_SERVER_HOST: <span class="s1">&#39;mysql&#39;</span>
+<a name="rest_code_ae94a7895adb44748fbff001edaaaf17-43"></a>      ZBX_SERVER_HOST: <span class="s2">&quot;zabbix-server&quot;</span>
+<a name="rest_code_ae94a7895adb44748fbff001edaaaf17-44"></a>      PHP_TZ: <span class="s2">&quot;Europe/London&quot;</span>
+<a name="rest_code_ae94a7895adb44748fbff001edaaaf17-45"></a>  postfix:
+<a name="rest_code_ae94a7895adb44748fbff001edaaaf17-46"></a>    image: catatnight/postfix
+<a name="rest_code_ae94a7895adb44748fbff001edaaaf17-47"></a>    hostname: support
+<a name="rest_code_ae94a7895adb44748fbff001edaaaf17-48"></a>    environment:
+<a name="rest_code_ae94a7895adb44748fbff001edaaaf17-49"></a>      - <span class="nv">maildomain</span><span class="o">=</span>domain.com
+<a name="rest_code_ae94a7895adb44748fbff001edaaaf17-50"></a>      - <span class="nv">smtp_user</span><span class="o">=</span>admin:password
+<a name="rest_code_ae94a7895adb44748fbff001edaaaf17-51"></a>    ports:
+<a name="rest_code_ae94a7895adb44748fbff001edaaaf17-52"></a>      - <span class="s2">&quot;25:25&quot;</span>
+<a name="rest_code_ae94a7895adb44748fbff001edaaaf17-53"></a>    <span class="c1">#  - &quot;465:465&quot;</span>
+<a name="rest_code_ae94a7895adb44748fbff001edaaaf17-54"></a>    <span class="c1">#  - &quot;587:587&quot;</span>
+<a name="rest_code_ae94a7895adb44748fbff001edaaaf17-55"></a>    expose:
+<a name="rest_code_ae94a7895adb44748fbff001edaaaf17-56"></a>      - <span class="s2">&quot;25&quot;</span>
+<a name="rest_code_ae94a7895adb44748fbff001edaaaf17-57"></a>    <span class="c1">#  - &quot;465&quot;</span>
+<a name="rest_code_ae94a7895adb44748fbff001edaaaf17-58"></a>    <span class="c1">#  - &quot;587&quot;</span>
+<a name="rest_code_ae94a7895adb44748fbff001edaaaf17-59"></a>    volumes:
+<a name="rest_code_ae94a7895adb44748fbff001edaaaf17-60"></a>      - /etc/nginx/ssl/postfix:/etc/postfix/certs
+<a name="rest_code_ae94a7895adb44748fbff001edaaaf17-61"></a>      - /etc/nginx/ssl/postfix:/etc/opendkim/domainkeys
+<a name="rest_code_ae94a7895adb44748fbff001edaaaf17-62"></a>volumes:
+<a name="rest_code_ae94a7895adb44748fbff001edaaaf17-63"></a>  mysql_data_dir:
+<a name="rest_code_ae94a7895adb44748fbff001edaaaf17-64"></a>    driver: <span class="nb">local</span>
+<a name="rest_code_ae94a7895adb44748fbff001edaaaf17-65"></a>
+<a name="rest_code_ae94a7895adb44748fbff001edaaaf17-66"></a>      <span class="c1">#- ./deployment/config_files/main-postfix-live.cf:/etc/postfix/main.cf</span>
+<a name="rest_code_ae94a7895adb44748fbff001edaaaf17-67"></a>    <span class="c1">#networks:</span>
+<a name="rest_code_ae94a7895adb44748fbff001edaaaf17-68"></a>    <span class="c1">#  - backend</span>
+<a name="rest_code_ae94a7895adb44748fbff001edaaaf17-69"></a>    <span class="c1">#entrypoint: /docker-entrypoint.sh</span>
+</pre><p>The above solution is just enough to start zabbix server up and
+running in couple seconds. To run it just put yml file into some directory (directory is important as volume created for mysql will have this dir name as prefix) volumes are usually stored in /var/lib/docker/volumes and run:</p>
+<pre class="code bash"><a name="rest_code_c1d62686342e4600906a92bd69f87161-1"></a>sudo docker-compose up
+</pre><p>Thats it!!!
+You now have your zabbix running on port 7777</p>
+<p>So what happened here docker-compose up has build and runned 3 containers
+by running zabbix container it discovered there are no tables in mysql and has built them.</p>
+<p>Now you just need to add agents/servers you want to monitor.
+Check out adding agent in separate post [here]</p>
+<p>Versions:
+(versions I've used in this example Feb 2018):</p>
+<p>Docker-compose: 1.17.0, build ac53b73
+Docker: 17.09.1-ce, build 19e2cf6
+Kernel: 4.13.0-36-generic</p>
+</div>
