@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Greg's Tech Notes (Posts about python)</title><link>http://stencel.io/</link><description></description><atom:link href="http://stencel.io/categories/python.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><copyright>Contents © 2020 &lt;a href="mailto:gstencel@gmail.com"&gt;Greg Stencel&lt;/a&gt; </copyright><lastBuildDate>Thu, 18 Jun 2020 12:06:50 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Python combine dates , current date with different hour</title><link>http://stencel.io/posts/python-combine-dates-current-date-with-different-hour.html</link><dc:creator>Greg Stencel</dc:creator><description>&lt;div&gt;&lt;p&gt;Specification:
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Greg's Tech Notes (Posts about python)</title><link>https://stencel.io/</link><description></description><atom:link href="https://stencel.io/categories/python.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><copyright>Contents © 2020 &lt;a href="mailto:gstencel@gmail.com"&gt;Greg Stencel&lt;/a&gt; </copyright><lastBuildDate>Sun, 28 Jun 2020 20:33:00 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Python combine dates , current date with different hour</title><link>https://stencel.io/posts/python-combine-dates-current-date-with-different-hour.html</link><dc:creator>Greg Stencel</dc:creator><description>&lt;div&gt;&lt;p&gt;Specification:
 I want to launch deployment script but not before 18:00 so every user can leave home.
 I want to lunch it today but with different time that datetime.datetime.now() gives
 To do it I think best way is t to combine &lt;strong&gt;date.today&lt;/strong&gt; with &lt;strong&gt;time(18,00)&lt;/strong&gt; and then compare
@@ -24,7 +24,7 @@ Command of lauching is up to us so jsut for tests lets pass it in argvs:&lt;/p&g
 &lt;a name="rest_code_6b3cd7ca589948d787a40b3a9486e607-12"&gt;&lt;/a&gt;
 &lt;a name="rest_code_6b3cd7ca589948d787a40b3a9486e607-13"&gt;&lt;/a&gt;&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;exe_time&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;=&lt;/span&gt;&lt;span class="n"&gt;current_time&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
 &lt;a name="rest_code_6b3cd7ca589948d787a40b3a9486e607-14"&gt;&lt;/a&gt;    &lt;span class="nb"&gt;print&lt;/span&gt; &lt;span class="s2"&gt;"executing..."&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;</description><category>python</category><guid>http://stencel.io/posts/python-combine-dates-current-date-with-different-hour.html</guid><pubDate>Wed, 04 Jun 2014 16:38:10 GMT</pubDate></item><item><title>Quick vi / vim tutorial</title><link>http://stencel.io/posts/vim.html</link><dc:creator>Greg Stencel</dc:creator><description>&lt;div&gt;&lt;p&gt;This site is written to promote using VIM cause it's free, it has a lot
+&lt;/pre&gt;&lt;/div&gt;</description><category>python</category><guid>https://stencel.io/posts/python-combine-dates-current-date-with-different-hour.html</guid><pubDate>Wed, 04 Jun 2014 16:38:10 GMT</pubDate></item><item><title>Quick vi / vim tutorial</title><link>https://stencel.io/posts/vim.html</link><dc:creator>Greg Stencel</dc:creator><description>&lt;div&gt;&lt;p&gt;This site is written to promote using VIM cause it's free, it has a lot
 of plugins and it can even be python IDE ;) and vi is also on every unix
 like system so logging to your clean instalation server it's good to
 know how to edit conf files.&lt;/p&gt;
@@ -61,30 +61,30 @@ mode ESC)&lt;/p&gt;&lt;/li&gt;
 &lt;div class="alert alert-info"&gt;Tip: Capital letters like &lt;kbd&gt;A&lt;/kbd&gt; need to followed by &lt;kbd&gt;Shift&lt;/kbd&gt; &lt;/div&gt;&lt;div class="section" id="editing-enter-commands-below-being-in-normal-mode"&gt;
 &lt;h2&gt;Editing (enter commands below being in normal mode):&lt;/h2&gt;
 &lt;blockquote&gt;
-&lt;kbd&gt;i&lt;/kbd&gt;  -  enter insert mode and place cursor at &lt;b&gt;current position&lt;/b&gt; to start typing&lt;br&gt;&lt;br&gt;&lt;p&gt;&lt;img alt="image0" src="http://stencel.io/images/i.gif"&gt;&lt;/p&gt;
+&lt;kbd&gt;i&lt;/kbd&gt;  -  enter insert mode and place cursor at &lt;b&gt;current position&lt;/b&gt; to start typing&lt;br&gt;&lt;br&gt;&lt;p&gt;&lt;img alt="image0" src="https://stencel.io/images/i.gif"&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;hr class="docutils"&gt;
 &lt;blockquote&gt;
-&lt;kbd&gt; I &lt;/kbd&gt; - enter insert mode and place cursor at &lt;b&gt;start of the line&lt;/b&gt; to start typing&lt;p&gt;&lt;img alt="imageI" src="http://stencel.io/images/I.gif"&gt;&lt;/p&gt;
+&lt;kbd&gt; I &lt;/kbd&gt; - enter insert mode and place cursor at &lt;b&gt;start of the line&lt;/b&gt; to start typing&lt;p&gt;&lt;img alt="imageI" src="https://stencel.io/images/I.gif"&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;hr class="docutils"&gt;
 &lt;blockquote&gt;
-&lt;kbd&gt;a&lt;/kbd&gt; - enter insert mode and place cursor &lt;b&gt;after current position&lt;/b&gt;\ to start typing&lt;br&gt;&lt;br&gt;&lt;p&gt;&lt;img alt="image5" src="http://stencel.io/images/a.gif"&gt;&lt;/p&gt;
+&lt;kbd&gt;a&lt;/kbd&gt; - enter insert mode and place cursor &lt;b&gt;after current position&lt;/b&gt;\ to start typing&lt;br&gt;&lt;br&gt;&lt;p&gt;&lt;img alt="image5" src="https://stencel.io/images/a.gif"&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;hr class="docutils"&gt;
 &lt;blockquote&gt;
-&lt;kbd&gt;A&lt;/kbd&gt; - enter insert mode and place cursor at the &lt;b&gt;end of line&lt;/b&gt; to start typing&lt;br&gt;&lt;br&gt;&lt;p&gt;&lt;img alt="image5A" src="http://stencel.io/images/A.gif"&gt;&lt;/p&gt;
+&lt;kbd&gt;A&lt;/kbd&gt; - enter insert mode and place cursor at the &lt;b&gt;end of line&lt;/b&gt; to start typing&lt;br&gt;&lt;br&gt;&lt;p&gt;&lt;img alt="image5A" src="https://stencel.io/images/A.gif"&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;hr class="docutils"&gt;
 &lt;blockquote&gt;
-&lt;kbd&gt;e&lt;/kbd&gt;&lt;kbd&gt;a&lt;/kbd&gt; - append at end of word&lt;br&gt;&lt;br&gt;&lt;p&gt;&lt;img alt="image6" src="http://stencel.io/images/ea.gif"&gt;&lt;/p&gt;
+&lt;kbd&gt;e&lt;/kbd&gt;&lt;kbd&gt;a&lt;/kbd&gt; - append at end of word&lt;br&gt;&lt;br&gt;&lt;p&gt;&lt;img alt="image6" src="https://stencel.io/images/ea.gif"&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;hr class="docutils"&gt;
 &lt;blockquote&gt;
 &lt;kbd&gt;r&lt;/kbd&gt; - replace a single character (does not use insert mode)&lt;/blockquote&gt;
 &lt;hr class="docutils"&gt;
 &lt;blockquote&gt;
-&lt;kbd&gt;J&lt;/kbd&gt; - join line below to the current one&lt;br&gt;&lt;br&gt;&lt;p&gt;&lt;img alt="image7" src="http://stencel.io/images/J2.gif"&gt;&lt;/p&gt;
+&lt;kbd&gt;J&lt;/kbd&gt; - join line below to the current one&lt;br&gt;&lt;br&gt;&lt;p&gt;&lt;img alt="image7" src="https://stencel.io/images/J2.gif"&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;hr class="docutils"&gt;
 &lt;blockquote&gt;
@@ -150,34 +150,34 @@ mode ESC)&lt;/p&gt;&lt;/li&gt;
 &lt;kbd&gt;p&lt;/kbd&gt; - (after cutting or copying selection) paste selected text after cursor&lt;/blockquote&gt;
 &lt;hr class="docutils"&gt;
 &lt;blockquote&gt;
-&lt;kbd&gt;P&lt;/kbd&gt; - (after cutting or copying selection) paste selected text before cursor example of all 4 commands above:&lt;br&gt;&lt;br&gt;&lt;p&gt;&lt;img alt="image8" src="http://stencel.io/images/yankpaste.gif"&gt;&lt;/p&gt;
+&lt;kbd&gt;P&lt;/kbd&gt; - (after cutting or copying selection) paste selected text before cursor example of all 4 commands above:&lt;br&gt;&lt;br&gt;&lt;p&gt;&lt;img alt="image8" src="https://stencel.io/images/yankpaste.gif"&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;hr class="docutils"&gt;
 &lt;blockquote&gt;
-&lt;kbd&gt;V&lt;/kbd&gt; - start Linewise visual mode&lt;br&gt;&lt;br&gt;&lt;p&gt;&lt;img alt="image9" src="http://stencel.io/images/VisualLine.gif"&gt;&lt;/p&gt;
+&lt;kbd&gt;V&lt;/kbd&gt; - start Linewise visual mode&lt;br&gt;&lt;br&gt;&lt;p&gt;&lt;img alt="image9" src="https://stencel.io/images/VisualLine.gif"&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;hr class="docutils"&gt;
 &lt;blockquote&gt;
-&lt;kbd&gt;o&lt;/kbd&gt; - move to other end of marked area&lt;br&gt;&lt;br&gt;&lt;p&gt;&lt;img alt="image10" src="http://stencel.io/images/o.gif"&gt;&lt;/p&gt;
+&lt;kbd&gt;o&lt;/kbd&gt; - move to other end of marked area&lt;br&gt;&lt;br&gt;&lt;p&gt;&lt;img alt="image10" src="https://stencel.io/images/o.gif"&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;hr class="docutils"&gt;
 &lt;blockquote&gt;
 &lt;kbd&gt;Ctrl&lt;/kbd&gt;&lt;kbd&gt;v&lt;/kbd&gt; - start visual block mode&lt;/blockquote&gt;
 &lt;hr class="docutils"&gt;
 &lt;blockquote&gt;
-&lt;kbd&gt;O&lt;/kbd&gt; - move to Other corner of block&lt;br&gt;&lt;br&gt;&lt;p&gt;&lt;img alt="image11" src="http://stencel.io/images/visualblock.gif"&gt;&lt;/p&gt;
+&lt;kbd&gt;O&lt;/kbd&gt; - move to Other corner of block&lt;br&gt;&lt;br&gt;&lt;p&gt;&lt;img alt="image11" src="https://stencel.io/images/visualblock.gif"&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;hr class="docutils"&gt;
 &lt;blockquote&gt;
-&lt;kbd&gt;a&lt;/kbd&gt;&lt;kbd&gt;w&lt;/kbd&gt; - mark a word (being in visual mode)&lt;br&gt;&lt;br&gt;&lt;p&gt;&lt;img alt="image12" src="http://stencel.io/images/select_word_2.gif"&gt;&lt;/p&gt;
+&lt;kbd&gt;a&lt;/kbd&gt;&lt;kbd&gt;w&lt;/kbd&gt; - mark a word (being in visual mode)&lt;br&gt;&lt;br&gt;&lt;p&gt;&lt;img alt="image12" src="https://stencel.io/images/select_word_2.gif"&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;hr class="docutils"&gt;
 &lt;blockquote&gt;
-&lt;kbd&gt;a&lt;/kbd&gt;&lt;kbd&gt;b&lt;/kbd&gt; - a () block (with braces) (or vab from normal mode)&lt;br&gt;&lt;br&gt;&lt;p&gt;&lt;img alt="image13" src="http://stencel.io/images/mark_brackets.gif"&gt;&lt;/p&gt;
+&lt;kbd&gt;a&lt;/kbd&gt;&lt;kbd&gt;b&lt;/kbd&gt; - a () block (with braces) (or vab from normal mode)&lt;br&gt;&lt;br&gt;&lt;p&gt;&lt;img alt="image13" src="https://stencel.io/images/mark_brackets.gif"&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;hr class="docutils"&gt;
 &lt;blockquote&gt;
-&lt;kbd&gt;a&lt;/kbd&gt;&lt;kbd&gt;B&lt;/kbd&gt; - a {} block (with brackets)&lt;br&gt;&lt;br&gt;&lt;p&gt;&lt;img alt="image14" src="http://stencel.io/images/selecr_brackets_6.gif"&gt;&lt;/p&gt;
+&lt;kbd&gt;a&lt;/kbd&gt;&lt;kbd&gt;B&lt;/kbd&gt; - a {} block (with brackets)&lt;br&gt;&lt;br&gt;&lt;p&gt;&lt;img alt="image14" src="https://stencel.io/images/selecr_brackets_6.gif"&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;hr class="docutils"&gt;
 &lt;blockquote&gt;
@@ -207,21 +207,21 @@ mode ESC)&lt;/p&gt;&lt;/li&gt;
 &lt;kbd&gt;Ctrl&lt;/kbd&gt;&lt;kbd&gt;w&lt;/kbd&gt;&lt;kbd&gt;w&lt;/kbd&gt; - swith between windows&lt;/blockquote&gt;
 &lt;hr class="docutils"&gt;
 &lt;blockquote&gt;
-&lt;kbd&gt;Ctrl &lt;/kbd&gt;&lt;kbd&gt;w &lt;/kbd&gt;&lt;kbd&gt;⇧&lt;/kbd&gt; - move cursor up a window example using ctr ww and ctr w arrows in example before switching windows ESC was pressed to enter &lt;b&gt;normal&lt;/b&gt; mode:&lt;br&gt;&lt;br&gt;&lt;p&gt;&lt;img alt="image15" src="http://stencel.io/images/ctrlww.gif"&gt;&lt;/p&gt;
+&lt;kbd&gt;Ctrl &lt;/kbd&gt;&lt;kbd&gt;w &lt;/kbd&gt;&lt;kbd&gt;⇧&lt;/kbd&gt; - move cursor up a window example using ctr ww and ctr w arrows in example before switching windows ESC was pressed to enter &lt;b&gt;normal&lt;/b&gt; mode:&lt;br&gt;&lt;br&gt;&lt;p&gt;&lt;img alt="image15" src="https://stencel.io/images/ctrlww.gif"&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;hr class="docutils"&gt;
 &lt;blockquote&gt;
 &lt;kbd&gt;ctrl &lt;/kbd&gt;&lt;kbd&gt;w +&lt;/kbd&gt; - increase size of current window&lt;/blockquote&gt;
 &lt;hr class="docutils"&gt;
 &lt;blockquote&gt;
-&lt;kbd&gt;ctrl&lt;/kbd&gt;&lt;kbd&gt;w&lt;/kbd&gt;&lt;kbd&gt;-&lt;/kbd&gt; - decrease size of current window&lt;br&gt;&lt;br&gt;&lt;p&gt;&lt;img alt="image16" src="http://stencel.io/images/rezise_window.gif"&gt;&lt;/p&gt;
+&lt;kbd&gt;ctrl&lt;/kbd&gt;&lt;kbd&gt;w&lt;/kbd&gt;&lt;kbd&gt;-&lt;/kbd&gt; - decrease size of current window&lt;br&gt;&lt;br&gt;&lt;p&gt;&lt;img alt="image16" src="https://stencel.io/images/rezise_window.gif"&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;hr class="docutils"&gt;
 &lt;blockquote&gt;
 &lt;kbd&gt;ctrl&lt;/kbd&gt;&lt;kbd&gt;w&lt;/kbd&gt;&lt;kbd&gt;\&lt;/kbd&gt;&lt;kbd&gt;_&lt;/kbd&gt; - maximize current window&lt;/blockquote&gt;
 &lt;hr class="docutils"&gt;
 &lt;blockquote&gt;
-&lt;kbd&gt;ctrl&lt;/kbd&gt;&lt;kbd&gt;w&lt;/kbd&gt;&lt;kbd&gt;=&lt;/kbd&gt; -  make all equal size&lt;br&gt;&lt;br&gt;&lt;p&gt;&lt;img alt="image17" src="http://stencel.io/images/resize_window2.gif"&gt;&lt;/p&gt;
+&lt;kbd&gt;ctrl&lt;/kbd&gt;&lt;kbd&gt;w&lt;/kbd&gt;&lt;kbd&gt;=&lt;/kbd&gt; -  make all equal size&lt;br&gt;&lt;br&gt;&lt;p&gt;&lt;img alt="image17" src="https://stencel.io/images/resize_window2.gif"&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;hr class="docutils"&gt;
 &lt;blockquote&gt;
@@ -248,11 +248,11 @@ mode ESC)&lt;/p&gt;&lt;/li&gt;
 &lt;div class="section" id="movement"&gt;
 &lt;h3&gt;Movement:&lt;/h3&gt;
 &lt;blockquote&gt;
-&lt;kbd&gt;w&lt;/kbd&gt; - next word by punctation &lt;br&gt;&lt;br&gt;&lt;p&gt;&lt;img alt="image20" src="http://stencel.io/images/w_2.gif"&gt;&lt;/p&gt;
+&lt;kbd&gt;w&lt;/kbd&gt; - next word by punctation &lt;br&gt;&lt;br&gt;&lt;p&gt;&lt;img alt="image20" src="https://stencel.io/images/w_2.gif"&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;hr class="docutils"&gt;
 &lt;blockquote&gt;
-&lt;kbd&gt;W&lt;/kbd&gt; - next word by spaces&lt;br&gt;&lt;br&gt;&lt;p&gt;&lt;img alt="image21" src="http://stencel.io/images/W_1.gif"&gt;&lt;/p&gt;
+&lt;kbd&gt;W&lt;/kbd&gt; - next word by spaces&lt;br&gt;&lt;br&gt;&lt;p&gt;&lt;img alt="image21" src="https://stencel.io/images/W_1.gif"&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;hr class="docutils"&gt;
 &lt;blockquote&gt;
@@ -343,4 +343,4 @@ then I -text ESC&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class="section" id="macros-recording"&gt;
 &lt;h2&gt;Macros - recording&lt;/h2&gt;
-&lt;/div&gt;&lt;/div&gt;</description><category>python</category><category>vim</category><guid>http://stencel.io/posts/vim.html</guid><pubDate>Thu, 24 Apr 2014 14:05:12 GMT</pubDate></item></channel></rss>
+&lt;/div&gt;&lt;/div&gt;</description><category>python</category><category>vim</category><guid>https://stencel.io/posts/vim.html</guid><pubDate>Thu, 24 Apr 2014 14:05:12 GMT</pubDate></item></channel></rss>

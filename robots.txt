@@ -1,4 +1,4 @@
-Sitemap: http://stencel.io/sitemapindex.xml
+Sitemap: https://stencel.io/sitemapindex.xml
 
 User-Agent: *
 Host: stencel.io
