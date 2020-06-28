@@ -53,7 +53,7 @@ Create persistentVolumeClaim.yml
 
 
 Secrets
-=======
+-------
 
 The configuration of your containers should be stored in separate place to guarantee mobility (it shouldnt be hardcoded ) neither should it be stored in database
 The best approach is to store your configuration in environment variables for docker for instance you can store it in env files which are gitignored or env vars which you need to set during container startup.
@@ -92,6 +92,8 @@ On your cluster create secrets.yml
 
     kubectl create -f secrets.yml
 
+Mysql application
+-----------------
 
 Now having persistent volumeclain and secrets we can write mysql deployment file
 
@@ -154,6 +156,9 @@ deployment.yml
 .. code-block:: bash
     
     kubectl apply -f deployment.yml
+
+Checking
+--------
 
 Now we can check if our deployment was successful:
 
