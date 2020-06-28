@@ -23,7 +23,7 @@
  </url>
  <url>
   <loc>http://stencel.io/2020/index.html</loc>
-  <lastmod>2020-06-28T19:57:00Z</lastmod>
+  <lastmod>2020-06-28T20:18:00Z</lastmod>
  </url>
  <url>
   <loc>http://stencel.io/archive.html</loc>
@@ -103,7 +103,7 @@
  </url>
  <url>
   <loc>http://stencel.io/categories/docker.html</loc>
-  <lastmod>2020-06-28T17:44:00Z</lastmod>
+  <lastmod>2020-06-28T20:18:00Z</lastmod>
  </url>
  <url>
   <loc>http://stencel.io/categories/draft.html</loc>
@@ -123,7 +123,15 @@
  </url>
  <url>
   <loc>http://stencel.io/categories/index.html</loc>
-  <lastmod>2020-06-28T17:44:00Z</lastmod>
+  <lastmod>2020-06-28T20:18:00Z</lastmod>
+ </url>
+ <url>
+  <loc>http://stencel.io/categories/k8s.html</loc>
+  <lastmod>2020-06-28T20:18:00Z</lastmod>
+ </url>
+ <url>
+  <loc>http://stencel.io/categories/kubernetes.html</loc>
+  <lastmod>2020-06-28T20:18:00Z</lastmod>
  </url>
  <url>
   <loc>http://stencel.io/categories/linux.html</loc>
@@ -136,6 +144,10 @@
  <url>
   <loc>http://stencel.io/categories/mysql.html</loc>
   <lastmod>2020-06-28T17:44:00Z</lastmod>
+ </url>
+ <url>
+  <loc>http://stencel.io/categories/persistent-volume.html</loc>
+  <lastmod>2020-06-28T20:18:00Z</lastmod>
  </url>
  <url>
   <loc>http://stencel.io/categories/pycurl.html</loc>
@@ -207,7 +219,7 @@
  </url>
  <url>
   <loc>http://stencel.io/index.html</loc>
-  <lastmod>2020-06-28T19:57:00Z</lastmod>
+  <lastmod>2020-06-28T20:18:00Z</lastmod>
  </url>
  <url>
   <loc>http://stencel.io/posts/adding-zabbix-agent-to-server.html</loc>
@@ -271,7 +283,7 @@
  </url>
  <url>
   <loc>http://stencel.io/posts/kuberenetes-nfs-persistent-volume.html</loc>
-  <lastmod>2020-06-28T19:57:00Z</lastmod>
+  <lastmod>2020-06-28T20:18:00Z</lastmod>
  </url>
  <url>
   <loc>http://stencel.io/posts/linux-diplay-size-of-each-subdirectory.html</loc>
