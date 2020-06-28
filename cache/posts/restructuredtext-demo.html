@@ -1,0 +1,541 @@
+<p>k8s-volumes</p>
+<p>#NFS Volumes
+create NFS share on my QNAP with squash option no_root_squash.</p>
+<p>#Local volumes
+Didnt manage to launch</p>
+<p>Change nodes ip
+sudo vim /var/lib/kubelet/kubeadm-flags.env
+--node-ip=192.168.50.12
+KUBELET_KUBEADM_ARGS=&quot;--cgroup-driver=cgroupfs --network-plugin=cni --pod-infra-container-image=k8s.gcr.io/pause:3.2 --resolv-conf=/run/systemd/resolve/resolv.conf --node-ip=192.168.50.12&quot;</p>
+<p>systemctl restart kubelet</p>
+<dl class="simple">
+<dt>#exec</dt>
+<dd><p>kubectl exec --stdin --tty mysql-deployment-bfcd64b55-mqp4q -- /bin/bash</p>
+</dd>
+</dl>
+<p>#sharing vol between pods
+My working solutuion not advised:</p>
+<p>apiVersion: v1
+kind: PersistentVolume
+metadata:</p>
+<div class="system-message">
+<p class="system-message-title">System Message: ERROR/3 (<span class="docutils literal">&lt;string&gt;</span>, line 28)</p>
+<p>Unexpected indentation.</p>
+</div>
+<blockquote>
+<p>name: task-pv-volume
+labels:</p>
+<div class="system-message">
+<p class="system-message-title">System Message: ERROR/3 (<span class="docutils literal">&lt;string&gt;</span>, line 30)</p>
+<p>Unexpected indentation.</p>
+</div>
+<blockquote>
+<p>type: local</p>
+</blockquote>
+</blockquote>
+<div class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">&lt;string&gt;</span>, line 31)</p>
+<p>Block quote ends without a blank line; unexpected unindent.</p>
+</div>
+<dl>
+<dt>spec:</dt>
+<dd><p>storageClassName: manual
+capacity:</p>
+<div class="system-message">
+<p class="system-message-title">System Message: ERROR/3 (<span class="docutils literal">&lt;string&gt;</span>, line 34)</p>
+<p>Unexpected indentation.</p>
+</div>
+<blockquote>
+<p>storage: 1Gi</p>
+</blockquote>
+<div class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">&lt;string&gt;</span>, line 35)</p>
+<p>Block quote ends without a blank line; unexpected unindent.</p>
+</div>
+<dl class="simple">
+<dt>accessModes:</dt>
+<dd><ul class="simple">
+<li><p>ReadWriteOnce</p></li>
+</ul>
+</dd>
+<dt>hostPath:</dt>
+<dd><p>path: &quot;/mnt/data&quot;</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<div class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">&lt;string&gt;</span>, line 39)</p>
+<p>Definition list ends without a blank line; unexpected unindent.</p>
+</div>
+<p>apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:</p>
+<div class="system-message">
+<p class="system-message-title">System Message: ERROR/3 (<span class="docutils literal">&lt;string&gt;</span>, line 42)</p>
+<p>Unexpected indentation.</p>
+</div>
+<blockquote>
+<p>name: task-pv-claim</p>
+</blockquote>
+<div class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">&lt;string&gt;</span>, line 43)</p>
+<p>Block quote ends without a blank line; unexpected unindent.</p>
+</div>
+<dl>
+<dt>spec:</dt>
+<dd><p>storageClassName: manual
+accessModes:</p>
+<div class="system-message">
+<p class="system-message-title">System Message: ERROR/3 (<span class="docutils literal">&lt;string&gt;</span>, line 46)</p>
+<p>Unexpected indentation.</p>
+</div>
+<blockquote>
+<ul class="simple">
+<li><p>ReadWriteOnce</p></li>
+</ul>
+</blockquote>
+<div class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">&lt;string&gt;</span>, line 47)</p>
+<p>Block quote ends without a blank line; unexpected unindent.</p>
+</div>
+<dl class="simple">
+<dt>resources:</dt>
+<dd><dl class="simple">
+<dt>requests:</dt>
+<dd><p>storage: 1Gi</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
+<p>apiVersion: apps/v1
+kind: Deployment
+metadata:</p>
+<div class="system-message">
+<p class="system-message-title">System Message: ERROR/3 (<span class="docutils literal">&lt;string&gt;</span>, line 54)</p>
+<p>Unexpected indentation.</p>
+</div>
+<blockquote>
+<p>name: mysql-deployment
+labels:</p>
+<div class="system-message">
+<p class="system-message-title">System Message: ERROR/3 (<span class="docutils literal">&lt;string&gt;</span>, line 56)</p>
+<p>Unexpected indentation.</p>
+</div>
+<blockquote>
+<p>app: mysql</p>
+</blockquote>
+</blockquote>
+<div class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">&lt;string&gt;</span>, line 57)</p>
+<p>Block quote ends without a blank line; unexpected unindent.</p>
+</div>
+<dl>
+<dt>spec:</dt>
+<dd><p>replicas: 1
+selector:</p>
+<div class="system-message">
+<p class="system-message-title">System Message: ERROR/3 (<span class="docutils literal">&lt;string&gt;</span>, line 60)</p>
+<p>Unexpected indentation.</p>
+</div>
+<blockquote>
+<dl class="simple">
+<dt>matchLabels:</dt>
+<dd><p>app: mysql</p>
+</dd>
+</dl>
+</blockquote>
+<div class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">&lt;string&gt;</span>, line 62)</p>
+<p>Block quote ends without a blank line; unexpected unindent.</p>
+</div>
+<dl>
+<dt>template:</dt>
+<dd><dl>
+<dt>metadata:</dt>
+<dd><dl class="simple">
+<dt>labels:</dt>
+<dd><p>app: mysql</p>
+</dd>
+</dl>
+</dd>
+<dt>spec:</dt>
+<dd><dl>
+<dt>containers:</dt>
+<dd><ul>
+<li><p>name: mysql
+image: mysql:5.7
+ports:</p>
+<div class="system-message">
+<p class="system-message-title">System Message: ERROR/3 (<span class="docutils literal">&lt;string&gt;</span>, line 71)</p>
+<p>Unexpected indentation.</p>
+</div>
+<blockquote>
+<ul class="simple">
+<li><p>containerPort: 3306</p></li>
+</ul>
+</blockquote>
+<div class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">&lt;string&gt;</span>, line 72)</p>
+<p>Block quote ends without a blank line; unexpected unindent.</p>
+</div>
+<dl>
+<dt>volumeMounts:</dt>
+<dd><ul class="simple">
+<li><p>mountPath: &quot;/var/lib/mysql&quot;
+subPath: &quot;mysql&quot;
+name: mysql-data</p></li>
+</ul>
+</dd>
+<dt>env:</dt>
+<dd><ul>
+<li><p>name: MYSQL_ROOT_PASSWORD
+valueFrom:</p>
+<div class="system-message">
+<p class="system-message-title">System Message: ERROR/3 (<span class="docutils literal">&lt;string&gt;</span>, line 79)</p>
+<p>Unexpected indentation.</p>
+</div>
+<blockquote>
+<dl class="simple">
+<dt>secretKeyRef:</dt>
+<dd><p>name: mysql-secrets
+key: ROOT_PASSWORD</p>
+</dd>
+</dl>
+</blockquote>
+</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+<dt>volumes:</dt>
+<dd><ul>
+<li><p>name: mysql-data
+persistentVolumeClaim:</p>
+<div class="system-message">
+<p class="system-message-title">System Message: ERROR/3 (<span class="docutils literal">&lt;string&gt;</span>, line 85)</p>
+<p>Unexpected indentation.</p>
+</div>
+<blockquote>
+<p>claimName: task-pv-claim</p>
+</blockquote>
+</li>
+</ul>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
+<p>#sharing dir between pods</p>
+<p>First of all. Kubernetes doesn't have integrated functionality to share storage between hosts. There are several options below. But first how to share storage if you already have some volumes set up.</p>
+<p>To share a volume between multiple pods you'd need to create a PVC with access mode ReadWriteMany</p>
+<p>kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:</p>
+<div class="system-message">
+<p class="system-message-title">System Message: ERROR/3 (<span class="docutils literal">&lt;string&gt;</span>, line 99)</p>
+<p>Unexpected indentation.</p>
+</div>
+<blockquote>
+<p>name: my-pvc</p>
+</blockquote>
+<div class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">&lt;string&gt;</span>, line 100)</p>
+<p>Block quote ends without a blank line; unexpected unindent.</p>
+</div>
+<dl>
+<dt>spec:</dt>
+<dd><dl class="simple">
+<dt>accessModes:</dt>
+<dd><ul class="simple">
+<li><p>ReadWriteMany</p></li>
+</ul>
+</dd>
+</dl>
+<div class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">&lt;string&gt;</span>, line 103)</p>
+<p>Definition list ends without a blank line; unexpected unindent.</p>
+</div>
+<p>storageClassName: myvolume
+resources:</p>
+<div class="system-message">
+<p class="system-message-title">System Message: ERROR/3 (<span class="docutils literal">&lt;string&gt;</span>, line 105)</p>
+<p>Unexpected indentation.</p>
+</div>
+<blockquote>
+<dl class="simple">
+<dt>requests:</dt>
+<dd><p>storage: 1Gi</p>
+</dd>
+</dl>
+</blockquote>
+</dd>
+</dl>
+<div class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">&lt;string&gt;</span>, line 107)</p>
+<p>Definition list ends without a blank line; unexpected unindent.</p>
+</div>
+<p>After that you can mount it to multiple pods:</p>
+<p>apiVersion: v1
+kind: Pod
+metadata:</p>
+<div class="system-message">
+<p class="system-message-title">System Message: ERROR/3 (<span class="docutils literal">&lt;string&gt;</span>, line 112)</p>
+<p>Unexpected indentation.</p>
+</div>
+<blockquote>
+<p>name: myapp1</p>
+</blockquote>
+<div class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">&lt;string&gt;</span>, line 113)</p>
+<p>Block quote ends without a blank line; unexpected unindent.</p>
+</div>
+<dl class="simple">
+<dt>spec:</dt>
+<dd><p>containers:</p>
+</dd>
+</dl>
+<div class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">&lt;string&gt;</span>, line 115)</p>
+<p>Definition list ends without a blank line; unexpected unindent.</p>
+</div>
+<dl>
+<dt>...</dt>
+<dd><blockquote>
+<dl class="simple">
+<dt>volumeMounts:</dt>
+<dd><ul class="simple">
+<li><p>mountPath: /data
+name: data
+subPath: app1</p></li>
+</ul>
+</dd>
+</dl>
+</blockquote>
+<div class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">&lt;string&gt;</span>, line 120)</p>
+<p>Block quote ends without a blank line; unexpected unindent.</p>
+</div>
+<dl>
+<dt>volumes:</dt>
+<dd><ul>
+<li><p>name: data
+persistentVolumeClaim:</p>
+<div class="system-message">
+<p class="system-message-title">System Message: ERROR/3 (<span class="docutils literal">&lt;string&gt;</span>, line 123)</p>
+<p>Unexpected indentation.</p>
+</div>
+<blockquote>
+<p>claimName: 'my-pvc'</p>
+</blockquote>
+</li>
+</ul>
+</dd>
+</dl>
+</dd>
+</dl>
+<div class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">&lt;string&gt;</span>, line 124)</p>
+<p>Definition list ends without a blank line; unexpected unindent.</p>
+</div>
+<p>---
+apiVersion: v1
+kind: Pod
+metadata:</p>
+<div class="system-message">
+<p class="system-message-title">System Message: ERROR/3 (<span class="docutils literal">&lt;string&gt;</span>, line 128)</p>
+<p>Unexpected indentation.</p>
+</div>
+<blockquote>
+<p>name: myapp2</p>
+</blockquote>
+<div class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">&lt;string&gt;</span>, line 129)</p>
+<p>Block quote ends without a blank line; unexpected unindent.</p>
+</div>
+<dl class="simple">
+<dt>spec:</dt>
+<dd><p>containers:</p>
+</dd>
+</dl>
+<div class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">&lt;string&gt;</span>, line 131)</p>
+<p>Definition list ends without a blank line; unexpected unindent.</p>
+</div>
+<dl>
+<dt>...</dt>
+<dd><blockquote>
+<dl class="simple">
+<dt>volumeMounts:</dt>
+<dd><ul class="simple">
+<li><p>mountPath: /data
+name: data
+subPath: app2</p></li>
+</ul>
+</dd>
+</dl>
+</blockquote>
+<div class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">&lt;string&gt;</span>, line 136)</p>
+<p>Block quote ends without a blank line; unexpected unindent.</p>
+</div>
+<dl>
+<dt>volumes:</dt>
+<dd><ul>
+<li><p>name: data
+persistentVolumeClaim:</p>
+<div class="system-message">
+<p class="system-message-title">System Message: ERROR/3 (<span class="docutils literal">&lt;string&gt;</span>, line 139)</p>
+<p>Unexpected indentation.</p>
+</div>
+<blockquote>
+<p>claimName: 'my-pvc'</p>
+</blockquote>
+</li>
+</ul>
+</dd>
+</dl>
+</dd>
+</dl>
+<div class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">&lt;string&gt;</span>, line 140)</p>
+<p>Definition list ends without a blank line; unexpected unindent.</p>
+</div>
+<p>Of course, persistent volume must be accessible via network. Otherwise you'd need to make sure that all the pods are scheduled to the node with that volume.</p>
+<p>There are several volume types that are suitable for that and not tied to any cloud provider:</p>
+<p>NFS
+RBD (Ceph Block Device)
+CephFS
+Glusterfs
+Portworx Volumes
+Of course, to use a volume you need to have it first. That is, if you want to consume NFS you need to setup NFS on all nodes in K8s cluster. If you want to consume Ceph, you need to setup Ceph cluster and so on.</p>
+<p>The only volume type that supports Kubernetes out of the box is Portworks. There are instruction on how to set it up in GKE.</p>
+<p>To setup Ceph cluster in K8s there's a project in development called Rook.</p>
+<p>But this is all overkill if you just want a folder from one node to be available in another node. In this case just setup NFS server. It wouldn't be harder than provisioning other volume types and will consume much less cpu/memory/disk resources.
+## Example1 Configure a Pod to Use a PersistentVolume for Storage</p>
+<p><a class="reference external" href="https://kubernetes.io/blog/2018/04/13/local-persistent-volumes-beta/">https://kubernetes.io/blog/2018/04/13/local-persistent-volumes-beta/</a></p>
+<p>apiVersion: v1
+kind: PersistentVolume
+metadata:</p>
+<div class="system-message">
+<p class="system-message-title">System Message: ERROR/3 (<span class="docutils literal">&lt;string&gt;</span>, line 163)</p>
+<p>Unexpected indentation.</p>
+</div>
+<blockquote>
+<p>name: mysql-pv-volume
+labels:</p>
+<div class="system-message">
+<p class="system-message-title">System Message: ERROR/3 (<span class="docutils literal">&lt;string&gt;</span>, line 165)</p>
+<p>Unexpected indentation.</p>
+</div>
+<blockquote>
+<p>type: local</p>
+</blockquote>
+</blockquote>
+<div class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">&lt;string&gt;</span>, line 166)</p>
+<p>Block quote ends without a blank line; unexpected unindent.</p>
+</div>
+<dl>
+<dt>spec:</dt>
+<dd><dl class="simple">
+<dt>capacity:</dt>
+<dd><p>storage: 1Gi</p>
+</dd>
+<dt>accessModes:</dt>
+<dd><ul class="simple">
+<li><p>ReadWriteOnce</p></li>
+</ul>
+</dd>
+</dl>
+<div class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">&lt;string&gt;</span>, line 171)</p>
+<p>Definition list ends without a blank line; unexpected unindent.</p>
+</div>
+<p>persistentVolumeReclaimPolicy: Retain
+storageClassName: local-storage
+local:</p>
+<div class="system-message">
+<p class="system-message-title">System Message: ERROR/3 (<span class="docutils literal">&lt;string&gt;</span>, line 174)</p>
+<p>Unexpected indentation.</p>
+</div>
+<blockquote>
+<p>path: /mnt/data</p>
+</blockquote>
+<div class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">&lt;string&gt;</span>, line 175)</p>
+<p>Block quote ends without a blank line; unexpected unindent.</p>
+</div>
+<dl>
+<dt>nodeAffinity:</dt>
+<dd><dl>
+<dt>required:</dt>
+<dd><p>nodeSelectorTerms:
+- matchExpressions:</p>
+<div class="system-message">
+<p class="system-message-title">System Message: ERROR/3 (<span class="docutils literal">&lt;string&gt;</span>, line 179)</p>
+<p>Unexpected indentation.</p>
+</div>
+<blockquote>
+<ul class="simple">
+<li><p>key: kubernetes.io/hostname
+operator: In
+values:
+- node</p></li>
+</ul>
+</blockquote>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
+<p>apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:</p>
+<div class="system-message">
+<p class="system-message-title">System Message: ERROR/3 (<span class="docutils literal">&lt;string&gt;</span>, line 187)</p>
+<p>Unexpected indentation.</p>
+</div>
+<blockquote>
+<p>name: mysql-pv-claim</p>
+</blockquote>
+<div class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">&lt;string&gt;</span>, line 188)</p>
+<p>Block quote ends without a blank line; unexpected unindent.</p>
+</div>
+<dl>
+<dt>spec:</dt>
+<dd><p>storageClassName: local-storage
+accessModes:</p>
+<div class="system-message">
+<p class="system-message-title">System Message: ERROR/3 (<span class="docutils literal">&lt;string&gt;</span>, line 191)</p>
+<p>Unexpected indentation.</p>
+</div>
+<blockquote>
+<ul class="simple">
+<li><p>ReadWriteOnce</p></li>
+</ul>
+</blockquote>
+<div class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">&lt;string&gt;</span>, line 192)</p>
+<p>Block quote ends without a blank line; unexpected unindent.</p>
+</div>
+<dl class="simple">
+<dt>resources:</dt>
+<dd><dl class="simple">
+<dt>requests:</dt>
+<dd><p>storage: 1Gi</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
