@@ -79,7 +79,7 @@
  </sitemap>
  <sitemap>
   <loc>https://stencel.io/categories/docker.xml</loc>
-  <lastmod>2020-06-28T20:32:00Z</lastmod>
+  <lastmod>2020-06-29T09:02:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://stencel.io/categories/draft.xml</loc>
@@ -99,11 +99,11 @@
  </sitemap>
  <sitemap>
   <loc>https://stencel.io/categories/k8s.xml</loc>
-  <lastmod>2020-06-28T20:32:00Z</lastmod>
+  <lastmod>2020-06-29T09:02:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://stencel.io/categories/kubernetes.xml</loc>
-  <lastmod>2020-06-28T20:32:00Z</lastmod>
+  <lastmod>2020-06-29T09:02:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://stencel.io/categories/linux.xml</loc>
@@ -119,7 +119,7 @@
  </sitemap>
  <sitemap>
   <loc>https://stencel.io/categories/persistent-volume.xml</loc>
-  <lastmod>2020-06-28T20:32:00Z</lastmod>
+  <lastmod>2020-06-29T09:02:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://stencel.io/categories/pycurl.xml</loc>
@@ -175,10 +175,10 @@
  </sitemap>
  <sitemap>
   <loc>https://stencel.io/rss.xml</loc>
-  <lastmod>2020-06-28T20:36:00Z</lastmod>
+  <lastmod>2020-06-29T09:02:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://stencel.io/sitemap.xml</loc>
-  <lastmod>2020-06-28T20:36:00Z</lastmod>
+  <lastmod>2020-06-29T09:02:00Z</lastmod>
  </sitemap>
 </sitemapindex>
