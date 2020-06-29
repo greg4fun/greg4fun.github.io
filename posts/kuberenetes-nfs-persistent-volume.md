@@ -1,6 +1,6 @@
 .. title: Kuberenetes NFS persistent volume
 .. slug: kuberenetes-nfs-persistent-volume
-.. date: 2020-06-18 14:30:13 UTC
+.. date: 2020-06-18 18:30:13 UTC
 .. tags: kubernetes, k8s, docker, persistent volume,
 .. category: 
 .. link: 
