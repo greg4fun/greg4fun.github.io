@@ -3,26 +3,25 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width">
-<title>git_notes | Greg's Tech Notes</title>
+<title>Kubernetes cluster on laptop motherboards | Greg's Tech Notes</title>
 <link href="https://fonts.googleapis.com/css?family=Bitter:400,400i,700" rel="stylesheet" type="text/css">
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
 <link href="../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
 <meta name="theme-color" content="#5670d4">
 <meta name="generator" content="Nikola (getnikola.com)">
 <link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../rss.xml">
-<link rel="canonical" href="https://stencel.io/posts/git_notes.html">
+<link rel="canonical" href="https://stencel.io/pages/kubernetes-cluster-on-laptop-motherboards.html">
 <!--[if lt IE 9]><script src="../assets/js/html5shiv-printshiv.min.js"></script><![endif]--><meta name="author" content="Greg Stencel">
-<link rel="prev" href="pycurl_problem.html" title="pycurl_problem" type="text/html">
-<link rel="next" href="python-combine-dates-current-date-with-different-hour.html" title="Python combine dates , current date with different hour" type="text/html">
 <meta property="og:site_name" content="Greg's Tech Notes">
-<meta property="og:title" content="git_notes">
-<meta property="og:url" content="https://stencel.io/posts/git_notes.html">
-<meta property="og:description" content="git diff --cached     /what is about to be committed
-git status   brief summary of the situation with
-git log At any point you can view the history of your changes usingggit log -pit log -p
-git log  -">
+<meta property="og:title" content="Kubernetes cluster on laptop motherboards">
+<meta property="og:url" content="https://stencel.io/pages/kubernetes-cluster-on-laptop-motherboards.html">
+<meta property="og:description" content='Volumes
+
+Persistent storage with NFS
+Build the cheapest i7 16GB RAM nodes kubernetes cluster.
+I always wanted to build my own k8s cluster, but couldnt see some "budget" 3-4 nodes option to go for -yes'>
 <meta property="og:type" content="article">
-<meta property="article:published_time" content="2014-06-04T09:10:34Z">
+<meta property="article:published_time" content="2021-01-18T23:12:23Z">
 </head>
 <body>
     <a href="#page-content" class="sr-only sr-only-focusable">Skip to main content</a>
@@ -45,65 +44,38 @@ git log  -">
 
         </ul></section><section class="page-content"><div class="content" rel="main">
             
-<article class="post-text h-entry hentry postpage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="#" class="u-url">git_notes</a></h1>
+<article class="post-text storypage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="#" class="u-url">Kubernetes cluster on laptop motherboards</a></h1>
 
-        <div class="metadata">
-            <p class="dateline"><a href="#" rel="bookmark"><i class="fa fa-clock"></i> <time class="published dt-published" datetime="2014-06-04T09:10:34Z" itemprop="datePublished" title="2014-06-04 09:10">2014-06-04 09:10</time></a></p>
-            <p class="byline author vcard"> <i class="fa fa-user"></i> <span class="byline-name fn" itemprop="author">
-                    Greg Stencel
-            </span></p>
-                <p class="commentline"><i class="far fa-comment"></i>
         
-    <a href="git_notes.html#disqus_thread" data-disqus-identifier="cache/posts/git_notes.html">Comments</a>
 
-
-            
-        </p>
-<p class="sourceline"><a href="git_notes.rst" class="sourcelink"><i class="fa fa-file-code"></i> Source</a></p>
-
-            
-
-            
-
-        </div>
     </header><div class="e-content entry-content" itemprop="articleBody text">
-    <div>
-<p>git diff --cached     /what is about to be committed
-git status   brief summary of the situation with
-git log At any point you can view the history of your changes usingggit log -pit log -p</p>
-<p>git log  -pIf you also want to see complete diffs at each step, use</p>
-<p>git log --stat --summaryOften the overview of the change is useful to get a feel of each step:w</p>
-<p>remove wrongly commited large files
-➜  my_project git:(master) ✗ git filter-branch --tree-filter 'rm -rf site_media/help' HEAD
-Rewrite 22d1cead6a67d68939da2eef48c5372b36651a5c (70/70)
-Ref 'refs/heads/master' was rewritten</p>
-<p>restore deleted uncommited file
-git status
-git checkout -- filename</p>
-<p>The output tells you what you need to do. git reset HEAD cc.properties etc.</p>
-<p>This will unstage the rm operation. After that, running a git status again will tell you that you need to do a git checkout -- cc.properties to get the file back.</p>
-<p>Update: I have this in my config file</p>
-<p>$ git config alias.unstage
-reset HEAD
-which I usually use to unstage stuff.</p>
+    <div class="section" id="volumes">
+<h2>Volumes</h2>
+<div class="section" id="persistent-storage-with-nfs">
+<h3>Persistent storage with NFS</h3>
+<p>Build the cheapest i7 16GB RAM nodes kubernetes cluster.
+I always wanted to build my own k8s cluster, but couldnt see some "budget" 3-4 nodes option to go for -yes there are a
+lot of attempts of building kubernetes like</p>
+<ul class="simple">
+<li><p>raspberry pi which are not  x86 compatible so you wont run a lot of docker images there</p></li>
+<li><p>some tv hdmi sticks - they are quite good but cpus are quite weak.</p></li>
+</ul>
+<p>So one day my laptops broke it was i7 with 16gb RAM it was something with the port to lcd display I have replaced the
+motherboard and doing so I had the old spare but kida headless without display well hdmi output still worked).
+Also when buying I have discovered there are sold for 100 quid (coming from some after leasing refurbished laptops) so in the end it's the cheapes k8s cluster in which you can have nodes
+with i7 16GB RAM.</p>
+</div>
 </div>
     </div>
-    <aside class="postpromonav"><nav><ul class="pager hidden-print">
-<li class="previous">
-                <a href="pycurl_problem.html" rel="prev" title="pycurl_problem">Previous post</a>
-            </li>
-            <li class="next">
-                <a href="python-combine-dates-current-date-with-different-hour.html" rel="next" title="Python combine dates , current date with different hour">Next post</a>
-            </li>
-        </ul></nav></aside><section class="comments hidden-print"><h2>Comments</h2>
+        <section class="comments"><h2>Comments</h2>
         
         
         <div id="disqus_thread"></div>
         <script>
         var disqus_shortname ="stencel",
-            disqus_url="https://stencel.io/posts/git_notes.html",
-        disqus_title="git_notes",
-        disqus_identifier="cache/posts/git_notes.html",
+            disqus_url="https://stencel.io/pages/kubernetes-cluster-on-laptop-motherboards.html",
+        disqus_title="Kubernetes cluster on laptop motherboards",
+        disqus_identifier="cache/pages/kubernetes-cluster-on-laptop-motherboards.html",
         disqus_config = function () {
             this.language = "en";
         };
@@ -117,7 +89,7 @@ which I usually use to unstage stuff.</p>
     <a href="https://disqus.com" class="dsq-brlink" rel="nofollow">Comments powered by <span class="logo-disqus">Disqus</span></a>
 
 
-        </section></article><script>var disqus_shortname="stencel";(function(){var a=document.createElement("script");a.async=true;a.src="https://"+disqus_shortname+".disqus.com/count.js";(document.getElementsByTagName("head")[0]||document.getElementsByTagName("body")[0]).appendChild(a)}());</script><footer id="footer"><p>Contents © 2021         <a href="mailto:gstencel@gmail.com">Greg Stencel</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         </p>
+        </section></article><footer id="footer"><p>Contents © 2021         <a href="mailto:gstencel@gmail.com">Greg Stencel</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         </p>
             
         </footer>
 </div>
