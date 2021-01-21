@@ -43,7 +43,83 @@
 
     
 <div class="postindex">
-    <article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="posts/django-display-choices-defined-in-models-in-template.html" class="u-url">Django Display choices defined in models in template</a></h1>
+    <article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="posts/xrandr-tips.html" class="u-url">xrandr tips</a></h1>
+        <div class="metadata">
+            <p class="dateline"><a href="posts/xrandr-tips.html" rel="bookmark"><i class="fa fa-clock"></i> <time class="published dt-published" datetime="2015-01-13T20:34:57Z" title="2015-01-13 20:34">2015-01-13 20:34</time></a></p>
+            <p class="byline author vcard"> <i class="fa fa-user"></i> <span class="byline-name fn" itemprop="author">
+                Greg Stencel
+            </span></p>
+                <p class="commentline"><i class="fa fa-comment"></i> 
+        
+    <a href="posts/xrandr-tips.html#disqus_thread" data-disqus-identifier="cache/posts/xrandr-tips.html">Comments</a>
+
+
+        </p>
+</div>
+    </header><div class="e-content entry-content">
+    <div>
+<p>adding resolution
+1)generate mode
+cvt 2560 1440 60
+➜  blog git:(website) ✗ cvt 2560 1440 60
+# 2560x1440 59.96 Hz (CVT 3.69M9) hsync: 89.52 kHz; pclk: 312.25 MHz
+Modeline "2560x1440_60.00"  312.25  2560 2752 3024 3488  1440 1443 1448 1493 -hsync +vsync</p>
+<p>2)add it to xrandr
+sudo xrandr --newmode "2560x1440_60.00"  312.25  2560 2752 3024 3488  1440 1443 1448 1493  -hsync +vsync
+setting resolution</p>
+<p>3)sudo xrandr --addmode VGA-0 "1680x1050_60.00"</p>
+<p>xrandr -q
+xrandr --verbose</p>
+<p>xrandr --output HDMI-0 --mode 2560x1440</p>
+<p>irst generate a "modeline" by using cvt
+Syntax is: cvt width height refreshrate</p>
+<p>cvt 1680 1050 60
+this gives you:</p>
+<p># 1680x1050 59.95 Hz (CVT 1.76MA) hsync: 65.29 kHz; pclk: 146.25 MHz
+Modeline "1680x1050_60.00"  146.25  1680 1784 1960 2240  1050 1053 1059 1089 -hsync +vsync
+Now tell this to xrandr:</p>
+<p>sudo xrandr --newmode "1680x1050_60.00"  146.25  1680 1784 1960 2240  1050 1053 1059 1089 -</p>
+<p>First clone the two screens, (the smaller screen will display the top left portion of the virtual screen)</p>
+<blockquote>
+<p>xrandr --output VGA --auto --right-of LVDS</p>
+<p>xrandr --output LVDS --mode 1280x800</p>
+<p>xrandr --output LVDS --mode 1280x800 --rate 75</p>
+<p>xrandr --output LVDS --auto</p>
+<p>xrandr --output LVDS --off --output HDMI-0 --auto</p>
+<p>xrandr --output VGA1 --mode 1024x768 --rate 60</p>
+</blockquote>
+<p>#Laptop right extra Monitor Left</p>
+<blockquote>
+<p>xrandr --output VGA1 --left-of LVDS1</p>
+</blockquote>
+<p>#Laptop left extra Monitor right</p>
+<blockquote>
+<p>xrandr --output LVDS1 --left-of VGA1</p>
+</blockquote>
+<p>#This is to set your primary monitor.</p>
+<p>#This sets your laptop monitor as your primary monitor.</p>
+<blockquote>
+<p>xrandr --output LVDS1 --primary</p>
+</blockquote>
+<p>#This sets your VGA monitor as your primary monitor.</p>
+<blockquote>
+<p>xrandr --output VGA1 --primary</p>
+<p>xrandr --output VGA1 --mode 1024x768 --rate 60</p>
+</blockquote>
+<p>xrandr --pos &lt;x&gt;x&lt;y&gt;</p>
+<blockquote>
+<p>$ xrandr --left-of &lt;output&gt;</p>
+<p>$ xrandr --right-of &lt;output&gt;</p>
+<p>$ xrandr --above &lt;output&gt;</p>
+<p>$ xrandr --below &lt;output&gt;</p>
+</blockquote>
+<p>Option '-pos' is more flexible which can place output to anywhere, for example:</p>
+<p>$ xrandr --output VGA1 --pos 200x200
+$ xrandr --output LVDS1 --pos 400x500</p>
+<p>xrandr -o right</p>
+</div>
+    </div>
+    </article><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="posts/django-display-choices-defined-in-models-in-template.html" class="u-url">Django Display choices defined in models in template</a></h1>
         <div class="metadata">
             <p class="dateline"><a href="posts/django-display-choices-defined-in-models-in-template.html" rel="bookmark"><i class="fa fa-clock"></i> <time class="published dt-published" datetime="2014-11-02T14:14:56Z" title="2014-11-02 14:14">2014-11-02 14:14</time></a></p>
             <p class="byline author vcard"> <i class="fa fa-user"></i> <span class="byline-name fn" itemprop="author">

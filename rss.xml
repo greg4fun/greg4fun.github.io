@@ -1,5 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Greg's Tech Notes</title><link>https://stencel.io/</link><description>Tech notes and tips</description><atom:link href="https://stencel.io/rss.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><copyright>Contents © 2020 &lt;a href="mailto:gstencel@gmail.com"&gt;Greg Stencel&lt;/a&gt; </copyright><lastBuildDate>Mon, 29 Jun 2020 09:02:33 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Mysql on kubernetes with persistent volume and secrets</title><link>https://stencel.io/posts/mysql-on-kubernetes-with-persistent-volume-and-secrets.html</link><dc:creator>Greg Stencel</dc:creator><description>&lt;div class="section" id="volumes"&gt;
+<?xml-stylesheet type="text/xsl" href="assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Greg's Tech Notes</title><link>https://stencel.io/</link><description>Tech notes and tips</description><atom:link href="https://stencel.io/rss.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><copyright>Contents © 2021 &lt;a href="mailto:gstencel@gmail.com"&gt;Greg Stencel&lt;/a&gt; </copyright><lastBuildDate>Thu, 21 Jan 2021 23:48:25 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Build cheapest kubernetes i7 cluster</title><link>https://stencel.io/posts/build-cheapest-kubernetes-i7-cluster.html</link><dc:creator>Greg Stencel</dc:creator><description>&lt;div class="section" id="how-i-ve-build-4-nodes-kubernetes-i7-16gb-cluster"&gt;
+&lt;h2&gt;How I've build 4 nodes kubernetes i7 16GB cluster&lt;/h2&gt;
+&lt;p&gt;I always wanted to build my own k8s cluster, but couldn't see any reliable "budget" 3-4 nodes option to go for -yes there are a
+lot of attempts of building kubernetes which are:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;p&gt;raspberry pi which are not  x86 compatible so you wont run a lot of docker images there&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;some tv hdmi sticks - they are quite good but cpus are quite weak.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;So one day my laptops display has broken. It was i7 with 16gb RAM it I have identified malfunction was was the port to lcd display on the motherboard as the hdmi output worked fine. I have replaced the motherboard and doing so I had the old spare but kida headless without display well hdmi output still worked).
+Also when buying replacement motherboard  I have discovered there are sold for 100 quid (coming from some after leasing refurbished laptops) so probably the cheapes k8s cluster we can have on i7's and 16GB RAM per node.&lt;/p&gt;
+&lt;img alt="/images/IMG_20201024_184958.jpg" src="https://stencel.io/images/IMG_20201024_184958.jpg"&gt;
+&lt;p&gt;The parts:&lt;/p&gt;
+&lt;p&gt;3 x £120 Lenovo Yoga X1 Carbon 00JT811 Core i7-6600U 2.6GHz Laptop Motherboard [from ebay]&lt;/p&gt;
+&lt;p&gt;4 x £12.93 Sandisk 120GB SSD [from Amazon warehouse deals] - optional could do it network bootable!!!&lt;/p&gt;
+&lt;p&gt;4 x lenovo laptop chargin adapters (had old ones so didnt have top buy)&lt;/p&gt;
+&lt;p&gt;3 x 1GB Ethernet over oneLink+ interface (7each)&lt;/p&gt;
+&lt;p&gt;1 x 1GB Ethernet over OneLink+ dock station (I had old one)&lt;/p&gt;
+&lt;p&gt;1 x used battery for master node (to secure etcd even better from power failure) £10
+1 x Server Case to pack it up 2U Short ATX Chassis - Low Profile PCI Card Support - 390mm Depth £47
+Overall : £489&lt;/p&gt;
+&lt;p&gt;I had old intell skull i7 as my lab server so I have sold it for £400 adding 89 quid and week of work during evenings I had 4 nodes powerfull kubernetes
+cluster.&lt;/p&gt;
+&lt;div class="section" id="problem-i-how-to-stack-it-on-each-other"&gt;
+&lt;h3&gt;Problem I - How to stack it on each other?&lt;/h3&gt;
+&lt;p&gt;I had to find some way how to put the motherboards on each other safetly - fortunately I had ender3 3dprinter and bit of
+knowledge of 3d prototyping in blender so I have just designed simple pins on which I sould stack the motherboards.&lt;/p&gt;
+&lt;img alt="/images/IMG_20201013_144202.jpg" src="https://stencel.io/images/IMG_20201013_144202.jpg"&gt;
+&lt;img alt="/images/IMG_20201016_172922.jpg" src="https://stencel.io/images/IMG_20201016_172922.jpg"&gt;
+&lt;/div&gt;
+&lt;div class="section" id="problem-ii-powering-it-on"&gt;
+&lt;h3&gt;Problem II - Powering it on&lt;/h3&gt;
+&lt;p&gt;Solution 1 - BIOS Restore on AC Power loss - just pluggin in to power adapter should power on my motherboards
+Solution 2 - Add power button - unfortunatelly its almost impossibile to buy power button separately for this
+motherboard they are available on aliexpress for 17 quid which is ridiculous.&lt;/p&gt;
+&lt;p&gt;I had found 1 button for 5 on ebay and have reverse engineered it.&lt;/p&gt;
+&lt;p&gt;So Laptop power on switch works bit different than I though its not working like in PC ATX switch just short circuiting
+2 cables - I had to check with multimeter whats happening on which pins of the port of power switch.
+It turned out its just adding 10kOhm resitance on button press. I have just created my own buttons and added the
+resistors to each of them.&lt;/p&gt;
+&lt;img alt="/images/IMG_20201114_160524.jpg" src="https://stencel.io/images/IMG_20201114_160524.jpg"&gt;
+&lt;img alt="/images/IMG_20201107_23234122.jpg" src="https://stencel.io/images/IMG_20201107_23234122.jpg"&gt;
+&lt;img alt="/images/IMG_20201030_21072011.jpg" src="https://stencel.io/images/IMG_20201030_21072011.jpg"&gt;
+&lt;p&gt;I had to do my own buttons too as case came with 2 buttons and 2 led diodes I just took off whole pcb and made my own
+with just buttons and printed out the plastic long buttons.
+Also added external usb3 extensions&lt;/p&gt;
+&lt;img alt="/images/IMG_20201107_232356.jpg" src="https://stencel.io/images/IMG_20201107_232356.jpg"&gt;
+&lt;/div&gt;
+&lt;div class="section" id="problem-3-ethernet"&gt;
+&lt;h3&gt;Problem 3 Ethernet&lt;/h3&gt;
+&lt;p&gt;I wanted it to look nice so I have designed some panel to put into server case and connect all the ethernet adapters +
+docking station together.&lt;/p&gt;
+&lt;img alt="/images/IMG_20201020_173526.jpg" src="https://stencel.io/images/IMG_20201020_173526.jpg"&gt;
+&lt;img alt="/images/IMG_20201020_173919.jpg" src="https://stencel.io/images/IMG_20201020_173919.jpg"&gt;
+&lt;img alt="/images/IMG_20201024_180934.jpg" src="https://stencel.io/images/IMG_20201024_180934.jpg"&gt;
+&lt;img alt="/images/IMG_20201026_220703.jpg" src="https://stencel.io/images/IMG_20201026_220703.jpg"&gt;
+&lt;/div&gt;
+&lt;div class="section" id="connecting-it-all-together-inside-the-server-case"&gt;
+&lt;h3&gt;Connecting it all together inside the server case&lt;/h3&gt;
+&lt;p&gt;Having all the parts printed and ready I've started assembling everything together which was the biggest fun.&lt;/p&gt;
+&lt;img alt="/images/IMG_20201026_221755_1.jpg" src="https://stencel.io/images/IMG_20201026_221755_1.jpg"&gt;
+&lt;img alt="/images/IMG_20201023_162733.jpg" src="https://stencel.io/images/IMG_20201023_162733.jpg"&gt;
+&lt;img alt="/images/IMG_20201023_162735.jpg" src="https://stencel.io/images/IMG_20201023_162735.jpg"&gt;
+&lt;img alt="/images/IMG_20201122_134807.jpg" src="https://stencel.io/images/IMG_20201122_134807.jpg"&gt;
+&lt;/div&gt;
+&lt;div class="section" id="final-effects"&gt;
+&lt;h3&gt;Final effects&lt;/h3&gt;
+&lt;p&gt;So in the end this little 2U box is i7 16GB x4NODES kubernetes cluster!!!&lt;/p&gt;
+&lt;img alt="/images/IMG_20210121_234056.jpg" src="https://stencel.io/images/IMG_20210121_234056.jpg"&gt;
+&lt;/div&gt;
+&lt;div class="section" id="clarification"&gt;
+&lt;h3&gt;Clarification&lt;/h3&gt;
+&lt;p&gt;Of course (intentionally to lower costs or not) I forgot to add that I had to buy bigger server cabinet 15U&lt;/p&gt;
+&lt;p&gt;Also had to hire some external contractor to assembe it.&lt;/p&gt;
+&lt;p&gt;So this costed me 2 extra hrs spent at playground + 2 kinder surprise.&lt;/p&gt;
+&lt;img alt="/images/IMG_20201121_113644.jpg" src="https://stencel.io/images/IMG_20201121_113644.jpg"&gt;
+&lt;p&gt;So inside case it looks like this&lt;/p&gt;
+&lt;img alt="/images/IMG_20201205_185254.jpg" src="https://stencel.io/images/IMG_20201205_185254.jpg"&gt;
+&lt;p&gt;And everything connected together&lt;/p&gt;
+&lt;img alt="/images/IMG_20201229_180451.jpg" src="https://stencel.io/images/IMG_20201229_180451.jpg"&gt;
+&lt;img alt="/images/IMG-20210107-WA0012.jpeg" src="https://stencel.io/images/IMG-20210107-WA0012.jpeg"&gt;
+&lt;img alt="/images/IMG-20210107-WA0010.jpeg" src="https://stencel.io/images/IMG-20210107-WA0010.jpeg"&gt;
+&lt;img alt="/images/IMG-20201123-WA0000.jpeg" src="https://stencel.io/images/IMG-20201123-WA0000.jpeg"&gt;
+&lt;/div&gt;
+&lt;div class="section" id="future-plans"&gt;
+&lt;h3&gt;Future plans&lt;/h3&gt;
+&lt;p&gt;As seen on photos there are leds - this is Philips Hue strip I have allready played with python API and I'm going to
+connect those leds to the Master node temperature readings.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description><guid>https://stencel.io/posts/build-cheapest-kubernetes-i7-cluster.html</guid><pubDate>Mon, 18 Jan 2021 23:58:56 GMT</pubDate></item><item><title>Mysql on kubernetes with persistent volume and secrets</title><link>https://stencel.io/posts/mysql-on-kubernetes-with-persistent-volume-and-secrets.html</link><dc:creator>Greg Stencel</dc:creator><description>&lt;div class="section" id="volumes"&gt;
 &lt;h2&gt;Volumes&lt;/h2&gt;
 &lt;div class="section" id="persistent-storage-with-nfs"&gt;
 &lt;h3&gt;Persistent storage with NFS&lt;/h3&gt;
@@ -959,62 +1047,4 @@ cause it's signed with key) and nginx or whatever you use may have problems afte
 &lt;p&gt;cat exerceo_pl.crt COMODORSADomainValidationSecureServerCA.crt COMODORSAAddTrustCA.crt AddTrustExternalCARoot.crt &amp;gt;
 exerceo_pl.bundled.crt
 after that I had just to point my nginx.conf to new bundled certificate.
-And after all reaload of nginx fixed my unknow issuer firefox problem.&lt;/p&gt;&lt;/div&gt;</description><guid>https://stencel.io/posts/comodo-positive-ssl-sec_error_unknown_issuer-firefox.html</guid><pubDate>Thu, 12 Mar 2015 10:26:23 GMT</pubDate></item><item><title>xrandr tips</title><link>https://stencel.io/posts/xrandr-tips.html</link><dc:creator>Greg Stencel</dc:creator><description>&lt;div&gt;&lt;p&gt;adding resolution
-1)generate mode
-cvt 2560 1440 60
-➜  blog git:(website) ✗ cvt 2560 1440 60
-# 2560x1440 59.96 Hz (CVT 3.69M9) hsync: 89.52 kHz; pclk: 312.25 MHz
-Modeline "2560x1440_60.00"  312.25  2560 2752 3024 3488  1440 1443 1448 1493 -hsync +vsync&lt;/p&gt;
-&lt;p&gt;2)add it to xrandr
-sudo xrandr --newmode "2560x1440_60.00"  312.25  2560 2752 3024 3488  1440 1443 1448 1493  -hsync +vsync
-setting resolution&lt;/p&gt;
-&lt;p&gt;3)sudo xrandr --addmode VGA-0 "1680x1050_60.00"&lt;/p&gt;
-&lt;p&gt;xrandr -q
-xrandr --verbose&lt;/p&gt;
-&lt;p&gt;xrandr --output HDMI-0 --mode 2560x1440&lt;/p&gt;
-&lt;p&gt;irst generate a "modeline" by using cvt
-Syntax is: cvt width height refreshrate&lt;/p&gt;
-&lt;p&gt;cvt 1680 1050 60
-this gives you:&lt;/p&gt;
-&lt;p&gt;# 1680x1050 59.95 Hz (CVT 1.76MA) hsync: 65.29 kHz; pclk: 146.25 MHz
-Modeline "1680x1050_60.00"  146.25  1680 1784 1960 2240  1050 1053 1059 1089 -hsync +vsync
-Now tell this to xrandr:&lt;/p&gt;
-&lt;p&gt;sudo xrandr --newmode "1680x1050_60.00"  146.25  1680 1784 1960 2240  1050 1053 1059 1089 -&lt;/p&gt;
-&lt;p&gt;First clone the two screens, (the smaller screen will display the top left portion of the virtual screen)&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;xrandr --output VGA --auto --right-of LVDS&lt;/p&gt;
-&lt;p&gt;xrandr --output LVDS --mode 1280x800&lt;/p&gt;
-&lt;p&gt;xrandr --output LVDS --mode 1280x800 --rate 75&lt;/p&gt;
-&lt;p&gt;xrandr --output LVDS --auto&lt;/p&gt;
-&lt;p&gt;xrandr --output LVDS --off --output HDMI-0 --auto&lt;/p&gt;
-&lt;p&gt;xrandr --output VGA1 --mode 1024x768 --rate 60&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;#Laptop right extra Monitor Left&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;xrandr --output VGA1 --left-of LVDS1&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;#Laptop left extra Monitor right&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;xrandr --output LVDS1 --left-of VGA1&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;#This is to set your primary monitor.&lt;/p&gt;
-&lt;p&gt;#This sets your laptop monitor as your primary monitor.&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;xrandr --output LVDS1 --primary&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;#This sets your VGA monitor as your primary monitor.&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;xrandr --output VGA1 --primary&lt;/p&gt;
-&lt;p&gt;xrandr --output VGA1 --mode 1024x768 --rate 60&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;xrandr --pos &amp;lt;x&amp;gt;x&amp;lt;y&amp;gt;&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;$ xrandr --left-of &amp;lt;output&amp;gt;&lt;/p&gt;
-&lt;p&gt;$ xrandr --right-of &amp;lt;output&amp;gt;&lt;/p&gt;
-&lt;p&gt;$ xrandr --above &amp;lt;output&amp;gt;&lt;/p&gt;
-&lt;p&gt;$ xrandr --below &amp;lt;output&amp;gt;&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;Option '-pos' is more flexible which can place output to anywhere, for example:&lt;/p&gt;
-&lt;p&gt;$ xrandr --output VGA1 --pos 200x200
-$ xrandr --output LVDS1 --pos 400x500&lt;/p&gt;
-&lt;p&gt;xrandr -o right&lt;/p&gt;&lt;/div&gt;</description><category>Linux</category><category>xrandr</category><guid>https://stencel.io/posts/xrandr-tips.html</guid><pubDate>Tue, 13 Jan 2015 20:34:57 GMT</pubDate></item></channel></rss>
+And after all reaload of nginx fixed my unknow issuer firefox problem.&lt;/p&gt;&lt;/div&gt;</description><guid>https://stencel.io/posts/comodo-positive-ssl-sec_error_unknown_issuer-firefox.html</guid><pubDate>Thu, 12 Mar 2015 10:26:23 GMT</pubDate></item></channel></rss>
