@@ -1,0 +1,89 @@
+<div class="section" id="how-i-ve-build-4-nodes-kubernetes-i7-16gb-cluster">
+<h1>How I've build 4 nodes kubernetes i7 16GB cluster</h1>
+<p>I always wanted to build my own k8s cluster, but couldn't see any reliable &quot;budget&quot; 3-4 nodes option to go for -yes there are a
+lot of attempts of building kubernetes which are:</p>
+<ul class="simple">
+<li><p>raspberry pi which are not  x86 compatible so you wont run a lot of docker images there</p></li>
+<li><p>some tv hdmi sticks - they are quite good but cpus are quite weak.</p></li>
+</ul>
+<p>So one day my laptops display has broken. It was i7 with 16gb RAM it I have identified malfunction was was the port to lcd display on the motherboard as the hdmi output worked fine. I have replaced the motherboard and doing so I had the old spare but kida headless without display well hdmi output still worked).
+Also when buying replacement motherboard  I have discovered there are sold for 100 quid (coming from some after leasing refurbished laptops) so probably the cheapes k8s cluster we can have on i7's and 16GB RAM per node.</p>
+<img alt="/images/IMG_20201024_184958.jpg" src="/images/IMG_20201024_184958.jpg" />
+<p>The parts:</p>
+<p>3 x £120 Lenovo Yoga X1 Carbon 00JT811 Core i7-6600U 2.6GHz Laptop Motherboard [from ebay]</p>
+<p>4 x £12.93 Sandisk 120GB SSD [from Amazon warehouse deals] - optional could do it network bootable!!!</p>
+<p>4 x lenovo laptop chargin adapters (had old ones so didnt have top buy)</p>
+<p>3 x 1GB Ethernet over oneLink+ interface (7each)</p>
+<p>1 x 1GB Ethernet over OneLink+ dock station (I had old one)</p>
+<p>1 x used battery for master node (to secure etcd even better from power failure) £10
+1 x Server Case to pack it up 2U Short ATX Chassis - Low Profile PCI Card Support - 390mm Depth £47
+Overall : £489</p>
+<p>I had old intell skull i7 as my lab server so I have sold it for £400 adding 89 quid and week of work during evenings I had 4 nodes powerfull kubernetes
+cluster.</p>
+<div class="section" id="problem-i-how-to-stack-it-on-each-other">
+<h2>Problem I - How to stack it on each other?</h2>
+<p>I had to find some way how to put the motherboards on each other safetly - fortunately I had ender3 3dprinter and bit of
+knowledge of 3d prototyping in blender so I have just designed simple pins on which I sould stack the motherboards.</p>
+<img alt="/images/IMG_20201013_144202.jpg" src="/images/IMG_20201013_144202.jpg" />
+<img alt="/images/IMG_20201016_172922.jpg" src="/images/IMG_20201016_172922.jpg" />
+</div>
+<div class="section" id="problem-ii-powering-it-on">
+<h2>Problem II - Powering it on</h2>
+<p>Solution 1 - BIOS Restore on AC Power loss - just pluggin in to power adapter should power on my motherboards
+Solution 2 - Add power button - unfortunatelly its almost impossibile to buy power button separately for this
+motherboard they are available on aliexpress for 17 quid which is ridiculous.</p>
+<p>I had found 1 button for 5 on ebay and have reverse engineered it.</p>
+<p>So Laptop power on switch works bit different than I though its not working like in PC ATX switch just short circuiting
+2 cables - I had to check with multimeter whats happening on which pins of the port of power switch.
+It turned out its just adding 10kOhm resitance on button press. I have just created my own buttons and added the
+resistors to each of them.</p>
+<img alt="/images/IMG_20201114_160524.jpg" src="/images/IMG_20201114_160524.jpg" />
+<img alt="/images/IMG_20201107_23234122.jpg" src="/images/IMG_20201107_23234122.jpg" />
+<img alt="/images/IMG_20201030_21072011.jpg" src="/images/IMG_20201030_21072011.jpg" />
+<p>I had to do my own buttons too as case came with 2 buttons and 2 led diodes I just took off whole pcb and made my own
+with just buttons and printed out the plastic long buttons.
+Also added external usb3 extensions</p>
+<img alt="/images/IMG_20201107_232356.jpg" src="/images/IMG_20201107_232356.jpg" />
+</div>
+<div class="section" id="problem-3-ethernet">
+<h2>Problem 3 Ethernet</h2>
+<p>I wanted it to look nice so I have designed some panel to put into server case and connect all the ethernet adapters +
+docking station together.</p>
+<img alt="/images/IMG_20201020_173526.jpg" src="/images/IMG_20201020_173526.jpg" />
+<img alt="/images/IMG_20201020_173919.jpg" src="/images/IMG_20201020_173919.jpg" />
+<img alt="/images/IMG_20201024_180934.jpg" src="/images/IMG_20201024_180934.jpg" />
+<img alt="/images/IMG_20201026_220703.jpg" src="/images/IMG_20201026_220703.jpg" />
+</div>
+<div class="section" id="connecting-it-all-together-inside-the-server-case">
+<h2>Connecting it all together inside the server case</h2>
+<p>Having all the parts printed and ready I've started assembling everything together which was the biggest fun.</p>
+<img alt="/images/IMG_20201026_221755_1.jpg" src="/images/IMG_20201026_221755_1.jpg" />
+<img alt="/images/IMG_20201023_162733.jpg" src="/images/IMG_20201023_162733.jpg" />
+<img alt="/images/IMG_20201023_162735.jpg" src="/images/IMG_20201023_162735.jpg" />
+<img alt="/images/IMG_20201122_134807.jpg" src="/images/IMG_20201122_134807.jpg" />
+</div>
+<div class="section" id="final-effects">
+<h2>Final effects</h2>
+<p>So in the end this little 2U box is i7 16GB x4NODES kubernetes cluster!!!</p>
+<img alt="/images/IMG_20210121_234056.jpg" src="/images/IMG_20210121_234056.jpg" />
+</div>
+<div class="section" id="clarification">
+<h2>Clarification</h2>
+<p>Of course (intentionally to lower costs or not) I forgot to add that I had to buy bigger server cabinet 15U</p>
+<p>Also had to hire some external contractor to assembe it.</p>
+<p>So this costed me 2 extra hrs spent at playground + 2 kinder surprise.</p>
+<img alt="/images/IMG_20201121_113644.jpg" src="/images/IMG_20201121_113644.jpg" />
+<p>So inside case it looks like this</p>
+<img alt="/images/IMG_20201205_185254.jpg" src="/images/IMG_20201205_185254.jpg" />
+<p>And everything connected together</p>
+<img alt="/images/IMG_20201229_180451.jpg" src="/images/IMG_20201229_180451.jpg" />
+<img alt="/images/IMG-20210107-WA0012.jpeg" src="/images/IMG-20210107-WA0012.jpeg" />
+<img alt="/images/IMG-20210107-WA0010.jpeg" src="/images/IMG-20210107-WA0010.jpeg" />
+<img alt="/images/IMG-20201123-WA0000.jpeg" src="/images/IMG-20201123-WA0000.jpeg" />
+</div>
+<div class="section" id="future-plans">
+<h2>Future plans</h2>
+<p>As seen on photos there are leds - this is Philips Hue strip I have allready played with python API and I'm going to
+connect those leds to the Master node temperature readings.</p>
+</div>
+</div>

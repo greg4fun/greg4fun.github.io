@@ -26,8 +26,12 @@
   <lastmod>2021-01-18T23:38:00Z</lastmod>
  </url>
  <url>
+  <loc>https://stencel.io/2021/index.html</loc>
+  <lastmod>2021-01-21T23:48:00Z</lastmod>
+ </url>
+ <url>
   <loc>https://stencel.io/archive.html</loc>
-  <lastmod>2021-01-18T23:38:00Z</lastmod>
+  <lastmod>2021-01-18T23:59:00Z</lastmod>
  </url>
  <url>
   <loc>https://stencel.io/categories/aerial-photography.html</loc>
@@ -215,11 +219,11 @@
  </url>
  <url>
   <loc>https://stencel.io/index-4.html</loc>
-  <lastmod>2021-01-18T23:38:00Z</lastmod>
+  <lastmod>2021-01-18T23:59:00Z</lastmod>
  </url>
  <url>
   <loc>https://stencel.io/index.html</loc>
-  <lastmod>2021-01-18T23:38:00Z</lastmod>
+  <lastmod>2021-01-21T23:48:00Z</lastmod>
  </url>
  <url>
   <loc>https://stencel.io/pages/kubernetes-cluster-on-laptop-motherboards.html</loc>
@@ -232,6 +236,10 @@
  <url>
   <loc>https://stencel.io/posts/apt-get-install-from-list-txt.html</loc>
   <lastmod>2021-01-18T23:38:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://stencel.io/posts/build-cheapest-kubernetes-i7-cluster.html</loc>
+  <lastmod>2021-01-21T23:48:00Z</lastmod>
  </url>
  <url>
   <loc>https://stencel.io/posts/build-fully-working-zabbix-server-with-database-in-seconds-thanks-to-docker.html</loc>
@@ -307,7 +315,7 @@
  </url>
  <url>
   <loc>https://stencel.io/posts/mysql-on-kubernetes-with-persistent-volume-and-secrets.html</loc>
-  <lastmod>2021-01-18T23:38:00Z</lastmod>
+  <lastmod>2021-01-18T23:59:00Z</lastmod>
  </url>
  <url>
   <loc>https://stencel.io/posts/mysql-update-with-random-values-from-list.html</loc>
