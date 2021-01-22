@@ -76,12 +76,14 @@ I had found 1 button for 5 on ebay and have reverse engineered it.
 
 So Laptop power on switch works bit different than I though its not working like in PC ATX switch just short circuiting
 2 cables - I had to check with multimeter whats happening on which pins of the port of power switch.
-It turned out its just adding 10kOhm resitance on button press. I have just created my own buttons and added the
+It turned out its just adding 10kOhm resitance on button press. 
+I have just created my own buttons and added the
 resistors to each of them.
 
 .. image:: /images/IMG_20201114_160524.jpg
 .. image:: /images/IMG_20201107_23234122.jpg
 .. image:: /images/IMG_20201030_21072011.jpg
+I forgot to make pic but I below the buttons there are 10kOhm resistors soldered to one leg.
 
 
 I had to do my own buttons too as case came with 2 buttons and 2 led diodes I just took off whole pcb and made my own
