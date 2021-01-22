@@ -1,16 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Greg's Tech Notes</title><link>https://stencel.io/</link><description>Tech notes and tips</description><atom:link href="https://stencel.io/rss.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><copyright>Contents © 2021 &lt;a href="mailto:gstencel@gmail.com"&gt;Greg Stencel&lt;/a&gt; </copyright><lastBuildDate>Fri, 22 Jan 2021 07:56:27 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Build cheapest kubernetes i7 cluster</title><link>https://stencel.io/posts/build-cheapest-kubernetes-i7-cluster.html</link><dc:creator>Greg Stencel</dc:creator><description>&lt;div class="section" id="how-i-ve-build-4-nodes-kubernetes-i7-16gb-cluster"&gt;
+<?xml-stylesheet type="text/xsl" href="assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Greg's Tech Notes</title><link>https://stencel.io/</link><description>Tech notes and tips</description><atom:link href="https://stencel.io/rss.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><copyright>Contents © 2021 &lt;a href="mailto:gstencel@gmail.com"&gt;Greg Stencel&lt;/a&gt; </copyright><lastBuildDate>Fri, 22 Jan 2021 08:11:36 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Build cheapest kubernetes i7 cluster</title><link>https://stencel.io/posts/build-cheapest-kubernetes-i7-cluster.html</link><dc:creator>Greg Stencel</dc:creator><description>&lt;div class="section" id="how-i-ve-build-4-nodes-kubernetes-i7-16gb-cluster"&gt;
 &lt;h2&gt;How I've build 4 nodes kubernetes i7 16GB cluster&lt;/h2&gt;
-&lt;p&gt;I always wanted to build my own k8s cluster, but couldn't see any reliable "budget" 3-4 nodes option to go for -yes there are a
+&lt;p&gt;I always wanted to build my own k8s cluster, but couldn't see any reliable "budget" 3-4 nodes option to go for - yes there are a
 lot of attempts of building kubernetes which are:&lt;/p&gt;
 &lt;ul class="simple"&gt;
 &lt;li&gt;&lt;p&gt;raspberry pi which are not  x86 compatible so you wont run a lot of docker images there&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;some tv hdmi sticks - they are quite good but cpus are quite weak.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;some tv hdmi sticks - better than raspberry but cpus are quite weak.&lt;/p&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;So one day my laptops display has broken. It was i7 with 16gb RAM it I have identified malfunction was was the port to lcd display on the motherboard as the hdmi output worked fine. I have replaced the motherboard and doing so I had the old spare but kida headless without display well hdmi output still worked).
-Also when buying replacement motherboard  I have discovered there are sold for 100 quid (coming from some after leasing refurbished laptops) so probably the cheapes k8s cluster we can have on i7's and 16GB RAM per node.&lt;/p&gt;
+&lt;p&gt;So one day my laptops display has broken.&lt;/p&gt;
+&lt;p&gt;It was i7 with 16gb RAM it I have identified malfunction was was the port to lcd display on the motherboard as the hdmi output worked fine.&lt;/p&gt;
+&lt;p&gt;I have replaced the motherboard and doing so I had the old spare but kida headless without display well hdmi output still worked).&lt;/p&gt;
+&lt;p&gt;Also when buying replacement motherboard  I have discovered there are sold for 100 quid (coming from some after leasing refurbished laptops) so probably the cheapes k8s cluster we can have on i7's and 16GB RAM per node.&lt;/p&gt;
 &lt;img alt="/images/IMG_20201024_184958.jpg" src="https://stencel.io/images/IMG_20201024_184958.jpg"&gt;
-&lt;p&gt;The parts:&lt;/p&gt;
+&lt;div class="section" id="the-parts"&gt;
+&lt;h3&gt;The parts:&lt;/h3&gt;
 &lt;p&gt;3 x £120 Lenovo Yoga X1 Carbon 00JT811 Core i7-6600U 2.6GHz Laptop Motherboard [from ebay]&lt;/p&gt;
 &lt;p&gt;4 x £12.93 Sandisk 120GB SSD [from Amazon warehouse deals] - optional could do it network bootable!!!&lt;/p&gt;
 &lt;p&gt;4 x lenovo laptop chargin adapters (had old ones so didnt have top buy)&lt;/p&gt;
@@ -21,17 +24,18 @@ Also when buying replacement motherboard  I have discovered there are sold for 1
 &lt;p&gt;Overall : £489&lt;/p&gt;
 &lt;p&gt;I had old intell skull i7 as my previous lab server so I have sold it for £400 so in the end by just adding 89 quid and week of work during evenings I had 4 nodes powerfull kubernetes
 cluster.&lt;/p&gt;
-&lt;div class="section" id="problem-i-how-to-stack-it-on-each-other"&gt;
-&lt;h3&gt;Problem I - How to stack it on each other?&lt;/h3&gt;
+&lt;/div&gt;
+&lt;div class="section" id="problem-1-how-to-stack-it-on-each-other"&gt;
+&lt;h3&gt;Problem 1 - How to stack it on each other?&lt;/h3&gt;
 &lt;p&gt;I had to find some way how to put the motherboards on each other safetly - fortunately I had ender3 3dprinter and bit of
 knowledge of 3d prototyping in blender so I have just designed simple pins on which I sould stack the motherboards.&lt;/p&gt;
 &lt;img alt="/images/IMG_20201013_144202.jpg" src="https://stencel.io/images/IMG_20201013_144202.jpg"&gt;
 &lt;img alt="/images/IMG_20201016_172922.jpg" src="https://stencel.io/images/IMG_20201016_172922.jpg"&gt;
 &lt;/div&gt;
-&lt;div class="section" id="problem-ii-powering-it-on"&gt;
-&lt;h3&gt;Problem II - Powering it on&lt;/h3&gt;
-&lt;p&gt;Solution 1 - BIOS Restore on AC Power loss - just pluggin in to power adapter should power on my motherboards
-Solution 2 - Add power button - unfortunatelly its almost impossibile to buy power button separately for this
+&lt;div class="section" id="problem-2-powering-it-on"&gt;
+&lt;h3&gt;Problem 2 - Powering it on&lt;/h3&gt;
+&lt;p&gt;Solution 1 - BIOS Restore on AC Power loss - just pluggin in to power adapter should power on my motherboards&lt;/p&gt;
+&lt;p&gt;Solution 2 - Add power button - unfortunatelly its almost impossibile to buy power button separately for this
 motherboard they are available on aliexpress for 17 quid which is ridiculous.&lt;/p&gt;
 &lt;p&gt;I had found 1 button for 5 on ebay and have reverse engineered it.&lt;/p&gt;
 &lt;p&gt;So Laptop power on switch works bit different than I though its not working like in PC ATX switch just short circuiting
@@ -72,8 +76,7 @@ docking station together.&lt;/p&gt;
 &lt;h3&gt;Clarification&lt;/h3&gt;
 &lt;p&gt;Of course I forgot to mention (intentionally or not to lower overall costs :)  ) the extra 2U case didnt fit to my 9U
 Cabinet anymore as there is Dream Machine Pro and some PoE Switch and a NAS there already so  I had to buy bigger server cabinet 15U&lt;/p&gt;
-&lt;p&gt;Because of that I had to hire some external contractor to assembe it.&lt;/p&gt;
-&lt;p&gt;So this costed me 2 extra hrs spent at playground + 2 kinder surprise eggs.&lt;/p&gt;
+&lt;p&gt;Because of that I had to hire some external contractor to assembe it so this costed me 2 extra hrs spent at playground + 2 kinder surprise eggs.&lt;/p&gt;
 &lt;img alt="/images/IMG_20201121_113644.jpg" src="https://stencel.io/images/IMG_20201121_113644.jpg"&gt;
 &lt;p&gt;So inside case it looks like this&lt;/p&gt;
 &lt;img alt="/images/IMG_20201205_185254.jpg" src="https://stencel.io/images/IMG_20201205_185254.jpg"&gt;
