@@ -83,6 +83,7 @@ resistors to each of them.
 .. image:: /images/IMG_20201114_160524.jpg
 .. image:: /images/IMG_20201107_23234122.jpg
 .. image:: /images/IMG_20201030_21072011.jpg
+
 I forgot to make pic but I below the buttons there are 10kOhm resistors soldered to one leg.
 
 
