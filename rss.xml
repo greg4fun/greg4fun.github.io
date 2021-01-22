@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Greg's Tech Notes</title><link>https://stencel.io/</link><description>Tech notes and tips</description><atom:link href="https://stencel.io/rss.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><copyright>Contents © 2021 &lt;a href="mailto:gstencel@gmail.com"&gt;Greg Stencel&lt;/a&gt; </copyright><lastBuildDate>Fri, 22 Jan 2021 08:47:13 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Build cheapest kubernetes i7 cluster</title><link>https://stencel.io/posts/build-cheapest-kubernetes-i7-cluster.html</link><dc:creator>Greg Stencel</dc:creator><description>&lt;div class="section" id="how-i-ve-build-4-nodes-kubernetes-i7-16gb-cluster"&gt;
+<?xml-stylesheet type="text/xsl" href="assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Greg's Tech Notes</title><link>https://stencel.io/</link><description>Tech notes and tips</description><atom:link href="https://stencel.io/rss.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><copyright>Contents © 2021 &lt;a href="mailto:gstencel@gmail.com"&gt;Greg Stencel&lt;/a&gt; </copyright><lastBuildDate>Fri, 22 Jan 2021 10:53:29 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Build cheapest kubernetes i7 cluster</title><link>https://stencel.io/posts/build-cheapest-kubernetes-i7-cluster.html</link><dc:creator>Greg Stencel</dc:creator><description>&lt;div class="section" id="how-i-ve-build-4-nodes-kubernetes-i7-16gb-cluster"&gt;
 &lt;h2&gt;How I've build 4 nodes kubernetes i7 16GB cluster&lt;/h2&gt;
 &lt;p&gt;I always wanted to build my own k8s cluster, but couldn't see any reliable "budget" 3-4 nodes option to go for - yes there are a
 lot of attempts of building kubernetes which are:&lt;/p&gt;
@@ -68,6 +68,12 @@ docking station together.&lt;/p&gt;
 &lt;img alt="/images/IMG_20201023_162733.jpg" src="https://stencel.io/images/IMG_20201023_162733.jpg"&gt;
 &lt;img alt="/images/IMG_20201023_162735.jpg" src="https://stencel.io/images/IMG_20201023_162735.jpg"&gt;
 &lt;img alt="/images/IMG_20201122_134807.jpg" src="https://stencel.io/images/IMG_20201122_134807.jpg"&gt;
+&lt;div class="section" id="battery-for-master-node"&gt;
+&lt;h4&gt;Battery for master node&lt;/h4&gt;
+&lt;p&gt;As seen below in the bottom - the motherboard is supplied with laptop battery - it's the master node with etcd running so it has
+some extra power protection (I have 2 UPSes fot the whole cabinet though)&lt;/p&gt;
+&lt;img alt="/images/IMG_20201114_160532.jpg" src="https://stencel.io/images/IMG_20201114_160532.jpg"&gt;
+&lt;/div&gt;
 &lt;/div&gt;
 &lt;div class="section" id="final-effects"&gt;
 &lt;h3&gt;Final effects&lt;/h3&gt;
@@ -83,15 +89,21 @@ Cabinet anymore as there is Dream Machine Pro and some PoE Switch and a NAS ther
 &lt;p&gt;So inside case it looks like this&lt;/p&gt;
 &lt;img alt="/images/IMG_20201205_185254.jpg" src="https://stencel.io/images/IMG_20201205_185254.jpg"&gt;
 &lt;p&gt;And everything connected together&lt;/p&gt;
-&lt;img alt="/images/IMG_20201229_180451.jpg" src="https://stencel.io/images/IMG_20201229_180451.jpg"&gt;
 &lt;img alt="/images/IMG-20210107-WA0012.jpeg" src="https://stencel.io/images/IMG-20210107-WA0012.jpeg"&gt;
-&lt;img alt="/images/IMG-20210107-WA0010.jpeg" src="https://stencel.io/images/IMG-20210107-WA0010.jpeg"&gt;
 &lt;img alt="/images/IMG-20201123-WA0000.jpeg" src="https://stencel.io/images/IMG-20201123-WA0000.jpeg"&gt;
 &lt;/div&gt;
 &lt;div class="section" id="future-plans"&gt;
 &lt;h3&gt;Future plans&lt;/h3&gt;
-&lt;p&gt;As seen on photos there are leds - this is Philips Hue strip I have allready played with python API and I'm going to
+&lt;p&gt;For now I have half-automatically installed k8s on my Nodes from playbooks taken from my prev project (kubernetes
+cluster on vagrant ) &lt;a class="reference external" href="https://github.com/greg4fun/k8s_simulation_on_vagrant"&gt;https://github.com/greg4fun/k8s_simulation_on_vagrant&lt;/a&gt; , but I have in plans to make it full IaC and use Hashis Terraform.&lt;/p&gt;
+&lt;img alt="/images/cluster.png" src="https://stencel.io/images/cluster.png"&gt;
+&lt;div class="section" id="master-temperature-with-lights"&gt;
+&lt;h4&gt;Master temperature with lights&lt;/h4&gt;
+&lt;p&gt;As seen on photos below there are leds - this is Philips Hue strip I have allready played with python API and I'm going to
 connect those leds to the Master node temperature readings.&lt;/p&gt;
+&lt;img alt="/images/IMG_20201229_180451.jpg" src="https://stencel.io/images/IMG_20201229_180451.jpg"&gt;
+&lt;img alt="/images/IMG-20210107-WA0010.jpeg" src="https://stencel.io/images/IMG-20210107-WA0010.jpeg"&gt;
+&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;</description><guid>https://stencel.io/posts/build-cheapest-kubernetes-i7-cluster.html</guid><pubDate>Mon, 18 Jan 2021 23:58:56 GMT</pubDate></item><item><title>Mysql on kubernetes with persistent volume and secrets</title><link>https://stencel.io/posts/mysql-on-kubernetes-with-persistent-volume-and-secrets.html</link><dc:creator>Greg Stencel</dc:creator><description>&lt;div class="section" id="volumes"&gt;
 &lt;h2&gt;Volumes&lt;/h2&gt;
