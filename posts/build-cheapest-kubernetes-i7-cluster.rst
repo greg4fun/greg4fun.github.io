@@ -36,10 +36,12 @@ The parts:
 1 x 1GB Ethernet over OneLink+ dock station (I had old one)
 
 1 x used battery for master node (to secure etcd even better from power failure) £10
+
 1 x Server Case to pack it up 2U Short ATX Chassis - Low Profile PCI Card Support - 390mm Depth £47
+
 Overall : £489
 
-I had old intell skull i7 as my lab server so I have sold it for £400 adding 89 quid and week of work during evenings I had 4 nodes powerfull kubernetes
+I had old intell skull i7 as my previous lab server so I have sold it for £400 so in the end by just adding 89 quid and week of work during evenings I had 4 nodes powerfull kubernetes
 cluster.
 
 
@@ -120,11 +122,12 @@ So in the end this little 2U box is i7 16GB x4NODES kubernetes cluster!!!
 *************
 Clarification
 *************
-Of course (intentionally to lower costs or not) I forgot to add that I had to buy bigger server cabinet 15U
+Of course I forgot to mention (intentionally or not to lower overall costs :)  ) the extra 2U case didnt fit to my 9U
+Cabinet anymore as there is Dream Machine Pro and some PoE Switch and a NAS there already so  I had to buy bigger server cabinet 15U
 
-Also had to hire some external contractor to assembe it.
+Because of that I had to hire some external contractor to assembe it.
 
-So this costed me 2 extra hrs spent at playground + 2 kinder surprise.
+So this costed me 2 extra hrs spent at playground + 2 kinder surprise eggs.
 
 .. image:: /images/IMG_20201121_113644.jpg
 

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Greg's Tech Notes</title><link>https://stencel.io/</link><description>Tech notes and tips</description><atom:link href="https://stencel.io/rss.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><copyright>Contents © 2021 &lt;a href="mailto:gstencel@gmail.com"&gt;Greg Stencel&lt;/a&gt; </copyright><lastBuildDate>Thu, 21 Jan 2021 23:48:25 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Build cheapest kubernetes i7 cluster</title><link>https://stencel.io/posts/build-cheapest-kubernetes-i7-cluster.html</link><dc:creator>Greg Stencel</dc:creator><description>&lt;div class="section" id="how-i-ve-build-4-nodes-kubernetes-i7-16gb-cluster"&gt;
+<?xml-stylesheet type="text/xsl" href="assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Greg's Tech Notes</title><link>https://stencel.io/</link><description>Tech notes and tips</description><atom:link href="https://stencel.io/rss.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><copyright>Contents © 2021 &lt;a href="mailto:gstencel@gmail.com"&gt;Greg Stencel&lt;/a&gt; </copyright><lastBuildDate>Fri, 22 Jan 2021 07:56:27 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Build cheapest kubernetes i7 cluster</title><link>https://stencel.io/posts/build-cheapest-kubernetes-i7-cluster.html</link><dc:creator>Greg Stencel</dc:creator><description>&lt;div class="section" id="how-i-ve-build-4-nodes-kubernetes-i7-16gb-cluster"&gt;
 &lt;h2&gt;How I've build 4 nodes kubernetes i7 16GB cluster&lt;/h2&gt;
 &lt;p&gt;I always wanted to build my own k8s cluster, but couldn't see any reliable "budget" 3-4 nodes option to go for -yes there are a
 lot of attempts of building kubernetes which are:&lt;/p&gt;
@@ -16,10 +16,10 @@ Also when buying replacement motherboard  I have discovered there are sold for 1
 &lt;p&gt;4 x lenovo laptop chargin adapters (had old ones so didnt have top buy)&lt;/p&gt;
 &lt;p&gt;3 x 1GB Ethernet over oneLink+ interface (7each)&lt;/p&gt;
 &lt;p&gt;1 x 1GB Ethernet over OneLink+ dock station (I had old one)&lt;/p&gt;
-&lt;p&gt;1 x used battery for master node (to secure etcd even better from power failure) £10
-1 x Server Case to pack it up 2U Short ATX Chassis - Low Profile PCI Card Support - 390mm Depth £47
-Overall : £489&lt;/p&gt;
-&lt;p&gt;I had old intell skull i7 as my lab server so I have sold it for £400 adding 89 quid and week of work during evenings I had 4 nodes powerfull kubernetes
+&lt;p&gt;1 x used battery for master node (to secure etcd even better from power failure) £10&lt;/p&gt;
+&lt;p&gt;1 x Server Case to pack it up 2U Short ATX Chassis - Low Profile PCI Card Support - 390mm Depth £47&lt;/p&gt;
+&lt;p&gt;Overall : £489&lt;/p&gt;
+&lt;p&gt;I had old intell skull i7 as my previous lab server so I have sold it for £400 so in the end by just adding 89 quid and week of work during evenings I had 4 nodes powerfull kubernetes
 cluster.&lt;/p&gt;
 &lt;div class="section" id="problem-i-how-to-stack-it-on-each-other"&gt;
 &lt;h3&gt;Problem I - How to stack it on each other?&lt;/h3&gt;
@@ -70,9 +70,10 @@ docking station together.&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class="section" id="clarification"&gt;
 &lt;h3&gt;Clarification&lt;/h3&gt;
-&lt;p&gt;Of course (intentionally to lower costs or not) I forgot to add that I had to buy bigger server cabinet 15U&lt;/p&gt;
-&lt;p&gt;Also had to hire some external contractor to assembe it.&lt;/p&gt;
-&lt;p&gt;So this costed me 2 extra hrs spent at playground + 2 kinder surprise.&lt;/p&gt;
+&lt;p&gt;Of course I forgot to mention (intentionally or not to lower overall costs :)  ) the extra 2U case didnt fit to my 9U
+Cabinet anymore as there is Dream Machine Pro and some PoE Switch and a NAS there already so  I had to buy bigger server cabinet 15U&lt;/p&gt;
+&lt;p&gt;Because of that I had to hire some external contractor to assembe it.&lt;/p&gt;
+&lt;p&gt;So this costed me 2 extra hrs spent at playground + 2 kinder surprise eggs.&lt;/p&gt;
 &lt;img alt="/images/IMG_20201121_113644.jpg" src="https://stencel.io/images/IMG_20201121_113644.jpg"&gt;
 &lt;p&gt;So inside case it looks like this&lt;/p&gt;
 &lt;img alt="/images/IMG_20201205_185254.jpg" src="https://stencel.io/images/IMG_20201205_185254.jpg"&gt;
