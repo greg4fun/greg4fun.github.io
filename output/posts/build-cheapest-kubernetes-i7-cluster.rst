@@ -119,6 +119,15 @@ Having all the parts printed and ready I've started assembling everything togeth
 .. image:: /images/IMG_20201023_162735.jpg
 .. image:: /images/IMG_20201122_134807.jpg
 
+_______________________
+Battery for master node
+_______________________
+
+As seen below in the bottom - the motherboard is supplied with laptop battery - it's the master node with etcd running so it has
+some extra power protection (I have 2 UPSes fot the whole cabinet though)
+
+.. image:: /images/IMG_20201114_160532.jpg
+
 
 *************
 Final effects
@@ -147,9 +156,7 @@ So inside case it looks like this
 
 And everything connected together
 
-.. image:: /images/IMG_20201229_180451.jpg
 .. image:: /images/IMG-20210107-WA0012.jpeg
-.. image:: /images/IMG-20210107-WA0010.jpeg
 .. image:: /images/IMG-20201123-WA0000.jpeg
 
 
@@ -157,5 +164,16 @@ And everything connected together
 Future plans
 ************
 
-As seen on photos there are leds - this is Philips Hue strip I have allready played with python API and I'm going to
+For now I have half-automatically installed k8s on my Nodes from playbooks taken from my prev project (kubernetes
+cluster on vagrant ) https://github.com/greg4fun/k8s_simulation_on_vagrant , but I have in plans to make it full IaC and use Hashis Terraform.
+
+.. image:: /images/cluster.png
+
+______________________________
+Master temperature with lights 
+______________________________
+As seen on photos below there are leds - this is Philips Hue strip I have allready played with python API and I'm going to
 connect those leds to the Master node temperature readings.
+
+.. image:: /images/IMG_20201229_180451.jpg
+.. image:: /images/IMG-20210107-WA0010.jpeg

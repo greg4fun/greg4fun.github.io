@@ -113,7 +113,12 @@ docking station together.</p>
 <div class="section" id="connecting-it-all-together-inside-the-server-case">
 <h3>Connecting it all together inside the server case</h3>
 <p>Having all the parts printed and ready I've started assembling everything together which was the biggest fun.</p>
-<img alt="/images/IMG_20201026_221755_1.jpg" src="images/IMG_20201026_221755_1.jpg"><img alt="/images/IMG_20201023_162733.jpg" src="images/IMG_20201023_162733.jpg"><img alt="/images/IMG_20201023_162735.jpg" src="images/IMG_20201023_162735.jpg"><img alt="/images/IMG_20201122_134807.jpg" src="images/IMG_20201122_134807.jpg">
+<img alt="/images/IMG_20201026_221755_1.jpg" src="images/IMG_20201026_221755_1.jpg"><img alt="/images/IMG_20201023_162733.jpg" src="images/IMG_20201023_162733.jpg"><img alt="/images/IMG_20201023_162735.jpg" src="images/IMG_20201023_162735.jpg"><img alt="/images/IMG_20201122_134807.jpg" src="images/IMG_20201122_134807.jpg"><div class="section" id="battery-for-master-node">
+<h4>Battery for master node</h4>
+<p>As seen below in the bottom - the motherboard is supplied with laptop battery - it's the master node with etcd running so it has
+some extra power protection (I have 2 UPSes fot the whole cabinet though)</p>
+<img alt="/images/IMG_20201114_160532.jpg" src="images/IMG_20201114_160532.jpg">
+</div>
 </div>
 <div class="section" id="final-effects">
 <h3>Final effects</h3>
@@ -127,12 +132,18 @@ Cabinet anymore as there is Dream Machine Pro and some PoE Switch and a NAS ther
 <p>Because of that I had to hire some external contractor to assembe it so this costed me 2 extra hrs spent at playground + 2 kinder surprise eggs.</p>
 <img alt="/images/IMG_20201121_113644.jpg" src="images/IMG_20201121_113644.jpg"><p>So inside case it looks like this</p>
 <img alt="/images/IMG_20201205_185254.jpg" src="images/IMG_20201205_185254.jpg"><p>And everything connected together</p>
-<img alt="/images/IMG_20201229_180451.jpg" src="images/IMG_20201229_180451.jpg"><img alt="/images/IMG-20210107-WA0012.jpeg" src="images/IMG-20210107-WA0012.jpeg"><img alt="/images/IMG-20210107-WA0010.jpeg" src="images/IMG-20210107-WA0010.jpeg"><img alt="/images/IMG-20201123-WA0000.jpeg" src="images/IMG-20201123-WA0000.jpeg">
+<img alt="/images/IMG-20210107-WA0012.jpeg" src="images/IMG-20210107-WA0012.jpeg"><img alt="/images/IMG-20201123-WA0000.jpeg" src="images/IMG-20201123-WA0000.jpeg">
 </div>
 <div class="section" id="future-plans">
 <h3>Future plans</h3>
-<p>As seen on photos there are leds - this is Philips Hue strip I have allready played with python API and I'm going to
+<p>For now I have half-automatically installed k8s on my Nodes from playbooks taken from my prev project (kubernetes
+cluster on vagrant ) <a class="reference external" href="https://github.com/greg4fun/k8s_simulation_on_vagrant">https://github.com/greg4fun/k8s_simulation_on_vagrant</a> , but I have in plans to make it full IaC and use Hashis Terraform.</p>
+<img alt="/images/cluster.png" src="images/cluster.png"><div class="section" id="master-temperature-with-lights">
+<h4>Master temperature with lights</h4>
+<p>As seen on photos below there are leds - this is Philips Hue strip I have allready played with python API and I'm going to
 connect those leds to the Master node temperature readings.</p>
+<img alt="/images/IMG_20201229_180451.jpg" src="images/IMG_20201229_180451.jpg"><img alt="/images/IMG-20210107-WA0010.jpeg" src="images/IMG-20210107-WA0010.jpeg">
+</div>
 </div>
 </div>
     </div>
