@@ -9,21 +9,27 @@
 
 How I've build 4 nodes kubernetes i7 16GB cluster
 =================================================
-I always wanted to build my own k8s cluster, but couldn't see any reliable "budget" 3-4 nodes option to go for -yes there are a
+I always wanted to build my own k8s cluster, but couldn't see any reliable "budget" 3-4 nodes option to go for - yes there are a
 lot of attempts of building kubernetes which are:
 
 * raspberry pi which are not  x86 compatible so you wont run a lot of docker images there 
-* some tv hdmi sticks - they are quite good but cpus are quite weak.
+* some tv hdmi sticks - better than raspberry but cpus are quite weak.
 
-So one day my laptops display has broken. It was i7 with 16gb RAM it I have identified malfunction was was the port to lcd display on the motherboard as the hdmi output worked fine. I have replaced the motherboard and doing so I had the old spare but kida headless without display well hdmi output still worked). 
+So one day my laptops display has broken. 
+
+It was i7 with 16gb RAM it I have identified malfunction was was the port to lcd display on the motherboard as the hdmi output worked fine. 
+
+I have replaced the motherboard and doing so I had the old spare but kida headless without display well hdmi output still worked). 
+
 Also when buying replacement motherboard  I have discovered there are sold for 100 quid (coming from some after leasing refurbished laptops) so probably the cheapes k8s cluster we can have on i7's and 16GB RAM per node.
 
 
 .. image:: /images/IMG_20201024_184958.jpg
 
 
-
+**********
 The parts:
+**********
 
 3 x £120 Lenovo Yoga X1 Carbon 00JT811 Core i7-6600U 2.6GHz Laptop Motherboard [from ebay]
 
@@ -47,7 +53,7 @@ cluster.
 
 
 ******************************************
-Problem I - How to stack it on each other?
+Problem 1 - How to stack it on each other?
 ******************************************
 
 I had to find some way how to put the motherboards on each other safetly - fortunately I had ender3 3dprinter and bit of
@@ -58,10 +64,11 @@ knowledge of 3d prototyping in blender so I have just designed simple pins on wh
 
 
 ***************************
-Problem II - Powering it on
+Problem 2 - Powering it on
 ***************************
 
 Solution 1 - BIOS Restore on AC Power loss - just pluggin in to power adapter should power on my motherboards
+
 Solution 2 - Add power button - unfortunatelly its almost impossibile to buy power button separately for this
 motherboard they are available on aliexpress for 17 quid which is ridiculous.
 
@@ -125,9 +132,7 @@ Clarification
 Of course I forgot to mention (intentionally or not to lower overall costs :)  ) the extra 2U case didnt fit to my 9U
 Cabinet anymore as there is Dream Machine Pro and some PoE Switch and a NAS there already so  I had to buy bigger server cabinet 15U
 
-Because of that I had to hire some external contractor to assembe it.
-
-So this costed me 2 extra hrs spent at playground + 2 kinder surprise eggs.
+Because of that I had to hire some external contractor to assembe it so this costed me 2 extra hrs spent at playground + 2 kinder surprise eggs.
 
 .. image:: /images/IMG_20201121_113644.jpg
 
