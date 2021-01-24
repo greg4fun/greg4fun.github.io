@@ -9,12 +9,34 @@
 
 How I've build 4 nodes kubernetes i7 16GB cluster
 =================================================
-I always wanted to build my own k8s cluster, but couldn't see any reliable "budget" 3-4 nodes option to go for - yes there are a
+
+.. image:: /images/IMG_20201024_184958.jpg
+
+****
+Why?
+****
+
+
+I've always wanted to build my own k8s cluster, but couldn't see any reliable "budget" 3-4 nodes option to go for - yes there are a
 lot of attempts of building kubernetes which are:
 
 * raspberry pi which are not  x86 compatible so you wont run a lot of docker images there 
 * some tv hdmi sticks - better than raspberry but cpus are quite weak.
 
+My requirements for cluster were to actually have some good cpus on the nodes and as my server cabinet is within my
+office room it needs to be quiet so I can code without headache of loud fans sound in the background. Saying so I have
+replaced all the fans in my cabinet devices to Noctua low noise fans plus have replaced helicoper little fans from my
+24port switch for 2 big 120mm fans - had to cut 2 holes in metal to do so.
+
+The maximum acceptable noise which my brain can work in is around 40dBA.
+
+.. image:: /images/IMG_20210124_104442_1.jpg
+
+
+
+********
+The idea
+********
 So one day my laptops display has broken. 
 
 It was i7 with 16gb RAM it I have identified malfunction was was the port to lcd display on the motherboard as the hdmi output worked fine. 
@@ -24,7 +46,6 @@ I have replaced the motherboard and doing so I had the old spare but kida headle
 Also when buying replacement motherboard  I have discovered there are sold for 100 quid (coming from some after leasing refurbished laptops) so probably the cheapes k8s cluster we can have on i7's and 16GB RAM per node.
 
 
-.. image:: /images/IMG_20201024_184958.jpg
 
 
 **********
@@ -52,9 +73,9 @@ cluster.
 
 
 
-******************************************
-Problem 1 - How to stack it on each other?
-******************************************
+********************************************
+Problem 1 - How to stack them on each other?
+********************************************
 
 I had to find some way how to put the motherboards on each other safetly - fortunately I had ender3 3dprinter and bit of
 knowledge of 3d prototyping in blender so I have just designed simple pins on which I sould stack the motherboards.
