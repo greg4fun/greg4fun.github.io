@@ -17,11 +17,8 @@
 <meta property="og:title" content="Build cheapest kubernetes i7 cluster">
 <meta property="og:url" content="https://stencel.io/posts/build-cheapest-kubernetes-i7-cluster.html">
 <meta property="og:description" content="How I've build 4 nodes kubernetes i7 16GB cluster
-
-
-Why?
-I've always wanted to build my own k8s cluster, but couldn't see any reliable &quot;budget&quot; 3-4 nodes option to go for - yes there are a
-lot of atte">
+I always wanted to build my own k8s cluster, but couldn't see any reliable &quot;budget&quot; 3-4 nodes option to go for - yes there are a
+lot of attempts of bu">
 <meta property="og:type" content="article">
 <meta property="article:published_time" content="2021-01-18T23:58:56Z">
 </head>
@@ -70,43 +67,34 @@ lot of atte">
     </header><div class="e-content entry-content" itemprop="articleBody text">
     <div class="section" id="how-i-ve-build-4-nodes-kubernetes-i7-16gb-cluster">
 <h2>How I've build 4 nodes kubernetes i7 16GB cluster</h2>
-<img alt="/images/IMG_20201024_184958.jpg" src="../images/IMG_20201024_184958.jpg"><div class="section" id="why">
-<h3>Why?</h3>
-<p>I've always wanted to build my own k8s cluster, but couldn't see any reliable "budget" 3-4 nodes option to go for - yes there are a
+<p>I always wanted to build my own k8s cluster, but couldn't see any reliable "budget" 3-4 nodes option to go for - yes there are a
 lot of attempts of building kubernetes which are:</p>
 <ul class="simple">
 <li><p>raspberry pi which are not  x86 compatible so you wont run a lot of docker images there</p></li>
 <li><p>some tv hdmi sticks - better than raspberry but cpus are quite weak.</p></li>
 </ul>
-<p>My requirements for cluster were to actually have some good cpus on the nodes and as my server cabinet is within my
-office room it needs to be quiet so I can code without headache of loud fans sound in the background. Saying so I have
-replaced all the fans in my cabinet devices to Noctua low noise fans plus have replaced helicoper little fans from my
-24port switch for 2 big 120mm fans - had to cut 2 holes in metal to do so.</p>
-<p>The maximum acceptable noise which my brain can work in is around 40dBA.</p>
-<img alt="/images/IMG_20210124_104442_1.jpg" src="../images/IMG_20210124_104442_1.jpg">
-</div>
-<div class="section" id="the-idea">
-<h3>The idea</h3>
 <p>So one day my laptops display has broken.</p>
 <p>It was i7 with 16gb RAM it I have identified malfunction was was the port to lcd display on the motherboard as the hdmi output worked fine.</p>
 <p>I have replaced the motherboard and doing so I had the old spare but kida headless without display well hdmi output still worked).</p>
 <p>Also when buying replacement motherboard  I have discovered there are sold for 100 quid (coming from some after leasing refurbished laptops) so probably the cheapes k8s cluster we can have on i7's and 16GB RAM per node.</p>
-</div>
-<div class="section" id="the-parts">
+<img alt="/images/IMG_20201024_184958.jpg" src="../images/IMG_20201024_184958.jpg"><div class="section" id="the-parts">
 <h3>The parts:</h3>
-<p>3 x £120 Lenovo Yoga X1 Carbon 00JT811 Core i7-6600U 2.6GHz Laptop Motherboard [from ebay]</p>
+<p>Note: I've used 00JT811 because I had spare one you can use any i7/i5 laptops motherboard I have just found that
+actually on ebay there are i5 00JT371 i5-5200U for 50quid !! and it's the same number of cores/threads just at the lower frequency 2.60 GHz vs 2.20GHz base freq.</p>
+<p>3 x £120 Lenovo Yoga X1 Carbon 00JT811 Core i7-6600U 2.6GHz Laptop Motherboard [from ebay] || or 4x £50 i5 00JT371 i5-5200U</p>
 <p>4 x £12.93 Sandisk 120GB SSD [from Amazon warehouse deals] - optional could do it network bootable!!!</p>
 <p>4 x lenovo laptop chargin adapters (had old ones so didnt have top buy)</p>
 <p>3 x 1GB Ethernet over oneLink+ interface (7each)</p>
 <p>1 x 1GB Ethernet over OneLink+ dock station (I had old one)</p>
 <p>1 x used battery for master node (to secure etcd even better from power failure) £10</p>
 <p>1 x Server Case to pack it up 2U Short ATX Chassis - Low Profile PCI Card Support - 390mm Depth £47</p>
-<p>Overall : £489</p>
+<p>Overall for mine with i7: £489
+Alternative with i5: £329</p>
 <p>I had old intell skull i7 as my previous lab server so I have sold it for £400 so in the end by just adding 89 quid and week of work during evenings I had 4 nodes powerfull kubernetes
 cluster.</p>
 </div>
-<div class="section" id="problem-1-how-to-stack-them-on-each-other">
-<h3>Problem 1 - How to stack them on each other?</h3>
+<div class="section" id="problem-1-how-to-stack-it-on-each-other">
+<h3>Problem 1 - How to stack it on each other?</h3>
 <p>I had to find some way how to put the motherboards on each other safetly - fortunately I had ender3 3dprinter and bit of
 knowledge of 3d prototyping in blender so I have just designed simple pins on which I sould stack the motherboards.</p>
 <img alt="/images/IMG_20201013_144202.jpg" src="../images/IMG_20201013_144202.jpg"><img alt="/images/IMG_20201016_172922.jpg" src="../images/IMG_20201016_172922.jpg">
