@@ -49,6 +49,7 @@ actually on ebay there are i5 00JT371 i5-5200U for 50quid !! and it's the same n
 1 x Server Case to pack it up 2U Short ATX Chassis - Low Profile PCI Card Support - 390mm Depth £47
 
 Overall for mine with i7: £489 
+
 Alternative with i5: £329 
 
 I had old intell skull i7 as my previous lab server so I have sold it for £400 so in the end by just adding 89 quid and week of work during evenings I had 4 nodes powerfull kubernetes
