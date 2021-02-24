@@ -77,20 +77,28 @@ Solution 1 - BIOS Restore on AC Power loss - just pluggin in to power adapter sh
 Solution 2 - Add power button - unfortunatelly its almost impossibile to buy power button separately for this
 motherboard they are available on aliexpress for 17 quid which is ridiculous.
 
-I had found 1 button for 5 on ebay and have reverse engineered it.
+I have found 1 button for 5 on ebay and have reverse engineered it.
 
 So Laptop power on switch works bit different than I though its not working like in PC ATX switch just short circuiting
 2 cables - I had to check with multimeter whats happening on which pins of the port of power switch.
-It turned out its just adding 10kOhm resitance on button press. 
-I have just created my own buttons and added the
-resistors to each of them.
+It turned out its just adding 10Ohm resitance on button press. 
+I have just created my own buttons and added the resistors to each of them.
+
+Mind the power adapters are outside of the whole server case and even server cabinet - they warm up and generate extra
+heat so better to keep them out- the fans in cabinet will be more quiet then..
+
 
 .. image:: /images/IMG_20201114_160524.jpg
 .. image:: /images/IMG_20201107_23234122.jpg
+
+I forgot to make pic but I below the buttons there are 10 Ohm resistors soldered to one leg. 
+
 .. image:: /images/IMG_20201030_21072011.jpg
 
-I forgot to make pic but I below the buttons there are 10kOhm resistors soldered to one leg.
 
+So it's pin 1 and 3 (on the ribbon positioned like below) which needs to be applied with 10Ohm resistor.
+
+.. image:: /images/pins.jpg
 
 I had to do my own buttons too as case came with 2 buttons and 2 led diodes I just took off whole pcb and made my own
 with just buttons and printed out the plastic long buttons.
