@@ -43,7 +43,40 @@
 
     
 <div class="postindex">
-    <article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="posts/xrandr-tips.html" class="u-url">xrandr tips</a></h1>
+    <article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="posts/comodo-positive-ssl-sec_error_unknown_issuer-firefox.html" class="u-url">comodo-positive-ssl-sec_error_unknown_issuer-firefox</a></h1>
+        <div class="metadata">
+            <p class="dateline"><a href="posts/comodo-positive-ssl-sec_error_unknown_issuer-firefox.html" rel="bookmark"><i class="fa fa-clock"></i> <time class="published dt-published" datetime="2015-03-12T10:26:23Z" title="2015-03-12 10:26">2015-03-12 10:26</time></a></p>
+            <p class="byline author vcard"> <i class="fa fa-user"></i> <span class="byline-name fn" itemprop="author">
+                Greg Stencel
+            </span></p>
+                <p class="commentline"><i class="fa fa-comment"></i> 
+        
+    <a href="posts/comodo-positive-ssl-sec_error_unknown_issuer-firefox.html#disqus_thread" data-disqus-identifier="cache/posts/comodo-positive-ssl-sec_error_unknown_issuer-firefox.html">Comments</a>
+
+
+        </p>
+</div>
+    </header><div class="e-content entry-content">
+    <div>
+<p>Tempted by post on official google admins blog <a class="reference external" href="http://googlewebmastercentral.blogspot.co.uk/2014/08/https-as-ranking-signal.html">http://googlewebmastercentral.blogspot.co.uk/2014/08/https-as-ranking-signal.html</a>
+it's about higher ranking when having https. So I have recently bought cheap ssl certificate from known issuer COMODO
+and upgraded my server with it but it caused several problems when I redirected from 80 to 443 some 3rd party apps (like
+userena for django) created loops but I found solution quickly it was to put USERENA_USE_HTTPS=True in settings.py but
+it still sends more forgot password mails than it should but it's different story.</p>
+<p>Comming back to point if you are experiencing error "sec_error_unknown_issuer" in firefox
+after implementing COMODO Positive-SSL certificate this solution may help you.
+Don't know exactly but I read that it has something to do with chain certificates
+they should be bundled inside you website certificate.
+And remember you have to do it in right order because first one should be your servers certificate
+cause it's signed with key) and nginx or whatever you use may have problems after reloading service.</p>
+<p>My command for bundling was:</p>
+<p>cat exerceo_pl.crt COMODORSADomainValidationSecureServerCA.crt COMODORSAAddTrustCA.crt AddTrustExternalCARoot.crt &gt;
+exerceo_pl.bundled.crt
+after that I had just to point my nginx.conf to new bundled certificate.
+And after all reaload of nginx fixed my unknow issuer firefox problem.</p>
+</div>
+    </div>
+    </article><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="posts/xrandr-tips.html" class="u-url">xrandr tips</a></h1>
         <div class="metadata">
             <p class="dateline"><a href="posts/xrandr-tips.html" rel="bookmark"><i class="fa fa-clock"></i> <time class="published dt-published" datetime="2015-01-13T20:34:57Z" title="2015-01-13 20:34">2015-01-13 20:34</time></a></p>
             <p class="byline author vcard"> <i class="fa fa-user"></i> <span class="byline-name fn" itemprop="author">

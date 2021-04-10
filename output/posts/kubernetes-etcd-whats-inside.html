@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html prefix="        og: http://ogp.me/ns# article: http://ogp.me/ns/article#     " vocab="http://ogp.me/ns" lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+<title>Kubernetes etcd - what's inside? | Greg's Tech Notes</title>
+<link href="https://fonts.googleapis.com/css?family=Bitter:400,400i,700" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+<link href="../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../rss.xml">
+<link rel="canonical" href="https://stencel.io/posts/kubernetes-etcd-whats-inside.html">
+<!--[if lt IE 9]><script src="../assets/js/html5shiv-printshiv.min.js"></script><![endif]--><meta name="author" content="Greg Stencel">
+<link rel="prev" href="build-cheapest-kubernetes-i7-cluster.html" title="Build cheapest kubernetes i7 cluster" type="text/html">
+<meta property="og:site_name" content="Greg's Tech Notes">
+<meta property="og:title" content="Kubernetes etcd - what's inside?">
+<meta property="og:url" content="https://stencel.io/posts/kubernetes-etcd-whats-inside.html">
+<meta property="og:description" content="What's etcd and what part does it play in kubernetes?
+ETCD is an open source distributed key-value store. In kubernetes it is a &quot;single point of truth&quot; as well as &quot;single point of failure&quot;, it is the ">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2021-04-10T12:17:23Z">
+</head>
+<body>
+    <a href="#page-content" class="sr-only sr-only-focusable">Skip to main content</a>
+    
+    <section class="social"><ul>
+<li><p style="color:#fff;font-size:3em;">stencel.io</p></li>
+        <li><p style="color:#fff;font-size:2em;">greg's tech notes</p></li>
+            <li>
+                <a href="https://stencel.io/">
+                    <img src="../images/aboutme.png" alt="Greg's Tech Notes" id="logo"></a>
+            </li>
+        
+            <li><a href="../index.html" title="Home"><i class="fa fa-home"></i></a></li>
+            <li><a href="../archive.html" title="Archives"><i class="fa fa-folder-open"></i></a></li>
+            <li><a href="../categories/index.html" title="Tags"><i class="fa fa-tags"></i></a></li>
+            <li><a href="https://www.linkedin.com/in/gregstencel/" title="My Linkedin"><i class="fab fa-linkedin"></i></a></li>
+            <li><a href="https://github.com/greg4fun" title="My Github"><i class="fab fa-github"></i></a></li>
+    
+    
+
+        </ul></section><section class="page-content"><div class="content" rel="main">
+            
+<article class="post-text h-entry hentry postpage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="#" class="u-url">Kubernetes etcd - what's inside?</a></h1>
+
+        <div class="metadata">
+            <p class="dateline"><a href="#" rel="bookmark"><i class="fa fa-clock"></i> <time class="published dt-published" datetime="2021-04-10T12:17:23Z" itemprop="datePublished" title="2021-04-10 12:17">2021-04-10 12:17</time></a></p>
+            <p class="byline author vcard"> <i class="fa fa-user"></i> <span class="byline-name fn" itemprop="author">
+                    Greg Stencel
+            </span></p>
+                <p class="commentline"><i class="far fa-comment"></i>
+        
+    <a href="kubernetes-etcd-whats-inside.html#disqus_thread" data-disqus-identifier="cache/posts/kubernetes-etcd-whats-inside.html">Comments</a>
+
+
+            
+        </p>
+<p class="sourceline"><a href="kubernetes-etcd-whats-inside.rst" class="sourcelink"><i class="fa fa-file-code"></i> Source</a></p>
+
+            
+
+            
+
+        </div>
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+    <div>
+<div class="section" id="what-s-etcd-and-what-part-does-it-play-in-kubernetes">
+<h2>What's etcd and what part does it play in kubernetes?</h2>
+<p>ETCD is an open source distributed key-value store. In kubernetes it is a "single point of truth" as well as "single point of failure", it is the "definition of the cluster" as it holds it's configuration and status so it's best to have it replicated.</p>
+<p>There are of course alternatives like <a class="reference external" href="https://www.consul.io/">consul</a> , <a class="reference external" href="https://zookeeper.apache.org/">zookeeper</a> , <a class="reference external" href="https://github.com/ha/doozerd/">doozerd</a> , but I can't tell anything about them yet as haven't tried them (there are a lot of comparisons on the web already).</p>
+<p>I was always curious how it's structured, also it's good to know how it works from admin point of view this could help to simulate some etcd failure/corruption/snapshot and restore.</p>
+<p>To play with your etcd (remember you can destroy your cluster so just bear in mind to make read operations only and dont
+play with production one unless you know what you are doing).</p>
+<p>We can do it using etcdclient locally (described in the bottom ) or eve easier - through etcd pod.</p>
+</div>
+<div class="section" id="accessing-etcd-through-etcd-pod">
+<h2>Accessing etcd through etcd pod</h2>
+<pre class="code bash"><a name="rest_code_f38496c8a8d746bdbcc14817caec85de-1"></a>kubectl get pods -n kube-system -l <span class="nv">component</span><span class="o">=</span>etcd
+<a name="rest_code_f38496c8a8d746bdbcc14817caec85de-2"></a>
+<a name="rest_code_f38496c8a8d746bdbcc14817caec85de-3"></a>NAME                READY   STATUS    RESTARTS   AGE
+<a name="rest_code_f38496c8a8d746bdbcc14817caec85de-4"></a>etcd-lenovo-node1   <span class="m">1</span>/1     Running   <span class="m">0</span>          47d
+</pre>
+<p>I now know my etcd pods name is "etcd-lenovo-node1" so I can execute etcdctl on it now.</p>
+<p>Checking etcd instances</p>
+<pre class="code bash"><a name="rest_code_e96b71a220f7483fb74624dc2a45d0b5-1"></a>kubectl <span class="nb">exec</span> -it etcd-lenovo-node1 -n kube-system -- /bin/sh -c <span class="s2">"ETCDCTL_API=3 etcdctl \</span>
+<a name="rest_code_e96b71a220f7483fb74624dc2a45d0b5-2"></a><span class="s2">--endpoints=https://127.0.0.1:2379 \</span>
+<a name="rest_code_e96b71a220f7483fb74624dc2a45d0b5-3"></a><span class="s2">--cacert=/etc/kubernetes/pki/etcd/ca.crt \</span>
+<a name="rest_code_e96b71a220f7483fb74624dc2a45d0b5-4"></a><span class="s2">--cert=/etc/kubernetes/pki/etcd/server.crt \</span>
+<a name="rest_code_e96b71a220f7483fb74624dc2a45d0b5-5"></a><span class="s2">--key=/etc/kubernetes/pki/etcd/server.key \</span>
+<a name="rest_code_e96b71a220f7483fb74624dc2a45d0b5-6"></a><span class="s2">member list"</span>
+</pre>
+<p>For the reference we will get all keys:</p>
+<pre class="code bash"><a name="rest_code_c724a7bfe52e4f2e97447763660007ed-1"></a>kubectl <span class="nb">exec</span> -it etcd-lenovo-node1 -n kube-system -- /bin/sh -c <span class="s2">"ETCDCTL_API=3 etcdctl \</span>
+<a name="rest_code_c724a7bfe52e4f2e97447763660007ed-2"></a><span class="s2">--endpoints=https://127.0.0.1:2379 \</span>
+<a name="rest_code_c724a7bfe52e4f2e97447763660007ed-3"></a><span class="s2">--cacert=/etc/kubernetes/pki/etcd/ca.crt \</span>
+<a name="rest_code_c724a7bfe52e4f2e97447763660007ed-4"></a><span class="s2">--cert=/etc/kubernetes/pki/etcd/server.crt \</span>
+<a name="rest_code_c724a7bfe52e4f2e97447763660007ed-5"></a><span class="s2">--key=/etc/kubernetes/pki/etcd/server.key \</span>
+<a name="rest_code_c724a7bfe52e4f2e97447763660007ed-6"></a><span class="s2">get / --prefix --keys-only"</span>
+</pre>
+<p>Output:</p>
+<pre class="code yaml"><a name="rest_code_6cb74830316f412aa8617289a29f16a3-1"></a><span class="l l-Scalar l-Scalar-Plain">/calico/ipam/v2/assignment/ipv4/block/10.1.129.0-26</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-2"></a><span class="l l-Scalar l-Scalar-Plain">/calico/ipam/v2/assignment/ipv4/block/10.1.161.128-26</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-3"></a><span class="l l-Scalar l-Scalar-Plain">/calico/ipam/v2/assignment/ipv4/block/10.1.167.64-26</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-4"></a><span class="l l-Scalar l-Scalar-Plain">/calico/ipam/v2/assignment/ipv4/block/10.1.46.192-26</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-5"></a><span class="l l-Scalar l-Scalar-Plain">/calico/ipam/v2/handle/ipip-tunnel-addr-lenovo-master</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-6"></a><span class="l l-Scalar l-Scalar-Plain">/calico/ipam/v2/handle/ipip-tunnel-addr-lenovo-node1</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-7"></a><span class="l l-Scalar l-Scalar-Plain">/calico/ipam/v2/handle/ipip-tunnel-addr-lenovo-node2</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-8"></a><span class="l l-Scalar l-Scalar-Plain">/calico/ipam/v2/handle/ipip-tunnel-addr-lenovo-node3</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-9"></a><span class="l l-Scalar l-Scalar-Plain">/calico/ipam/v2/handle/k8s-pod-network.066670f1f4cbac2f254078fa523c2351ff43d43f37ef279d077ca9e537363367</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-10"></a><span class="l l-Scalar l-Scalar-Plain">/calico/ipam/v2/handle/k8s-pod-network.0854af62bdae13df75426ab9f0930045e527203c6a70863a1e6ac419dde92755</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-11"></a><span class="l l-Scalar l-Scalar-Plain">/calico/ipam/v2/handle/k8s-pod-network.2ea6c7186cce92fcf37c68cba1013975f8144a36c24580133cdae1d2a5c81824</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-12"></a><span class="l l-Scalar l-Scalar-Plain">/calico/ipam/v2/handle/k8s-pod-network.7b253e73a58302b7bd365f748085eddb7a88b73770f09981e4edcf743fca103e</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-13"></a><span class="l l-Scalar l-Scalar-Plain">/calico/ipam/v2/handle/k8s-pod-network.7d44b409803e0297e38af4571fda00f7f50858fcd6b51556f94ac08561f41415</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-14"></a><span class="l l-Scalar l-Scalar-Plain">/calico/ipam/v2/handle/k8s-pod-network.81ee68186cf6390521b6f7211804959de7dd61526b0fa50a62be68bdcdff3348</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-15"></a><span class="l l-Scalar l-Scalar-Plain">/calico/ipam/v2/handle/k8s-pod-network.81f75b846e0b01c2756c6de53cb5ede58dcd2f08cfc0fb82b44dbbc41cb3cd83</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-16"></a><span class="l l-Scalar l-Scalar-Plain">/calico/ipam/v2/handle/k8s-pod-network.84122c67c08645bcdc8e05024086caa16ec841018b01ed7f15bd29d837653d7f</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-17"></a><span class="l l-Scalar l-Scalar-Plain">/calico/ipam/v2/handle/k8s-pod-network.c5942bdcf48ee4971952d449db73e4130aa7f57719d48159611ba1591f2aa5e8</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-18"></a><span class="l l-Scalar l-Scalar-Plain">/calico/ipam/v2/handle/k8s-pod-network.de3addbfdb7c67b750b074a04d82753a3184d963255c349ed15a63597a6e7dd6</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-19"></a><span class="l l-Scalar l-Scalar-Plain">/calico/ipam/v2/host/lenovo-master/ipv4/block/10.1.46.192-26</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-20"></a><span class="l l-Scalar l-Scalar-Plain">/calico/ipam/v2/host/lenovo-node1/ipv4/block/10.1.161.128-26</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-21"></a><span class="l l-Scalar l-Scalar-Plain">/calico/ipam/v2/host/lenovo-node2/ipv4/block/10.1.167.64-26</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-22"></a><span class="l l-Scalar l-Scalar-Plain">/calico/ipam/v2/host/lenovo-node3/ipv4/block/10.1.129.0-26</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-23"></a><span class="l l-Scalar l-Scalar-Plain">/calico/resources/v3/projectcalico.org/clusterinformations/default</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-24"></a><span class="l l-Scalar l-Scalar-Plain">/calico/resources/v3/projectcalico.org/felixconfigurations/default</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-25"></a><span class="l l-Scalar l-Scalar-Plain">/calico/resources/v3/projectcalico.org/felixconfigurations/node.lenovo-master</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-26"></a><span class="l l-Scalar l-Scalar-Plain">/calico/resources/v3/projectcalico.org/felixconfigurations/node.lenovo-node1</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-27"></a><span class="l l-Scalar l-Scalar-Plain">/calico/resources/v3/projectcalico.org/felixconfigurations/node.lenovo-node2</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-28"></a><span class="l l-Scalar l-Scalar-Plain">/calico/resources/v3/projectcalico.org/felixconfigurations/node.lenovo-node3</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-29"></a><span class="l l-Scalar l-Scalar-Plain">/calico/resources/v3/projectcalico.org/ippools/default-ipv4-ippool</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-30"></a><span class="l l-Scalar l-Scalar-Plain">/calico/resources/v3/projectcalico.org/kubecontrollersconfigurations/default</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-31"></a><span class="l l-Scalar l-Scalar-Plain">/calico/resources/v3/projectcalico.org/nodes/lenovo-master</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-32"></a><span class="l l-Scalar l-Scalar-Plain">/calico/resources/v3/projectcalico.org/nodes/lenovo-node1</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-33"></a><span class="l l-Scalar l-Scalar-Plain">/calico/resources/v3/projectcalico.org/nodes/lenovo-node2</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-34"></a><span class="l l-Scalar l-Scalar-Plain">/calico/resources/v3/projectcalico.org/nodes/lenovo-node3</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-35"></a><span class="l l-Scalar l-Scalar-Plain">/calico/resources/v3/projectcalico.org/profiles/kns.default</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-36"></a><span class="l l-Scalar l-Scalar-Plain">/calico/resources/v3/projectcalico.org/profiles/kns.kube-node-lease</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-37"></a><span class="l l-Scalar l-Scalar-Plain">/calico/resources/v3/projectcalico.org/profiles/kns.kube-public</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-38"></a><span class="l l-Scalar l-Scalar-Plain">/calico/resources/v3/projectcalico.org/profiles/kns.kube-system</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-39"></a><span class="l l-Scalar l-Scalar-Plain">/calico/resources/v3/projectcalico.org/profiles/kns.metallb-system</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-40"></a><span class="l l-Scalar l-Scalar-Plain">/calico/resources/v3/projectcalico.org/profiles/kns.quota-mem-cpu</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-41"></a><span class="l l-Scalar l-Scalar-Plain">/calico/resources/v3/projectcalico.org/profiles/ksa.default.default</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-42"></a><span class="l l-Scalar l-Scalar-Plain">/calico/resources/v3/projectcalico.org/profiles/ksa.kube-node-lease.default</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-43"></a><span class="l l-Scalar l-Scalar-Plain">/calico/resources/v3/projectcalico.org/profiles/ksa.kube-public.default</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-44"></a><span class="l l-Scalar l-Scalar-Plain">/calico/resources/v3/projectcalico.org/profiles/ksa.kube-system.attachdetach-controller</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-45"></a><span class="l l-Scalar l-Scalar-Plain">/calico/resources/v3/projectcalico.org/profiles/ksa.kube-system.bootstrap-signer</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-46"></a><span class="l l-Scalar l-Scalar-Plain">/calico/resources/v3/projectcalico.org/profiles/ksa.kube-system.calico-kube-controllers</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-47"></a><span class="l l-Scalar l-Scalar-Plain">/calico/resources/v3/projectcalico.org/profiles/ksa.kube-system.calico-node</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-48"></a><span class="l l-Scalar l-Scalar-Plain">/calico/resources/v3/projectcalico.org/profiles/ksa.kube-system.certificate-controller</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-49"></a><span class="l l-Scalar l-Scalar-Plain">/calico/resources/v3/projectcalico.org/profiles/ksa.kube-system.clusterrole-aggregation-controller</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-50"></a><span class="l l-Scalar l-Scalar-Plain">/calico/resources/v3/projectcalico.org/profiles/ksa.kube-system.coredns</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-51"></a><span class="l l-Scalar l-Scalar-Plain">/calico/resources/v3/projectcalico.org/profiles/ksa.kube-system.cronjob-controller</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-52"></a><span class="l l-Scalar l-Scalar-Plain">/calico/resources/v3/projectcalico.org/profiles/ksa.kube-system.daemon-set-controller</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-53"></a><span class="l l-Scalar l-Scalar-Plain">/calico/resources/v3/projectcalico.org/profiles/ksa.kube-system.default</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-54"></a><span class="l l-Scalar l-Scalar-Plain">/calico/resources/v3/projectcalico.org/profiles/ksa.kube-system.deployment-controller</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-55"></a><span class="l l-Scalar l-Scalar-Plain">/calico/resources/v3/projectcalico.org/profiles/ksa.kube-system.disruption-controller</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-56"></a><span class="l l-Scalar l-Scalar-Plain">/calico/resources/v3/projectcalico.org/profiles/ksa.kube-system.endpoint-controller</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-57"></a><span class="l l-Scalar l-Scalar-Plain">/calico/resources/v3/projectcalico.org/profiles/ksa.kube-system.endpointslice-controller</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-58"></a><span class="l l-Scalar l-Scalar-Plain">/calico/resources/v3/projectcalico.org/profiles/ksa.kube-system.endpointslicemirroring-controller</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-59"></a><span class="l l-Scalar l-Scalar-Plain">/calico/resources/v3/projectcalico.org/profiles/ksa.kube-system.expand-controller</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-60"></a><span class="l l-Scalar l-Scalar-Plain">/calico/resources/v3/projectcalico.org/profiles/ksa.kube-system.generic-garbage-collector</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-61"></a><span class="l l-Scalar l-Scalar-Plain">/calico/resources/v3/projectcalico.org/profiles/ksa.kube-system.horizontal-pod-autoscaler</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-62"></a><span class="l l-Scalar l-Scalar-Plain">/calico/resources/v3/projectcalico.org/profiles/ksa.kube-system.job-controller</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-63"></a><span class="l l-Scalar l-Scalar-Plain">/calico/resources/v3/projectcalico.org/profiles/ksa.kube-system.kube-proxy</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-64"></a><span class="l l-Scalar l-Scalar-Plain">/calico/resources/v3/projectcalico.org/profiles/ksa.kube-system.metrics-server</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-65"></a><span class="l l-Scalar l-Scalar-Plain">/calico/resources/v3/projectcalico.org/profiles/ksa.kube-system.namespace-controller</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-66"></a><span class="l l-Scalar l-Scalar-Plain">/calico/resources/v3/projectcalico.org/profiles/ksa.kube-system.node-controller</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-67"></a><span class="l l-Scalar l-Scalar-Plain">/calico/resources/v3/projectcalico.org/profiles/ksa.kube-system.persistent-volume-binder</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-68"></a><span class="l l-Scalar l-Scalar-Plain">/calico/resources/v3/projectcalico.org/profiles/ksa.kube-system.pod-garbage-collector</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-69"></a><span class="l l-Scalar l-Scalar-Plain">/calico/resources/v3/projectcalico.org/profiles/ksa.kube-system.pv-protection-controller</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-70"></a><span class="l l-Scalar l-Scalar-Plain">/calico/resources/v3/projectcalico.org/profiles/ksa.kube-system.pvc-protection-controller</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-71"></a><span class="l l-Scalar l-Scalar-Plain">/calico/resources/v3/projectcalico.org/profiles/ksa.kube-system.replicaset-controller</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-72"></a><span class="l l-Scalar l-Scalar-Plain">/calico/resources/v3/projectcalico.org/profiles/ksa.kube-system.replication-controller</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-73"></a><span class="l l-Scalar l-Scalar-Plain">/calico/resources/v3/projectcalico.org/profiles/ksa.kube-system.resourcequota-controller</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-74"></a><span class="l l-Scalar l-Scalar-Plain">/calico/resources/v3/projectcalico.org/profiles/ksa.kube-system.root-ca-cert-publisher</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-75"></a><span class="l l-Scalar l-Scalar-Plain">/calico/resources/v3/projectcalico.org/profiles/ksa.kube-system.service-account-controller</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-76"></a><span class="l l-Scalar l-Scalar-Plain">/calico/resources/v3/projectcalico.org/profiles/ksa.kube-system.service-controller</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-77"></a><span class="l l-Scalar l-Scalar-Plain">/calico/resources/v3/projectcalico.org/profiles/ksa.kube-system.statefulset-controller</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-78"></a><span class="l l-Scalar l-Scalar-Plain">/calico/resources/v3/projectcalico.org/profiles/ksa.kube-system.token-cleaner</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-79"></a><span class="l l-Scalar l-Scalar-Plain">/calico/resources/v3/projectcalico.org/profiles/ksa.kube-system.ttl-controller</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-80"></a><span class="l l-Scalar l-Scalar-Plain">/calico/resources/v3/projectcalico.org/profiles/ksa.metallb-system.controller</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-81"></a><span class="l l-Scalar l-Scalar-Plain">/calico/resources/v3/projectcalico.org/profiles/ksa.metallb-system.default</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-82"></a><span class="l l-Scalar l-Scalar-Plain">/calico/resources/v3/projectcalico.org/profiles/ksa.metallb-system.speaker</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-83"></a><span class="l l-Scalar l-Scalar-Plain">/calico/resources/v3/projectcalico.org/workloadendpoints/default/lenovo--master-k8s-nginx--hpa--6c4758554f--99h7l-eth0</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-84"></a><span class="l l-Scalar l-Scalar-Plain">/calico/resources/v3/projectcalico.org/workloadendpoints/default/lenovo--master-k8s-nginx--hpa--6c4758554f--tqrp9-eth0</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-85"></a><span class="l l-Scalar l-Scalar-Plain">/calico/resources/v3/projectcalico.org/workloadendpoints/default/lenovo--master-k8s-nginx--hpa--6c4758554f--zf4rd-eth0</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-86"></a><span class="l l-Scalar l-Scalar-Plain">/calico/resources/v3/projectcalico.org/workloadendpoints/default/lenovo--node2-k8s-ng-eth0</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-87"></a><span class="l l-Scalar l-Scalar-Plain">/calico/resources/v3/projectcalico.org/workloadendpoints/default/lenovo--node2-k8s-nginx--b4c9f744d--6fqjs-eth0</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-88"></a><span class="l l-Scalar l-Scalar-Plain">/calico/resources/v3/projectcalico.org/workloadendpoints/default/lenovo--node2-k8s-nginx--b4c9f744d--hvdsh-eth0</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-89"></a><span class="l l-Scalar l-Scalar-Plain">/calico/resources/v3/projectcalico.org/workloadendpoints/kube-system/lenovo--master-k8s-metrics--server--666b5bc478--8624s-eth0</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-90"></a><span class="l l-Scalar l-Scalar-Plain">/calico/resources/v3/projectcalico.org/workloadendpoints/kube-system/lenovo--node1-k8s-coredns--74ff55c5b--n942q-eth0</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-91"></a><span class="l l-Scalar l-Scalar-Plain">/calico/resources/v3/projectcalico.org/workloadendpoints/kube-system/lenovo--node1-k8s-coredns--74ff55c5b--vnm7t-eth0</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-92"></a><span class="l l-Scalar l-Scalar-Plain">/calico/resources/v3/projectcalico.org/workloadendpoints/metallb-system/lenovo--node3-k8s-controller--65db86ddc6--q6zvx-eth0</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-93"></a><span class="l l-Scalar l-Scalar-Plain">/registry/apiregistration.k8s.io/apiservices/v1.</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-94"></a><span class="l l-Scalar l-Scalar-Plain">/registry/apiregistration.k8s.io/apiservices/v1.admissionregistration.k8s.io</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-95"></a><span class="l l-Scalar l-Scalar-Plain">/registry/apiregistration.k8s.io/apiservices/v1.apiextensions.k8s.io</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-96"></a><span class="l l-Scalar l-Scalar-Plain">/registry/apiregistration.k8s.io/apiservices/v1.apps</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-97"></a><span class="l l-Scalar l-Scalar-Plain">/registry/apiregistration.k8s.io/apiservices/v1.authentication.k8s.io</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-98"></a><span class="l l-Scalar l-Scalar-Plain">/registry/apiregistration.k8s.io/apiservices/v1.authorization.k8s.io</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-99"></a><span class="l l-Scalar l-Scalar-Plain">/registry/apiregistration.k8s.io/apiservices/v1.autoscaling</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-100"></a><span class="l l-Scalar l-Scalar-Plain">/registry/apiregistration.k8s.io/apiservices/v1.batch</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-101"></a><span class="l l-Scalar l-Scalar-Plain">/registry/apiregistration.k8s.io/apiservices/v1.certificates.k8s.io</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-102"></a><span class="l l-Scalar l-Scalar-Plain">/registry/apiregistration.k8s.io/apiservices/v1.coordination.k8s.io</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-103"></a><span class="l l-Scalar l-Scalar-Plain">/registry/apiregistration.k8s.io/apiservices/v1.events.k8s.io</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-104"></a><span class="l l-Scalar l-Scalar-Plain">/registry/apiregistration.k8s.io/apiservices/v1.networking.k8s.io</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-105"></a><span class="l l-Scalar l-Scalar-Plain">/registry/apiregistration.k8s.io/apiservices/v1.node.k8s.io</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-106"></a><span class="l l-Scalar l-Scalar-Plain">/registry/apiregistration.k8s.io/apiservices/v1.rbac.authorization.k8s.io</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-107"></a><span class="l l-Scalar l-Scalar-Plain">/registry/apiregistration.k8s.io/apiservices/v1.scheduling.k8s.io</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-108"></a><span class="l l-Scalar l-Scalar-Plain">/registry/apiregistration.k8s.io/apiservices/v1.storage.k8s.io</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-109"></a><span class="l l-Scalar l-Scalar-Plain">/registry/apiregistration.k8s.io/apiservices/v1beta1.admissionregistration.k8s.io</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-110"></a><span class="l l-Scalar l-Scalar-Plain">/registry/apiregistration.k8s.io/apiservices/v1beta1.apiextensions.k8s.io</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-111"></a><span class="l l-Scalar l-Scalar-Plain">/registry/apiregistration.k8s.io/apiservices/v1beta1.authentication.k8s.io</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-112"></a><span class="l l-Scalar l-Scalar-Plain">/registry/apiregistration.k8s.io/apiservices/v1beta1.authorization.k8s.io</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-113"></a><span class="l l-Scalar l-Scalar-Plain">/registry/apiregistration.k8s.io/apiservices/v1beta1.batch</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-114"></a><span class="l l-Scalar l-Scalar-Plain">/registry/apiregistration.k8s.io/apiservices/v1beta1.certificates.k8s.io</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-115"></a><span class="l l-Scalar l-Scalar-Plain">/registry/apiregistration.k8s.io/apiservices/v1beta1.coordination.k8s.io</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-116"></a><span class="l l-Scalar l-Scalar-Plain">/registry/apiregistration.k8s.io/apiservices/v1beta1.discovery.k8s.io</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-117"></a><span class="l l-Scalar l-Scalar-Plain">/registry/apiregistration.k8s.io/apiservices/v1beta1.events.k8s.io</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-118"></a><span class="l l-Scalar l-Scalar-Plain">/registry/apiregistration.k8s.io/apiservices/v1beta1.extensions</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-119"></a><span class="l l-Scalar l-Scalar-Plain">/registry/apiregistration.k8s.io/apiservices/v1beta1.flowcontrol.apiserver.k8s.io</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-120"></a><span class="l l-Scalar l-Scalar-Plain">/registry/apiregistration.k8s.io/apiservices/v1beta1.metrics.k8s.io</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-121"></a><span class="l l-Scalar l-Scalar-Plain">/registry/apiregistration.k8s.io/apiservices/v1beta1.networking.k8s.io</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-122"></a><span class="l l-Scalar l-Scalar-Plain">/registry/apiregistration.k8s.io/apiservices/v1beta1.node.k8s.io</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-123"></a><span class="l l-Scalar l-Scalar-Plain">/registry/apiregistration.k8s.io/apiservices/v1beta1.policy</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-124"></a><span class="l l-Scalar l-Scalar-Plain">/registry/apiregistration.k8s.io/apiservices/v1beta1.rbac.authorization.k8s.io</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-125"></a><span class="l l-Scalar l-Scalar-Plain">/registry/apiregistration.k8s.io/apiservices/v1beta1.scheduling.k8s.io</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-126"></a><span class="l l-Scalar l-Scalar-Plain">/registry/apiregistration.k8s.io/apiservices/v1beta1.storage.k8s.io</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-127"></a><span class="l l-Scalar l-Scalar-Plain">/registry/apiregistration.k8s.io/apiservices/v2beta1.autoscaling</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-128"></a><span class="l l-Scalar l-Scalar-Plain">/registry/apiregistration.k8s.io/apiservices/v2beta2.autoscaling</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-129"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterrolebindings/calico-kube-controllers</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-130"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterrolebindings/calico-node</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-131"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterrolebindings/cluster-admin</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-132"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterrolebindings/kubeadm:get-nodes</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-133"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterrolebindings/kubeadm:kubelet-bootstrap</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-134"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterrolebindings/kubeadm:node-autoapprove-bootstrap</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-135"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterrolebindings/kubeadm:node-autoapprove-certificate-rotation</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-136"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterrolebindings/kubeadm:node-proxier</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-137"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterrolebindings/metallb-system:controller</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-138"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterrolebindings/metallb-system:speaker</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-139"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterrolebindings/metrics-server:system:auth-delegator</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-140"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterrolebindings/system:basic-user</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-141"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterrolebindings/system:controller:attachdetach-controller</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-142"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterrolebindings/system:controller:certificate-controller</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-143"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterrolebindings/system:controller:clusterrole-aggregation-controller</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-144"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterrolebindings/system:controller:cronjob-controller</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-145"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterrolebindings/system:controller:daemon-set-controller</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-146"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterrolebindings/system:controller:deployment-controller</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-147"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterrolebindings/system:controller:disruption-controller</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-148"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterrolebindings/system:controller:endpoint-controller</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-149"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterrolebindings/system:controller:endpointslice-controller</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-150"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterrolebindings/system:controller:endpointslicemirroring-controller</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-151"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterrolebindings/system:controller:expand-controller</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-152"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterrolebindings/system:controller:generic-garbage-collector</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-153"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterrolebindings/system:controller:horizontal-pod-autoscaler</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-154"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterrolebindings/system:controller:job-controller</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-155"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterrolebindings/system:controller:namespace-controller</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-156"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterrolebindings/system:controller:node-controller</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-157"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterrolebindings/system:controller:persistent-volume-binder</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-158"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterrolebindings/system:controller:pod-garbage-collector</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-159"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterrolebindings/system:controller:pv-protection-controller</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-160"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterrolebindings/system:controller:pvc-protection-controller</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-161"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterrolebindings/system:controller:replicaset-controller</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-162"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterrolebindings/system:controller:replication-controller</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-163"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterrolebindings/system:controller:resourcequota-controller</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-164"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterrolebindings/system:controller:root-ca-cert-publisher</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-165"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterrolebindings/system:controller:route-controller</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-166"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterrolebindings/system:controller:service-account-controller</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-167"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterrolebindings/system:controller:service-controller</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-168"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterrolebindings/system:controller:statefulset-controller</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-169"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterrolebindings/system:controller:ttl-controller</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-170"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterrolebindings/system:coredns</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-171"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterrolebindings/system:discovery</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-172"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterrolebindings/system:kube-controller-manager</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-173"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterrolebindings/system:kube-dns</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-174"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterrolebindings/system:kube-scheduler</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-175"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterrolebindings/system:metrics-server</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-176"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterrolebindings/system:monitoring</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-177"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterrolebindings/system:node</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-178"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterrolebindings/system:node-proxier</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-179"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterrolebindings/system:public-info-viewer</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-180"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterrolebindings/system:service-account-issuer-discovery</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-181"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterrolebindings/system:volume-scheduler</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-182"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterroles/admin</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-183"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterroles/calico-kube-controllers</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-184"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterroles/calico-node</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-185"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterroles/cluster-admin</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-186"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterroles/edit</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-187"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterroles/kubeadm:get-nodes</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-188"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterroles/metallb-system:controller</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-189"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterroles/metallb-system:speaker</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-190"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterroles/system:aggregate-to-admin</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-191"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterroles/system:aggregate-to-edit</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-192"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterroles/system:aggregate-to-view</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-193"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterroles/system:aggregated-metrics-reader</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-194"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterroles/system:auth-delegator</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-195"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterroles/system:basic-user</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-196"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterroles/system:certificates.k8s.io:certificatesigningrequests:nodeclient</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-197"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterroles/system:certificates.k8s.io:certificatesigningrequests:selfnodeclient</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-198"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterroles/system:certificates.k8s.io:kube-apiserver-client-approver</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-199"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterroles/system:certificates.k8s.io:kube-apiserver-client-kubelet-approver</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-200"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterroles/system:certificates.k8s.io:kubelet-serving-approver</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-201"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterroles/system:certificates.k8s.io:legacy-unknown-approver</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-202"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterroles/system:controller:attachdetach-controller</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-203"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterroles/system:controller:certificate-controller</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-204"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterroles/system:controller:clusterrole-aggregation-controller</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-205"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterroles/system:controller:cronjob-controller</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-206"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterroles/system:controller:daemon-set-controller</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-207"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterroles/system:controller:deployment-controller</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-208"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterroles/system:controller:disruption-controller</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-209"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterroles/system:controller:endpoint-controller</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-210"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterroles/system:controller:endpointslice-controller</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-211"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterroles/system:controller:endpointslicemirroring-controller</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-212"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterroles/system:controller:expand-controller</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-213"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterroles/system:controller:generic-garbage-collector</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-214"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterroles/system:controller:horizontal-pod-autoscaler</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-215"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterroles/system:controller:job-controller</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-216"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterroles/system:controller:namespace-controller</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-217"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterroles/system:controller:node-controller</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-218"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterroles/system:controller:persistent-volume-binder</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-219"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterroles/system:controller:pod-garbage-collector</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-220"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterroles/system:controller:pv-protection-controller</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-221"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterroles/system:controller:pvc-protection-controller</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-222"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterroles/system:controller:replicaset-controller</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-223"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterroles/system:controller:replication-controller</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-224"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterroles/system:controller:resourcequota-controller</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-225"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterroles/system:controller:root-ca-cert-publisher</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-226"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterroles/system:controller:route-controller</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-227"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterroles/system:controller:service-account-controller</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-228"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterroles/system:controller:service-controller</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-229"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterroles/system:controller:statefulset-controller</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-230"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterroles/system:controller:ttl-controller</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-231"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterroles/system:coredns</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-232"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterroles/system:discovery</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-233"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterroles/system:heapster</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-234"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterroles/system:kube-aggregator</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-235"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterroles/system:kube-controller-manager</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-236"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterroles/system:kube-dns</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-237"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterroles/system:kube-scheduler</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-238"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterroles/system:kubelet-api-admin</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-239"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterroles/system:metrics-server</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-240"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterroles/system:monitoring</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-241"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterroles/system:node</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-242"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterroles/system:node-bootstrapper</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-243"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterroles/system:node-problem-detector</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-244"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterroles/system:node-proxier</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-245"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterroles/system:persistent-volume-provisioner</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-246"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterroles/system:public-info-viewer</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-247"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterroles/system:service-account-issuer-discovery</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-248"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterroles/system:volume-scheduler</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-249"></a><span class="l l-Scalar l-Scalar-Plain">/registry/clusterroles/view</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-250"></a><span class="l l-Scalar l-Scalar-Plain">/registry/configmaps/default/cfindex</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-251"></a><span class="l l-Scalar l-Scalar-Plain">/registry/configmaps/default/kube-root-ca.crt</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-252"></a><span class="l l-Scalar l-Scalar-Plain">/registry/configmaps/kube-node-lease/kube-root-ca.crt</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-253"></a><span class="l l-Scalar l-Scalar-Plain">/registry/configmaps/kube-public/cluster-info</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-254"></a><span class="l l-Scalar l-Scalar-Plain">/registry/configmaps/kube-public/kube-root-ca.crt</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-255"></a><span class="l l-Scalar l-Scalar-Plain">/registry/configmaps/kube-system/calico-config</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-256"></a><span class="l l-Scalar l-Scalar-Plain">/registry/configmaps/kube-system/coredns</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-257"></a><span class="l l-Scalar l-Scalar-Plain">/registry/configmaps/kube-system/extension-apiserver-authentication</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-258"></a><span class="l l-Scalar l-Scalar-Plain">/registry/configmaps/kube-system/kube-proxy</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-259"></a><span class="l l-Scalar l-Scalar-Plain">/registry/configmaps/kube-system/kube-root-ca.crt</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-260"></a><span class="l l-Scalar l-Scalar-Plain">/registry/configmaps/kube-system/kubeadm-config</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-261"></a><span class="l l-Scalar l-Scalar-Plain">/registry/configmaps/kube-system/kubelet-config-1.20</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-262"></a><span class="l l-Scalar l-Scalar-Plain">/registry/configmaps/metallb-system/kube-root-ca.crt</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-263"></a><span class="l l-Scalar l-Scalar-Plain">/registry/controllerrevisions/kube-system/calico-node-849b8dc6bf</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-264"></a><span class="l l-Scalar l-Scalar-Plain">/registry/controllerrevisions/kube-system/kube-proxy-9978ddf98</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-265"></a><span class="l l-Scalar l-Scalar-Plain">/registry/controllerrevisions/metallb-system/speaker-55466f8f44</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-266"></a><span class="l l-Scalar l-Scalar-Plain">/registry/csinodes/lenovo-master</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-267"></a><span class="l l-Scalar l-Scalar-Plain">/registry/csinodes/lenovo-node1</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-268"></a><span class="l l-Scalar l-Scalar-Plain">/registry/csinodes/lenovo-node2</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-269"></a><span class="l l-Scalar l-Scalar-Plain">/registry/csinodes/lenovo-node3</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-270"></a><span class="l l-Scalar l-Scalar-Plain">/registry/daemonsets/kube-system/calico-node</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-271"></a><span class="l l-Scalar l-Scalar-Plain">/registry/daemonsets/kube-system/kube-proxy</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-272"></a><span class="l l-Scalar l-Scalar-Plain">/registry/daemonsets/metallb-system/speaker</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-273"></a><span class="l l-Scalar l-Scalar-Plain">/registry/deployments/default/nginx</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-274"></a><span class="l l-Scalar l-Scalar-Plain">/registry/deployments/kube-system/calico-kube-controllers</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-275"></a><span class="l l-Scalar l-Scalar-Plain">/registry/deployments/kube-system/coredns</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-276"></a><span class="l l-Scalar l-Scalar-Plain">/registry/deployments/kube-system/metrics-server</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-277"></a><span class="l l-Scalar l-Scalar-Plain">/registry/deployments/metallb-system/controller</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-278"></a><span class="l l-Scalar l-Scalar-Plain">/registry/endpointslices/default/kubernetes</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-279"></a><span class="l l-Scalar l-Scalar-Plain">/registry/endpointslices/default/nginx-gr59r</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-280"></a><span class="l l-Scalar l-Scalar-Plain">/registry/endpointslices/default/ngnix-service-sffvv</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-281"></a><span class="l l-Scalar l-Scalar-Plain">/registry/endpointslices/default/test1-fv4vr</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-282"></a><span class="l l-Scalar l-Scalar-Plain">/registry/endpointslices/kube-system/kube-dns-hjqkv</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-283"></a><span class="l l-Scalar l-Scalar-Plain">/registry/endpointslices/kube-system/kubelet-2fkdq</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-284"></a><span class="l l-Scalar l-Scalar-Plain">/registry/endpointslices/kube-system/metrics-server-j47kl</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-285"></a><span class="l l-Scalar l-Scalar-Plain">/registry/flowschemas/catch-all</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-286"></a><span class="l l-Scalar l-Scalar-Plain">/registry/flowschemas/exempt</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-287"></a><span class="l l-Scalar l-Scalar-Plain">/registry/flowschemas/global-default</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-288"></a><span class="l l-Scalar l-Scalar-Plain">/registry/flowschemas/kube-controller-manager</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-289"></a><span class="l l-Scalar l-Scalar-Plain">/registry/flowschemas/kube-scheduler</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-290"></a><span class="l l-Scalar l-Scalar-Plain">/registry/flowschemas/kube-system-service-accounts</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-291"></a><span class="l l-Scalar l-Scalar-Plain">/registry/flowschemas/service-accounts</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-292"></a><span class="l l-Scalar l-Scalar-Plain">/registry/flowschemas/system-leader-election</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-293"></a><span class="l l-Scalar l-Scalar-Plain">/registry/flowschemas/system-nodes</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-294"></a><span class="l l-Scalar l-Scalar-Plain">/registry/flowschemas/workload-leader-election</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-295"></a><span class="l l-Scalar l-Scalar-Plain">/registry/leases/kube-node-lease/lenovo-master</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-296"></a><span class="l l-Scalar l-Scalar-Plain">/registry/leases/kube-node-lease/lenovo-node1</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-297"></a><span class="l l-Scalar l-Scalar-Plain">/registry/leases/kube-node-lease/lenovo-node2</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-298"></a><span class="l l-Scalar l-Scalar-Plain">/registry/leases/kube-node-lease/lenovo-node3</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-299"></a><span class="l l-Scalar l-Scalar-Plain">/registry/leases/kube-system/kube-controller-manager</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-300"></a><span class="l l-Scalar l-Scalar-Plain">/registry/leases/kube-system/kube-scheduler</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-301"></a><span class="l l-Scalar l-Scalar-Plain">/registry/masterleases/192.168.1.131</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-302"></a><span class="l l-Scalar l-Scalar-Plain">/registry/minions/lenovo-master</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-303"></a><span class="l l-Scalar l-Scalar-Plain">/registry/minions/lenovo-node1</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-304"></a><span class="l l-Scalar l-Scalar-Plain">/registry/minions/lenovo-node2</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-305"></a><span class="l l-Scalar l-Scalar-Plain">/registry/minions/lenovo-node3</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-306"></a><span class="l l-Scalar l-Scalar-Plain">/registry/namespaces/default</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-307"></a><span class="l l-Scalar l-Scalar-Plain">/registry/namespaces/kube-node-lease</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-308"></a><span class="l l-Scalar l-Scalar-Plain">/registry/namespaces/kube-public</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-309"></a><span class="l l-Scalar l-Scalar-Plain">/registry/namespaces/kube-system</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-310"></a><span class="l l-Scalar l-Scalar-Plain">/registry/namespaces/metallb-system</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-311"></a><span class="l l-Scalar l-Scalar-Plain">/registry/namespaces/quota-mem-cpu</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-312"></a><span class="l l-Scalar l-Scalar-Plain">/registry/poddisruptionbudgets/kube-system/calico-kube-controllers</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-313"></a><span class="l l-Scalar l-Scalar-Plain">/registry/pods/default/ng</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-314"></a><span class="l l-Scalar l-Scalar-Plain">/registry/pods/default/nginx-b4c9f744d-6fqjs</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-315"></a><span class="l l-Scalar l-Scalar-Plain">/registry/pods/default/nginx-b4c9f744d-hvdsh</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-316"></a><span class="l l-Scalar l-Scalar-Plain">/registry/pods/default/nginx-hpa-6c4758554f-99h7l</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-317"></a><span class="l l-Scalar l-Scalar-Plain">/registry/pods/default/nginx-hpa-6c4758554f-tqrp9</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-318"></a><span class="l l-Scalar l-Scalar-Plain">/registry/pods/default/nginx-hpa-6c4758554f-zf4rd</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-319"></a><span class="l l-Scalar l-Scalar-Plain">/registry/pods/kube-system/calico-kube-controllers-664b5654ff-lmfjw</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-320"></a><span class="l l-Scalar l-Scalar-Plain">/registry/pods/kube-system/calico-node-6vtln</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-321"></a><span class="l l-Scalar l-Scalar-Plain">/registry/pods/kube-system/calico-node-9psrj</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-322"></a><span class="l l-Scalar l-Scalar-Plain">/registry/pods/kube-system/calico-node-n64kf</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-323"></a><span class="l l-Scalar l-Scalar-Plain">/registry/pods/kube-system/calico-node-s4gnp</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-324"></a><span class="l l-Scalar l-Scalar-Plain">/registry/pods/kube-system/coredns-74ff55c5b-n942q</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-325"></a><span class="l l-Scalar l-Scalar-Plain">/registry/pods/kube-system/coredns-74ff55c5b-vnm7t</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-326"></a><span class="l l-Scalar l-Scalar-Plain">/registry/pods/kube-system/etcd-lenovo-node1</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-327"></a><span class="l l-Scalar l-Scalar-Plain">/registry/pods/kube-system/kube-apiserver-lenovo-node1</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-328"></a><span class="l l-Scalar l-Scalar-Plain">/registry/pods/kube-system/kube-controller-manager-lenovo-node1</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-329"></a><span class="l l-Scalar l-Scalar-Plain">/registry/pods/kube-system/kube-proxy-dxtr2</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-330"></a><span class="l l-Scalar l-Scalar-Plain">/registry/pods/kube-system/kube-proxy-r7jpl</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-331"></a><span class="l l-Scalar l-Scalar-Plain">/registry/pods/kube-system/kube-proxy-sb4b6</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-332"></a><span class="l l-Scalar l-Scalar-Plain">/registry/pods/kube-system/kube-proxy-v9xck</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-333"></a><span class="l l-Scalar l-Scalar-Plain">/registry/pods/kube-system/kube-scheduler-lenovo-node1</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-334"></a><span class="l l-Scalar l-Scalar-Plain">/registry/pods/kube-system/metrics-server-666b5bc478-8624s</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-335"></a><span class="l l-Scalar l-Scalar-Plain">/registry/pods/metallb-system/controller-65db86ddc6-q6zvx</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-336"></a><span class="l l-Scalar l-Scalar-Plain">/registry/pods/metallb-system/speaker-6mzwx</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-337"></a><span class="l l-Scalar l-Scalar-Plain">/registry/pods/metallb-system/speaker-btrtz</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-338"></a><span class="l l-Scalar l-Scalar-Plain">/registry/pods/metallb-system/speaker-pxf28</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-339"></a><span class="l l-Scalar l-Scalar-Plain">/registry/podsecuritypolicy/controller</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-340"></a><span class="l l-Scalar l-Scalar-Plain">/registry/podsecuritypolicy/speaker</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-341"></a><span class="l l-Scalar l-Scalar-Plain">/registry/priorityclasses/system-cluster-critical</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-342"></a><span class="l l-Scalar l-Scalar-Plain">/registry/priorityclasses/system-node-critical</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-343"></a><span class="l l-Scalar l-Scalar-Plain">/registry/prioritylevelconfigurations/catch-all</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-344"></a><span class="l l-Scalar l-Scalar-Plain">/registry/prioritylevelconfigurations/exempt</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-345"></a><span class="l l-Scalar l-Scalar-Plain">/registry/prioritylevelconfigurations/global-default</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-346"></a><span class="l l-Scalar l-Scalar-Plain">/registry/prioritylevelconfigurations/leader-election</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-347"></a><span class="l l-Scalar l-Scalar-Plain">/registry/prioritylevelconfigurations/system</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-348"></a><span class="l l-Scalar l-Scalar-Plain">/registry/prioritylevelconfigurations/workload-high</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-349"></a><span class="l l-Scalar l-Scalar-Plain">/registry/prioritylevelconfigurations/workload-low</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-350"></a><span class="l l-Scalar l-Scalar-Plain">/registry/ranges/serviceips</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-351"></a><span class="l l-Scalar l-Scalar-Plain">/registry/ranges/servicenodeports</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-352"></a><span class="l l-Scalar l-Scalar-Plain">/registry/replicasets/default/nginx-6799fc88d8</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-353"></a><span class="l l-Scalar l-Scalar-Plain">/registry/replicasets/default/nginx-6c54d6848f</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-354"></a><span class="l l-Scalar l-Scalar-Plain">/registry/replicasets/default/nginx-b4c9f744d</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-355"></a><span class="l l-Scalar l-Scalar-Plain">/registry/replicasets/kube-system/calico-kube-controllers-664b5654ff</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-356"></a><span class="l l-Scalar l-Scalar-Plain">/registry/replicasets/kube-system/coredns-74ff55c5b</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-357"></a><span class="l l-Scalar l-Scalar-Plain">/registry/replicasets/kube-system/metrics-server-666b5bc478</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-358"></a><span class="l l-Scalar l-Scalar-Plain">/registry/replicasets/metallb-system/controller-65db86ddc6</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-359"></a><span class="l l-Scalar l-Scalar-Plain">/registry/rolebindings/kube-public/kubeadm:bootstrap-signer-clusterinfo</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-360"></a><span class="l l-Scalar l-Scalar-Plain">/registry/rolebindings/kube-public/system:controller:bootstrap-signer</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-361"></a><span class="l l-Scalar l-Scalar-Plain">/registry/rolebindings/kube-system/kube-proxy</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-362"></a><span class="l l-Scalar l-Scalar-Plain">/registry/rolebindings/kube-system/kubeadm:kubelet-config-1.20</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-363"></a><span class="l l-Scalar l-Scalar-Plain">/registry/rolebindings/kube-system/kubeadm:nodes-kubeadm-config</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-364"></a><span class="l l-Scalar l-Scalar-Plain">/registry/rolebindings/kube-system/metrics-server-auth-reader</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-365"></a><span class="l l-Scalar l-Scalar-Plain">/registry/rolebindings/kube-system/system::extension-apiserver-authentication-reader</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-366"></a><span class="l l-Scalar l-Scalar-Plain">/registry/rolebindings/kube-system/system::leader-locking-kube-controller-manager</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-367"></a><span class="l l-Scalar l-Scalar-Plain">/registry/rolebindings/kube-system/system::leader-locking-kube-scheduler</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-368"></a><span class="l l-Scalar l-Scalar-Plain">/registry/rolebindings/kube-system/system:controller:bootstrap-signer</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-369"></a><span class="l l-Scalar l-Scalar-Plain">/registry/rolebindings/kube-system/system:controller:cloud-provider</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-370"></a><span class="l l-Scalar l-Scalar-Plain">/registry/rolebindings/kube-system/system:controller:token-cleaner</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-371"></a><span class="l l-Scalar l-Scalar-Plain">/registry/rolebindings/metallb-system/config-watcher</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-372"></a><span class="l l-Scalar l-Scalar-Plain">/registry/rolebindings/metallb-system/pod-lister</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-373"></a><span class="l l-Scalar l-Scalar-Plain">/registry/roles/kube-public/kubeadm:bootstrap-signer-clusterinfo</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-374"></a><span class="l l-Scalar l-Scalar-Plain">/registry/roles/kube-public/system:controller:bootstrap-signer</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-375"></a><span class="l l-Scalar l-Scalar-Plain">/registry/roles/kube-system/extension-apiserver-authentication-reader</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-376"></a><span class="l l-Scalar l-Scalar-Plain">/registry/roles/kube-system/kube-proxy</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-377"></a><span class="l l-Scalar l-Scalar-Plain">/registry/roles/kube-system/kubeadm:kubelet-config-1.20</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-378"></a><span class="l l-Scalar l-Scalar-Plain">/registry/roles/kube-system/kubeadm:nodes-kubeadm-config</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-379"></a><span class="l l-Scalar l-Scalar-Plain">/registry/roles/kube-system/system::leader-locking-kube-controller-manager</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-380"></a><span class="l l-Scalar l-Scalar-Plain">/registry/roles/kube-system/system::leader-locking-kube-scheduler</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-381"></a><span class="l l-Scalar l-Scalar-Plain">/registry/roles/kube-system/system:controller:bootstrap-signer</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-382"></a><span class="l l-Scalar l-Scalar-Plain">/registry/roles/kube-system/system:controller:cloud-provider</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-383"></a><span class="l l-Scalar l-Scalar-Plain">/registry/roles/kube-system/system:controller:token-cleaner</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-384"></a><span class="l l-Scalar l-Scalar-Plain">/registry/roles/metallb-system/config-watcher</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-385"></a><span class="l l-Scalar l-Scalar-Plain">/registry/roles/metallb-system/pod-lister</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-386"></a><span class="l l-Scalar l-Scalar-Plain">/registry/secrets/default/default-token-qknwm</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-387"></a><span class="l l-Scalar l-Scalar-Plain">/registry/secrets/kube-node-lease/default-token-xhxwz</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-388"></a><span class="l l-Scalar l-Scalar-Plain">/registry/secrets/kube-public/default-token-767ld</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-389"></a><span class="l l-Scalar l-Scalar-Plain">/registry/secrets/kube-system/attachdetach-controller-token-rm5kc</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-390"></a><span class="l l-Scalar l-Scalar-Plain">/registry/secrets/kube-system/bootstrap-signer-token-fwnzd</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-391"></a><span class="l l-Scalar l-Scalar-Plain">/registry/secrets/kube-system/calico-etcd-secrets</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-392"></a><span class="l l-Scalar l-Scalar-Plain">/registry/secrets/kube-system/calico-kube-controllers-token-h4trc</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-393"></a><span class="l l-Scalar l-Scalar-Plain">/registry/secrets/kube-system/calico-node-token-js7t8</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-394"></a><span class="l l-Scalar l-Scalar-Plain">/registry/secrets/kube-system/certificate-controller-token-pk96t</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-395"></a><span class="l l-Scalar l-Scalar-Plain">/registry/secrets/kube-system/clusterrole-aggregation-controller-token-xxb5s</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-396"></a><span class="l l-Scalar l-Scalar-Plain">/registry/secrets/kube-system/coredns-token-b2z2f</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-397"></a><span class="l l-Scalar l-Scalar-Plain">/registry/secrets/kube-system/cronjob-controller-token-54p6d</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-398"></a><span class="l l-Scalar l-Scalar-Plain">/registry/secrets/kube-system/daemon-set-controller-token-sbtsk</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-399"></a><span class="l l-Scalar l-Scalar-Plain">/registry/secrets/kube-system/default-token-9fhbc</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-400"></a><span class="l l-Scalar l-Scalar-Plain">/registry/secrets/kube-system/deployment-controller-token-swxcw</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-401"></a><span class="l l-Scalar l-Scalar-Plain">/registry/secrets/kube-system/disruption-controller-token-2rr6w</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-402"></a><span class="l l-Scalar l-Scalar-Plain">/registry/secrets/kube-system/endpoint-controller-token-fmjrz</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-403"></a><span class="l l-Scalar l-Scalar-Plain">/registry/secrets/kube-system/endpointslice-controller-token-sbn6n</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-404"></a><span class="l l-Scalar l-Scalar-Plain">/registry/secrets/kube-system/endpointslicemirroring-controller-token-qrld7</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-405"></a><span class="l l-Scalar l-Scalar-Plain">/registry/secrets/kube-system/expand-controller-token-tfgpk</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-406"></a><span class="l l-Scalar l-Scalar-Plain">/registry/secrets/kube-system/generic-garbage-collector-token-nc855</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-407"></a><span class="l l-Scalar l-Scalar-Plain">/registry/secrets/kube-system/horizontal-pod-autoscaler-token-h8rl9</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-408"></a><span class="l l-Scalar l-Scalar-Plain">/registry/secrets/kube-system/job-controller-token-d7lnj</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-409"></a><span class="l l-Scalar l-Scalar-Plain">/registry/secrets/kube-system/kube-proxy-token-9snst</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-410"></a><span class="l l-Scalar l-Scalar-Plain">/registry/secrets/kube-system/metrics-server-token-szltz</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-411"></a><span class="l l-Scalar l-Scalar-Plain">/registry/secrets/kube-system/namespace-controller-token-rwn7m</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-412"></a><span class="l l-Scalar l-Scalar-Plain">/registry/secrets/kube-system/node-controller-token-zqvxv</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-413"></a><span class="l l-Scalar l-Scalar-Plain">/registry/secrets/kube-system/persistent-volume-binder-token-6vj8p</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-414"></a><span class="l l-Scalar l-Scalar-Plain">/registry/secrets/kube-system/pod-garbage-collector-token-77gp8</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-415"></a><span class="l l-Scalar l-Scalar-Plain">/registry/secrets/kube-system/pv-protection-controller-token-49c2m</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-416"></a><span class="l l-Scalar l-Scalar-Plain">/registry/secrets/kube-system/pvc-protection-controller-token-twhrk</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-417"></a><span class="l l-Scalar l-Scalar-Plain">/registry/secrets/kube-system/replicaset-controller-token-d4bzb</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-418"></a><span class="l l-Scalar l-Scalar-Plain">/registry/secrets/kube-system/replication-controller-token-7mprg</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-419"></a><span class="l l-Scalar l-Scalar-Plain">/registry/secrets/kube-system/resourcequota-controller-token-x97qt</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-420"></a><span class="l l-Scalar l-Scalar-Plain">/registry/secrets/kube-system/root-ca-cert-publisher-token-gr4cq</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-421"></a><span class="l l-Scalar l-Scalar-Plain">/registry/secrets/kube-system/service-account-controller-token-46wxl</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-422"></a><span class="l l-Scalar l-Scalar-Plain">/registry/secrets/kube-system/service-controller-token-dbnc5</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-423"></a><span class="l l-Scalar l-Scalar-Plain">/registry/secrets/kube-system/statefulset-controller-token-fxblr</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-424"></a><span class="l l-Scalar l-Scalar-Plain">/registry/secrets/kube-system/token-cleaner-token-c48kq</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-425"></a><span class="l l-Scalar l-Scalar-Plain">/registry/secrets/kube-system/ttl-controller-token-q5wmc</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-426"></a><span class="l l-Scalar l-Scalar-Plain">/registry/secrets/metallb-system/controller-token-9vrqd</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-427"></a><span class="l l-Scalar l-Scalar-Plain">/registry/secrets/metallb-system/default-token-9jw8j</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-428"></a><span class="l l-Scalar l-Scalar-Plain">/registry/secrets/metallb-system/memberlist</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-429"></a><span class="l l-Scalar l-Scalar-Plain">/registry/secrets/metallb-system/speaker-token-d6b7b</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-430"></a><span class="l l-Scalar l-Scalar-Plain">/registry/serviceaccounts/default/default</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-431"></a><span class="l l-Scalar l-Scalar-Plain">/registry/serviceaccounts/kube-node-lease/default</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-432"></a><span class="l l-Scalar l-Scalar-Plain">/registry/serviceaccounts/kube-public/default</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-433"></a><span class="l l-Scalar l-Scalar-Plain">/registry/serviceaccounts/kube-system/attachdetach-controller</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-434"></a><span class="l l-Scalar l-Scalar-Plain">/registry/serviceaccounts/kube-system/bootstrap-signer</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-435"></a><span class="l l-Scalar l-Scalar-Plain">/registry/serviceaccounts/kube-system/calico-kube-controllers</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-436"></a><span class="l l-Scalar l-Scalar-Plain">/registry/serviceaccounts/kube-system/calico-node</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-437"></a><span class="l l-Scalar l-Scalar-Plain">/registry/serviceaccounts/kube-system/certificate-controller</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-438"></a><span class="l l-Scalar l-Scalar-Plain">/registry/serviceaccounts/kube-system/clusterrole-aggregation-controller</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-439"></a><span class="l l-Scalar l-Scalar-Plain">/registry/serviceaccounts/kube-system/coredns</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-440"></a><span class="l l-Scalar l-Scalar-Plain">/registry/serviceaccounts/kube-system/cronjob-controller</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-441"></a><span class="l l-Scalar l-Scalar-Plain">/registry/serviceaccounts/kube-system/daemon-set-controller</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-442"></a><span class="l l-Scalar l-Scalar-Plain">/registry/serviceaccounts/kube-system/default</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-443"></a><span class="l l-Scalar l-Scalar-Plain">/registry/serviceaccounts/kube-system/deployment-controller</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-444"></a><span class="l l-Scalar l-Scalar-Plain">/registry/serviceaccounts/kube-system/disruption-controller</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-445"></a><span class="l l-Scalar l-Scalar-Plain">/registry/serviceaccounts/kube-system/endpoint-controller</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-446"></a><span class="l l-Scalar l-Scalar-Plain">/registry/serviceaccounts/kube-system/endpointslice-controller</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-447"></a><span class="l l-Scalar l-Scalar-Plain">/registry/serviceaccounts/kube-system/endpointslicemirroring-controller</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-448"></a><span class="l l-Scalar l-Scalar-Plain">/registry/serviceaccounts/kube-system/expand-controller</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-449"></a><span class="l l-Scalar l-Scalar-Plain">/registry/serviceaccounts/kube-system/generic-garbage-collector</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-450"></a><span class="l l-Scalar l-Scalar-Plain">/registry/serviceaccounts/kube-system/horizontal-pod-autoscaler</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-451"></a><span class="l l-Scalar l-Scalar-Plain">/registry/serviceaccounts/kube-system/job-controller</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-452"></a><span class="l l-Scalar l-Scalar-Plain">/registry/serviceaccounts/kube-system/kube-proxy</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-453"></a><span class="l l-Scalar l-Scalar-Plain">/registry/serviceaccounts/kube-system/metrics-server</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-454"></a><span class="l l-Scalar l-Scalar-Plain">/registry/serviceaccounts/kube-system/namespace-controller</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-455"></a><span class="l l-Scalar l-Scalar-Plain">/registry/serviceaccounts/kube-system/node-controller</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-456"></a><span class="l l-Scalar l-Scalar-Plain">/registry/serviceaccounts/kube-system/persistent-volume-binder</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-457"></a><span class="l l-Scalar l-Scalar-Plain">/registry/serviceaccounts/kube-system/pod-garbage-collector</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-458"></a><span class="l l-Scalar l-Scalar-Plain">/registry/serviceaccounts/kube-system/pv-protection-controller</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-459"></a><span class="l l-Scalar l-Scalar-Plain">/registry/serviceaccounts/kube-system/pvc-protection-controller</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-460"></a><span class="l l-Scalar l-Scalar-Plain">/registry/serviceaccounts/kube-system/replicaset-controller</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-461"></a><span class="l l-Scalar l-Scalar-Plain">/registry/serviceaccounts/kube-system/replication-controller</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-462"></a><span class="l l-Scalar l-Scalar-Plain">/registry/serviceaccounts/kube-system/resourcequota-controller</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-463"></a><span class="l l-Scalar l-Scalar-Plain">/registry/serviceaccounts/kube-system/root-ca-cert-publisher</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-464"></a><span class="l l-Scalar l-Scalar-Plain">/registry/serviceaccounts/kube-system/service-account-controller</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-465"></a><span class="l l-Scalar l-Scalar-Plain">/registry/serviceaccounts/kube-system/service-controller</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-466"></a><span class="l l-Scalar l-Scalar-Plain">/registry/serviceaccounts/kube-system/statefulset-controller</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-467"></a><span class="l l-Scalar l-Scalar-Plain">/registry/serviceaccounts/kube-system/token-cleaner</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-468"></a><span class="l l-Scalar l-Scalar-Plain">/registry/serviceaccounts/kube-system/ttl-controller</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-469"></a><span class="l l-Scalar l-Scalar-Plain">/registry/serviceaccounts/metallb-system/controller</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-470"></a><span class="l l-Scalar l-Scalar-Plain">/registry/serviceaccounts/metallb-system/default</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-471"></a><span class="l l-Scalar l-Scalar-Plain">/registry/serviceaccounts/metallb-system/speaker</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-472"></a><span class="l l-Scalar l-Scalar-Plain">/registry/services/endpoints/default/kubernetes</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-473"></a><span class="l l-Scalar l-Scalar-Plain">/registry/services/endpoints/default/nginx</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-474"></a><span class="l l-Scalar l-Scalar-Plain">/registry/services/endpoints/default/ngnix-service</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-475"></a><span class="l l-Scalar l-Scalar-Plain">/registry/services/endpoints/default/test1</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-476"></a><span class="l l-Scalar l-Scalar-Plain">/registry/services/endpoints/kube-system/kube-dns</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-477"></a><span class="l l-Scalar l-Scalar-Plain">/registry/services/endpoints/kube-system/kubelet</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-478"></a><span class="l l-Scalar l-Scalar-Plain">/registry/services/endpoints/kube-system/metrics-server</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-479"></a><span class="l l-Scalar l-Scalar-Plain">/registry/services/specs/default/kubernetes</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-480"></a><span class="l l-Scalar l-Scalar-Plain">/registry/services/specs/default/nginx</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-481"></a><span class="l l-Scalar l-Scalar-Plain">/registry/services/specs/default/ngnix-service</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-482"></a><span class="l l-Scalar l-Scalar-Plain">/registry/services/specs/default/test1</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-483"></a><span class="l l-Scalar l-Scalar-Plain">/registry/services/specs/kube-system/kube-dns</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-484"></a><span class="l l-Scalar l-Scalar-Plain">/registry/services/specs/kube-system/kubelet</span>
+<a name="rest_code_6cb74830316f412aa8617289a29f16a3-485"></a><span class="l l-Scalar l-Scalar-Plain">/registry/services/specs/kube-system/metrics-server</span>
+</pre>
+<p>Now lets check all pods with all namespaces so something like  kubectl get pods --all-namespaces</p>
+<pre class="code bash"><a name="rest_code_8057991a597b464581e7b08d11588774-1"></a>kubectl <span class="nb">exec</span> -it etcd-lenovo-node1 -n kube-system -- /bin/sh -c <span class="s2">"ETCDCTL_API=3 etcdctl \</span>
+<a name="rest_code_8057991a597b464581e7b08d11588774-2"></a><span class="s2">--endpoints=https://127.0.0.1:2379 \</span>
+<a name="rest_code_8057991a597b464581e7b08d11588774-3"></a><span class="s2">--cacert=/etc/kubernetes/pki/etcd/ca.crt \</span>
+<a name="rest_code_8057991a597b464581e7b08d11588774-4"></a><span class="s2">--cert=/etc/kubernetes/pki/etcd/server.crt \</span>
+<a name="rest_code_8057991a597b464581e7b08d11588774-5"></a><span class="s2">--key=/etc/kubernetes/pki/etcd/server.key \</span>
+<a name="rest_code_8057991a597b464581e7b08d11588774-6"></a><span class="s2">get /registry/pods --prefix --keys-only</span>
+</pre>
+<p>Output:</p>
+<pre class="code bash"><a name="rest_code_ff5a712305c84c83b84f2c91b06f1a95-1"></a>➜  etcd git:<span class="o">(</span>master<span class="o">)</span> ✗ kubectl get pods --all-namespaces
+<a name="rest_code_ff5a712305c84c83b84f2c91b06f1a95-2"></a>NAMESPACE        NAME                                       READY   STATUS        RESTARTS   AGE
+<a name="rest_code_ff5a712305c84c83b84f2c91b06f1a95-3"></a>default          ng                                         <span class="m">1</span>/1     Running       <span class="m">0</span>          11d
+<a name="rest_code_ff5a712305c84c83b84f2c91b06f1a95-4"></a>default          nginx-b4c9f744d-6fqjs                      <span class="m">1</span>/1     Running       <span class="m">0</span>          10d
+<a name="rest_code_ff5a712305c84c83b84f2c91b06f1a95-5"></a>default          nginx-b4c9f744d-hvdsh                      <span class="m">1</span>/1     Running       <span class="m">0</span>          10d
+<a name="rest_code_ff5a712305c84c83b84f2c91b06f1a95-6"></a>default          nginx-hpa-6c4758554f-99h7l                 <span class="m">1</span>/1     Terminating   <span class="m">0</span>          45d
+<a name="rest_code_ff5a712305c84c83b84f2c91b06f1a95-7"></a>default          nginx-hpa-6c4758554f-tqrp9                 <span class="m">1</span>/1     Terminating   <span class="m">0</span>          45d
+<a name="rest_code_ff5a712305c84c83b84f2c91b06f1a95-8"></a>default          nginx-hpa-6c4758554f-zf4rd                 <span class="m">1</span>/1     Terminating   <span class="m">0</span>          45d
+<a name="rest_code_ff5a712305c84c83b84f2c91b06f1a95-9"></a>kube-system      calico-kube-controllers-664b5654ff-lmfjw   <span class="m">1</span>/1     Running       <span class="m">0</span>          46d
+<a name="rest_code_ff5a712305c84c83b84f2c91b06f1a95-10"></a>kube-system      calico-node-6vtln                          <span class="m">1</span>/1     Running       <span class="m">0</span>          46d
+<a name="rest_code_ff5a712305c84c83b84f2c91b06f1a95-11"></a>kube-system      calico-node-9psrj                          <span class="m">1</span>/1     Running       <span class="m">0</span>          46d
+<a name="rest_code_ff5a712305c84c83b84f2c91b06f1a95-12"></a>kube-system      calico-node-n64kf                          <span class="m">1</span>/1     Running       <span class="m">0</span>          46d
+<a name="rest_code_ff5a712305c84c83b84f2c91b06f1a95-13"></a>kube-system      calico-node-s4gnp                          <span class="m">1</span>/1     Running       <span class="m">0</span>          46d
+<a name="rest_code_ff5a712305c84c83b84f2c91b06f1a95-14"></a>kube-system      coredns-74ff55c5b-n942q                    <span class="m">1</span>/1     Running       <span class="m">0</span>          47d
+<a name="rest_code_ff5a712305c84c83b84f2c91b06f1a95-15"></a>kube-system      coredns-74ff55c5b-vnm7t                    <span class="m">1</span>/1     Running       <span class="m">0</span>          47d
+<a name="rest_code_ff5a712305c84c83b84f2c91b06f1a95-16"></a>kube-system      etcd-lenovo-node1                          <span class="m">1</span>/1     Running       <span class="m">0</span>          47d
+<a name="rest_code_ff5a712305c84c83b84f2c91b06f1a95-17"></a>kube-system      kube-apiserver-lenovo-node1                <span class="m">1</span>/1     Running       <span class="m">0</span>          47d
+<a name="rest_code_ff5a712305c84c83b84f2c91b06f1a95-18"></a>kube-system      kube-controller-manager-lenovo-node1       <span class="m">1</span>/1     Running       <span class="m">0</span>          47d
+<a name="rest_code_ff5a712305c84c83b84f2c91b06f1a95-19"></a>kube-system      kube-proxy-dxtr2                           <span class="m">1</span>/1     Running       <span class="m">0</span>          47d
+<a name="rest_code_ff5a712305c84c83b84f2c91b06f1a95-20"></a>kube-system      kube-proxy-r7jpl                           <span class="m">1</span>/1     Running       <span class="m">0</span>          47d
+<a name="rest_code_ff5a712305c84c83b84f2c91b06f1a95-21"></a>kube-system      kube-proxy-sb4b6                           <span class="m">1</span>/1     Running       <span class="m">0</span>          47d
+<a name="rest_code_ff5a712305c84c83b84f2c91b06f1a95-22"></a>kube-system      kube-proxy-v9xck                           <span class="m">1</span>/1     Running       <span class="m">0</span>          47d
+<a name="rest_code_ff5a712305c84c83b84f2c91b06f1a95-23"></a>kube-system      kube-scheduler-lenovo-node1                <span class="m">1</span>/1     Running       <span class="m">0</span>          47d
+<a name="rest_code_ff5a712305c84c83b84f2c91b06f1a95-24"></a>kube-system      metrics-server-666b5bc478-8624s            <span class="m">1</span>/1     Running       <span class="m">0</span>          45d
+<a name="rest_code_ff5a712305c84c83b84f2c91b06f1a95-25"></a>metallb-system   controller-65db86ddc6-q6zvx                <span class="m">1</span>/1     Running       <span class="m">0</span>          33d
+<a name="rest_code_ff5a712305c84c83b84f2c91b06f1a95-26"></a>metallb-system   speaker-6mzwx                              <span class="m">1</span>/1     Running       <span class="m">0</span>          33d
+<a name="rest_code_ff5a712305c84c83b84f2c91b06f1a95-27"></a>metallb-system   speaker-btrtz                              <span class="m">1</span>/1     Running       <span class="m">0</span>          33d
+<a name="rest_code_ff5a712305c84c83b84f2c91b06f1a95-28"></a>metallb-system   speaker-pxf28                              <span class="m">1</span>/1     Running       <span class="m">0</span>          33d
+</pre>
+<p>From the reference above - I can see pods are under /registry/pods and then the next key is namespace so to get pods in
+kubesystem we need to use key /registry/pods/kube-system/</p>
+<p>We might observe something interesting watching one of the pods:</p>
+<pre class="code bash"><a name="rest_code_ca3dd3544bd646309eb94dd6ecd1b7f8-1"></a>kubectl <span class="nb">exec</span> -it etcd-lenovo-node1 -n kube-system -- /bin/sh -c <span class="s2">"ETCDCTL_API=3 etcdctl</span>
+<a name="rest_code_ca3dd3544bd646309eb94dd6ecd1b7f8-2"></a><span class="s2">--endpoints=https://127.0.0.1:2379 \</span>
+<a name="rest_code_ca3dd3544bd646309eb94dd6ecd1b7f8-3"></a><span class="s2">--cacert=/etc/kubernetes/pki/etcd/ca.crt \</span>
+<a name="rest_code_ca3dd3544bd646309eb94dd6ecd1b7f8-4"></a><span class="s2">--cert=/etc/kubernetes/pki/etcd/server.crt \</span>
+<a name="rest_code_ca3dd3544bd646309eb94dd6ecd1b7f8-5"></a><span class="s2">--key=/etc/kubernetes/pki/etcd/server.key \</span>
+<a name="rest_code_ca3dd3544bd646309eb94dd6ecd1b7f8-6"></a><span class="s2">watch /registry/pods/default/nginx-b4c9f744d-6fqjs "</span>
+</pre>
+<p>and I will just add new label in another terminal</p>
+<pre class="code bash"><a name="rest_code_128ffcf2ee554897a8e8e347228872b0-1"></a>kc label pods pod nginx-b4c9f744d-6fqjs my-new-label<span class="o">=</span><span class="nb">test</span>
+</pre>
+<p>we can see straight away the change in watch command :)</p>
+</div>
+<div class="section" id="accessing-etcd-from-host">
+<h2>Accessing etcd from host</h2>
+<p>If we want to access etcdctl locally (locally means - still need to be on one of the nodes) we just need to install etcd-client</p>
+<p>on ubuntu</p>
+<pre class="code bash"><a name="rest_code_38f23cf56cfd4eedb9698f0f49cba504-1"></a>sudo apt-get install etcd-client
+</pre>
+<p>and then we should be able to get all etcd instances with</p>
+<pre class="code bash"><a name="rest_code_f3178d3076524ebda0de5ca1e191945c-1"></a>sudo <span class="nv">ETCDCTL_API</span><span class="o">=</span><span class="m">3</span> etcdctl --endpoints<span class="o">=</span>https://127.0.0.1:2379 --cacert<span class="o">=</span>/etc/kubernetes/pki/etcd/ca.crt --cert<span class="o">=</span>/etc/kubernetes/pki/etcd/server.crt --key<span class="o">=</span>/etc/kubernetes/pki/etcd/server.key   member list
+</pre>
+</div>
+</div>
+    </div>
+    <aside class="postpromonav"><nav><ul class="pager hidden-print">
+<li class="previous">
+                <a href="build-cheapest-kubernetes-i7-cluster.html" rel="prev" title="Build cheapest kubernetes i7 cluster">Previous post</a>
+            </li>
+        </ul></nav></aside><section class="comments hidden-print"><h2>Comments</h2>
+        
+        
+        <div id="disqus_thread"></div>
+        <script>
+        var disqus_shortname ="stencel",
+            disqus_url="https://stencel.io/posts/kubernetes-etcd-whats-inside.html",
+        disqus_title="Kubernetes etcd - what's inside?",
+        disqus_identifier="cache/posts/kubernetes-etcd-whats-inside.html",
+        disqus_config = function () {
+            this.language = "en";
+        };
+        (function() {
+            var dsq = document.createElement('script'); dsq.async = true;
+            dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script><noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a>
+</noscript>
+    <a href="https://disqus.com" class="dsq-brlink" rel="nofollow">Comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+        </section></article><script>var disqus_shortname="stencel";(function(){var a=document.createElement("script");a.async=true;a.src="https://"+disqus_shortname+".disqus.com/count.js";(document.getElementsByTagName("head")[0]||document.getElementsByTagName("body")[0]).appendChild(a)}());</script><footer id="footer"><p>Contents © 2021         <a href="mailto:gstencel@gmail.com">Greg Stencel</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         </p>
+            
+        </footer>
+</div>
+    </section><script src="../assets/js/all-nocdn.js"></script><!-- fancy dates --><script>
+    moment.locale("en");
+    fancydates(0, "YYYY-MM-DD HH:mm");
+    </script><!-- end fancy dates --><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element) {
+            return element.getElementsByTagName('img')[0].alt;
+    }});
+    </script><script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-50641127-1', 'stencel.io');
+  ga('send', 'pageview');
+
+</script><script type="text/javascript" src="../assets/js/tipuesearch_set.js"></script><script type="text/javascript" src="../assets/js/tipuesearch.js"></script><script type="text/javascript">
+$(document).ready(function() {
+     $('#tipue_search_input').tipuesearch({
+         'mode': 'json',
+         'contentLocation': '/assets/js/tipuesearch_content.json',
+         'showUrl': false
+     });
+});
+</script>
+</body>
+</html>
