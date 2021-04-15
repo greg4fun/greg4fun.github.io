@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html prefix="        og: http://ogp.me/ns# article: http://ogp.me/ns/article#     " vocab="http://ogp.me/ns" lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+<title>Kubernetes iptables changes on service creation | Greg's Tech Notes</title>
+<link href="https://fonts.googleapis.com/css?family=Bitter:400,400i,700" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+<link href="../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../rss.xml">
+<link rel="canonical" href="https://stencel.io/posts/kubernetes-iptables-changes-on-service-creation.html">
+<!--[if lt IE 9]><script src="../assets/js/html5shiv-printshiv.min.js"></script><![endif]--><meta name="author" content="Greg Stencel">
+<link rel="prev" href="kubernetes-etcd-whats-inside.html" title="Kubernetes etcd - what's inside?" type="text/html">
+<meta property="og:site_name" content="Greg's Tech Notes">
+<meta property="og:title" content="Kubernetes iptables changes on service creation">
+<meta property="og:url" content="https://stencel.io/posts/kubernetes-iptables-changes-on-service-creation.html">
+<meta property="og:description" content="This is simple investigation on what happens with iptables on service creation with /and without targetport specified
+I've been recently told by someone that using target port in service creates mess ">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2021-04-14T21:37:51Z">
+</head>
+<body>
+    <a href="#page-content" class="sr-only sr-only-focusable">Skip to main content</a>
+    
+    <section class="social"><ul>
+<li><p style="color:#fff;font-size:3em;">stencel.io</p></li>
+        <li><p style="color:#fff;font-size:2em;">greg's tech notes</p></li>
+            <li>
+                <a href="https://stencel.io/">
+                    <img src="../images/aboutme.png" alt="Greg's Tech Notes" id="logo"></a>
+            </li>
+        
+            <li><a href="../index.html" title="Home"><i class="fa fa-home"></i></a></li>
+            <li><a href="../archive.html" title="Archives"><i class="fa fa-folder-open"></i></a></li>
+            <li><a href="../categories/index.html" title="Tags"><i class="fa fa-tags"></i></a></li>
+            <li><a href="https://www.linkedin.com/in/gregstencel/" title="My Linkedin"><i class="fab fa-linkedin"></i></a></li>
+            <li><a href="https://github.com/greg4fun" title="My Github"><i class="fab fa-github"></i></a></li>
+    
+    
+
+        </ul></section><section class="page-content"><div class="content" rel="main">
+            
+<article class="post-text h-entry hentry postpage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="#" class="u-url">Kubernetes iptables changes on service creation</a></h1>
+
+        <div class="metadata">
+            <p class="dateline"><a href="#" rel="bookmark"><i class="fa fa-clock"></i> <time class="published dt-published" datetime="2021-04-14T21:37:51Z" itemprop="datePublished" title="2021-04-14 21:37">2021-04-14 21:37</time></a></p>
+            <p class="byline author vcard"> <i class="fa fa-user"></i> <span class="byline-name fn" itemprop="author">
+                    Greg Stencel
+            </span></p>
+                <p class="commentline"><i class="far fa-comment"></i>
+        
+    <a href="kubernetes-iptables-changes-on-service-creation.html#disqus_thread" data-disqus-identifier="cache/posts/kubernetes-iptables-changes-on-service-creation.html">Comments</a>
+
+
+            
+        </p>
+<p class="sourceline"><a href="kubernetes-iptables-changes-on-service-creation.rst" class="sourcelink"><i class="fa fa-file-code"></i> Source</a></p>
+
+            
+
+            
+
+        </div>
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+    <div>
+<p>This is simple investigation on what happens with iptables on service creation with /and without targetport specified</p>
+<p>I've been recently told by someone that using target port in service creates mess in iptables so I thought it will be
+cool challenge to check if thats really the case.</p>
+<p>I have used simple iptables-save to get whole iptables rules at once and then added service with targetport, then cleaned iptables by deleting service and
+then did the same without targetport to compare what is being added to ipt.</p>
+<p>Cluster specs:</p>
+<ul class="simple">
+<li><p>CPU ARCH: (x86) build with kubeadm:</p></li>
+<li><p>CNI: Calico</p></li>
+<li><p>KubeProxy mode: iptables</p></li>
+<li><p>standard etcd</p></li>
+</ul>
+<div class="section" id="iptables-with-targetport-in-service">
+<h2>IPtables with targetport in service</h2>
+<pre class="code bash"><a name="rest_code_56a7d3775e5346dfb6276ad25d30fe98-1"></a>&gt; :KUBE-SEP-KVGH6HHOFLBGG2WW - <span class="o">[</span><span class="m">0</span>:0<span class="o">]</span> 184a186
+<a name="rest_code_56a7d3775e5346dfb6276ad25d30fe98-2"></a>&gt; :KUBE-SVC-FOI3G5ZK27IESILB - <span class="o">[</span><span class="m">0</span>:0<span class="o">]</span> 201a204,205
+<a name="rest_code_56a7d3775e5346dfb6276ad25d30fe98-3"></a>&gt; -A KUBE-NODEPORTS -p tcp -m comment --comment <span class="s2">"default/ngnix-service"</span> -m tcp --dport <span class="m">31224</span> -j KUBE-MARK-MASQ
+<a name="rest_code_56a7d3775e5346dfb6276ad25d30fe98-4"></a>&gt; -A KUBE-NODEPORTS -p tcp -m comment --comment <span class="s2">"default/ngnix-service"</span> -m tcp --dport <span class="m">31224</span> -j KUBE-SVC-FOI3G5ZK27IESILB
+<a name="rest_code_56a7d3775e5346dfb6276ad25d30fe98-5"></a>&gt; -A KUBE-SEP-KVGH6HHOFLBGG2WW -s <span class="m">10</span>.1.167.92/32 -m comment --comment <span class="s2">"default/ngnix-service"</span> -j KUBE-MARK-MASQ
+<a name="rest_code_56a7d3775e5346dfb6276ad25d30fe98-6"></a>&gt; -A KUBE-SEP-KVGH6HHOFLBGG2WW -p tcp -m comment --comment <span class="s2">"default/ngnix-service"</span> -m tcp -j DNAT --to-destination <span class="m">10</span>.1.167.92:8000
+<a name="rest_code_56a7d3775e5346dfb6276ad25d30fe98-7"></a>&gt; -A KUBE-SERVICES ! -s <span class="m">192</span>.168.0.0/16 -d <span class="m">10</span>.105.57.223/32 -p tcp -m comment --comment <span class="s2">"default/ngnix-service cluster IP"</span> -m tcp --dport <span class="m">80</span> -j KUBE-MARK-MASQ
+<a name="rest_code_56a7d3775e5346dfb6276ad25d30fe98-8"></a>&gt; -A KUBE-SERVICES -d <span class="m">10</span>.105.57.223/32 -p tcp -m comment --comment <span class="s2">"default/ngnix-service cluster IP"</span> -m tcp --dport <span class="m">80</span> -j KUBE-SVC-FOI3G5ZK27IESILB
+<a name="rest_code_56a7d3775e5346dfb6276ad25d30fe98-9"></a>&gt; -A KUBE-SVC-FOI3G5ZK27IESILB -m comment --comment <span class="s2">"default/ngnix-service"</span> -j KUBE-SEP-KVGH6HHOFLBGG2WW
+</pre>
+<p>As we can see in the example above the rule is to destination nat pod IP 10.1.167.92 on the port 8000 which is target
+port we have specified.</p>
+</div>
+<div class="section" id="iptables-without-targetport-in-service">
+<h2>IPtables without targetport in service</h2>
+<pre class="code bash"><a name="rest_code_097613f939b341e09b957d2673283c5d-1"></a>&gt; :KUBE-SEP-OP54BO3C6MKRBI5R - <span class="o">[</span><span class="m">0</span>:0<span class="o">]</span>
+<a name="rest_code_097613f939b341e09b957d2673283c5d-2"></a>&gt; :KUBE-SVC-FOI3G5ZK27IESILB - <span class="o">[</span><span class="m">0</span>:0<span class="o">]</span>
+<a name="rest_code_097613f939b341e09b957d2673283c5d-3"></a>&gt; -A KUBE-NODEPORTS -p tcp -m comment --comment <span class="s2">"default/ngnix-service"</span> -m tcp --dport <span class="m">32681</span> -j KUBE-MARK-MASQ
+<a name="rest_code_097613f939b341e09b957d2673283c5d-4"></a>&gt; -A KUBE-NODEPORTS -p tcp -m comment --comment <span class="s2">"default/ngnix-service"</span> -m tcp --dport <span class="m">32681</span> -j KUBE-SVC-FOI3G5ZK27IESILB
+<a name="rest_code_097613f939b341e09b957d2673283c5d-5"></a>&gt; -A KUBE-SEP-OP54BO3C6MKRBI5R -s <span class="m">10</span>.1.167.92/32 -m comment --comment <span class="s2">"default/ngnix-service"</span> -j KUBE-MARK-MASQ
+<a name="rest_code_097613f939b341e09b957d2673283c5d-6"></a>&gt; -A KUBE-SEP-OP54BO3C6MKRBI5R -p tcp -m comment --comment <span class="s2">"default/ngnix-service"</span> -m tcp -j DNAT --to-destination <span class="m">10</span>.1.167.92:80
+<a name="rest_code_097613f939b341e09b957d2673283c5d-7"></a>&lt; -A KUBE-SERVICES ! -s <span class="m">192</span>.168.0.0/16 -d <span class="m">10</span>.96.0.1/32 -p tcp -m comment --comment <span class="s2">"default/kubernetes:https cluster IP"</span> -m tcp --dport <span class="m">443</span> -j KUBE-MARK-MASQ
+<a name="rest_code_097613f939b341e09b957d2673283c5d-8"></a>&lt; -A KUBE-SERVICES -d <span class="m">10</span>.96.0.1/32 -p tcp -m comment --comment <span class="s2">"default/kubernetes:https cluster IP"</span> -m tcp --dport <span class="m">443</span> -j KUBE-SVC-NPX46M4PTMTKRN6Y
+<a name="rest_code_097613f939b341e09b957d2673283c5d-9"></a>&lt; -A KUBE-SERVICES ! -s <span class="m">192</span>.168.0.0/16 -d <span class="m">10</span>.96.0.10/32 -p tcp -m comment --comment <span class="s2">"kube-system/kube-dns:metrics cluster IP"</span> -m tcp --dport <span class="m">9153</span> -j KUBE-MARK-MASQ
+<a name="rest_code_097613f939b341e09b957d2673283c5d-10"></a>&lt; -A KUBE-SERVICES -d <span class="m">10</span>.96.0.10/32 -p tcp -m comment --comment <span class="s2">"kube-system/kube-dns:metrics cluster IP"</span> -m tcp --dport <span class="m">9153</span> -j KUBE-SVC-JD5MR3NA4I4DYORP
+<a name="rest_code_097613f939b341e09b957d2673283c5d-11"></a>&gt; -A KUBE-SERVICES ! -s <span class="m">192</span>.168.0.0/16 -d <span class="m">10</span>.96.129.116/32 -p tcp -m comment --comment <span class="s2">"default/ngnix-service cluster IP"</span> -m tcp --dport <span class="m">80</span> -j KUBE-MARK-MASQ
+<a name="rest_code_097613f939b341e09b957d2673283c5d-12"></a>&gt; -A KUBE-SERVICES -d <span class="m">10</span>.96.129.116/32 -p tcp -m comment --comment <span class="s2">"default/ngnix-service cluster IP"</span> -m tcp --dport <span class="m">80</span> -j KUBE-SVC-FOI3G5ZK27IESILB
+<a name="rest_code_097613f939b341e09b957d2673283c5d-13"></a>&gt; -A KUBE-SERVICES ! -s <span class="m">192</span>.168.0.0/16 -d <span class="m">10</span>.96.0.1/32 -p tcp -m comment --comment <span class="s2">"default/kubernetes:https cluster IP"</span> -m tcp --dport <span class="m">443</span> -j KUBE-MARK-MASQ
+<a name="rest_code_097613f939b341e09b957d2673283c5d-14"></a>&gt; -A KUBE-SERVICES -d <span class="m">10</span>.96.0.1/32 -p tcp -m comment --comment <span class="s2">"default/kubernetes:https cluster IP"</span> -m tcp --dport <span class="m">443</span> -j KUBE-SVC-NPX46M4PTMTKRN6Y
+<a name="rest_code_097613f939b341e09b957d2673283c5d-15"></a>&gt; -A KUBE-SERVICES ! -s <span class="m">192</span>.168.0.0/16 -d <span class="m">10</span>.96.0.10/32 -p tcp -m comment --comment <span class="s2">"kube-system/kube-dns:metrics cluster IP"</span> -m tcp --dport <span class="m">9153</span> -j KUBE-MARK-MASQ
+<a name="rest_code_097613f939b341e09b957d2673283c5d-16"></a>&gt; -A KUBE-SERVICES -d <span class="m">10</span>.96.0.10/32 -p tcp -m comment --comment <span class="s2">"kube-system/kube-dns:metrics cluster IP"</span> -m tcp --dport <span class="m">9153</span> -j KUBE-SVC-JD5MR3NA4I4DYORP
+<a name="rest_code_097613f939b341e09b957d2673283c5d-17"></a>&gt; -A KUBE-SVC-FOI3G5ZK27IESILB -m comment --comment <span class="s2">"default/ngnix-service"</span> -j KUBE-SEP-OP54BO3C6MKRBI5R
+</pre>
+<p>In such simple setup I would say not providing the targetport makes even bigger mess.</p>
+<p>Lets see something more sophisticated so deployment with 2 replicasets</p>
+</div>
+<div class="section" id="with-targetport">
+<h2>With targetport:</h2>
+<pre class="code bash"><a name="rest_code_6d830382eb804cfb81d31d4006e21df2-1"></a>&gt; :PREROUTING ACCEPT <span class="o">[</span><span class="m">4</span>:212<span class="o">]</span>
+<a name="rest_code_6d830382eb804cfb81d31d4006e21df2-2"></a>&gt; :INPUT ACCEPT <span class="o">[</span><span class="m">4</span>:212<span class="o">]</span>
+<a name="rest_code_6d830382eb804cfb81d31d4006e21df2-3"></a>&gt; :OUTPUT ACCEPT <span class="o">[</span><span class="m">29</span>:1740<span class="o">]</span>
+<a name="rest_code_6d830382eb804cfb81d31d4006e21df2-4"></a>&gt; :POSTROUTING ACCEPT <span class="o">[</span><span class="m">29</span>:1740<span class="o">]</span>
+<a name="rest_code_6d830382eb804cfb81d31d4006e21df2-5"></a>&gt; :KUBE-SEP-KCPMBF3JPX5ITGQR - <span class="o">[</span><span class="m">0</span>:0<span class="o">]</span>
+<a name="rest_code_6d830382eb804cfb81d31d4006e21df2-6"></a>&gt; :KUBE-SEP-PPG4JXRVDYEFVT6U - <span class="o">[</span><span class="m">0</span>:0<span class="o">]</span>
+<a name="rest_code_6d830382eb804cfb81d31d4006e21df2-7"></a>&gt; :KUBE-SVC-JSEMNMAXFXXWPYZQ - <span class="o">[</span><span class="m">0</span>:0<span class="o">]</span>
+<a name="rest_code_6d830382eb804cfb81d31d4006e21df2-8"></a>&gt; -A KUBE-NODEPORTS -p tcp -m comment --comment <span class="s2">"default/ngnix2-service"</span> -m tcp --dport <span class="m">30329</span> -j KUBE-MARK-MASQ
+<a name="rest_code_6d830382eb804cfb81d31d4006e21df2-9"></a>&gt; -A KUBE-NODEPORTS -p tcp -m comment --comment <span class="s2">"default/ngnix2-service"</span> -m tcp --dport <span class="m">30329</span> -j KUBE-SVC-JSEMNMAXFXXWPYZQ
+<a name="rest_code_6d830382eb804cfb81d31d4006e21df2-10"></a>&gt; -A KUBE-SEP-KCPMBF3JPX5ITGQR -s <span class="m">10</span>.1.129.5/32 -m comment --comment <span class="s2">"default/ngnix2-service"</span> -j KUBE-MARK-MASQ
+<a name="rest_code_6d830382eb804cfb81d31d4006e21df2-11"></a>&gt; -A KUBE-SEP-KCPMBF3JPX5ITGQR -p tcp -m comment --comment <span class="s2">"default/ngnix2-service"</span> -m tcp -j DNAT --to-destination <span class="m">10</span>.1.129.5:8000
+<a name="rest_code_6d830382eb804cfb81d31d4006e21df2-12"></a>&gt; -A KUBE-SEP-PPG4JXRVDYEFVT6U -s <span class="m">10</span>.1.167.83/32 -m comment --comment <span class="s2">"default/ngnix2-service"</span> -j KUBE-MARK-MASQ
+<a name="rest_code_6d830382eb804cfb81d31d4006e21df2-13"></a>&gt; -A KUBE-SEP-PPG4JXRVDYEFVT6U -p tcp -m comment --comment <span class="s2">"default/ngnix2-service"</span> -m tcp -j DNAT --to-destination <span class="m">10</span>.1.167.83:8000
+<a name="rest_code_6d830382eb804cfb81d31d4006e21df2-14"></a>&gt; -A KUBE-SERVICES ! -s <span class="m">192</span>.168.0.0/16 -d <span class="m">10</span>.98.111.212/32 -p tcp -m comment --comment <span class="s2">"default/ngnix2-service cluster IP"</span> -m tcp --dport <span class="m">80</span> -j KUBE-MARK-MASQ
+<a name="rest_code_6d830382eb804cfb81d31d4006e21df2-15"></a>&gt; -A KUBE-SERVICES -d <span class="m">10</span>.98.111.212/32 -p tcp -m comment --comment <span class="s2">"default/ngnix2-service cluster IP"</span> -m tcp --dport <span class="m">80</span> -j KUBE-SVC-JSEMNMAXFXXWPYZQ
+<a name="rest_code_6d830382eb804cfb81d31d4006e21df2-16"></a>&gt; -A KUBE-SVC-JSEMNMAXFXXWPYZQ -m comment --comment <span class="s2">"default/ngnix2-service"</span> -m statistic --mode random --probability <span class="m">0</span>.50000000000 -j KUBE-SEP-KCPMBF3JPX5ITGQR
+<a name="rest_code_6d830382eb804cfb81d31d4006e21df2-17"></a>&gt; -A KUBE-SVC-JSEMNMAXFXXWPYZQ -m comment --comment <span class="s2">"default/ngnix2-service"</span> -j KUBE-SEP-PPG4JXRVDYEFVT6U
+</pre>
+<p>From the following we can spot that each for our label selector in the service is listed here,
+which absolutely makes sense how kube proxy would know where to send packets if not that.</p>
+<p>Ok lets try with replicas without providing the port:</p>
+</div>
+<div class="section" id="without-targetport">
+<h2>Without targetport:</h2>
+<pre class="code bash"><a name="rest_code_766e25573fbb4cb7b526a2578c187fa8-1"></a>&gt; :PREROUTING ACCEPT <span class="o">[</span><span class="m">4</span>:252<span class="o">]</span>
+<a name="rest_code_766e25573fbb4cb7b526a2578c187fa8-2"></a>&gt; :INPUT ACCEPT <span class="o">[</span><span class="m">4</span>:252<span class="o">]</span>
+<a name="rest_code_766e25573fbb4cb7b526a2578c187fa8-3"></a>&gt; :OUTPUT ACCEPT <span class="o">[</span><span class="m">25</span>:1500<span class="o">]</span>
+<a name="rest_code_766e25573fbb4cb7b526a2578c187fa8-4"></a>&gt; :POSTROUTING ACCEPT <span class="o">[</span><span class="m">25</span>:1500<span class="o">]</span>
+<a name="rest_code_766e25573fbb4cb7b526a2578c187fa8-5"></a>&gt; :KUBE-SEP-NK6MJN7AMVFQPBDQ - <span class="o">[</span><span class="m">0</span>:0<span class="o">]</span>
+<a name="rest_code_766e25573fbb4cb7b526a2578c187fa8-6"></a>&gt; :KUBE-SEP-ZX65TQ3QUDHUAQQM - <span class="o">[</span><span class="m">0</span>:0<span class="o">]</span>
+<a name="rest_code_766e25573fbb4cb7b526a2578c187fa8-7"></a>&gt; :KUBE-SVC-JSEMNMAXFXXWPYZQ - <span class="o">[</span><span class="m">0</span>:0<span class="o">]</span>
+<a name="rest_code_766e25573fbb4cb7b526a2578c187fa8-8"></a>&gt; -A KUBE-NODEPORTS -p tcp -m comment --comment <span class="s2">"default/ngnix2-service"</span> -m tcp --dport <span class="m">31277</span> -j KUBE-MARK-MASQ
+<a name="rest_code_766e25573fbb4cb7b526a2578c187fa8-9"></a>&gt; -A KUBE-NODEPORTS -p tcp -m comment --comment <span class="s2">"default/ngnix2-service"</span> -m tcp --dport <span class="m">31277</span> -j KUBE-SVC-JSEMNMAXFXXWPYZQ
+<a name="rest_code_766e25573fbb4cb7b526a2578c187fa8-10"></a>&gt; -A KUBE-SEP-NK6MJN7AMVFQPBDQ -s <span class="m">10</span>.1.129.5/32 -m comment --comment <span class="s2">"default/ngnix2-service"</span> -j KUBE-MARK-MASQ
+<a name="rest_code_766e25573fbb4cb7b526a2578c187fa8-11"></a>&gt; -A KUBE-SEP-NK6MJN7AMVFQPBDQ -p tcp -m comment --comment <span class="s2">"default/ngnix2-service"</span> -m tcp -j DNAT --to-destination <span class="m">10</span>.1.129.5:80
+<a name="rest_code_766e25573fbb4cb7b526a2578c187fa8-12"></a>&lt; -A KUBE-SERVICES ! -s <span class="m">192</span>.168.0.0/16 -d <span class="m">10</span>.96.0.10/32 -p udp -m comment --comment <span class="s2">"kube-system/kube-dns:dns cluster IP"</span> -m udp --dport <span class="m">53</span> -j KUBE-MARK-MASQ
+<a name="rest_code_766e25573fbb4cb7b526a2578c187fa8-13"></a>&lt; -A KUBE-SERVICES -d <span class="m">10</span>.96.0.10/32 -p udp -m comment --comment <span class="s2">"kube-system/kube-dns:dns cluster IP"</span> -m udp --dport <span class="m">53</span> -j KUBE-SVC-TCOU7JCQXEZGVUNU
+<a name="rest_code_766e25573fbb4cb7b526a2578c187fa8-14"></a>---
+<a name="rest_code_766e25573fbb4cb7b526a2578c187fa8-15"></a>&gt; -A KUBE-SEP-ZX65TQ3QUDHUAQQM -s <span class="m">10</span>.1.167.83/32 -m comment --comment <span class="s2">"default/ngnix2-service"</span> -j KUBE-MARK-MASQ
+<a name="rest_code_766e25573fbb4cb7b526a2578c187fa8-16"></a>&gt; -A KUBE-SEP-ZX65TQ3QUDHUAQQM -p tcp -m comment --comment <span class="s2">"default/ngnix2-service"</span> -m tcp -j DNAT --to-destination <span class="m">10</span>.1.167.83:80
+<a name="rest_code_766e25573fbb4cb7b526a2578c187fa8-17"></a>&gt; -A KUBE-SERVICES ! -s <span class="m">192</span>.168.0.0/16 -d <span class="m">10</span>.108.13.83/32 -p tcp -m comment --comment <span class="s2">"default/ngnix2-service cluster IP"</span> -m tcp --dport <span class="m">80</span> -j KUBE-MARK-MASQ
+<a name="rest_code_766e25573fbb4cb7b526a2578c187fa8-18"></a>&gt; -A KUBE-SERVICES -d <span class="m">10</span>.108.13.83/32 -p tcp -m comment --comment <span class="s2">"default/ngnix2-service cluster IP"</span> -m tcp --dport <span class="m">80</span> -j KUBE-SVC-JSEMNMAXFXXWPYZQ
+<a name="rest_code_766e25573fbb4cb7b526a2578c187fa8-19"></a>&gt; -A KUBE-SERVICES ! -s <span class="m">192</span>.168.0.0/16 -d <span class="m">10</span>.96.0.10/32 -p udp -m comment --comment <span class="s2">"kube-system/kube-dns:dns cluster IP"</span> -m udp --dport <span class="m">53</span> -j KUBE-MARK-MASQ
+<a name="rest_code_766e25573fbb4cb7b526a2578c187fa8-20"></a>&gt; -A KUBE-SERVICES -d <span class="m">10</span>.96.0.10/32 -p udp -m comment --comment <span class="s2">"kube-system/kube-dns:dns cluster IP"</span> -m udp --dport <span class="m">53</span> -j KUBE-SVC-TCOU7JCQXEZGVUNU
+<a name="rest_code_766e25573fbb4cb7b526a2578c187fa8-21"></a>&gt; -A KUBE-SVC-JSEMNMAXFXXWPYZQ -m comment --comment <span class="s2">"default/ngnix2-service"</span> -m statistic --mode random --probability <span class="m">0</span>.50000000000 -j KUBE-SEP-NK6MJN7AMVFQPBDQ
+<a name="rest_code_766e25573fbb4cb7b526a2578c187fa8-22"></a>&gt; -A KUBE-SVC-JSEMNMAXFXXWPYZQ -m comment --comment <span class="s2">"default/ngnix2-service"</span> -j KUBE-SEP-ZX65TQ3QUDHUAQQM
+</pre>
+<p>This needs proper investigation from me but for now what I can see
+by not providing target port the iptables rules are interfering with more components like kube-dns
+and  by providing the targetport its not touching kube-dns</p>
+<p>To be continued...</p>
+</div>
+</div>
+    </div>
+    <aside class="postpromonav"><nav><ul class="pager hidden-print">
+<li class="previous">
+                <a href="kubernetes-etcd-whats-inside.html" rel="prev" title="Kubernetes etcd - what's inside?">Previous post</a>
+            </li>
+        </ul></nav></aside><section class="comments hidden-print"><h2>Comments</h2>
+        
+        
+        <div id="disqus_thread"></div>
+        <script>
+        var disqus_shortname ="stencel",
+            disqus_url="https://stencel.io/posts/kubernetes-iptables-changes-on-service-creation.html",
+        disqus_title="Kubernetes iptables changes on service creation",
+        disqus_identifier="cache/posts/kubernetes-iptables-changes-on-service-creation.html",
+        disqus_config = function () {
+            this.language = "en";
+        };
+        (function() {
+            var dsq = document.createElement('script'); dsq.async = true;
+            dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script><noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a>
+</noscript>
+    <a href="https://disqus.com" class="dsq-brlink" rel="nofollow">Comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+        </section></article><script>var disqus_shortname="stencel";(function(){var a=document.createElement("script");a.async=true;a.src="https://"+disqus_shortname+".disqus.com/count.js";(document.getElementsByTagName("head")[0]||document.getElementsByTagName("body")[0]).appendChild(a)}());</script><footer id="footer"><p>Contents © 2021         <a href="mailto:gstencel@gmail.com">Greg Stencel</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         </p>
+            
+        </footer>
+</div>
+    </section><script src="../assets/js/all-nocdn.js"></script><!-- fancy dates --><script>
+    moment.locale("en");
+    fancydates(0, "YYYY-MM-DD HH:mm");
+    </script><!-- end fancy dates --><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element) {
+            return element.getElementsByTagName('img')[0].alt;
+    }});
+    </script><script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-50641127-1', 'stencel.io');
+  ga('send', 'pageview');
+
+</script><script type="text/javascript" src="../assets/js/tipuesearch_set.js"></script><script type="text/javascript" src="../assets/js/tipuesearch.js"></script><script type="text/javascript">
+$(document).ready(function() {
+     $('#tipue_search_input').tipuesearch({
+         'mode': 'json',
+         'contentLocation': '/assets/js/tipuesearch_content.json',
+         'showUrl': false
+     });
+});
+</script>
+</body>
+</html>
