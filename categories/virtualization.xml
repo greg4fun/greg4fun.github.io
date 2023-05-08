@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Greg's Tech Notes (Posts about virtualization)</title><link>https://stencel.io/</link><description></description><atom:link href="https://stencel.io/categories/virtualization.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><copyright>Contents © 2020 &lt;a href="mailto:gstencel@gmail.com"&gt;Greg Stencel&lt;/a&gt; </copyright><lastBuildDate>Sun, 28 Jun 2020 20:33:00 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>docker</title><link>https://stencel.io/posts/docker.html</link><dc:creator>Greg Stencel</dc:creator><description>&lt;div&gt;&lt;div class="section" id="first-download-download-pre-build-image"&gt;
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Greg's Tech Notes (Posts about virtualization)</title><link>https://stencel.io/</link><description></description><atom:link href="https://stencel.io/categories/virtualization.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><copyright>Contents © 2023 &lt;a href="mailto:gstencel@gmail.com"&gt;Greg Stencel&lt;/a&gt; </copyright><lastBuildDate>Sat, 06 May 2023 20:05:04 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>docker</title><link>https://stencel.io/posts/docker.html</link><dc:creator>Greg Stencel</dc:creator><description>&lt;section id="first-download-download-pre-build-image"&gt;
 &lt;h2&gt;First download download pre build image :&lt;/h2&gt;
 &lt;p&gt;sudo docker pull ubuntu&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="section" id="run-pseudo-tty"&gt;
+&lt;/section&gt;
+&lt;section id="run-pseudo-tty"&gt;
 &lt;h2&gt;run pseudo tty:&lt;/h2&gt;
 &lt;p&gt;sudo docker run -t -i ubuntu /bin/bash&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="section" id="get-image-of-running-docker"&gt;
+&lt;/section&gt;
+&lt;section id="get-image-of-running-docker"&gt;
 &lt;h2&gt;get image of running docker:&lt;/h2&gt;
 &lt;p&gt;sudo docker ps&lt;/p&gt;
 &lt;p&gt;output:
@@ -18,25 +18,25 @@ c4fbc80d8926        ubuntu:14.04        /bin/bash           3 minutes ago       
 save container as your image:
 =============================
 sudo docker commit c4fbc80d8926 myimage_name&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="section" id="running-our-image"&gt;
+&lt;/section&gt;
+&lt;section id="running-our-image"&gt;
 &lt;h2&gt;Running our image:&lt;/h2&gt;
 &lt;p&gt;sudo docker run -t -i myimage_name /bin/bash&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="section" id="deploying-your-app-and-dependicies"&gt;
+&lt;/section&gt;
+&lt;section id="deploying-your-app-and-dependicies"&gt;
 &lt;h2&gt;Deploying your app and dependicies:&lt;/h2&gt;
 &lt;p&gt;watch out to save container before you quit bash inside docker instance
 find container id and save&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="section" id="diff-image-container"&gt;
+&lt;/section&gt;
+&lt;section id="diff-image-container"&gt;
 &lt;h2&gt;Diff image container:&lt;/h2&gt;
 &lt;p&gt;sudo docker diff&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="section" id="start-docker-container-with-name"&gt;
+&lt;/section&gt;
+&lt;section id="start-docker-container-with-name"&gt;
 &lt;h2&gt;Start docker container with name:&lt;/h2&gt;
 &lt;p&gt;sudo docker run -i -t --name="IWAPPS2" iwapps /bin/bash&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="section" id="commit-with-name"&gt;
+&lt;/section&gt;
+&lt;section id="commit-with-name"&gt;
 &lt;h2&gt;Commit with name :&lt;/h2&gt;
 &lt;p&gt;sudo docker commit IWAPPS2 local -a "greg" -m "First image commit"&lt;/p&gt;
 &lt;p&gt;Actually, images are stored within /var/lib/docker/aufs/diff&lt;/p&gt;
@@ -88,4 +88,4 @@ sudo docker version
 sudo docker search ubuntu
 sudo docker pull ubuntu
 sudo docker images&lt;/p&gt;
-&lt;/div&gt;&lt;/div&gt;</description><category>docker</category><category>virtualization</category><guid>https://stencel.io/posts/docker.html</guid><pubDate>Sat, 11 Oct 2014 09:27:28 GMT</pubDate></item></channel></rss>
+&lt;/section&gt;</description><category>docker</category><category>virtualization</category><guid>https://stencel.io/posts/docker.html</guid><pubDate>Sat, 11 Oct 2014 09:27:28 GMT</pubDate></item></channel></rss>

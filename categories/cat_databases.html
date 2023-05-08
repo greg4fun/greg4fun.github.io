@@ -55,7 +55,7 @@
                 Greg Stencel
             </span></p>
                 <p class="commentline"><i class="fa fa-comment"></i> 
-        
+    
     <a href="../posts/mysql-update-with-random-values-from-list.html#disqus_thread" data-disqus-identifier="cache/posts/mysql-update-with-random-values-from-list.html">Comments</a>
 
 
@@ -71,16 +71,16 @@
                 Greg Stencel
             </span></p>
                 <p class="commentline"><i class="fa fa-comment"></i> 
-        
+    
     <a href="../posts/postgres-terminate-connection.html#disqus_thread" data-disqus-identifier="cache/posts/postgres-terminate-connection.html">Comments</a>
 
 
         </p>
 </div>
     </header><div class="e-content entry-content">
-    <pre class="code psql"><a name="rest_code_da837c1663b14082b84327ebf74d878b-1"></a><span class="k">select</span> <span class="n">pg_terminate_backend</span><span class="p">(</span><span class="n">pid</span><span class="p">)</span>
-<a name="rest_code_da837c1663b14082b84327ebf74d878b-2"></a><span class="k">from</span> <span class="n">pg_stat_activity</span><span class="p">;</span>
-</pre>
+    <div class="code"><pre class="code psql"><a id="rest_code_9ee602987645463aacce661d14ac936c-1" name="rest_code_9ee602987645463aacce661d14ac936c-1" href="../posts/postgres-terminate-connection.html#rest_code_9ee602987645463aacce661d14ac936c-1"></a><span class="k">select</span><span class="w"> </span><span class="n">pg_terminate_backend</span><span class="p">(</span><span class="n">pid</span><span class="p">)</span><span class="w"></span>
+<a id="rest_code_9ee602987645463aacce661d14ac936c-2" name="rest_code_9ee602987645463aacce661d14ac936c-2" href="../posts/postgres-terminate-connection.html#rest_code_9ee602987645463aacce661d14ac936c-2"></a><span class="k">from</span><span class="w"> </span><span class="n">pg_stat_activity</span><span class="p">;</span><span class="w"></span>
+</pre></div>
     </div>
     </article><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="../posts/mysql.html" class="u-url">MySQL</a></h1>
         <div class="metadata">
@@ -89,40 +89,39 @@
                 Greg Stencel
             </span></p>
                 <p class="commentline"><i class="fa fa-comment"></i> 
-        
+    
     <a href="../posts/mysql.html#disqus_thread" data-disqus-identifier="cache/posts/mysql.html">Comments</a>
 
 
         </p>
 </div>
     </header><div class="e-content entry-content">
-    <div class="section" id="mysql-tips">
-<h2>MySQL tips:</h2>
+    <section id="mysql-tips"><h2>MySQL tips:</h2>
 <p>Create database with charset utf8</p>
-<pre class="code sql"><a name="rest_code_5e65d2fa11894b2ebc9e94fb861decb3-1"></a><span class="k">CREATE</span> <span class="k">DATABASE</span> <span class="n">mynew_db_name</span> <span class="nb">CHARACTER</span> <span class="k">SET</span> <span class="n">utf8</span> <span class="k">COLLATE</span> <span class="n">utf8_general_ci</span><span class="p">;</span>
-</pre>
+<div class="code"><pre class="code sql"><a id="rest_code_89cce02112f642cc8ecc92bcbf5beb11-1" name="rest_code_89cce02112f642cc8ecc92bcbf5beb11-1" href="../posts/mysql.html#rest_code_89cce02112f642cc8ecc92bcbf5beb11-1"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">DATABASE</span><span class="w"> </span><span class="n">mynew_db_name</span><span class="w"> </span><span class="nb">CHARACTER</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="n">utf8</span><span class="w"> </span><span class="k">COLLATE</span><span class="w"> </span><span class="n">utf8_general_ci</span><span class="p">;</span><span class="w"></span>
+</pre></div>
 <p>Grant everything to local user on all tables</p>
-<pre class="code sql"><a name="rest_code_5c098611efa2403e9575d1c4a655561d-1"></a><span class="k">GRANT</span> <span class="k">ALL</span> <span class="k">PRIVILEGES</span> <span class="k">ON</span> <span class="n">db_name</span><span class="p">.</span><span class="o">*</span> <span class="k">TO</span> <span class="n">my_user</span><span class="o">@</span><span class="n">localhost</span> <span class="n">IDENTIFIED</span> <span class="k">BY</span> <span class="s1">'my_secret_password'</span><span class="p">;</span>
-</pre>
+<div class="code"><pre class="code sql"><a id="rest_code_d19c7884fb434152a24b2d0baae525e7-1" name="rest_code_d19c7884fb434152a24b2d0baae525e7-1" href="../posts/mysql.html#rest_code_d19c7884fb434152a24b2d0baae525e7-1"></a><span class="k">GRANT</span><span class="w"> </span><span class="k">ALL</span><span class="w"> </span><span class="k">PRIVILEGES</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">db_name</span><span class="p">.</span><span class="o">*</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="n">my_user</span><span class="o">@</span><span class="n">localhost</span><span class="w"> </span><span class="n">IDENTIFIED</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="s1">'my_secret_password'</span><span class="p">;</span><span class="w"></span>
+</pre></div>
 <p>Grant everything to remote user on all tables</p>
-<pre class="code sql"><a name="rest_code_dda2d745d6f9448dbeb7dad2b890f936-1"></a><span class="k">GRANT</span> <span class="k">ALL</span> <span class="k">PRIVILEGES</span> <span class="k">ON</span>  <span class="n">db_name</span><span class="p">.</span><span class="o">*</span> <span class="k">TO</span> <span class="n">my_user</span><span class="o">@</span><span class="s1">'IP_of_host_user_connects_from'</span> <span class="n">IDENTIFIED</span> <span class="k">BY</span> <span class="s1">'my_secret_password'</span><span class="p">;</span>
-</pre>
+<div class="code"><pre class="code sql"><a id="rest_code_c08c53a676724348b4217aff1e08f991-1" name="rest_code_c08c53a676724348b4217aff1e08f991-1" href="../posts/mysql.html#rest_code_c08c53a676724348b4217aff1e08f991-1"></a><span class="k">GRANT</span><span class="w"> </span><span class="k">ALL</span><span class="w"> </span><span class="k">PRIVILEGES</span><span class="w"> </span><span class="k">ON</span><span class="w">  </span><span class="n">db_name</span><span class="p">.</span><span class="o">*</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="n">my_user</span><span class="o">@</span><span class="s1">'IP_of_host_user_connects_from'</span><span class="w"> </span><span class="n">IDENTIFIED</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="s1">'my_secret_password'</span><span class="p">;</span><span class="w"></span>
+</pre></div>
 <p>If you want to add only <strong>SELECT</strong> or something else instead of <strong>ALL</strong> there are other available privileges like:</p>
 <p><strong>SELECT, UPDATE, ALTER, CREATE, DELETE, DROP, SHOW DATABASES</strong>
 CREATE TEMPORARY TABLES, EXECUTE, FILE, GRANT OPTION, INDEX, INSERT, LOCK TABLES, PROCESS, REFERENCES, RELOAD, REPLICATION CLIENT, REPLICATION SLAVE, SHUTDOWN, SUPER, USAGE</p>
 <p>After all you want to reload privileges because when mysqld starts, it reads all grant table contents into memory. The in-memory tables become effective for access control at that point.
 To tell the server to reload the grant tables, perform a flush-privileges operation.</p>
 <p>Execute sql :</p>
-<pre class="code sql"><a name="rest_code_4d1289a1d02e4ea7987a10b28a9bea78-1"></a><span class="n">FLUSH</span> <span class="k">PRIVILEGES</span> <span class="p">;</span>
-</pre>
+<div class="code"><pre class="code sql"><a id="rest_code_cad78b25db494c15b266726eb5c6fd97-1" name="rest_code_cad78b25db494c15b266726eb5c6fd97-1" href="../posts/mysql.html#rest_code_cad78b25db494c15b266726eb5c6fd97-1"></a><span class="n">FLUSH</span><span class="w"> </span><span class="k">PRIVILEGES</span><span class="w"> </span><span class="p">;</span><span class="w"></span>
+</pre></div>
 <p>or you can even do it from shell by</p>
-<pre class="code bash"><a name="rest_code_a2ec35acfadc4c07bad48586809c3b79-1"></a>$ mysqladmin flush-privileges
-</pre>
+<div class="code"><pre class="code bash"><a id="rest_code_14649104f26a46fdbe3753c7faf9583f-1" name="rest_code_14649104f26a46fdbe3753c7faf9583f-1" href="../posts/mysql.html#rest_code_14649104f26a46fdbe3753c7faf9583f-1"></a>$ mysqladmin flush-privileges
+</pre></div>
 <p>or</p>
-<pre class="code bash"><a name="rest_code_fa4fce6967f8439b9340a00dbdf5c25e-1"></a>$ mysqladmin reload
-</pre>
+<div class="code"><pre class="code bash"><a id="rest_code_b1d20e8b7b9c468ba9fd5d592e8c8197-1" name="rest_code_b1d20e8b7b9c468ba9fd5d592e8c8197-1" href="../posts/mysql.html#rest_code_b1d20e8b7b9c468ba9fd5d592e8c8197-1"></a>$ mysqladmin reload
+</pre></div>
+</section>
 </div>
-    </div>
     </article><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="../posts/postgres.html" class="u-url">postgres</a></h1>
         <div class="metadata">
             <p class="dateline"><a href="../posts/postgres.html" rel="bookmark"><i class="fa fa-clock"></i> <time class="published dt-published" datetime="2014-05-08T10:20:29Z" title="2014-05-08 10:20">2014-05-08 10:20</time></a></p>
@@ -130,15 +129,14 @@ To tell the server to reload the grant tables, perform a flush-privileges operat
                 Greg Stencel
             </span></p>
                 <p class="commentline"><i class="fa fa-comment"></i> 
-        
+    
     <a href="../posts/postgres.html#disqus_thread" data-disqus-identifier="cache/posts/postgres.html">Comments</a>
 
 
         </p>
 </div>
     </header><div class="e-content entry-content">
-    <div class="section" id="quick-tip">
-<h2>Quick tip:</h2>
+    <section id="quick-tip"><h2>Quick tip:</h2>
 <p>I started with MySQL db (not speaking of Delphi ADO or something like this )
 Now because of my job I had to switch to Postgres and I thought
 "ok but it's SQL so it will be the same" - not really I had a lot of
@@ -147,69 +145,63 @@ So if youre switchng from mysql it can help you for beginning:</p>
 <p>So first problem was my user access - I couldnt access postgres even through root :)
 so after clean installation if you want to launch psql client for postgres just su as postgres after that you can create
 your own super user or user having privileges to specific database</p>
-<pre class="code bash"><a name="rest_code_b3e2f166a29d4535a77a3467f4a12c29-1"></a>$ su postgres
-<a name="rest_code_b3e2f166a29d4535a77a3467f4a12c29-2"></a>$ psql
-</pre>
+<div class="code"><pre class="code bash"><a id="rest_code_61a76499263c40eeaaf5b6e25f15f78a-1" name="rest_code_61a76499263c40eeaaf5b6e25f15f78a-1" href="../posts/postgres.html#rest_code_61a76499263c40eeaaf5b6e25f15f78a-1"></a>$ su postgres
+<a id="rest_code_61a76499263c40eeaaf5b6e25f15f78a-2" name="rest_code_61a76499263c40eeaaf5b6e25f15f78a-2" href="../posts/postgres.html#rest_code_61a76499263c40eeaaf5b6e25f15f78a-2"></a>$ psql
+</pre></div>
 <p>and then you should be able to do everything</p>
 <p>To see databases "<strong>show databases;</strong>" didn't work anymore :) in postgres</p>
-<pre class="code psql"><a name="rest_code_48e7766fba93432fa7e08c3a97e7d91c-1"></a><span class="kp">\list</span>
-<a name="rest_code_48e7766fba93432fa7e08c3a97e7d91c-2"></a><span class="go">\l</span>
-</pre>
+<div class="code"><pre class="code psql"><a id="rest_code_55817f03ecbf4c9ea346bc1db32d3cf5-1" name="rest_code_55817f03ecbf4c9ea346bc1db32d3cf5-1" href="../posts/postgres.html#rest_code_55817f03ecbf4c9ea346bc1db32d3cf5-1"></a><span class="kp">\list</span>
+<a id="rest_code_55817f03ecbf4c9ea346bc1db32d3cf5-2" name="rest_code_55817f03ecbf4c9ea346bc1db32d3cf5-2" href="../posts/postgres.html#rest_code_55817f03ecbf4c9ea346bc1db32d3cf5-2"></a><span class="go">\l</span>
+</pre></div>
 <p>connect to database:</p>
-<pre class="code psql"><a name="rest_code_d98f4470d60d42ac9b517ac17c49fb1f-1"></a><span class="kp">\c</span> <span class="ss">db_name</span>
-</pre>
+<div class="code"><pre class="code psql"><a id="rest_code_5ec40036a9ac4e5985245ebcba519b8d-1" name="rest_code_5ec40036a9ac4e5985245ebcba519b8d-1" href="../posts/postgres.html#rest_code_5ec40036a9ac4e5985245ebcba519b8d-1"></a><span class="kp">\c</span><span class="w"> </span><span class="ss">db_name</span>
+</pre></div>
 <p><strong>show tables;</strong> in database:</p>
-<pre class="code psql"><a name="rest_code_a9338a387026455dafd04d3a58009f0e-1"></a><span class="kp">\dt</span>
-</pre>
+<div class="code"><pre class="code psql"><a id="rest_code_9ec649481dc04f79b7eb1ad0c3884bc4-1" name="rest_code_9ec649481dc04f79b7eb1ad0c3884bc4-1" href="../posts/postgres.html#rest_code_9ec649481dc04f79b7eb1ad0c3884bc4-1"></a><span class="kp">\dt</span>
+</pre></div>
 <p><strong>Explain</strong> or <strong>describe</strong> table:</p>
-<pre class="code psql"><a name="rest_code_dbd9e41ddeda48599857acacd889063a-1"></a><span class="kp">\d+</span> <span class="ss">table_name</span>
-</pre>
+<div class="code"><pre class="code psql"><a id="rest_code_298718afd96c48219e627dd234837e3a-1" name="rest_code_298718afd96c48219e627dd234837e3a-1" href="../posts/postgres.html#rest_code_298718afd96c48219e627dd234837e3a-1"></a><span class="kp">\d+</span><span class="w"> </span><span class="ss">table_name</span>
+</pre></div>
 <p>Show all shortcuts:</p>
-<pre class="code psql"><a name="rest_code_5f9e850f64d7435585d3acbe49f8e27c-1"></a><span class="kp">\?</span>
-</pre>
-<div class="section" id="backup">
-<h3>Backup</h3>
+<div class="code"><pre class="code psql"><a id="rest_code_c079299f6e09497fbdf418a4c339a43d-1" name="rest_code_c079299f6e09497fbdf418a4c339a43d-1" href="../posts/postgres.html#rest_code_c079299f6e09497fbdf418a4c339a43d-1"></a><span class="kp">\?</span>
+</pre></div>
+<section id="backup"><h3>Backup</h3>
 <p>To dump database to sql script with inserts etc use pg_dump remember (it wont dump user privileges):</p>
-<pre class="code psql"><a name="rest_code_627e31ee7ce94830a987ef9382f2cc00-1"></a><span class="n">pg_dump</span> <span class="n">my_database</span> <span class="o">&gt;</span> <span class="n">my_database</span><span class="mf">.</span><span class="n">pgdump</span>
-</pre>
+<div class="code"><pre class="code psql"><a id="rest_code_fdaa7c2628434b4ca4dd9f6fc76fae71-1" name="rest_code_fdaa7c2628434b4ca4dd9f6fc76fae71-1" href="../posts/postgres.html#rest_code_fdaa7c2628434b4ca4dd9f6fc76fae71-1"></a><span class="n">pg_dump</span><span class="w"> </span><span class="n">my_database</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">my_database</span><span class="mf">.</span><span class="n">pgdump</span><span class="w"></span>
+</pre></div>
 <p>The better way of dumping database is pg_dumpall it dumps database users and groups, tablespaces, access permissions that apply to databases as a whole.</p>
-<pre class="code psql"><a name="rest_code_c474a713543843d3869fc3836db618e0-1"></a><span class="n">pg_dumpall</span> <span class="o">&gt;</span> <span class="n">my_dump</span><span class="mf">.</span><span class="n">pgdump</span>
-</pre>
+<div class="code"><pre class="code psql"><a id="rest_code_abcd6213969445bd8cffb4948da30273-1" name="rest_code_abcd6213969445bd8cffb4948da30273-1" href="../posts/postgres.html#rest_code_abcd6213969445bd8cffb4948da30273-1"></a><span class="n">pg_dumpall</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">my_dump</span><span class="mf">.</span><span class="n">pgdump</span><span class="w"></span>
+</pre></div>
 <p>If you want to move your users of postgres to different server you can:</p>
-<pre class="code psql"><a name="rest_code_0c5a028fe7d2414d84fd66b534af7319-1"></a><span class="n">pg_dumpall</span> <span class="c1">--roles-only &gt; my_users.pgdump</span>
-</pre>
-</div>
-<div class="section" id="restore">
-<h3>Restore</h3>
+<div class="code"><pre class="code psql"><a id="rest_code_ac43e5bf138b4e63a4c1a84b975fc367-1" name="rest_code_ac43e5bf138b4e63a4c1a84b975fc367-1" href="../posts/postgres.html#rest_code_ac43e5bf138b4e63a4c1a84b975fc367-1"></a><span class="n">pg_dumpall</span><span class="w"> </span><span class="c1">--roles-only &gt; my_users.pgdump</span>
+</pre></div>
+</section><section id="restore"><h3>Restore</h3>
 <p>TO simply restore backup pgdump sql file :</p>
-<pre class="code psql"><a name="rest_code_25bfd60ed04d4d1494f44540a63a0164-1"></a><span class="n">psql</span> <span class="o">&lt;</span> <span class="n">my_database</span><span class="mf">.</span><span class="n">pgdump</span>
-</pre>
-</div>
-<div class="section" id="access-privileges">
-<h3>Access Privileges:</h3>
+<div class="code"><pre class="code psql"><a id="rest_code_c10c243885e8493b88c766fdf863bdb9-1" name="rest_code_c10c243885e8493b88c766fdf863bdb9-1" href="../posts/postgres.html#rest_code_c10c243885e8493b88c766fdf863bdb9-1"></a><span class="n">psql</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">my_database</span><span class="mf">.</span><span class="n">pgdump</span><span class="w"></span>
+</pre></div>
+</section><section id="access-privileges"><h3>Access Privileges:</h3>
 <p>Another way is about accessing postgresql if you worked with mysql you could just provide : grant all privileges on db to <a class="reference external" href="mailto:user_name@localhost">user_name@localhost</a> or <a class="reference external" href="mailto:user_name@'10.0.0.1">user_name@'10.0.0.1</a>' here it's not the same. Privileges can be configured in low level pg_hba.conf file where you provide who(sys user) who(db_user) where_from . Adding user in postgres:</p>
 <p>Create user:</p>
-<pre class="code psql"><a name="rest_code_230aaac8a2b44e819419c427a3d123e9-1"></a><span class="k">create</span> <span class="k">user</span> <span class="n">my_name</span> <span class="k">with</span> <span class="k">password</span> <span class="s1">'secret'</span><span class="p">;</span>
-</pre>
+<div class="code"><pre class="code psql"><a id="rest_code_1cb63e781ace4489af121dbbaf99a347-1" name="rest_code_1cb63e781ace4489af121dbbaf99a347-1" href="../posts/postgres.html#rest_code_1cb63e781ace4489af121dbbaf99a347-1"></a><span class="k">create</span><span class="w"> </span><span class="k">user</span><span class="w"> </span><span class="n">my_name</span><span class="w"> </span><span class="k">with</span><span class="w"> </span><span class="k">password</span><span class="w"> </span><span class="s1">'secret'</span><span class="p">;</span><span class="w"></span>
+</pre></div>
 <p>change owner of db:</p>
-<pre class="code psql"><a name="rest_code_41b1fe56dee54de99da599a7c90c20a2-1"></a><span class="k">alter</span> <span class="k">database</span> <span class="n">mydatabase</span>  <span class="k">owner</span> <span class="k">to</span> <span class="n">new_owner_name</span><span class="p">;</span>
-</pre>
+<div class="code"><pre class="code psql"><a id="rest_code_2f88d5d85b5c402eaeb040e6b5f268d1-1" name="rest_code_2f88d5d85b5c402eaeb040e6b5f268d1-1" href="../posts/postgres.html#rest_code_2f88d5d85b5c402eaeb040e6b5f268d1-1"></a><span class="k">alter</span><span class="w"> </span><span class="k">database</span><span class="w"> </span><span class="n">mydatabase</span><span class="w">  </span><span class="k">owner</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="n">new_owner_name</span><span class="p">;</span><span class="w"></span>
+</pre></div>
 <p>change owner of tables:</p>
-<pre class="code psql"><a name="rest_code_9df21f3e90dd44c3b0435783a3843643-1"></a><span class="k">REASSIGN</span> <span class="k">OWNED</span> <span class="k">BY</span> <span class="n">old_role</span> <span class="k">TO</span> <span class="n">new_role</span>
-</pre>
+<div class="code"><pre class="code psql"><a id="rest_code_4bca030e6b46482ba3d0095843f272e2-1" name="rest_code_4bca030e6b46482ba3d0095843f272e2-1" href="../posts/postgres.html#rest_code_4bca030e6b46482ba3d0095843f272e2-1"></a><span class="k">REASSIGN</span><span class="w"> </span><span class="k">OWNED</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">old_role</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="n">new_role</span><span class="w"></span>
+</pre></div>
 <p>rename db</p>
-<pre class="code psql"><a name="rest_code_ab104e5980104c1fa8278d27752a9946-1"></a><span class="k">alter</span>  <span class="k">database</span> <span class="n">production</span> <span class="k">rename</span> <span class="k">to</span> <span class="n">production_delete</span><span class="p">;</span>
-</pre>
+<div class="code"><pre class="code psql"><a id="rest_code_83071d3c6af1493682ce5226a2e8fc61-1" name="rest_code_83071d3c6af1493682ce5226a2e8fc61-1" href="../posts/postgres.html#rest_code_83071d3c6af1493682ce5226a2e8fc61-1"></a><span class="k">alter</span><span class="w">  </span><span class="k">database</span><span class="w"> </span><span class="n">production</span><span class="w"> </span><span class="k">rename</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="n">production_delete</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</section></section>
 </div>
-</div>
-    </div>
     </article>
 </div>
 
 
 
-        
-       <script>var disqus_shortname="stencel";(function(){var a=document.createElement("script");a.async=true;a.src="https://"+disqus_shortname+".disqus.com/count.js";(document.getElementsByTagName("head")[0]||document.getElementsByTagName("body")[0]).appendChild(a)}());</script><footer id="footer"><p>Contents © 2021         <a href="mailto:gstencel@gmail.com">Greg Stencel</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         </p>
+    
+       <script>var disqus_shortname="stencel";(function(){var a=document.createElement("script");a.async=true;a.src="https://"+disqus_shortname+".disqus.com/count.js";(document.getElementsByTagName("head")[0]||document.getElementsByTagName("body")[0]).appendChild(a)}());</script><footer id="footer"><p>Contents © 2023         <a href="mailto:gstencel@gmail.com">Greg Stencel</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         </p>
             
         </footer>
 </div>

@@ -55,15 +55,14 @@
                 Greg Stencel
             </span></p>
                 <p class="commentline"><i class="fa fa-comment"></i> 
-        
+    
     <a href="../posts/python-combine-dates-current-date-with-different-hour.html#disqus_thread" data-disqus-identifier="cache/posts/python-combine-dates-current-date-with-different-hour.html">Comments</a>
 
 
         </p>
 </div>
     </header><div class="e-content entry-content">
-    <div>
-<p>Specification:
+    <p>Specification:
 I want to launch deployment script but not before 18:00 so every user can leave home.
 I want to lunch it today but with different time that datetime.datetime.now() gives
 To do it I think best way is t to combine <strong>date.today</strong> with <strong>time(18,00)</strong> and then compare
@@ -74,30 +73,29 @@ Command of lauching is up to us so jsut for tests lets pass it in argvs:</p>
 <blockquote>
 <p>python testtime.py 16 35</p>
 </blockquote>
-<pre class="code python"><a name="rest_code_6b3cd7ca589948d787a40b3a9486e607-1"></a><span class="kn">import</span> <span class="nn">sys</span>
-<a name="rest_code_6b3cd7ca589948d787a40b3a9486e607-2"></a><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">date</span><span class="p">,</span><span class="n">time</span>
-<a name="rest_code_6b3cd7ca589948d787a40b3a9486e607-3"></a>
-<a name="rest_code_6b3cd7ca589948d787a40b3a9486e607-4"></a><span class="n">current_time</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
-<a name="rest_code_6b3cd7ca589948d787a40b3a9486e607-5"></a><span class="n">ehour</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-<a name="rest_code_6b3cd7ca589948d787a40b3a9486e607-6"></a><span class="n">eminute</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
-<a name="rest_code_6b3cd7ca589948d787a40b3a9486e607-7"></a>
-<a name="rest_code_6b3cd7ca589948d787a40b3a9486e607-8"></a><span class="n">exe_time</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">combine</span><span class="p">(</span><span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">(),</span> <span class="n">time</span><span class="p">(</span><span class="n">ehour</span><span class="p">,</span><span class="n">eminute</span><span class="p">))</span>
-<a name="rest_code_6b3cd7ca589948d787a40b3a9486e607-9"></a><span class="c1">#or datetime.(datetime.today().year,datetime.today().month,datetime.today().day,ehour,eminute)</span>
-<a name="rest_code_6b3cd7ca589948d787a40b3a9486e607-10"></a><span class="nb">print</span> <span class="s2">"time left:"</span>
-<a name="rest_code_6b3cd7ca589948d787a40b3a9486e607-11"></a><span class="nb">print</span> <span class="p">(</span><span class="n">exe_time</span> <span class="o">-</span> <span class="n">current_time</span><span class="p">)</span>
-<a name="rest_code_6b3cd7ca589948d787a40b3a9486e607-12"></a>
-<a name="rest_code_6b3cd7ca589948d787a40b3a9486e607-13"></a><span class="k">if</span> <span class="n">exe_time</span><span class="o">&lt;=</span><span class="n">current_time</span><span class="p">:</span>
-<a name="rest_code_6b3cd7ca589948d787a40b3a9486e607-14"></a>    <span class="nb">print</span> <span class="s2">"executing..."</span>
-</pre>
-</div>
+<div class="code"><pre class="code python"><a id="rest_code_d432ce4afdda4bb392f47974830aa207-1" name="rest_code_d432ce4afdda4bb392f47974830aa207-1" href="../posts/python-combine-dates-current-date-with-different-hour.html#rest_code_d432ce4afdda4bb392f47974830aa207-1"></a><span class="kn">import</span> <span class="nn">sys</span>
+<a id="rest_code_d432ce4afdda4bb392f47974830aa207-2" name="rest_code_d432ce4afdda4bb392f47974830aa207-2" href="../posts/python-combine-dates-current-date-with-different-hour.html#rest_code_d432ce4afdda4bb392f47974830aa207-2"></a><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">date</span><span class="p">,</span><span class="n">time</span>
+<a id="rest_code_d432ce4afdda4bb392f47974830aa207-3" name="rest_code_d432ce4afdda4bb392f47974830aa207-3" href="../posts/python-combine-dates-current-date-with-different-hour.html#rest_code_d432ce4afdda4bb392f47974830aa207-3"></a>
+<a id="rest_code_d432ce4afdda4bb392f47974830aa207-4" name="rest_code_d432ce4afdda4bb392f47974830aa207-4" href="../posts/python-combine-dates-current-date-with-different-hour.html#rest_code_d432ce4afdda4bb392f47974830aa207-4"></a><span class="n">current_time</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+<a id="rest_code_d432ce4afdda4bb392f47974830aa207-5" name="rest_code_d432ce4afdda4bb392f47974830aa207-5" href="../posts/python-combine-dates-current-date-with-different-hour.html#rest_code_d432ce4afdda4bb392f47974830aa207-5"></a><span class="n">ehour</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<a id="rest_code_d432ce4afdda4bb392f47974830aa207-6" name="rest_code_d432ce4afdda4bb392f47974830aa207-6" href="../posts/python-combine-dates-current-date-with-different-hour.html#rest_code_d432ce4afdda4bb392f47974830aa207-6"></a><span class="n">eminute</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+<a id="rest_code_d432ce4afdda4bb392f47974830aa207-7" name="rest_code_d432ce4afdda4bb392f47974830aa207-7" href="../posts/python-combine-dates-current-date-with-different-hour.html#rest_code_d432ce4afdda4bb392f47974830aa207-7"></a>
+<a id="rest_code_d432ce4afdda4bb392f47974830aa207-8" name="rest_code_d432ce4afdda4bb392f47974830aa207-8" href="../posts/python-combine-dates-current-date-with-different-hour.html#rest_code_d432ce4afdda4bb392f47974830aa207-8"></a><span class="n">exe_time</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">combine</span><span class="p">(</span><span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">(),</span> <span class="n">time</span><span class="p">(</span><span class="n">ehour</span><span class="p">,</span><span class="n">eminute</span><span class="p">))</span>
+<a id="rest_code_d432ce4afdda4bb392f47974830aa207-9" name="rest_code_d432ce4afdda4bb392f47974830aa207-9" href="../posts/python-combine-dates-current-date-with-different-hour.html#rest_code_d432ce4afdda4bb392f47974830aa207-9"></a><span class="c1">#or datetime.(datetime.today().year,datetime.today().month,datetime.today().day,ehour,eminute)</span>
+<a id="rest_code_d432ce4afdda4bb392f47974830aa207-10" name="rest_code_d432ce4afdda4bb392f47974830aa207-10" href="../posts/python-combine-dates-current-date-with-different-hour.html#rest_code_d432ce4afdda4bb392f47974830aa207-10"></a><span class="nb">print</span> <span class="s2">"time left:"</span>
+<a id="rest_code_d432ce4afdda4bb392f47974830aa207-11" name="rest_code_d432ce4afdda4bb392f47974830aa207-11" href="../posts/python-combine-dates-current-date-with-different-hour.html#rest_code_d432ce4afdda4bb392f47974830aa207-11"></a><span class="nb">print</span> <span class="p">(</span><span class="n">exe_time</span> <span class="o">-</span> <span class="n">current_time</span><span class="p">)</span>
+<a id="rest_code_d432ce4afdda4bb392f47974830aa207-12" name="rest_code_d432ce4afdda4bb392f47974830aa207-12" href="../posts/python-combine-dates-current-date-with-different-hour.html#rest_code_d432ce4afdda4bb392f47974830aa207-12"></a>
+<a id="rest_code_d432ce4afdda4bb392f47974830aa207-13" name="rest_code_d432ce4afdda4bb392f47974830aa207-13" href="../posts/python-combine-dates-current-date-with-different-hour.html#rest_code_d432ce4afdda4bb392f47974830aa207-13"></a><span class="k">if</span> <span class="n">exe_time</span><span class="o">&lt;=</span><span class="n">current_time</span><span class="p">:</span>
+<a id="rest_code_d432ce4afdda4bb392f47974830aa207-14" name="rest_code_d432ce4afdda4bb392f47974830aa207-14" href="../posts/python-combine-dates-current-date-with-different-hour.html#rest_code_d432ce4afdda4bb392f47974830aa207-14"></a>    <span class="nb">print</span> <span class="s2">"executing..."</span>
+</pre></div>
     </div>
     </article>
 </div>
 
 
 
-        
-       <script>var disqus_shortname="stencel";(function(){var a=document.createElement("script");a.async=true;a.src="https://"+disqus_shortname+".disqus.com/count.js";(document.getElementsByTagName("head")[0]||document.getElementsByTagName("body")[0]).appendChild(a)}());</script><footer id="footer"><p>Contents © 2021         <a href="mailto:gstencel@gmail.com">Greg Stencel</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         </p>
+    
+       <script>var disqus_shortname="stencel";(function(){var a=document.createElement("script");a.async=true;a.src="https://"+disqus_shortname+".disqus.com/count.js";(document.getElementsByTagName("head")[0]||document.getElementsByTagName("body")[0]).appendChild(a)}());</script><footer id="footer"><p>Contents © 2023         <a href="mailto:gstencel@gmail.com">Greg Stencel</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         </p>
             
         </footer>
 </div>

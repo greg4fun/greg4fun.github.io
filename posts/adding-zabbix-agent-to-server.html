@@ -57,7 +57,7 @@ ubuntus (16.04.">
                     Greg Stencel
             </span></p>
                 <p class="commentline"><i class="far fa-comment"></i>
-        
+    
     <a href="adding-zabbix-agent-to-server.html#disqus_thread" data-disqus-identifier="cache/posts/adding-zabbix-agent-to-server.html">Comments</a>
 
 
@@ -82,8 +82,7 @@ ubuntus (16.04.">
 
         </div>
     </header><div class="e-content entry-content" itemprop="articleBody text">
-    <div>
-<p>Zabbix is very powerfull tool which its using agents (or SNMP) to monitor server resources.
+    <p>Zabbix is very powerfull tool which its using agents (or SNMP) to monitor server resources.
 Adding agent is easy but I had couple problems doing that when I used agent straight from my
 ubuntus (16.04.3) repo as there was no encryption functionality in this agent well I guess so as
 agent didn't recognize tls psk configuration so not very nice as by installing agent straight form repo
@@ -102,8 +101,7 @@ apt-get install zabbix-agent</p>
 ServerActive=ip of zabbix server
 Hostname=My host name</p>
 <p>sudo service zabbix-agent restart</p>
-<div class="section" id="add-host-to-server-through-web-interface">
-<h2>Add host to server through web interface:</h2>
+<section id="add-host-to-server-through-web-interface"><h2>Add host to server through web interface:</h2>
 <p>In server go to Configuration-&gt; Hosts -&gt; Create host
 type in host name
 visible name
@@ -111,9 +109,7 @@ public IP address opf your agent.Select group and add agent.
 Next is to select templates so add services you need to monitor (here linux + mysql : Template DB MySQL, Template OS Linux)
 after saving you should see green ZBX available label on Hosts screen
 Notice : I couldnt see zbx agent green icon until I added linux template / or zabbix agent template.</p>
-</div>
-<div class="section" id="seurity-setting-up-psk-encryption">
-<h2>Seurity - Setting up PSK encryption:</h2>
+</section><section id="seurity-setting-up-psk-encryption"><h2>Seurity - Setting up PSK encryption:</h2>
 <p>sh -c "openssl rand -hex 32 &gt; /etc/zabbix/zabbix_agentd.psk"
 Now add below lines to /etc/zabbix/zabbix_agentd.conf
 TLSConnect=psk
@@ -132,9 +128,7 @@ connections from host PSK
 PSK identity: PSK SOMETHING (same as in zabbixagent config file)
 PSK: the hash generated (content of /etc/zabbix/zabbix_agentd.psk file on agent )
 now there should be greebn psk lablel and all our traffice will be encrypted</p>
-</div>
-<div class="section" id="adding-mysql-monitoring-option">
-<h2>Adding mysql monitoring option:</h2>
+</section><section id="adding-mysql-monitoring-option"><h2>Adding mysql monitoring option:</h2>
 <p>add user credentials for mysqlclient on agent server:
 mysql &gt; grant all privileges on <em>.</em> to zabbix@'%' identified by 'zabbixuserpassword';
 use localhost or host you will be accessing mysql from % is just for test purpose to eliminate
@@ -181,9 +175,8 @@ previously was
 UserParameter=mysql.ping,HOME=/var/lib/zabbix mysqladmin ping | grep -c alive
 so grep didnt work</p>
 <p>Write your post here.</p>
+</section>
 </div>
-</div>
-    </div>
     <aside class="postpromonav"><nav><ul class="pager hidden-print">
 <li class="previous">
                 <a href="zabbix-stack-with-docker-composeyml.html" rel="prev" title="Zabbix stack with docker-compose.yml">Previous post</a>
@@ -193,7 +186,7 @@ so grep didnt work</p>
             </li>
         </ul></nav></aside><section class="comments hidden-print"><h2>Comments</h2>
         
-        
+    
         <div id="disqus_thread"></div>
         <script>
         var disqus_shortname ="stencel",
@@ -213,7 +206,7 @@ so grep didnt work</p>
     <a href="https://disqus.com" class="dsq-brlink" rel="nofollow">Comments powered by <span class="logo-disqus">Disqus</span></a>
 
 
-        </section></article><script>var disqus_shortname="stencel";(function(){var a=document.createElement("script");a.async=true;a.src="https://"+disqus_shortname+".disqus.com/count.js";(document.getElementsByTagName("head")[0]||document.getElementsByTagName("body")[0]).appendChild(a)}());</script><footer id="footer"><p>Contents © 2021         <a href="mailto:gstencel@gmail.com">Greg Stencel</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         </p>
+        </section></article><script>var disqus_shortname="stencel";(function(){var a=document.createElement("script");a.async=true;a.src="https://"+disqus_shortname+".disqus.com/count.js";(document.getElementsByTagName("head")[0]||document.getElementsByTagName("body")[0]).appendChild(a)}());</script><footer id="footer"><p>Contents © 2023         <a href="mailto:gstencel@gmail.com">Greg Stencel</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         </p>
             
         </footer>
 </div>

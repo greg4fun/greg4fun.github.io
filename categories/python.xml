@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Greg's Tech Notes (Posts about python)</title><link>https://stencel.io/</link><description></description><atom:link href="https://stencel.io/categories/python.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><copyright>Contents © 2020 &lt;a href="mailto:gstencel@gmail.com"&gt;Greg Stencel&lt;/a&gt; </copyright><lastBuildDate>Sun, 28 Jun 2020 20:33:00 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Python combine dates , current date with different hour</title><link>https://stencel.io/posts/python-combine-dates-current-date-with-different-hour.html</link><dc:creator>Greg Stencel</dc:creator><description>&lt;div&gt;&lt;p&gt;Specification:
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Greg's Tech Notes (Posts about python)</title><link>https://stencel.io/</link><description></description><atom:link href="https://stencel.io/categories/python.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><copyright>Contents © 2023 &lt;a href="mailto:gstencel@gmail.com"&gt;Greg Stencel&lt;/a&gt; </copyright><lastBuildDate>Sat, 06 May 2023 20:05:03 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Python combine dates , current date with different hour</title><link>https://stencel.io/posts/python-combine-dates-current-date-with-different-hour.html</link><dc:creator>Greg Stencel</dc:creator><description>&lt;p&gt;Specification:
 I want to launch deployment script but not before 18:00 so every user can leave home.
 I want to lunch it today but with different time that datetime.datetime.now() gives
 To do it I think best way is t to combine &lt;strong&gt;date.today&lt;/strong&gt; with &lt;strong&gt;time(18,00)&lt;/strong&gt; and then compare
@@ -10,21 +10,21 @@ Command of lauching is up to us so jsut for tests lets pass it in argvs:&lt;/p&g
 &lt;blockquote&gt;
 &lt;p&gt;python testtime.py 16 35&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;pre class="code python"&gt;&lt;a name="rest_code_6b3cd7ca589948d787a40b3a9486e607-1"&gt;&lt;/a&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;sys&lt;/span&gt;
-&lt;a name="rest_code_6b3cd7ca589948d787a40b3a9486e607-2"&gt;&lt;/a&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;datetime&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;datetime&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;date&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;time&lt;/span&gt;
-&lt;a name="rest_code_6b3cd7ca589948d787a40b3a9486e607-3"&gt;&lt;/a&gt;
-&lt;a name="rest_code_6b3cd7ca589948d787a40b3a9486e607-4"&gt;&lt;/a&gt;&lt;span class="n"&gt;current_time&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;datetime&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;now&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
-&lt;a name="rest_code_6b3cd7ca589948d787a40b3a9486e607-5"&gt;&lt;/a&gt;&lt;span class="n"&gt;ehour&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nb"&gt;int&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;sys&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;argv&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
-&lt;a name="rest_code_6b3cd7ca589948d787a40b3a9486e607-6"&gt;&lt;/a&gt;&lt;span class="n"&gt;eminute&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nb"&gt;int&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;sys&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;argv&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
-&lt;a name="rest_code_6b3cd7ca589948d787a40b3a9486e607-7"&gt;&lt;/a&gt;
-&lt;a name="rest_code_6b3cd7ca589948d787a40b3a9486e607-8"&gt;&lt;/a&gt;&lt;span class="n"&gt;exe_time&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;datetime&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;combine&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;date&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;today&lt;/span&gt;&lt;span class="p"&gt;(),&lt;/span&gt; &lt;span class="n"&gt;time&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;ehour&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;eminute&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
-&lt;a name="rest_code_6b3cd7ca589948d787a40b3a9486e607-9"&gt;&lt;/a&gt;&lt;span class="c1"&gt;#or datetime.(datetime.today().year,datetime.today().month,datetime.today().day,ehour,eminute)&lt;/span&gt;
-&lt;a name="rest_code_6b3cd7ca589948d787a40b3a9486e607-10"&gt;&lt;/a&gt;&lt;span class="nb"&gt;print&lt;/span&gt; &lt;span class="s2"&gt;"time left:"&lt;/span&gt;
-&lt;a name="rest_code_6b3cd7ca589948d787a40b3a9486e607-11"&gt;&lt;/a&gt;&lt;span class="nb"&gt;print&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;exe_time&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;current_time&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;a name="rest_code_6b3cd7ca589948d787a40b3a9486e607-12"&gt;&lt;/a&gt;
-&lt;a name="rest_code_6b3cd7ca589948d787a40b3a9486e607-13"&gt;&lt;/a&gt;&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;exe_time&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;=&lt;/span&gt;&lt;span class="n"&gt;current_time&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
-&lt;a name="rest_code_6b3cd7ca589948d787a40b3a9486e607-14"&gt;&lt;/a&gt;    &lt;span class="nb"&gt;print&lt;/span&gt; &lt;span class="s2"&gt;"executing..."&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;</description><category>python</category><guid>https://stencel.io/posts/python-combine-dates-current-date-with-different-hour.html</guid><pubDate>Wed, 04 Jun 2014 16:38:10 GMT</pubDate></item><item><title>Quick vi / vim tutorial</title><link>https://stencel.io/posts/vim.html</link><dc:creator>Greg Stencel</dc:creator><description>&lt;div&gt;&lt;p&gt;This site is written to promote using VIM cause it's free, it has a lot
+&lt;div class="code"&gt;&lt;pre class="code python"&gt;&lt;a id="rest_code_d432ce4afdda4bb392f47974830aa207-1" name="rest_code_d432ce4afdda4bb392f47974830aa207-1" href="https://stencel.io/posts/python-combine-dates-current-date-with-different-hour.html#rest_code_d432ce4afdda4bb392f47974830aa207-1"&gt;&lt;/a&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;sys&lt;/span&gt;
+&lt;a id="rest_code_d432ce4afdda4bb392f47974830aa207-2" name="rest_code_d432ce4afdda4bb392f47974830aa207-2" href="https://stencel.io/posts/python-combine-dates-current-date-with-different-hour.html#rest_code_d432ce4afdda4bb392f47974830aa207-2"&gt;&lt;/a&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;datetime&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;datetime&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;date&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;time&lt;/span&gt;
+&lt;a id="rest_code_d432ce4afdda4bb392f47974830aa207-3" name="rest_code_d432ce4afdda4bb392f47974830aa207-3" href="https://stencel.io/posts/python-combine-dates-current-date-with-different-hour.html#rest_code_d432ce4afdda4bb392f47974830aa207-3"&gt;&lt;/a&gt;
+&lt;a id="rest_code_d432ce4afdda4bb392f47974830aa207-4" name="rest_code_d432ce4afdda4bb392f47974830aa207-4" href="https://stencel.io/posts/python-combine-dates-current-date-with-different-hour.html#rest_code_d432ce4afdda4bb392f47974830aa207-4"&gt;&lt;/a&gt;&lt;span class="n"&gt;current_time&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;datetime&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;now&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;a id="rest_code_d432ce4afdda4bb392f47974830aa207-5" name="rest_code_d432ce4afdda4bb392f47974830aa207-5" href="https://stencel.io/posts/python-combine-dates-current-date-with-different-hour.html#rest_code_d432ce4afdda4bb392f47974830aa207-5"&gt;&lt;/a&gt;&lt;span class="n"&gt;ehour&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nb"&gt;int&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;sys&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;argv&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
+&lt;a id="rest_code_d432ce4afdda4bb392f47974830aa207-6" name="rest_code_d432ce4afdda4bb392f47974830aa207-6" href="https://stencel.io/posts/python-combine-dates-current-date-with-different-hour.html#rest_code_d432ce4afdda4bb392f47974830aa207-6"&gt;&lt;/a&gt;&lt;span class="n"&gt;eminute&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nb"&gt;int&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;sys&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;argv&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
+&lt;a id="rest_code_d432ce4afdda4bb392f47974830aa207-7" name="rest_code_d432ce4afdda4bb392f47974830aa207-7" href="https://stencel.io/posts/python-combine-dates-current-date-with-different-hour.html#rest_code_d432ce4afdda4bb392f47974830aa207-7"&gt;&lt;/a&gt;
+&lt;a id="rest_code_d432ce4afdda4bb392f47974830aa207-8" name="rest_code_d432ce4afdda4bb392f47974830aa207-8" href="https://stencel.io/posts/python-combine-dates-current-date-with-different-hour.html#rest_code_d432ce4afdda4bb392f47974830aa207-8"&gt;&lt;/a&gt;&lt;span class="n"&gt;exe_time&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;datetime&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;combine&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;date&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;today&lt;/span&gt;&lt;span class="p"&gt;(),&lt;/span&gt; &lt;span class="n"&gt;time&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;ehour&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;eminute&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;a id="rest_code_d432ce4afdda4bb392f47974830aa207-9" name="rest_code_d432ce4afdda4bb392f47974830aa207-9" href="https://stencel.io/posts/python-combine-dates-current-date-with-different-hour.html#rest_code_d432ce4afdda4bb392f47974830aa207-9"&gt;&lt;/a&gt;&lt;span class="c1"&gt;#or datetime.(datetime.today().year,datetime.today().month,datetime.today().day,ehour,eminute)&lt;/span&gt;
+&lt;a id="rest_code_d432ce4afdda4bb392f47974830aa207-10" name="rest_code_d432ce4afdda4bb392f47974830aa207-10" href="https://stencel.io/posts/python-combine-dates-current-date-with-different-hour.html#rest_code_d432ce4afdda4bb392f47974830aa207-10"&gt;&lt;/a&gt;&lt;span class="nb"&gt;print&lt;/span&gt; &lt;span class="s2"&gt;"time left:"&lt;/span&gt;
+&lt;a id="rest_code_d432ce4afdda4bb392f47974830aa207-11" name="rest_code_d432ce4afdda4bb392f47974830aa207-11" href="https://stencel.io/posts/python-combine-dates-current-date-with-different-hour.html#rest_code_d432ce4afdda4bb392f47974830aa207-11"&gt;&lt;/a&gt;&lt;span class="nb"&gt;print&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;exe_time&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;current_time&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;a id="rest_code_d432ce4afdda4bb392f47974830aa207-12" name="rest_code_d432ce4afdda4bb392f47974830aa207-12" href="https://stencel.io/posts/python-combine-dates-current-date-with-different-hour.html#rest_code_d432ce4afdda4bb392f47974830aa207-12"&gt;&lt;/a&gt;
+&lt;a id="rest_code_d432ce4afdda4bb392f47974830aa207-13" name="rest_code_d432ce4afdda4bb392f47974830aa207-13" href="https://stencel.io/posts/python-combine-dates-current-date-with-different-hour.html#rest_code_d432ce4afdda4bb392f47974830aa207-13"&gt;&lt;/a&gt;&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;exe_time&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;=&lt;/span&gt;&lt;span class="n"&gt;current_time&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;a id="rest_code_d432ce4afdda4bb392f47974830aa207-14" name="rest_code_d432ce4afdda4bb392f47974830aa207-14" href="https://stencel.io/posts/python-combine-dates-current-date-with-different-hour.html#rest_code_d432ce4afdda4bb392f47974830aa207-14"&gt;&lt;/a&gt;    &lt;span class="nb"&gt;print&lt;/span&gt; &lt;span class="s2"&gt;"executing..."&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;</description><category>python</category><guid>https://stencel.io/posts/python-combine-dates-current-date-with-different-hour.html</guid><pubDate>Wed, 04 Jun 2014 16:38:10 GMT</pubDate></item><item><title>Quick vi / vim tutorial</title><link>https://stencel.io/posts/vim.html</link><dc:creator>Greg Stencel</dc:creator><description>&lt;p&gt;This site is written to promote using VIM cause it's free, it has a lot
 of plugins and it can even be python IDE ;) and vi is also on every unix
 like system so logging to your clean instalation server it's good to
 know how to edit conf files.&lt;/p&gt;
@@ -58,7 +58,7 @@ normal mode ESC) and moving for selection&lt;/p&gt;&lt;/li&gt;
 &lt;li&gt;&lt;p&gt;&lt;strong&gt;Command-line&lt;/strong&gt; : you activate it by pressing : (being in normal
 mode ESC)&lt;/p&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;div class="alert alert-info"&gt;Tip: Capital letters like &lt;kbd&gt;A&lt;/kbd&gt; need to followed by &lt;kbd&gt;Shift&lt;/kbd&gt; &lt;/div&gt;&lt;div class="section" id="editing-enter-commands-below-being-in-normal-mode"&gt;
+&lt;div class="alert alert-info"&gt;Tip: Capital letters like &lt;kbd&gt;A&lt;/kbd&gt; need to followed by &lt;kbd&gt;Shift&lt;/kbd&gt; &lt;/div&gt;&lt;section id="editing-enter-commands-below-being-in-normal-mode"&gt;
 &lt;h2&gt;Editing (enter commands below being in normal mode):&lt;/h2&gt;
 &lt;blockquote&gt;
 &lt;kbd&gt;i&lt;/kbd&gt;  -  enter insert mode and place cursor at &lt;b&gt;current position&lt;/b&gt; to start typing&lt;br&gt;&lt;br&gt;&lt;p&gt;&lt;img alt="image0" src="https://stencel.io/images/i.gif"&gt;&lt;/p&gt;
@@ -117,7 +117,7 @@ mode ESC)&lt;/p&gt;&lt;/li&gt;
 &lt;blockquote&gt;
 &lt;kbd&gt;ESC&lt;/kbd&gt; - exit insert mode&lt;/blockquote&gt;
 &lt;hr class="docutils"&gt;
-&lt;div class="section" id="indedation"&gt;
+&lt;section id="indedation"&gt;
 &lt;h3&gt;Indedation&lt;/h3&gt;
 &lt;blockquote&gt;
 &lt;p class="bg-success"&gt;
@@ -128,14 +128,14 @@ mode ESC)&lt;/p&gt;&lt;/li&gt;
    :%s/\n/ /cg - replace all spaces with enter in all lines but with confirmation&lt;br&gt;
 
  &lt;/p&gt;&lt;/blockquote&gt;
-&lt;/div&gt;
+&lt;/section&gt;
 &lt;hr class="docutils"&gt;
-&lt;div class="section" id="id1"&gt;
+&lt;section id="id1"&gt;
 &lt;h3&gt;Indedation&lt;/h3&gt;
 &lt;blockquote&gt;
 &lt;kbd&gt;v&lt;/kbd&gt; then select block you want indent and press number of indedations&lt;kbd&gt;2&lt;/kbd&gt;&lt;kbd&gt;&amp;gt;&lt;/kbd&gt; -  execute indentation on the selected block&lt;/blockquote&gt;
-&lt;/div&gt;
-&lt;div class="section" id="marking-text-visual-mode"&gt;
+&lt;/section&gt;
+&lt;section id="marking-text-visual-mode"&gt;
 &lt;h3&gt;Marking text (visual mode)&lt;/h3&gt;
 &lt;blockquote&gt;
 &lt;kbd&gt;v&lt;/kbd&gt; - mark lines with starting visual mode&lt;/blockquote&gt;
@@ -200,8 +200,8 @@ mode ESC)&lt;/p&gt;&lt;/li&gt;
 &lt;hr class="docutils"&gt;
 &lt;blockquote&gt;
 &lt;kbd&gt;~&lt;/kbd&gt; - switch case&lt;/blockquote&gt;
-&lt;/div&gt;
-&lt;div class="section" id="layout-windows"&gt;
+&lt;/section&gt;
+&lt;section id="layout-windows"&gt;
 &lt;h3&gt;Layout/windows:&lt;/h3&gt;
 &lt;blockquote&gt;
 &lt;kbd&gt;Ctrl&lt;/kbd&gt;&lt;kbd&gt;w&lt;/kbd&gt;&lt;kbd&gt;w&lt;/kbd&gt; - swith between windows&lt;/blockquote&gt;
@@ -244,8 +244,8 @@ mode ESC)&lt;/p&gt;&lt;/li&gt;
 &lt;hr class="docutils"&gt;
 &lt;blockquote&gt;
 &lt;kbd&gt;:b 2&lt;/kbd&gt; - open buffer #2 in this window&lt;/blockquote&gt;
-&lt;/div&gt;
-&lt;div class="section" id="movement"&gt;
+&lt;/section&gt;
+&lt;section id="movement"&gt;
 &lt;h3&gt;Movement:&lt;/h3&gt;
 &lt;blockquote&gt;
 &lt;kbd&gt;w&lt;/kbd&gt; - next word by punctation &lt;br&gt;&lt;br&gt;&lt;p&gt;&lt;img alt="image20" src="https://stencel.io/images/w_2.gif"&gt;&lt;/p&gt;
@@ -290,9 +290,9 @@ mode ESC)&lt;/p&gt;&lt;/li&gt;
 &lt;hr class="docutils"&gt;
 &lt;blockquote&gt;
 &lt;kbd&gt;G&lt;/kbd&gt; - Go To command (prefix with number 4j moves down 4 lines.&lt;/blockquote&gt;
-&lt;/div&gt;
+&lt;/section&gt;
 &lt;hr class="docutils"&gt;
-&lt;div class="section" id="operations-on-file"&gt;
+&lt;section id="operations-on-file"&gt;
 &lt;h3&gt;Operations on file:&lt;/h3&gt;
 &lt;blockquote&gt;
 &lt;kbd&gt;:e&lt;/kbd&gt; - open file in new buffer&lt;/blockquote&gt;
@@ -339,8 +339,8 @@ mode ESC)&lt;/p&gt;&lt;/li&gt;
 repeat insert in blockview
 ctrlv - select block
 then I -text ESC&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="section" id="macros-recording"&gt;
+&lt;/section&gt;
+&lt;/section&gt;
+&lt;section id="macros-recording"&gt;
 &lt;h2&gt;Macros - recording&lt;/h2&gt;
-&lt;/div&gt;&lt;/div&gt;</description><category>python</category><category>vim</category><guid>https://stencel.io/posts/vim.html</guid><pubDate>Thu, 24 Apr 2014 14:05:12 GMT</pubDate></item></channel></rss>
+&lt;/section&gt;</description><category>python</category><category>vim</category><guid>https://stencel.io/posts/vim.html</guid><pubDate>Thu, 24 Apr 2014 14:05:12 GMT</pubDate></item></channel></rss>

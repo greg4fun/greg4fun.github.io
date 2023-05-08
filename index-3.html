@@ -50,7 +50,7 @@
                 Greg Stencel
             </span></p>
                 <p class="commentline"><i class="fa fa-comment"></i> 
-        
+    
     <a href="posts/mysql-update-with-random-values-from-list.html#disqus_thread" data-disqus-identifier="cache/posts/mysql-update-with-random-values-from-list.html">Comments</a>
 
 
@@ -66,15 +66,14 @@
                 Greg Stencel
             </span></p>
                 <p class="commentline"><i class="fa fa-comment"></i> 
-        
+    
     <a href="posts/docker-on-32bit-system-windows-7-on-core2duo.html#disqus_thread" data-disqus-identifier="cache/posts/docker-on-32bit-system-windows-7-on-core2duo.html">Comments</a>
 
 
         </p>
 </div>
     </header><div class="e-content entry-content">
-    <div>
-<p>Docker is very usefull tool for fast shipping application with its dependicies.
+    <p>Docker is very usefull tool for fast shipping application with its dependicies.
 It's totally different from Vagrant which I used before .
 Using them both may be very powerfull tool.
 So I started to play with docker but I had problem - my everyday environment is Debian but at my work
@@ -91,7 +90,6 @@ select linux 64bits,
 and when there will be step with disk choose Existing disk option and select newly created boot2docker-disk.vmdk</p>
 <p>after all I could start to create new virtualbox machine and select vmdk disk to existing one boot2docker-disk.vmdk
 we have ready and working virtual boot2docker machine .</p>
-</div>
     </div>
     </article><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="posts/apt-get-install-from-list-txt.html" class="u-url">apt-get install from list txt</a></h1>
         <div class="metadata">
@@ -100,7 +98,7 @@ we have ready and working virtual boot2docker machine .</p>
                 Greg Stencel
             </span></p>
                 <p class="commentline"><i class="fa fa-comment"></i> 
-        
+    
     <a href="posts/apt-get-install-from-list-txt.html#disqus_thread" data-disqus-identifier="cache/posts/apt-get-install-from-list-txt.html">Comments</a>
 
 
@@ -117,24 +115,18 @@ cat syspackages.txt | xargs sudo apt-get install</p>
                 Greg Stencel
             </span></p>
                 <p class="commentline"><i class="fa fa-comment"></i> 
-        
+    
     <a href="posts/docker.html#disqus_thread" data-disqus-identifier="cache/posts/docker.html">Comments</a>
 
 
         </p>
 </div>
     </header><div class="e-content entry-content">
-    <div>
-<div class="section" id="first-download-download-pre-build-image">
-<h2>First download download pre build image :</h2>
+    <section id="first-download-download-pre-build-image"><h2>First download download pre build image :</h2>
 <p>sudo docker pull ubuntu</p>
-</div>
-<div class="section" id="run-pseudo-tty">
-<h2>run pseudo tty:</h2>
+</section><section id="run-pseudo-tty"><h2>run pseudo tty:</h2>
 <p>sudo docker run -t -i ubuntu /bin/bash</p>
-</div>
-<div class="section" id="get-image-of-running-docker">
-<h2>get image of running docker:</h2>
+</section><section id="get-image-of-running-docker"><h2>get image of running docker:</h2>
 <p>sudo docker ps</p>
 <p>output:
 ➜  ~  sudo docker ps
@@ -144,26 +136,16 @@ c4fbc80d8926        ubuntu:14.04        /bin/bash           3 minutes ago       
 save container as your image:
 =============================
 sudo docker commit c4fbc80d8926 myimage_name</p>
-</div>
-<div class="section" id="running-our-image">
-<h2>Running our image:</h2>
+</section><section id="running-our-image"><h2>Running our image:</h2>
 <p>sudo docker run -t -i myimage_name /bin/bash</p>
-</div>
-<div class="section" id="deploying-your-app-and-dependicies">
-<h2>Deploying your app and dependicies:</h2>
+</section><section id="deploying-your-app-and-dependicies"><h2>Deploying your app and dependicies:</h2>
 <p>watch out to save container before you quit bash inside docker instance
 find container id and save</p>
-</div>
-<div class="section" id="diff-image-container">
-<h2>Diff image container:</h2>
+</section><section id="diff-image-container"><h2>Diff image container:</h2>
 <p>sudo docker diff</p>
-</div>
-<div class="section" id="start-docker-container-with-name">
-<h2>Start docker container with name:</h2>
+</section><section id="start-docker-container-with-name"><h2>Start docker container with name:</h2>
 <p>sudo docker run -i -t --name="IWAPPS2" iwapps /bin/bash</p>
-</div>
-<div class="section" id="commit-with-name">
-<h2>Commit with name :</h2>
+</section><section id="commit-with-name"><h2>Commit with name :</h2>
 <p>sudo docker commit IWAPPS2 local -a "greg" -m "First image commit"</p>
 <p>Actually, images are stored within /var/lib/docker/aufs/diff</p>
 <blockquote>
@@ -214,9 +196,8 @@ sudo docker version
 sudo docker search ubuntu
 sudo docker pull ubuntu
 sudo docker images</p>
+</section>
 </div>
-</div>
-    </div>
     </article><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="posts/create-blog-with-nikola.html" class="u-url">create blog with nikola</a></h1>
         <div class="metadata">
             <p class="dateline"><a href="posts/create-blog-with-nikola.html" rel="bookmark"><i class="fa fa-clock"></i> <time class="published dt-published" datetime="2014-07-12T20:00:31Z" title="2014-07-12 20:00">2014-07-12 20:00</time></a></p>
@@ -224,35 +205,33 @@ sudo docker images</p>
                 Greg Stencel
             </span></p>
                 <p class="commentline"><i class="fa fa-comment"></i> 
-        
+    
     <a href="posts/create-blog-with-nikola.html#disqus_thread" data-disqus-identifier="cache/posts/create-blog-with-nikola.html">Comments</a>
 
 
         </p>
 </div>
     </header><div class="e-content entry-content">
-    <div>
-<p>Sometimes blogs are not so bad to write your thoughts. This is good place to come back for solution we've found previously spending hours searching for it .</p>
+    <p>Sometimes blogs are not so bad to write your thoughts. This is good place to come back for solution we've found previously spending hours searching for it .</p>
 <p>If we want to have more options to edit blog style or anything or host it on our server or github there are a lot of
 blog generators .
 One of them is Nikola
 .. link:http://getnikola.com/</p>
 <p>First of all just install nikola with pip on your system (best way is to use python virtualenv for python applications)</p>
-<pre class="code bash"><a name="rest_code_7af7977e51ce41c780bcce35c44c7162-1"></a>pip install nikola
-</pre>
+<div class="code"><pre class="code bash"><a id="rest_code_65d4730b0ec7451ca8802e9350dd5a64-1" name="rest_code_65d4730b0ec7451ca8802e9350dd5a64-1" href="posts/create-blog-with-nikola.html#rest_code_65d4730b0ec7451ca8802e9350dd5a64-1"></a>pip install nikola
+</pre></div>
 <p>then start new blog</p>
-<pre class="code bash"><a name="rest_code_26069020f55d49a18993629a188ed7c4-1"></a>nikola init my_blog
-</pre>
+<div class="code"><pre class="code bash"><a id="rest_code_8c48d0577e944879be25f0ecdfc0abe4-1" name="rest_code_8c48d0577e944879be25f0ecdfc0abe4-1" href="posts/create-blog-with-nikola.html#rest_code_8c48d0577e944879be25f0ecdfc0abe4-1"></a>nikola init my_blog
+</pre></div>
 <p>You can choose between themes <a class="reference external" href="http://themes.getnikola.com/">http://themes.getnikola.com/</a>
 to list available themes</p>
-<pre class="code bash"><a name="rest_code_4696566cc3eb407da284c8f3c316dba1-1"></a>nikola install_theme -l
-</pre>
+<div class="code"><pre class="code bash"><a id="rest_code_f9285041ad264c39a1e33c2d2beaac40-1" name="rest_code_f9285041ad264c39a1e33c2d2beaac40-1" href="posts/create-blog-with-nikola.html#rest_code_f9285041ad264c39a1e33c2d2beaac40-1"></a>nikola install_theme -l
+</pre></div>
 <p>there is also possibility to use bootswatch theme <a class="reference external" href="http://bootswatch.com/">http://bootswatch.com/</a>
 remember not all themes works with bootswatch</p>
-<pre class="code bash"><a name="rest_code_9951252e911a4766aa178bb6b0665a2a-1"></a>nikola install_theme bootstrap3-jinja
-<a name="rest_code_9951252e911a4766aa178bb6b0665a2a-2"></a>nikola bootswatch_theme -n custom_theme -s amelia -p bootstrap3-jinja
-</pre>
-</div>
+<div class="code"><pre class="code bash"><a id="rest_code_57b7fdbdc60448a488f0dacaf38d4742-1" name="rest_code_57b7fdbdc60448a488f0dacaf38d4742-1" href="posts/create-blog-with-nikola.html#rest_code_57b7fdbdc60448a488f0dacaf38d4742-1"></a>nikola install_theme bootstrap3-jinja
+<a id="rest_code_57b7fdbdc60448a488f0dacaf38d4742-2" name="rest_code_57b7fdbdc60448a488f0dacaf38d4742-2" href="posts/create-blog-with-nikola.html#rest_code_57b7fdbdc60448a488f0dacaf38d4742-2"></a>nikola bootswatch_theme -n custom_theme -s amelia -p bootstrap3-jinja
+</pre></div>
     </div>
     </article><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="posts/setting-up-django-gunicorn-and-supervise-daemontools.html" class="u-url">Setting up django, gunicorn and supervise (daemontools)</a></h1>
         <div class="metadata">
@@ -261,21 +240,19 @@ remember not all themes works with bootswatch</p>
                 Greg Stencel
             </span></p>
                 <p class="commentline"><i class="fa fa-comment"></i> 
-        
+    
     <a href="posts/setting-up-django-gunicorn-and-supervise-daemontools.html#disqus_thread" data-disqus-identifier="cache/posts/setting-up-django-gunicorn-and-supervise-daemontools.html">Comments</a>
 
 
         </p>
 </div>
     </header><div class="e-content entry-content">
-    <div>
-<p>Manuals about supervise are very laconic
+    <p>Manuals about supervise are very laconic
 Install supervise script
 apt-get install daemontools</p>
 <p>So firts you need to create run script and put it for example to /etc/service
 dir and then instide this dir run svscan *</p>
 <p>:w</p>
-</div>
     </div>
     </article><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="posts/linux-list-openports-with-processes-names.html" class="u-url">Linux list openports with processes names</a></h1>
         <div class="metadata">
@@ -284,48 +261,46 @@ dir and then instide this dir run svscan *</p>
                 Greg Stencel
             </span></p>
                 <p class="commentline"><i class="fa fa-comment"></i> 
-        
+    
     <a href="posts/linux-list-openports-with-processes-names.html#disqus_thread" data-disqus-identifier="cache/posts/linux-list-openports-with-processes-names.html">Comments</a>
 
 
         </p>
 </div>
     </header><div class="e-content entry-content">
-    <div>
-<pre class="code bash"><a name="rest_code_55f51ea82eb34d2e9526ae721001c161-1"></a>netstat -putln
-</pre>
+    <div class="code"><pre class="code bash"><a id="rest_code_e8b5b5ee9111405aa092e0e7a857c4a4-1" name="rest_code_e8b5b5ee9111405aa092e0e7a857c4a4-1" href="posts/linux-list-openports-with-processes-names.html#rest_code_e8b5b5ee9111405aa092e0e7a857c4a4-1"></a>netstat -putln
+</pre></div>
 <p>-p the PID and name of the program to which each socket belongs.</p>
 <p>-u udp</p>
 <p>-t tcp</p>
 <p>-l only listening sockets.  (These are omitted by default.)</p>
 <p>-n numeric port number</p>
-<pre class="code bash"><a name="rest_code_f78909e593da45a6b7ad4533164b8cdf-1"></a><span class="o">(</span>Not all processes could be identified, non-owned process info
-<a name="rest_code_f78909e593da45a6b7ad4533164b8cdf-2"></a> will not be shown, you would have to be root to see it all.<span class="o">)</span>
-<a name="rest_code_f78909e593da45a6b7ad4533164b8cdf-3"></a> Active Internet connections <span class="o">(</span>only servers<span class="o">)</span>
-<a name="rest_code_f78909e593da45a6b7ad4533164b8cdf-4"></a> Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name
-<a name="rest_code_f78909e593da45a6b7ad4533164b8cdf-5"></a> tcp        <span class="m">0</span>      <span class="m">0</span> <span class="m">0</span>.0.0.0:22              <span class="m">0</span>.0.0.0:*               LISTEN      -
-<a name="rest_code_f78909e593da45a6b7ad4533164b8cdf-6"></a> tcp        <span class="m">0</span>      <span class="m">0</span> <span class="m">127</span>.0.0.1:631           <span class="m">0</span>.0.0.0:*               LISTEN      -
-<a name="rest_code_f78909e593da45a6b7ad4533164b8cdf-7"></a> tcp        <span class="m">0</span>      <span class="m">0</span> <span class="m">0</span>.0.0.0:25              <span class="m">0</span>.0.0.0:*               LISTEN      -
-<a name="rest_code_f78909e593da45a6b7ad4533164b8cdf-8"></a> tcp        <span class="m">0</span>      <span class="m">0</span> <span class="m">127</span>.0.0.1:5433          <span class="m">0</span>.0.0.0:*               LISTEN      -
-<a name="rest_code_f78909e593da45a6b7ad4533164b8cdf-9"></a> tcp        <span class="m">0</span>      <span class="m">0</span> <span class="m">0</span>.0.0.0:902             <span class="m">0</span>.0.0.0:*               LISTEN      -
-<a name="rest_code_f78909e593da45a6b7ad4533164b8cdf-10"></a> tcp        <span class="m">0</span>      <span class="m">0</span> <span class="m">127</span>.0.0.1:3306          <span class="m">0</span>.0.0.0:*               LISTEN      -
-<a name="rest_code_f78909e593da45a6b7ad4533164b8cdf-11"></a> tcp        <span class="m">0</span>      <span class="m">0</span> <span class="m">0</span>.0.0.0:9418            <span class="m">0</span>.0.0.0:*               LISTEN      -
-<a name="rest_code_f78909e593da45a6b7ad4533164b8cdf-12"></a> tcp        <span class="m">0</span>      <span class="m">0</span> <span class="m">127</span>.0.0.1:2222          <span class="m">0</span>.0.0.0:*               LISTEN      -
-<a name="rest_code_f78909e593da45a6b7ad4533164b8cdf-13"></a> tcp        <span class="m">0</span>      <span class="m">0</span> <span class="m">0</span>.0.0.0:9614            <span class="m">0</span>.0.0.0:*               LISTEN      -
-<a name="rest_code_f78909e593da45a6b7ad4533164b8cdf-14"></a> tcp        <span class="m">0</span>      <span class="m">0</span> <span class="m">0</span>.0.0.0:80              <span class="m">0</span>.0.0.0:*               LISTEN      -
-<a name="rest_code_f78909e593da45a6b7ad4533164b8cdf-15"></a> tcp        <span class="m">0</span>      <span class="m">0</span> <span class="m">127</span>.0.0.1:5939          <span class="m">0</span>.0.0.0:*               LISTEN      -
-<a name="rest_code_f78909e593da45a6b7ad4533164b8cdf-16"></a> tcp6       <span class="m">0</span>      <span class="m">0</span> :::22                   :::*                    LISTEN      -
-<a name="rest_code_f78909e593da45a6b7ad4533164b8cdf-17"></a> tcp6       <span class="m">0</span>      <span class="m">0</span> ::1:631                 :::*                    LISTEN      -
-<a name="rest_code_f78909e593da45a6b7ad4533164b8cdf-18"></a> tcp6       <span class="m">0</span>      <span class="m">0</span> :::25                   :::*                    LISTEN      -
-<a name="rest_code_f78909e593da45a6b7ad4533164b8cdf-19"></a> tcp6       <span class="m">0</span>      <span class="m">0</span> :::9418                 :::*                    LISTEN      -
-<a name="rest_code_f78909e593da45a6b7ad4533164b8cdf-20"></a> udp     <span class="m">5376</span>      <span class="m">0</span> <span class="m">0</span>.0.0.0:5353            <span class="m">0</span>.0.0.0:*                           <span class="m">2934</span>/libpepflashpla
-<a name="rest_code_f78909e593da45a6b7ad4533164b8cdf-21"></a> udp        <span class="m">0</span>      <span class="m">0</span> <span class="m">0</span>.0.0.0:5353            <span class="m">0</span>.0.0.0:*                           -
-<a name="rest_code_f78909e593da45a6b7ad4533164b8cdf-22"></a> udp        <span class="m">0</span>      <span class="m">0</span> <span class="m">0</span>.0.0.0:46482           <span class="m">0</span>.0.0.0:*                           -
-<a name="rest_code_f78909e593da45a6b7ad4533164b8cdf-23"></a> udp        <span class="m">0</span>      <span class="m">0</span> <span class="m">0</span>.0.0.0:631             <span class="m">0</span>.0.0.0:*                           -
-<a name="rest_code_f78909e593da45a6b7ad4533164b8cdf-24"></a> udp6       <span class="m">0</span>      <span class="m">0</span> :::5353                 :::*                                -
-<a name="rest_code_f78909e593da45a6b7ad4533164b8cdf-25"></a> udp6       <span class="m">0</span>      <span class="m">0</span> :::57898
-</pre>
-</div>
+<div class="code"><pre class="code bash"><a id="rest_code_1444729dc05a40b7bc3945bae877d20d-1" name="rest_code_1444729dc05a40b7bc3945bae877d20d-1" href="posts/linux-list-openports-with-processes-names.html#rest_code_1444729dc05a40b7bc3945bae877d20d-1"></a><span class="o">(</span>Not all processes could be identified, non-owned process info
+<a id="rest_code_1444729dc05a40b7bc3945bae877d20d-2" name="rest_code_1444729dc05a40b7bc3945bae877d20d-2" href="posts/linux-list-openports-with-processes-names.html#rest_code_1444729dc05a40b7bc3945bae877d20d-2"></a> will not be shown, you would have to be root to see it all.<span class="o">)</span>
+<a id="rest_code_1444729dc05a40b7bc3945bae877d20d-3" name="rest_code_1444729dc05a40b7bc3945bae877d20d-3" href="posts/linux-list-openports-with-processes-names.html#rest_code_1444729dc05a40b7bc3945bae877d20d-3"></a> Active Internet connections <span class="o">(</span>only servers<span class="o">)</span>
+<a id="rest_code_1444729dc05a40b7bc3945bae877d20d-4" name="rest_code_1444729dc05a40b7bc3945bae877d20d-4" href="posts/linux-list-openports-with-processes-names.html#rest_code_1444729dc05a40b7bc3945bae877d20d-4"></a> Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name
+<a id="rest_code_1444729dc05a40b7bc3945bae877d20d-5" name="rest_code_1444729dc05a40b7bc3945bae877d20d-5" href="posts/linux-list-openports-with-processes-names.html#rest_code_1444729dc05a40b7bc3945bae877d20d-5"></a> tcp        <span class="m">0</span>      <span class="m">0</span> <span class="m">0</span>.0.0.0:22              <span class="m">0</span>.0.0.0:*               LISTEN      -
+<a id="rest_code_1444729dc05a40b7bc3945bae877d20d-6" name="rest_code_1444729dc05a40b7bc3945bae877d20d-6" href="posts/linux-list-openports-with-processes-names.html#rest_code_1444729dc05a40b7bc3945bae877d20d-6"></a> tcp        <span class="m">0</span>      <span class="m">0</span> <span class="m">127</span>.0.0.1:631           <span class="m">0</span>.0.0.0:*               LISTEN      -
+<a id="rest_code_1444729dc05a40b7bc3945bae877d20d-7" name="rest_code_1444729dc05a40b7bc3945bae877d20d-7" href="posts/linux-list-openports-with-processes-names.html#rest_code_1444729dc05a40b7bc3945bae877d20d-7"></a> tcp        <span class="m">0</span>      <span class="m">0</span> <span class="m">0</span>.0.0.0:25              <span class="m">0</span>.0.0.0:*               LISTEN      -
+<a id="rest_code_1444729dc05a40b7bc3945bae877d20d-8" name="rest_code_1444729dc05a40b7bc3945bae877d20d-8" href="posts/linux-list-openports-with-processes-names.html#rest_code_1444729dc05a40b7bc3945bae877d20d-8"></a> tcp        <span class="m">0</span>      <span class="m">0</span> <span class="m">127</span>.0.0.1:5433          <span class="m">0</span>.0.0.0:*               LISTEN      -
+<a id="rest_code_1444729dc05a40b7bc3945bae877d20d-9" name="rest_code_1444729dc05a40b7bc3945bae877d20d-9" href="posts/linux-list-openports-with-processes-names.html#rest_code_1444729dc05a40b7bc3945bae877d20d-9"></a> tcp        <span class="m">0</span>      <span class="m">0</span> <span class="m">0</span>.0.0.0:902             <span class="m">0</span>.0.0.0:*               LISTEN      -
+<a id="rest_code_1444729dc05a40b7bc3945bae877d20d-10" name="rest_code_1444729dc05a40b7bc3945bae877d20d-10" href="posts/linux-list-openports-with-processes-names.html#rest_code_1444729dc05a40b7bc3945bae877d20d-10"></a> tcp        <span class="m">0</span>      <span class="m">0</span> <span class="m">127</span>.0.0.1:3306          <span class="m">0</span>.0.0.0:*               LISTEN      -
+<a id="rest_code_1444729dc05a40b7bc3945bae877d20d-11" name="rest_code_1444729dc05a40b7bc3945bae877d20d-11" href="posts/linux-list-openports-with-processes-names.html#rest_code_1444729dc05a40b7bc3945bae877d20d-11"></a> tcp        <span class="m">0</span>      <span class="m">0</span> <span class="m">0</span>.0.0.0:9418            <span class="m">0</span>.0.0.0:*               LISTEN      -
+<a id="rest_code_1444729dc05a40b7bc3945bae877d20d-12" name="rest_code_1444729dc05a40b7bc3945bae877d20d-12" href="posts/linux-list-openports-with-processes-names.html#rest_code_1444729dc05a40b7bc3945bae877d20d-12"></a> tcp        <span class="m">0</span>      <span class="m">0</span> <span class="m">127</span>.0.0.1:2222          <span class="m">0</span>.0.0.0:*               LISTEN      -
+<a id="rest_code_1444729dc05a40b7bc3945bae877d20d-13" name="rest_code_1444729dc05a40b7bc3945bae877d20d-13" href="posts/linux-list-openports-with-processes-names.html#rest_code_1444729dc05a40b7bc3945bae877d20d-13"></a> tcp        <span class="m">0</span>      <span class="m">0</span> <span class="m">0</span>.0.0.0:9614            <span class="m">0</span>.0.0.0:*               LISTEN      -
+<a id="rest_code_1444729dc05a40b7bc3945bae877d20d-14" name="rest_code_1444729dc05a40b7bc3945bae877d20d-14" href="posts/linux-list-openports-with-processes-names.html#rest_code_1444729dc05a40b7bc3945bae877d20d-14"></a> tcp        <span class="m">0</span>      <span class="m">0</span> <span class="m">0</span>.0.0.0:80              <span class="m">0</span>.0.0.0:*               LISTEN      -
+<a id="rest_code_1444729dc05a40b7bc3945bae877d20d-15" name="rest_code_1444729dc05a40b7bc3945bae877d20d-15" href="posts/linux-list-openports-with-processes-names.html#rest_code_1444729dc05a40b7bc3945bae877d20d-15"></a> tcp        <span class="m">0</span>      <span class="m">0</span> <span class="m">127</span>.0.0.1:5939          <span class="m">0</span>.0.0.0:*               LISTEN      -
+<a id="rest_code_1444729dc05a40b7bc3945bae877d20d-16" name="rest_code_1444729dc05a40b7bc3945bae877d20d-16" href="posts/linux-list-openports-with-processes-names.html#rest_code_1444729dc05a40b7bc3945bae877d20d-16"></a> tcp6       <span class="m">0</span>      <span class="m">0</span> :::22                   :::*                    LISTEN      -
+<a id="rest_code_1444729dc05a40b7bc3945bae877d20d-17" name="rest_code_1444729dc05a40b7bc3945bae877d20d-17" href="posts/linux-list-openports-with-processes-names.html#rest_code_1444729dc05a40b7bc3945bae877d20d-17"></a> tcp6       <span class="m">0</span>      <span class="m">0</span> ::1:631                 :::*                    LISTEN      -
+<a id="rest_code_1444729dc05a40b7bc3945bae877d20d-18" name="rest_code_1444729dc05a40b7bc3945bae877d20d-18" href="posts/linux-list-openports-with-processes-names.html#rest_code_1444729dc05a40b7bc3945bae877d20d-18"></a> tcp6       <span class="m">0</span>      <span class="m">0</span> :::25                   :::*                    LISTEN      -
+<a id="rest_code_1444729dc05a40b7bc3945bae877d20d-19" name="rest_code_1444729dc05a40b7bc3945bae877d20d-19" href="posts/linux-list-openports-with-processes-names.html#rest_code_1444729dc05a40b7bc3945bae877d20d-19"></a> tcp6       <span class="m">0</span>      <span class="m">0</span> :::9418                 :::*                    LISTEN      -
+<a id="rest_code_1444729dc05a40b7bc3945bae877d20d-20" name="rest_code_1444729dc05a40b7bc3945bae877d20d-20" href="posts/linux-list-openports-with-processes-names.html#rest_code_1444729dc05a40b7bc3945bae877d20d-20"></a> udp     <span class="m">5376</span>      <span class="m">0</span> <span class="m">0</span>.0.0.0:5353            <span class="m">0</span>.0.0.0:*                           <span class="m">2934</span>/libpepflashpla
+<a id="rest_code_1444729dc05a40b7bc3945bae877d20d-21" name="rest_code_1444729dc05a40b7bc3945bae877d20d-21" href="posts/linux-list-openports-with-processes-names.html#rest_code_1444729dc05a40b7bc3945bae877d20d-21"></a> udp        <span class="m">0</span>      <span class="m">0</span> <span class="m">0</span>.0.0.0:5353            <span class="m">0</span>.0.0.0:*                           -
+<a id="rest_code_1444729dc05a40b7bc3945bae877d20d-22" name="rest_code_1444729dc05a40b7bc3945bae877d20d-22" href="posts/linux-list-openports-with-processes-names.html#rest_code_1444729dc05a40b7bc3945bae877d20d-22"></a> udp        <span class="m">0</span>      <span class="m">0</span> <span class="m">0</span>.0.0.0:46482           <span class="m">0</span>.0.0.0:*                           -
+<a id="rest_code_1444729dc05a40b7bc3945bae877d20d-23" name="rest_code_1444729dc05a40b7bc3945bae877d20d-23" href="posts/linux-list-openports-with-processes-names.html#rest_code_1444729dc05a40b7bc3945bae877d20d-23"></a> udp        <span class="m">0</span>      <span class="m">0</span> <span class="m">0</span>.0.0.0:631             <span class="m">0</span>.0.0.0:*                           -
+<a id="rest_code_1444729dc05a40b7bc3945bae877d20d-24" name="rest_code_1444729dc05a40b7bc3945bae877d20d-24" href="posts/linux-list-openports-with-processes-names.html#rest_code_1444729dc05a40b7bc3945bae877d20d-24"></a> udp6       <span class="m">0</span>      <span class="m">0</span> :::5353                 :::*                                -
+<a id="rest_code_1444729dc05a40b7bc3945bae877d20d-25" name="rest_code_1444729dc05a40b7bc3945bae877d20d-25" href="posts/linux-list-openports-with-processes-names.html#rest_code_1444729dc05a40b7bc3945bae877d20d-25"></a> udp6       <span class="m">0</span>      <span class="m">0</span> :::57898
+</pre></div>
     </div>
     </article><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="posts/linux-diplay-size-of-each-subdirectory.html" class="u-url">Linux diplay size of each subdirectory</a></h1>
         <div class="metadata">
@@ -334,20 +309,18 @@ dir and then instide this dir run svscan *</p>
                 Greg Stencel
             </span></p>
                 <p class="commentline"><i class="fa fa-comment"></i> 
-        
+    
     <a href="posts/linux-diplay-size-of-each-subdirectory.html#disqus_thread" data-disqus-identifier="cache/posts/linux-diplay-size-of-each-subdirectory.html">Comments</a>
 
 
         </p>
 </div>
     </header><div class="e-content entry-content">
-    <div>
-<p>To display total size of each subdirectory</p>
-<pre class="code bash"><a name="rest_code_adc96efe997b4ec8ac06358516003878-1"></a>du -sh *
-</pre>
+    <p>To display total size of each subdirectory</p>
+<div class="code"><pre class="code bash"><a id="rest_code_cb9c5aaf0cc849a7b8ec565b0f8e1e32-1" name="rest_code_cb9c5aaf0cc849a7b8ec565b0f8e1e32-1" href="posts/linux-diplay-size-of-each-subdirectory.html#rest_code_cb9c5aaf0cc849a7b8ec565b0f8e1e32-1"></a>du -sh *
+</pre></div>
 <p>-h human readable displays MB and GB instead of milions and bilions of bytes :)
 -s summarize total size of dir</p>
-</div>
     </div>
     </article><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="posts/ohmyzsh-cheatsheet.html" class="u-url">Ohmyzsh cheatsheet</a></h1>
         <div class="metadata">
@@ -356,7 +329,7 @@ dir and then instide this dir run svscan *</p>
                 Greg Stencel
             </span></p>
                 <p class="commentline"><i class="fa fa-comment"></i> 
-        
+    
     <a href="posts/ohmyzsh-cheatsheet.html#disqus_thread" data-disqus-identifier="cache/posts/ohmyzsh-cheatsheet.html">Comments</a>
 
 
@@ -372,22 +345,20 @@ dir and then instide this dir run svscan *</p>
                 Greg Stencel
             </span></p>
                 <p class="commentline"><i class="fa fa-comment"></i> 
-        
+    
     <a href="posts/ssh-reverse-tunneling.html#disqus_thread" data-disqus-identifier="cache/posts/ssh-reverse-tunneling.html">Comments</a>
 
 
         </p>
 </div>
     </header><div class="e-content entry-content">
-    <div>
-<p>When you want someone to connect to your NAT-ed or Firewalled server and</p>
+    <p>When you want someone to connect to your NAT-ed or Firewalled server and</p>
 <p>you run out of ideas ond options or you even dont have</p>
 <p>you dont have access to Firewall or VPN server to configure</p>
 <p>anything - you can always try to use reverse ssh tunnel.</p>
 <p>The only one condition is that you must be able to ssh from your server to public host( the one other guy wants to connect)</p>
 <p>This is how it works:</p>
 <p>[Server]  &lt;----&gt; [ FIREWALL/NAT SERVER ] &lt;----&gt; [ BOB HOST with public ip 80.80.80.80]</p>
-</div>
     </div>
     </article>
 </div>
@@ -399,7 +370,7 @@ dir and then instide this dir run svscan *</p>
             <li class="next">
                 <a href="index-2.html" rel="next">Older posts</a>
             </li>
-        </ul></nav><script>var disqus_shortname="stencel";(function(){var a=document.createElement("script");a.async=true;a.src="https://"+disqus_shortname+".disqus.com/count.js";(document.getElementsByTagName("head")[0]||document.getElementsByTagName("body")[0]).appendChild(a)}());</script><footer id="footer"><p>Contents © 2021         <a href="mailto:gstencel@gmail.com">Greg Stencel</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         </p>
+        </ul></nav><script>var disqus_shortname="stencel";(function(){var a=document.createElement("script");a.async=true;a.src="https://"+disqus_shortname+".disqus.com/count.js";(document.getElementsByTagName("head")[0]||document.getElementsByTagName("body")[0]).appendChild(a)}());</script><footer id="footer"><p>Contents © 2023         <a href="mailto:gstencel@gmail.com">Greg Stencel</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         </p>
             
         </footer>
 </div>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Greg's Tech Notes (Posts about monitoring)</title><link>https://stencel.io/</link><description></description><atom:link href="https://stencel.io/categories/monitoring.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><copyright>Contents © 2020 &lt;a href="mailto:gstencel@gmail.com"&gt;Greg Stencel&lt;/a&gt; </copyright><lastBuildDate>Sun, 28 Jun 2020 20:32:59 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Build fully working zabbix server with database in seconds thanks to docker</title><link>https://stencel.io/posts/build-fully-working-zabbix-server-with-database-in-seconds-thanks-to-docker.html</link><dc:creator>Greg Stencel</dc:creator><description>&lt;div&gt;&lt;p&gt;To install zabbix server quickly zabbix comes with help as they have prebuild their product with docker images.
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Greg's Tech Notes (Posts about monitoring)</title><link>https://stencel.io/</link><description></description><atom:link href="https://stencel.io/categories/monitoring.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><copyright>Contents © 2023 &lt;a href="mailto:gstencel@gmail.com"&gt;Greg Stencel&lt;/a&gt; </copyright><lastBuildDate>Sat, 06 May 2023 20:05:03 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Build fully working zabbix server with database in seconds thanks to docker</title><link>https://stencel.io/posts/build-fully-working-zabbix-server-with-database-in-seconds-thanks-to-docker.html</link><dc:creator>Greg Stencel</dc:creator><description>&lt;p&gt;To install zabbix server quickly zabbix comes with help as they have prebuild their product with docker images.
 There is lots of official zabbix images on dockerhub so it can just overwhelm you.
 There are mixes of all different possibilities like zabbix with mysql or postgres or either sqlite,
 zabbix served bt nginx or apache or java gateway.
@@ -21,71 +21,73 @@ so it will be easier to identify in future which volume belongs to which stack
 In Ubuntu volumes are usually being kept in/var/lib/docker/volumes but you can mount any directory from host by
 just specifying absolute or relative path in service configuration so for instance for mysql in
 example to mount mysql_data_dir just outside of our containers folder&lt;/p&gt;
-&lt;pre class="code bash"&gt;&lt;a name="rest_code_ada2736a3948419e8f78eed3f3f5c008-1"&gt;&lt;/a&gt;volumes:
-&lt;a name="rest_code_ada2736a3948419e8f78eed3f3f5c008-2"&gt;&lt;/a&gt;  - &lt;span class="s1"&gt;'../mysql_data_dir:/var/lib/mysql'&lt;/span&gt;
-&lt;/pre&gt;&lt;p&gt;Now within directory create docker-compose.yml with selected technologies in my case it is:
+&lt;div class="code"&gt;&lt;pre class="code bash"&gt;&lt;a id="rest_code_91dcb87f7c4f4cff81640fcc227634bb-1" name="rest_code_91dcb87f7c4f4cff81640fcc227634bb-1" href="https://stencel.io/posts/build-fully-working-zabbix-server-with-database-in-seconds-thanks-to-docker.html#rest_code_91dcb87f7c4f4cff81640fcc227634bb-1"&gt;&lt;/a&gt;volumes:
+&lt;a id="rest_code_91dcb87f7c4f4cff81640fcc227634bb-2" name="rest_code_91dcb87f7c4f4cff81640fcc227634bb-2" href="https://stencel.io/posts/build-fully-working-zabbix-server-with-database-in-seconds-thanks-to-docker.html#rest_code_91dcb87f7c4f4cff81640fcc227634bb-2"&gt;&lt;/a&gt;  - &lt;span class="s1"&gt;'../mysql_data_dir:/var/lib/mysql'&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Now within directory create docker-compose.yml with selected technologies in my case it is:
 #docker-compose.yml&lt;/p&gt;
-&lt;pre class="code bash"&gt;&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-1"&gt;&lt;/a&gt;version: &lt;span class="s1"&gt;'3'&lt;/span&gt;
-&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-2"&gt;&lt;/a&gt;
-&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-3"&gt;&lt;/a&gt;services:
-&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-4"&gt;&lt;/a&gt;  db:
-&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-5"&gt;&lt;/a&gt;    image: mysql:latest
-&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-6"&gt;&lt;/a&gt;    restart: always
-&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-7"&gt;&lt;/a&gt;    expose:
-&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-8"&gt;&lt;/a&gt;      - &lt;span class="s1"&gt;'3336'&lt;/span&gt;
-&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-9"&gt;&lt;/a&gt;    environment:
-&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-10"&gt;&lt;/a&gt;      MYSQL_ROOT_PASSWORD: &lt;span class="s1"&gt;'my_secret_password'&lt;/span&gt;
-&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-11"&gt;&lt;/a&gt;      MYSQL_USER: &lt;span class="s1"&gt;'zabbixuser'&lt;/span&gt;
-&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-12"&gt;&lt;/a&gt;      MYSQL_PASSWORD: &lt;span class="s1"&gt;'zabbix_password'&lt;/span&gt;
-&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-13"&gt;&lt;/a&gt;      MYSQL_ROOT_HOST: &lt;span class="s1"&gt;'%'&lt;/span&gt;
-&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-14"&gt;&lt;/a&gt;    volumes:
-&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-15"&gt;&lt;/a&gt;      - &lt;span class="s1"&gt;'mysql_data_dir:/var/lib/mysql'&lt;/span&gt;
-&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-16"&gt;&lt;/a&gt;
-&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-17"&gt;&lt;/a&gt;
-&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-18"&gt;&lt;/a&gt;  zabbix-server:
-&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-19"&gt;&lt;/a&gt;    image: zabbix/zabbix-server-mysql
-&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-20"&gt;&lt;/a&gt;    links:
-&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-21"&gt;&lt;/a&gt;      - &lt;span class="s2"&gt;"db:mysql"&lt;/span&gt;
-&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-22"&gt;&lt;/a&gt;      - &lt;span class="s2"&gt;"postfix:postfix"&lt;/span&gt;
-&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-23"&gt;&lt;/a&gt;    environment:
-&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-24"&gt;&lt;/a&gt;      MYSQL_ROOT_PASSWORD: &lt;span class="s1"&gt;'my_secret_password'&lt;/span&gt;
-&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-25"&gt;&lt;/a&gt;      MYSQL_USER: &lt;span class="s1"&gt;'zabbixuser'&lt;/span&gt;
-&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-26"&gt;&lt;/a&gt;      MYSQL_PASSWORD: &lt;span class="s1"&gt;'zabbixpassassword'&lt;/span&gt;
-&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-27"&gt;&lt;/a&gt;      DB_SERVER_HOST: &lt;span class="s1"&gt;'mysql'&lt;/span&gt;
-&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-28"&gt;&lt;/a&gt;
-&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-29"&gt;&lt;/a&gt;
-&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-30"&gt;&lt;/a&gt;  zabbix-web:
-&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-31"&gt;&lt;/a&gt;    image: zabbix/zabbix-web-nginx-mysql
-&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-32"&gt;&lt;/a&gt;    ports:
-&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-33"&gt;&lt;/a&gt;      - &lt;span class="s1"&gt;'7777:80'&lt;/span&gt;
-&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-34"&gt;&lt;/a&gt;    links:
-&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-35"&gt;&lt;/a&gt;      - &lt;span class="s2"&gt;"db:mysql"&lt;/span&gt;
-&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-36"&gt;&lt;/a&gt;      - &lt;span class="s2"&gt;"zabbix-server:zabbix-server"&lt;/span&gt;
-&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-37"&gt;&lt;/a&gt;      - &lt;span class="s2"&gt;"postfix:postfix"&lt;/span&gt;
-&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-38"&gt;&lt;/a&gt;    environment:
-&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-39"&gt;&lt;/a&gt;      MYSQL_ROOT_PASSWORD: &lt;span class="s1"&gt;'my_secret_password'&lt;/span&gt;
-&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-40"&gt;&lt;/a&gt;      MYSQL_USER: &lt;span class="s1"&gt;'zabbixuser'&lt;/span&gt;
-&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-41"&gt;&lt;/a&gt;      MYSQL_PASSWORD: &lt;span class="s1"&gt;'zabbixpassassword'&lt;/span&gt;
-&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-42"&gt;&lt;/a&gt;      DB_SERVER_HOST: &lt;span class="s1"&gt;'mysql'&lt;/span&gt;
-&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-43"&gt;&lt;/a&gt;      ZBX_SERVER_HOST: &lt;span class="s2"&gt;"zabbix-server"&lt;/span&gt;
-&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-44"&gt;&lt;/a&gt;      PHP_TZ: &lt;span class="s2"&gt;"Europe/London"&lt;/span&gt;
-&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-45"&gt;&lt;/a&gt;  postfix:
-&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-46"&gt;&lt;/a&gt;    image: catatnight/postfix
-&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-47"&gt;&lt;/a&gt;    hostname: support
-&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-48"&gt;&lt;/a&gt;    environment:
-&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-49"&gt;&lt;/a&gt;      - &lt;span class="nv"&gt;maildomain&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;mydomain.com
-&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-50"&gt;&lt;/a&gt;      - &lt;span class="nv"&gt;smtp_user&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;admin:my_password
-&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-51"&gt;&lt;/a&gt;    ports:
-&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-52"&gt;&lt;/a&gt;      - &lt;span class="s2"&gt;"25:25"&lt;/span&gt;
-&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-53"&gt;&lt;/a&gt;    expose:
-&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-54"&gt;&lt;/a&gt;      - &lt;span class="s2"&gt;"25"&lt;/span&gt;
-&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-55"&gt;&lt;/a&gt;    volumes:
-&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-56"&gt;&lt;/a&gt;      - /etc/nginx/ssl/postfix:/etc/postfix/certs
-&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-57"&gt;&lt;/a&gt;      - /etc/nginx/ssl/postfix:/etc/opendkim/domainkeys
-&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-58"&gt;&lt;/a&gt;volumes:
-&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-59"&gt;&lt;/a&gt;  mysql_data_dir:
-&lt;a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-60"&gt;&lt;/a&gt;    driver: &lt;span class="nb"&gt;local&lt;/span&gt;
-&lt;/pre&gt;&lt;p&gt;The above solution is just enough to start zabbix server up and running in couple seconds.
+&lt;div class="code"&gt;&lt;pre class="code bash"&gt;&lt;a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-1" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-1" href="https://stencel.io/posts/build-fully-working-zabbix-server-with-database-in-seconds-thanks-to-docker.html#rest_code_ff215cdbe17d4b7b94753de574b86ac7-1"&gt;&lt;/a&gt;version: &lt;span class="s1"&gt;'3'&lt;/span&gt;
+&lt;a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-2" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-2" href="https://stencel.io/posts/build-fully-working-zabbix-server-with-database-in-seconds-thanks-to-docker.html#rest_code_ff215cdbe17d4b7b94753de574b86ac7-2"&gt;&lt;/a&gt;
+&lt;a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-3" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-3" href="https://stencel.io/posts/build-fully-working-zabbix-server-with-database-in-seconds-thanks-to-docker.html#rest_code_ff215cdbe17d4b7b94753de574b86ac7-3"&gt;&lt;/a&gt;services:
+&lt;a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-4" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-4" href="https://stencel.io/posts/build-fully-working-zabbix-server-with-database-in-seconds-thanks-to-docker.html#rest_code_ff215cdbe17d4b7b94753de574b86ac7-4"&gt;&lt;/a&gt;  db:
+&lt;a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-5" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-5" href="https://stencel.io/posts/build-fully-working-zabbix-server-with-database-in-seconds-thanks-to-docker.html#rest_code_ff215cdbe17d4b7b94753de574b86ac7-5"&gt;&lt;/a&gt;    image: mysql:latest
+&lt;a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-6" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-6" href="https://stencel.io/posts/build-fully-working-zabbix-server-with-database-in-seconds-thanks-to-docker.html#rest_code_ff215cdbe17d4b7b94753de574b86ac7-6"&gt;&lt;/a&gt;    restart: always
+&lt;a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-7" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-7" href="https://stencel.io/posts/build-fully-working-zabbix-server-with-database-in-seconds-thanks-to-docker.html#rest_code_ff215cdbe17d4b7b94753de574b86ac7-7"&gt;&lt;/a&gt;    expose:
+&lt;a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-8" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-8" href="https://stencel.io/posts/build-fully-working-zabbix-server-with-database-in-seconds-thanks-to-docker.html#rest_code_ff215cdbe17d4b7b94753de574b86ac7-8"&gt;&lt;/a&gt;      - &lt;span class="s1"&gt;'3336'&lt;/span&gt;
+&lt;a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-9" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-9" href="https://stencel.io/posts/build-fully-working-zabbix-server-with-database-in-seconds-thanks-to-docker.html#rest_code_ff215cdbe17d4b7b94753de574b86ac7-9"&gt;&lt;/a&gt;    environment:
+&lt;a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-10" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-10" href="https://stencel.io/posts/build-fully-working-zabbix-server-with-database-in-seconds-thanks-to-docker.html#rest_code_ff215cdbe17d4b7b94753de574b86ac7-10"&gt;&lt;/a&gt;      MYSQL_ROOT_PASSWORD: &lt;span class="s1"&gt;'my_secret_password'&lt;/span&gt;
+&lt;a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-11" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-11" href="https://stencel.io/posts/build-fully-working-zabbix-server-with-database-in-seconds-thanks-to-docker.html#rest_code_ff215cdbe17d4b7b94753de574b86ac7-11"&gt;&lt;/a&gt;      MYSQL_USER: &lt;span class="s1"&gt;'zabbixuser'&lt;/span&gt;
+&lt;a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-12" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-12" href="https://stencel.io/posts/build-fully-working-zabbix-server-with-database-in-seconds-thanks-to-docker.html#rest_code_ff215cdbe17d4b7b94753de574b86ac7-12"&gt;&lt;/a&gt;      MYSQL_PASSWORD: &lt;span class="s1"&gt;'zabbix_password'&lt;/span&gt;
+&lt;a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-13" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-13" href="https://stencel.io/posts/build-fully-working-zabbix-server-with-database-in-seconds-thanks-to-docker.html#rest_code_ff215cdbe17d4b7b94753de574b86ac7-13"&gt;&lt;/a&gt;      MYSQL_ROOT_HOST: &lt;span class="s1"&gt;'%'&lt;/span&gt;
+&lt;a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-14" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-14" href="https://stencel.io/posts/build-fully-working-zabbix-server-with-database-in-seconds-thanks-to-docker.html#rest_code_ff215cdbe17d4b7b94753de574b86ac7-14"&gt;&lt;/a&gt;    volumes:
+&lt;a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-15" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-15" href="https://stencel.io/posts/build-fully-working-zabbix-server-with-database-in-seconds-thanks-to-docker.html#rest_code_ff215cdbe17d4b7b94753de574b86ac7-15"&gt;&lt;/a&gt;      - &lt;span class="s1"&gt;'mysql_data_dir:/var/lib/mysql'&lt;/span&gt;
+&lt;a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-16" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-16" href="https://stencel.io/posts/build-fully-working-zabbix-server-with-database-in-seconds-thanks-to-docker.html#rest_code_ff215cdbe17d4b7b94753de574b86ac7-16"&gt;&lt;/a&gt;
+&lt;a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-17" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-17" href="https://stencel.io/posts/build-fully-working-zabbix-server-with-database-in-seconds-thanks-to-docker.html#rest_code_ff215cdbe17d4b7b94753de574b86ac7-17"&gt;&lt;/a&gt;
+&lt;a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-18" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-18" href="https://stencel.io/posts/build-fully-working-zabbix-server-with-database-in-seconds-thanks-to-docker.html#rest_code_ff215cdbe17d4b7b94753de574b86ac7-18"&gt;&lt;/a&gt;  zabbix-server:
+&lt;a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-19" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-19" href="https://stencel.io/posts/build-fully-working-zabbix-server-with-database-in-seconds-thanks-to-docker.html#rest_code_ff215cdbe17d4b7b94753de574b86ac7-19"&gt;&lt;/a&gt;    image: zabbix/zabbix-server-mysql
+&lt;a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-20" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-20" href="https://stencel.io/posts/build-fully-working-zabbix-server-with-database-in-seconds-thanks-to-docker.html#rest_code_ff215cdbe17d4b7b94753de574b86ac7-20"&gt;&lt;/a&gt;    links:
+&lt;a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-21" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-21" href="https://stencel.io/posts/build-fully-working-zabbix-server-with-database-in-seconds-thanks-to-docker.html#rest_code_ff215cdbe17d4b7b94753de574b86ac7-21"&gt;&lt;/a&gt;      - &lt;span class="s2"&gt;"db:mysql"&lt;/span&gt;
+&lt;a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-22" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-22" href="https://stencel.io/posts/build-fully-working-zabbix-server-with-database-in-seconds-thanks-to-docker.html#rest_code_ff215cdbe17d4b7b94753de574b86ac7-22"&gt;&lt;/a&gt;      - &lt;span class="s2"&gt;"postfix:postfix"&lt;/span&gt;
+&lt;a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-23" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-23" href="https://stencel.io/posts/build-fully-working-zabbix-server-with-database-in-seconds-thanks-to-docker.html#rest_code_ff215cdbe17d4b7b94753de574b86ac7-23"&gt;&lt;/a&gt;    environment:
+&lt;a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-24" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-24" href="https://stencel.io/posts/build-fully-working-zabbix-server-with-database-in-seconds-thanks-to-docker.html#rest_code_ff215cdbe17d4b7b94753de574b86ac7-24"&gt;&lt;/a&gt;      MYSQL_ROOT_PASSWORD: &lt;span class="s1"&gt;'my_secret_password'&lt;/span&gt;
+&lt;a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-25" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-25" href="https://stencel.io/posts/build-fully-working-zabbix-server-with-database-in-seconds-thanks-to-docker.html#rest_code_ff215cdbe17d4b7b94753de574b86ac7-25"&gt;&lt;/a&gt;      MYSQL_USER: &lt;span class="s1"&gt;'zabbixuser'&lt;/span&gt;
+&lt;a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-26" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-26" href="https://stencel.io/posts/build-fully-working-zabbix-server-with-database-in-seconds-thanks-to-docker.html#rest_code_ff215cdbe17d4b7b94753de574b86ac7-26"&gt;&lt;/a&gt;      MYSQL_PASSWORD: &lt;span class="s1"&gt;'zabbixpassassword'&lt;/span&gt;
+&lt;a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-27" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-27" href="https://stencel.io/posts/build-fully-working-zabbix-server-with-database-in-seconds-thanks-to-docker.html#rest_code_ff215cdbe17d4b7b94753de574b86ac7-27"&gt;&lt;/a&gt;      DB_SERVER_HOST: &lt;span class="s1"&gt;'mysql'&lt;/span&gt;
+&lt;a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-28" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-28" href="https://stencel.io/posts/build-fully-working-zabbix-server-with-database-in-seconds-thanks-to-docker.html#rest_code_ff215cdbe17d4b7b94753de574b86ac7-28"&gt;&lt;/a&gt;
+&lt;a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-29" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-29" href="https://stencel.io/posts/build-fully-working-zabbix-server-with-database-in-seconds-thanks-to-docker.html#rest_code_ff215cdbe17d4b7b94753de574b86ac7-29"&gt;&lt;/a&gt;
+&lt;a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-30" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-30" href="https://stencel.io/posts/build-fully-working-zabbix-server-with-database-in-seconds-thanks-to-docker.html#rest_code_ff215cdbe17d4b7b94753de574b86ac7-30"&gt;&lt;/a&gt;  zabbix-web:
+&lt;a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-31" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-31" href="https://stencel.io/posts/build-fully-working-zabbix-server-with-database-in-seconds-thanks-to-docker.html#rest_code_ff215cdbe17d4b7b94753de574b86ac7-31"&gt;&lt;/a&gt;    image: zabbix/zabbix-web-nginx-mysql
+&lt;a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-32" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-32" href="https://stencel.io/posts/build-fully-working-zabbix-server-with-database-in-seconds-thanks-to-docker.html#rest_code_ff215cdbe17d4b7b94753de574b86ac7-32"&gt;&lt;/a&gt;    ports:
+&lt;a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-33" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-33" href="https://stencel.io/posts/build-fully-working-zabbix-server-with-database-in-seconds-thanks-to-docker.html#rest_code_ff215cdbe17d4b7b94753de574b86ac7-33"&gt;&lt;/a&gt;      - &lt;span class="s1"&gt;'7777:80'&lt;/span&gt;
+&lt;a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-34" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-34" href="https://stencel.io/posts/build-fully-working-zabbix-server-with-database-in-seconds-thanks-to-docker.html#rest_code_ff215cdbe17d4b7b94753de574b86ac7-34"&gt;&lt;/a&gt;    links:
+&lt;a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-35" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-35" href="https://stencel.io/posts/build-fully-working-zabbix-server-with-database-in-seconds-thanks-to-docker.html#rest_code_ff215cdbe17d4b7b94753de574b86ac7-35"&gt;&lt;/a&gt;      - &lt;span class="s2"&gt;"db:mysql"&lt;/span&gt;
+&lt;a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-36" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-36" href="https://stencel.io/posts/build-fully-working-zabbix-server-with-database-in-seconds-thanks-to-docker.html#rest_code_ff215cdbe17d4b7b94753de574b86ac7-36"&gt;&lt;/a&gt;      - &lt;span class="s2"&gt;"zabbix-server:zabbix-server"&lt;/span&gt;
+&lt;a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-37" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-37" href="https://stencel.io/posts/build-fully-working-zabbix-server-with-database-in-seconds-thanks-to-docker.html#rest_code_ff215cdbe17d4b7b94753de574b86ac7-37"&gt;&lt;/a&gt;      - &lt;span class="s2"&gt;"postfix:postfix"&lt;/span&gt;
+&lt;a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-38" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-38" href="https://stencel.io/posts/build-fully-working-zabbix-server-with-database-in-seconds-thanks-to-docker.html#rest_code_ff215cdbe17d4b7b94753de574b86ac7-38"&gt;&lt;/a&gt;    environment:
+&lt;a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-39" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-39" href="https://stencel.io/posts/build-fully-working-zabbix-server-with-database-in-seconds-thanks-to-docker.html#rest_code_ff215cdbe17d4b7b94753de574b86ac7-39"&gt;&lt;/a&gt;      MYSQL_ROOT_PASSWORD: &lt;span class="s1"&gt;'my_secret_password'&lt;/span&gt;
+&lt;a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-40" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-40" href="https://stencel.io/posts/build-fully-working-zabbix-server-with-database-in-seconds-thanks-to-docker.html#rest_code_ff215cdbe17d4b7b94753de574b86ac7-40"&gt;&lt;/a&gt;      MYSQL_USER: &lt;span class="s1"&gt;'zabbixuser'&lt;/span&gt;
+&lt;a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-41" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-41" href="https://stencel.io/posts/build-fully-working-zabbix-server-with-database-in-seconds-thanks-to-docker.html#rest_code_ff215cdbe17d4b7b94753de574b86ac7-41"&gt;&lt;/a&gt;      MYSQL_PASSWORD: &lt;span class="s1"&gt;'zabbixpassassword'&lt;/span&gt;
+&lt;a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-42" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-42" href="https://stencel.io/posts/build-fully-working-zabbix-server-with-database-in-seconds-thanks-to-docker.html#rest_code_ff215cdbe17d4b7b94753de574b86ac7-42"&gt;&lt;/a&gt;      DB_SERVER_HOST: &lt;span class="s1"&gt;'mysql'&lt;/span&gt;
+&lt;a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-43" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-43" href="https://stencel.io/posts/build-fully-working-zabbix-server-with-database-in-seconds-thanks-to-docker.html#rest_code_ff215cdbe17d4b7b94753de574b86ac7-43"&gt;&lt;/a&gt;      ZBX_SERVER_HOST: &lt;span class="s2"&gt;"zabbix-server"&lt;/span&gt;
+&lt;a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-44" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-44" href="https://stencel.io/posts/build-fully-working-zabbix-server-with-database-in-seconds-thanks-to-docker.html#rest_code_ff215cdbe17d4b7b94753de574b86ac7-44"&gt;&lt;/a&gt;      PHP_TZ: &lt;span class="s2"&gt;"Europe/London"&lt;/span&gt;
+&lt;a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-45" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-45" href="https://stencel.io/posts/build-fully-working-zabbix-server-with-database-in-seconds-thanks-to-docker.html#rest_code_ff215cdbe17d4b7b94753de574b86ac7-45"&gt;&lt;/a&gt;  postfix:
+&lt;a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-46" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-46" href="https://stencel.io/posts/build-fully-working-zabbix-server-with-database-in-seconds-thanks-to-docker.html#rest_code_ff215cdbe17d4b7b94753de574b86ac7-46"&gt;&lt;/a&gt;    image: catatnight/postfix
+&lt;a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-47" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-47" href="https://stencel.io/posts/build-fully-working-zabbix-server-with-database-in-seconds-thanks-to-docker.html#rest_code_ff215cdbe17d4b7b94753de574b86ac7-47"&gt;&lt;/a&gt;    hostname: support
+&lt;a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-48" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-48" href="https://stencel.io/posts/build-fully-working-zabbix-server-with-database-in-seconds-thanks-to-docker.html#rest_code_ff215cdbe17d4b7b94753de574b86ac7-48"&gt;&lt;/a&gt;    environment:
+&lt;a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-49" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-49" href="https://stencel.io/posts/build-fully-working-zabbix-server-with-database-in-seconds-thanks-to-docker.html#rest_code_ff215cdbe17d4b7b94753de574b86ac7-49"&gt;&lt;/a&gt;      - &lt;span class="nv"&gt;maildomain&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;mydomain.com
+&lt;a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-50" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-50" href="https://stencel.io/posts/build-fully-working-zabbix-server-with-database-in-seconds-thanks-to-docker.html#rest_code_ff215cdbe17d4b7b94753de574b86ac7-50"&gt;&lt;/a&gt;      - &lt;span class="nv"&gt;smtp_user&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;admin:my_password
+&lt;a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-51" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-51" href="https://stencel.io/posts/build-fully-working-zabbix-server-with-database-in-seconds-thanks-to-docker.html#rest_code_ff215cdbe17d4b7b94753de574b86ac7-51"&gt;&lt;/a&gt;    ports:
+&lt;a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-52" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-52" href="https://stencel.io/posts/build-fully-working-zabbix-server-with-database-in-seconds-thanks-to-docker.html#rest_code_ff215cdbe17d4b7b94753de574b86ac7-52"&gt;&lt;/a&gt;      - &lt;span class="s2"&gt;"25:25"&lt;/span&gt;
+&lt;a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-53" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-53" href="https://stencel.io/posts/build-fully-working-zabbix-server-with-database-in-seconds-thanks-to-docker.html#rest_code_ff215cdbe17d4b7b94753de574b86ac7-53"&gt;&lt;/a&gt;    expose:
+&lt;a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-54" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-54" href="https://stencel.io/posts/build-fully-working-zabbix-server-with-database-in-seconds-thanks-to-docker.html#rest_code_ff215cdbe17d4b7b94753de574b86ac7-54"&gt;&lt;/a&gt;      - &lt;span class="s2"&gt;"25"&lt;/span&gt;
+&lt;a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-55" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-55" href="https://stencel.io/posts/build-fully-working-zabbix-server-with-database-in-seconds-thanks-to-docker.html#rest_code_ff215cdbe17d4b7b94753de574b86ac7-55"&gt;&lt;/a&gt;    volumes:
+&lt;a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-56" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-56" href="https://stencel.io/posts/build-fully-working-zabbix-server-with-database-in-seconds-thanks-to-docker.html#rest_code_ff215cdbe17d4b7b94753de574b86ac7-56"&gt;&lt;/a&gt;      - /etc/nginx/ssl/postfix:/etc/postfix/certs
+&lt;a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-57" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-57" href="https://stencel.io/posts/build-fully-working-zabbix-server-with-database-in-seconds-thanks-to-docker.html#rest_code_ff215cdbe17d4b7b94753de574b86ac7-57"&gt;&lt;/a&gt;      - /etc/nginx/ssl/postfix:/etc/opendkim/domainkeys
+&lt;a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-58" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-58" href="https://stencel.io/posts/build-fully-working-zabbix-server-with-database-in-seconds-thanks-to-docker.html#rest_code_ff215cdbe17d4b7b94753de574b86ac7-58"&gt;&lt;/a&gt;volumes:
+&lt;a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-59" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-59" href="https://stencel.io/posts/build-fully-working-zabbix-server-with-database-in-seconds-thanks-to-docker.html#rest_code_ff215cdbe17d4b7b94753de574b86ac7-59"&gt;&lt;/a&gt;  mysql_data_dir:
+&lt;a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-60" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-60" href="https://stencel.io/posts/build-fully-working-zabbix-server-with-database-in-seconds-thanks-to-docker.html#rest_code_ff215cdbe17d4b7b94753de574b86ac7-60"&gt;&lt;/a&gt;    driver: &lt;span class="nb"&gt;local&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;The above solution is just enough to start zabbix server up and running in couple seconds.
 To do it just run:
 .. code-block:: bash&lt;/p&gt;
 &lt;blockquote&gt;
@@ -102,7 +104,7 @@ Check out adding agent in separate post&lt;/p&gt;
 &lt;p&gt;Docker-compose: 1.17.0, build ac53b73
 Docker: 17.09.1-ce, build 19e2cf6
 Kernel: 4.13.0-36-generic
-System: Ubuntu 16.04.3 LTS&lt;/p&gt;&lt;/div&gt;</description><category>DevOps</category><category>docker</category><category>docker-compose</category><category>monitoring</category><category>zabbix</category><guid>https://stencel.io/posts/build-fully-working-zabbix-server-with-database-in-seconds-thanks-to-docker.html</guid><pubDate>Fri, 16 Mar 2018 17:47:56 GMT</pubDate></item><item><title>Adding zabbix agent to server</title><link>https://stencel.io/posts/adding-zabbix-agent-to-server.html</link><dc:creator>Greg Stencel</dc:creator><description>&lt;div&gt;&lt;p&gt;Zabbix is very powerfull tool which its using agents (or SNMP) to monitor server resources.
+System: Ubuntu 16.04.3 LTS&lt;/p&gt;</description><category>DevOps</category><category>docker</category><category>docker-compose</category><category>monitoring</category><category>zabbix</category><guid>https://stencel.io/posts/build-fully-working-zabbix-server-with-database-in-seconds-thanks-to-docker.html</guid><pubDate>Fri, 16 Mar 2018 17:47:56 GMT</pubDate></item><item><title>Adding zabbix agent to server</title><link>https://stencel.io/posts/adding-zabbix-agent-to-server.html</link><dc:creator>Greg Stencel</dc:creator><description>&lt;p&gt;Zabbix is very powerfull tool which its using agents (or SNMP) to monitor server resources.
 Adding agent is easy but I had couple problems doing that when I used agent straight from my
 ubuntus (16.04.3) repo as there was no encryption functionality in this agent well I guess so as
 agent didn't recognize tls psk configuration so not very nice as by installing agent straight form repo
@@ -121,7 +123,7 @@ apt-get install zabbix-agent&lt;/p&gt;
 ServerActive=ip of zabbix server
 Hostname=My host name&lt;/p&gt;
 &lt;p&gt;sudo service zabbix-agent restart&lt;/p&gt;
-&lt;div class="section" id="add-host-to-server-through-web-interface"&gt;
+&lt;section id="add-host-to-server-through-web-interface"&gt;
 &lt;h2&gt;Add host to server through web interface:&lt;/h2&gt;
 &lt;p&gt;In server go to Configuration-&amp;gt; Hosts -&amp;gt; Create host
 type in host name
@@ -130,8 +132,8 @@ public IP address opf your agent.Select group and add agent.
 Next is to select templates so add services you need to monitor (here linux + mysql : Template DB MySQL, Template OS Linux)
 after saving you should see green ZBX available label on Hosts screen
 Notice : I couldnt see zbx agent green icon until I added linux template / or zabbix agent template.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="section" id="seurity-setting-up-psk-encryption"&gt;
+&lt;/section&gt;
+&lt;section id="seurity-setting-up-psk-encryption"&gt;
 &lt;h2&gt;Seurity - Setting up PSK encryption:&lt;/h2&gt;
 &lt;p&gt;sh -c "openssl rand -hex 32 &amp;gt; /etc/zabbix/zabbix_agentd.psk"
 Now add below lines to /etc/zabbix/zabbix_agentd.conf
@@ -151,8 +153,8 @@ connections from host PSK
 PSK identity: PSK SOMETHING (same as in zabbixagent config file)
 PSK: the hash generated (content of /etc/zabbix/zabbix_agentd.psk file on agent )
 now there should be greebn psk lablel and all our traffice will be encrypted&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="section" id="adding-mysql-monitoring-option"&gt;
+&lt;/section&gt;
+&lt;section id="adding-mysql-monitoring-option"&gt;
 &lt;h2&gt;Adding mysql monitoring option:&lt;/h2&gt;
 &lt;p&gt;add user credentials for mysqlclient on agent server:
 mysql &amp;gt; grant all privileges on &lt;em&gt;.&lt;/em&gt; to zabbix@'%' identified by 'zabbixuserpassword';
@@ -200,4 +202,4 @@ previously was
 UserParameter=mysql.ping,HOME=/var/lib/zabbix mysqladmin ping | grep -c alive
 so grep didnt work&lt;/p&gt;
 &lt;p&gt;Write your post here.&lt;/p&gt;
-&lt;/div&gt;&lt;/div&gt;</description><category>DevOps</category><category>docker</category><category>docker-compose</category><category>monitoring</category><category>zabbix</category><guid>https://stencel.io/posts/adding-zabbix-agent-to-server.html</guid><pubDate>Fri, 16 Mar 2018 09:27:50 GMT</pubDate></item></channel></rss>
+&lt;/section&gt;</description><category>DevOps</category><category>docker</category><category>docker-compose</category><category>monitoring</category><category>zabbix</category><guid>https://stencel.io/posts/adding-zabbix-agent-to-server.html</guid><pubDate>Fri, 16 Mar 2018 09:27:50 GMT</pubDate></item></channel></rss>

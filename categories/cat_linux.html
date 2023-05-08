@@ -55,20 +55,18 @@
                 Greg Stencel
             </span></p>
                 <p class="commentline"><i class="fa fa-comment"></i> 
-        
+    
     <a href="../posts/linux-diplay-size-of-each-subdirectory.html#disqus_thread" data-disqus-identifier="cache/posts/linux-diplay-size-of-each-subdirectory.html">Comments</a>
 
 
         </p>
 </div>
     </header><div class="e-content entry-content">
-    <div>
-<p>To display total size of each subdirectory</p>
-<pre class="code bash"><a name="rest_code_adc96efe997b4ec8ac06358516003878-1"></a>du -sh *
-</pre>
+    <p>To display total size of each subdirectory</p>
+<div class="code"><pre class="code bash"><a id="rest_code_cb9c5aaf0cc849a7b8ec565b0f8e1e32-1" name="rest_code_cb9c5aaf0cc849a7b8ec565b0f8e1e32-1" href="../posts/linux-diplay-size-of-each-subdirectory.html#rest_code_cb9c5aaf0cc849a7b8ec565b0f8e1e32-1"></a>du -sh *
+</pre></div>
 <p>-h human readable displays MB and GB instead of milions and bilions of bytes :)
 -s summarize total size of dir</p>
-</div>
     </div>
     </article><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="../posts/ssh-reverse-tunneling.html" class="u-url">ssh reverse tunneling</a></h1>
         <div class="metadata">
@@ -77,22 +75,20 @@
                 Greg Stencel
             </span></p>
                 <p class="commentline"><i class="fa fa-comment"></i> 
-        
+    
     <a href="../posts/ssh-reverse-tunneling.html#disqus_thread" data-disqus-identifier="cache/posts/ssh-reverse-tunneling.html">Comments</a>
 
 
         </p>
 </div>
     </header><div class="e-content entry-content">
-    <div>
-<p>When you want someone to connect to your NAT-ed or Firewalled server and</p>
+    <p>When you want someone to connect to your NAT-ed or Firewalled server and</p>
 <p>you run out of ideas ond options or you even dont have</p>
 <p>you dont have access to Firewall or VPN server to configure</p>
 <p>anything - you can always try to use reverse ssh tunnel.</p>
 <p>The only one condition is that you must be able to ssh from your server to public host( the one other guy wants to connect)</p>
 <p>This is how it works:</p>
 <p>[Server]  &lt;----&gt; [ FIREWALL/NAT SERVER ] &lt;----&gt; [ BOB HOST with public ip 80.80.80.80]</p>
-</div>
     </div>
     </article><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="../posts/list-all-users-crontab-jobs.html" class="u-url">List all users crontab jobs</a></h1>
         <div class="metadata">
@@ -101,15 +97,15 @@
                 Greg Stencel
             </span></p>
                 <p class="commentline"><i class="fa fa-comment"></i> 
-        
+    
     <a href="../posts/list-all-users-crontab-jobs.html#disqus_thread" data-disqus-identifier="cache/posts/list-all-users-crontab-jobs.html">Comments</a>
 
 
         </p>
 </div>
     </header><div class="e-content entry-content">
-    <pre class="code bash"><a name="rest_code_0015819660534c3aa6904a3074ef11d9-1"></a><span class="k">for</span> usr in <span class="k">$(</span>cut -f1 -d: /etc/passwd<span class="k">)</span><span class="p">;</span> <span class="k">do</span> <span class="nb">echo</span> <span class="nv">$usr</span><span class="p">;</span> crontab -u <span class="nv">$usr</span> -l<span class="p">;</span> <span class="k">done</span>
-</pre>
+    <div class="code"><pre class="code bash"><a id="rest_code_bf36599356854faa96a30a4c42c4ef07-1" name="rest_code_bf36599356854faa96a30a4c42c4ef07-1" href="../posts/list-all-users-crontab-jobs.html#rest_code_bf36599356854faa96a30a4c42c4ef07-1"></a><span class="k">for</span> usr <span class="k">in</span> <span class="k">$(</span>cut -f1 -d: /etc/passwd<span class="k">)</span><span class="p">;</span> <span class="k">do</span> <span class="nb">echo</span> <span class="nv">$usr</span><span class="p">;</span> crontab -u <span class="nv">$usr</span> -l<span class="p">;</span> <span class="k">done</span>
+</pre></div>
     </div>
     </article><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="../posts/linux-suspended-jobs.html" class="u-url">Linux suspended jobs</a></h1>
         <div class="metadata">
@@ -118,15 +114,14 @@
                 Greg Stencel
             </span></p>
                 <p class="commentline"><i class="fa fa-comment"></i> 
-        
+    
     <a href="../posts/linux-suspended-jobs.html#disqus_thread" data-disqus-identifier="cache/posts/linux-suspended-jobs.html">Comments</a>
 
 
         </p>
 </div>
     </header><div class="e-content entry-content">
-    <div>
-<p>If you suspended job by accident with ctrl+z you can always resume by fg here more examples:</p>
+    <p>If you suspended job by accident with ctrl+z you can always resume by fg here more examples:</p>
 <kbd>crtl</kbd><kbd>z</kbd> suspend<br>
 
 jobs - list the current jobs<br>
@@ -140,7 +135,6 @@ kill -[signal] %[number] - Send the signal [signal] to job number [number]<br>
 disown %[number] - you won't be owner of process anymore so it will be alive after leaving terminal<br>
 %vim <br>
 </div>
-    </div>
     </article><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="../posts/running-scripts-in-background-linux.html" class="u-url">running-scripts-in-background-linux</a></h1>
         <div class="metadata">
             <p class="dateline"><a href="../posts/running-scripts-in-background-linux.html" rel="bookmark"><i class="fa fa-clock"></i> <time class="published dt-published" datetime="2014-05-13T14:01:14Z" title="2014-05-13 14:01">2014-05-13 14:01</time></a></p>
@@ -148,53 +142,52 @@ disown %[number] - you won't be owner of process anymore so it will be alive aft
                 Greg Stencel
             </span></p>
                 <p class="commentline"><i class="fa fa-comment"></i> 
-        
+    
     <a href="../posts/running-scripts-in-background-linux.html#disqus_thread" data-disqus-identifier="cache/posts/running-scripts-in-background-linux.html">Comments</a>
 
 
         </p>
 </div>
     </header><div class="e-content entry-content">
-    <div>
-<p>I used to execute a lot of commands with &amp; at the end. But once I used plowshare and it didnt work because &amp; works until
+    <p>I used to execute a lot of commands with &amp; at the end. But once I used plowshare and it didnt work because &amp; works until
 you wont log out .So my solution (I know I could use nohup :) ) was screen. Screen is the best tool admin can use when working
 remotely. It can be usefull when you're in place with big packet loss and you often lost connection so when you're
 restoring database  you should be in screen session because when something will disconnect you you can alwas log in and
 connect to screen session in which restoring is taking place.</p>
 <p>So executing</p>
-<pre class="code bash"><a name="rest_code_0d90cf72a376442bb18c6a9a0c1175e8-1"></a>$./my_script.sh <span class="p">&amp;</span>
-</pre>
+<div class="code"><pre class="code bash"><a id="rest_code_6db23e24e67a4b2ba385c6e834975f88-1" name="rest_code_6db23e24e67a4b2ba385c6e834975f88-1" href="../posts/running-scripts-in-background-linux.html#rest_code_6db23e24e67a4b2ba385c6e834975f88-1"></a>$./my_script.sh <span class="p">&amp;</span>
+</pre></div>
 <p>will be only running when your session is still active so when you'll logout it will be killed.</p>
 <p>To run it independent from your presence on server do it with nohup:</p>
-<pre class="code bash"><a name="rest_code_92809d3a2898450d99eed922dfeb03f4-1"></a>$ nohup ./my_script.sh <span class="p">&amp;</span>
-</pre>
+<div class="code"><pre class="code bash"><a id="rest_code_c8acd3ebf61e45aca4af481e7e35bb92-1" name="rest_code_c8acd3ebf61e45aca4af481e7e35bb92-1" href="../posts/running-scripts-in-background-linux.html#rest_code_c8acd3ebf61e45aca4af481e7e35bb92-1"></a>$ nohup ./my_script.sh <span class="p">&amp;</span>
+</pre></div>
 <p>To launch screen :</p>
-<pre class="code bash"><a name="rest_code_b4450ae4d6ba42d99edc9d2fb7a818b9-1"></a>$ screen
-</pre>
+<div class="code"><pre class="code bash"><a id="rest_code_f42663c421e24caeb6f120d6e81cfc82-1" name="rest_code_f42663c421e24caeb6f120d6e81cfc82-1" href="../posts/running-scripts-in-background-linux.html#rest_code_f42663c421e24caeb6f120d6e81cfc82-1"></a>$ screen
+</pre></div>
 <p>Best practice is to launch screen with its name :</p>
-<pre class="code bash"><a name="rest_code_27065407db19484d93bfa6b72008a4b6-1"></a>$ screen -S my_own_screen_name
-</pre>Then if you want detach screen to get back later
+<div class="code"><pre class="code bash"><a id="rest_code_e9a7054050694ee89fe31b8f2e85723a-1" name="rest_code_e9a7054050694ee89fe31b8f2e85723a-1" href="../posts/running-scripts-in-background-linux.html#rest_code_e9a7054050694ee89fe31b8f2e85723a-1"></a>$ screen -S my_own_screen_name
+</pre></div>
+Then if you want detach screen to get back later
 
 <kbd>Ctrl</kbd><kbd>a</kbd><kbd>d</kbd>
 
 If you want terminate screen just
 <kbd>Ctrl</kbd><kbd>d</kbd> or exit<p>then you can resume it with:</p>
-<pre class="code bash"><a name="rest_code_dfdd8264def6424b820eaab115805962-1"></a>$ screen -r my_own_screen_name
-</pre>
+<div class="code"><pre class="code bash"><a id="rest_code_e760c454e0f248feb1d024f4c5454a97-1" name="rest_code_e760c454e0f248feb1d024f4c5454a97-1" href="../posts/running-scripts-in-background-linux.html#rest_code_e760c454e0f248feb1d024f4c5454a97-1"></a>$ screen -r my_own_screen_name
+</pre></div>
 <p>To list all available screens :</p>
-<pre class="code bash"><a name="rest_code_8cf8cba0e91a4202a3da26ea8a810016-1"></a>$ screen -ls
-</pre>
+<div class="code"><pre class="code bash"><a id="rest_code_bcff6131c110451daa276a26e5aa5e68-1" name="rest_code_bcff6131c110451daa276a26e5aa5e68-1" href="../posts/running-scripts-in-background-linux.html#rest_code_bcff6131c110451daa276a26e5aa5e68-1"></a>$ screen -ls
+</pre></div>
 <p>To attach to already attached screen:</p>
-<pre class="code bash"><a name="rest_code_dbaf39056b5c47e9a2c1beb86b09c5cf-1"></a>$ screen -x my_own_screen_name
-</pre>
+<div class="code"><pre class="code bash"><a id="rest_code_c893a97a1d634aaf9db9a871f2fc95ae-1" name="rest_code_c893a97a1d634aaf9db9a871f2fc95ae-1" href="../posts/running-scripts-in-background-linux.html#rest_code_c893a97a1d634aaf9db9a871f2fc95ae-1"></a>$ screen -x my_own_screen_name
+</pre></div>
 <p>To attach to attached screen and detach others:</p>
-<pre class="code bash"><a name="rest_code_70630b7f079b4a64b24000e084fcfae1-1"></a>$ screen -r -d my_own_screen_name
-</pre>
+<div class="code"><pre class="code bash"><a id="rest_code_0971384fa7fd4544a56762fb41cf8296-1" name="rest_code_0971384fa7fd4544a56762fb41cf8296-1" href="../posts/running-scripts-in-background-linux.html#rest_code_0971384fa7fd4544a56762fb41cf8296-1"></a>$ screen -r -d my_own_screen_name
+</pre></div>
 <p>To rename existing screen:</p>
 (being attached):
 
 <kbd>Ctrl</kbd><kbd>a</kbd>:sessionname my_screen_name<kbd>Enter</kbd>
-</div>
     </div>
     </article><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="../posts/shell_productivity.html" class="u-url">shell_productivity</a></h1>
         <div class="metadata">
@@ -203,25 +196,24 @@ If you want terminate screen just
                 Greg Stencel
             </span></p>
                 <p class="commentline"><i class="fa fa-comment"></i> 
-        
+    
     <a href="../posts/shell_productivity.html#disqus_thread" data-disqus-identifier="cache/posts/shell_productivity.html">Comments</a>
 
 
         </p>
 </div>
     </header><div class="e-content entry-content">
-    <div class="section" id="bash-zsh-terminal-productivity">
-<h2>Bash / ZSH Terminal productivity</h2>
+    <section id="bash-zsh-terminal-productivity"><h2>Bash / ZSH Terminal productivity</h2>
 <p>:w</p>
-<kbd>ctrl</kbd><kbd>u</kbd> clear whole line <br><kbd>ctrl</kbd><kbd>k</kbd> clear everything after curson<br><kbd>ctrl</kbd><kbd>w</kbd> clear everything before curson<br><kbd>ctrl</kbd><kbd>a</kbd> set cursor at the beginning (home)<br><kbd>ctrl</kbd><kbd>e</kbd> set cursor at the end (end)<br><kbd>ctrl</kbd><kbd>y</kbd> undo last clear or repeat after second hit<br><kbd>ctrl</kbd><kbd>l</kbd> clears screen <br><kbd>ctrl</kbd><kbd>r</kbd> search in you history commands type twice to select next candidate<br><kbd>ESC</kbd><kbd>t</kbd> Swap the last two words before the cursor<br><kbd>Alt</kbd><kbd>f</kbd> Move cursor every word forward<br><kbd>Alt</kbd><kbd>b</kbd> Move cursoor every word backward<br><kbd>ctrl</kbd><kbd>_</kbd> Undo the last change</div>
-    </div>
+<kbd>ctrl</kbd><kbd>u</kbd> clear whole line <br><kbd>ctrl</kbd><kbd>k</kbd> clear everything after curson<br><kbd>ctrl</kbd><kbd>w</kbd> clear everything before curson<br><kbd>ctrl</kbd><kbd>a</kbd> set cursor at the beginning (home)<br><kbd>ctrl</kbd><kbd>e</kbd> set cursor at the end (end)<br><kbd>ctrl</kbd><kbd>y</kbd> undo last clear or repeat after second hit<br><kbd>ctrl</kbd><kbd>l</kbd> clears screen <br><kbd>ctrl</kbd><kbd>r</kbd> search in you history commands type twice to select next candidate<br><kbd>ESC</kbd><kbd>t</kbd> Swap the last two words before the cursor<br><kbd>Alt</kbd><kbd>f</kbd> Move cursor every word forward<br><kbd>Alt</kbd><kbd>b</kbd> Move cursoor every word backward<br><kbd>ctrl</kbd><kbd>_</kbd> Undo the last change</section>
+</div>
     </article>
 </div>
 
 
 
-        
-       <script>var disqus_shortname="stencel";(function(){var a=document.createElement("script");a.async=true;a.src="https://"+disqus_shortname+".disqus.com/count.js";(document.getElementsByTagName("head")[0]||document.getElementsByTagName("body")[0]).appendChild(a)}());</script><footer id="footer"><p>Contents © 2021         <a href="mailto:gstencel@gmail.com">Greg Stencel</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         </p>
+    
+       <script>var disqus_shortname="stencel";(function(){var a=document.createElement("script");a.async=true;a.src="https://"+disqus_shortname+".disqus.com/count.js";(document.getElementsByTagName("head")[0]||document.getElementsByTagName("body")[0]).appendChild(a)}());</script><footer id="footer"><p>Contents © 2023         <a href="mailto:gstencel@gmail.com">Greg Stencel</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         </p>
             
         </footer>
 </div>
