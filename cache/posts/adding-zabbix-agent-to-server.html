@@ -17,7 +17,7 @@ apt-get install zabbix-agent</p>
 ServerActive=ip of zabbix server
 Hostname=My host name</p>
 <p>sudo service zabbix-agent restart</p>
-<div class="section" id="add-host-to-server-through-web-interface">
+<section id="add-host-to-server-through-web-interface">
 <h1>Add host to server through web interface:</h1>
 <p>In server go to Configuration-&gt; Hosts -&gt; Create host
 type in host name
@@ -26,8 +26,8 @@ public IP address opf your agent.Select group and add agent.
 Next is to select templates so add services you need to monitor (here linux + mysql : Template DB MySQL, Template OS Linux)
 after saving you should see green ZBX available label on Hosts screen
 Notice : I couldnt see zbx agent green icon until I added linux template / or zabbix agent template.</p>
-</div>
-<div class="section" id="seurity-setting-up-psk-encryption">
+</section>
+<section id="seurity-setting-up-psk-encryption">
 <h1>Seurity - Setting up PSK encryption:</h1>
 <p>sh -c &quot;openssl rand -hex 32 &gt; /etc/zabbix/zabbix_agentd.psk&quot;
 Now add below lines to /etc/zabbix/zabbix_agentd.conf
@@ -47,8 +47,8 @@ connections from host PSK
 PSK identity: PSK SOMETHING (same as in zabbixagent config file)
 PSK: the hash generated (content of /etc/zabbix/zabbix_agentd.psk file on agent )
 now there should be greebn psk lablel and all our traffice will be encrypted</p>
-</div>
-<div class="section" id="adding-mysql-monitoring-option">
+</section>
+<section id="adding-mysql-monitoring-option">
 <h1>Adding mysql monitoring option:</h1>
 <p>add user credentials for mysqlclient on agent server:
 mysql &gt; grant all privileges on <em>.</em> to zabbix&#64;'%' identified by 'zabbixuserpassword';
@@ -96,4 +96,4 @@ previously was
 UserParameter=mysql.ping,HOME=/var/lib/zabbix mysqladmin ping | grep -c alive
 so grep didnt work</p>
 <p>Write your post here.</p>
-</div>
+</section>

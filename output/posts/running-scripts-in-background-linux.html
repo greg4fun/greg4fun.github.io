@@ -53,7 +53,7 @@ you wont log out .So my solution (I know I could use nohup :) ) was screen. Scr"
                     Greg Stencel
             </span></p>
                 <p class="commentline"><i class="far fa-comment"></i>
-        
+    
     <a href="running-scripts-in-background-linux.html#disqus_thread" data-disqus-identifier="cache/posts/running-scripts-in-background-linux.html">Comments</a>
 
 
@@ -75,46 +75,45 @@ you wont log out .So my solution (I know I could use nohup :) ) was screen. Scr"
 
         </div>
     </header><div class="e-content entry-content" itemprop="articleBody text">
-    <div>
-<p>I used to execute a lot of commands with &amp; at the end. But once I used plowshare and it didnt work because &amp; works until
+    <p>I used to execute a lot of commands with &amp; at the end. But once I used plowshare and it didnt work because &amp; works until
 you wont log out .So my solution (I know I could use nohup :) ) was screen. Screen is the best tool admin can use when working
 remotely. It can be usefull when you're in place with big packet loss and you often lost connection so when you're
 restoring database  you should be in screen session because when something will disconnect you you can alwas log in and
 connect to screen session in which restoring is taking place.</p>
 <p>So executing</p>
-<pre class="code bash"><a name="rest_code_0d90cf72a376442bb18c6a9a0c1175e8-1"></a>$./my_script.sh <span class="p">&amp;</span>
-</pre>
+<div class="code"><pre class="code bash"><a id="rest_code_6db23e24e67a4b2ba385c6e834975f88-1" name="rest_code_6db23e24e67a4b2ba385c6e834975f88-1" href="running-scripts-in-background-linux.html#rest_code_6db23e24e67a4b2ba385c6e834975f88-1"></a>$./my_script.sh <span class="p">&amp;</span>
+</pre></div>
 <p>will be only running when your session is still active so when you'll logout it will be killed.</p>
 <p>To run it independent from your presence on server do it with nohup:</p>
-<pre class="code bash"><a name="rest_code_92809d3a2898450d99eed922dfeb03f4-1"></a>$ nohup ./my_script.sh <span class="p">&amp;</span>
-</pre>
+<div class="code"><pre class="code bash"><a id="rest_code_c8acd3ebf61e45aca4af481e7e35bb92-1" name="rest_code_c8acd3ebf61e45aca4af481e7e35bb92-1" href="running-scripts-in-background-linux.html#rest_code_c8acd3ebf61e45aca4af481e7e35bb92-1"></a>$ nohup ./my_script.sh <span class="p">&amp;</span>
+</pre></div>
 <p>To launch screen :</p>
-<pre class="code bash"><a name="rest_code_b4450ae4d6ba42d99edc9d2fb7a818b9-1"></a>$ screen
-</pre>
+<div class="code"><pre class="code bash"><a id="rest_code_f42663c421e24caeb6f120d6e81cfc82-1" name="rest_code_f42663c421e24caeb6f120d6e81cfc82-1" href="running-scripts-in-background-linux.html#rest_code_f42663c421e24caeb6f120d6e81cfc82-1"></a>$ screen
+</pre></div>
 <p>Best practice is to launch screen with its name :</p>
-<pre class="code bash"><a name="rest_code_27065407db19484d93bfa6b72008a4b6-1"></a>$ screen -S my_own_screen_name
-</pre>Then if you want detach screen to get back later
+<div class="code"><pre class="code bash"><a id="rest_code_e9a7054050694ee89fe31b8f2e85723a-1" name="rest_code_e9a7054050694ee89fe31b8f2e85723a-1" href="running-scripts-in-background-linux.html#rest_code_e9a7054050694ee89fe31b8f2e85723a-1"></a>$ screen -S my_own_screen_name
+</pre></div>
+Then if you want detach screen to get back later
 
 <kbd>Ctrl</kbd><kbd>a</kbd><kbd>d</kbd>
 
 If you want terminate screen just
 <kbd>Ctrl</kbd><kbd>d</kbd> or exit<p>then you can resume it with:</p>
-<pre class="code bash"><a name="rest_code_dfdd8264def6424b820eaab115805962-1"></a>$ screen -r my_own_screen_name
-</pre>
+<div class="code"><pre class="code bash"><a id="rest_code_e760c454e0f248feb1d024f4c5454a97-1" name="rest_code_e760c454e0f248feb1d024f4c5454a97-1" href="running-scripts-in-background-linux.html#rest_code_e760c454e0f248feb1d024f4c5454a97-1"></a>$ screen -r my_own_screen_name
+</pre></div>
 <p>To list all available screens :</p>
-<pre class="code bash"><a name="rest_code_8cf8cba0e91a4202a3da26ea8a810016-1"></a>$ screen -ls
-</pre>
+<div class="code"><pre class="code bash"><a id="rest_code_bcff6131c110451daa276a26e5aa5e68-1" name="rest_code_bcff6131c110451daa276a26e5aa5e68-1" href="running-scripts-in-background-linux.html#rest_code_bcff6131c110451daa276a26e5aa5e68-1"></a>$ screen -ls
+</pre></div>
 <p>To attach to already attached screen:</p>
-<pre class="code bash"><a name="rest_code_dbaf39056b5c47e9a2c1beb86b09c5cf-1"></a>$ screen -x my_own_screen_name
-</pre>
+<div class="code"><pre class="code bash"><a id="rest_code_c893a97a1d634aaf9db9a871f2fc95ae-1" name="rest_code_c893a97a1d634aaf9db9a871f2fc95ae-1" href="running-scripts-in-background-linux.html#rest_code_c893a97a1d634aaf9db9a871f2fc95ae-1"></a>$ screen -x my_own_screen_name
+</pre></div>
 <p>To attach to attached screen and detach others:</p>
-<pre class="code bash"><a name="rest_code_70630b7f079b4a64b24000e084fcfae1-1"></a>$ screen -r -d my_own_screen_name
-</pre>
+<div class="code"><pre class="code bash"><a id="rest_code_0971384fa7fd4544a56762fb41cf8296-1" name="rest_code_0971384fa7fd4544a56762fb41cf8296-1" href="running-scripts-in-background-linux.html#rest_code_0971384fa7fd4544a56762fb41cf8296-1"></a>$ screen -r -d my_own_screen_name
+</pre></div>
 <p>To rename existing screen:</p>
 (being attached):
 
 <kbd>Ctrl</kbd><kbd>a</kbd>:sessionname my_screen_name<kbd>Enter</kbd>
-</div>
     </div>
     <aside class="postpromonav"><nav><ul class="pager hidden-print">
 <li class="previous">
@@ -125,7 +124,7 @@ If you want terminate screen just
             </li>
         </ul></nav></aside><section class="comments hidden-print"><h2>Comments</h2>
         
-        
+    
         <div id="disqus_thread"></div>
         <script>
         var disqus_shortname ="stencel",
@@ -145,7 +144,7 @@ If you want terminate screen just
     <a href="https://disqus.com" class="dsq-brlink" rel="nofollow">Comments powered by <span class="logo-disqus">Disqus</span></a>
 
 
-        </section></article><script>var disqus_shortname="stencel";(function(){var a=document.createElement("script");a.async=true;a.src="https://"+disqus_shortname+".disqus.com/count.js";(document.getElementsByTagName("head")[0]||document.getElementsByTagName("body")[0]).appendChild(a)}());</script><footer id="footer"><p>Contents © 2021         <a href="mailto:gstencel@gmail.com">Greg Stencel</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         </p>
+        </section></article><script>var disqus_shortname="stencel";(function(){var a=document.createElement("script");a.async=true;a.src="https://"+disqus_shortname+".disqus.com/count.js";(document.getElementsByTagName("head")[0]||document.getElementsByTagName("body")[0]).appendChild(a)}());</script><footer id="footer"><p>Contents © 2023         <a href="mailto:gstencel@gmail.com">Greg Stencel</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         </p>
             
         </footer>
 </div>

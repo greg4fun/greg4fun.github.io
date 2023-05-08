@@ -4,13 +4,15 @@ to my coleague so I thought to display something on his screen.</p>
 I read about pseudoterminals &quot;pts&quot;  they are inside /dev directory</p>
 <p>Yea yea I know 3 rules of admin : Respect the privacy of others. Think before you type. With great power comes great responsibility bla bla bla ...</p>
 <p>To do this joke just check who is logged in and on which pts is he :</p>
-<pre class="code bash"><a name="rest_code_84c78a16839e4ba095e5f5453362c6ae-1"></a>$ who
-<a name="rest_code_84c78a16839e4ba095e5f5453362c6ae-2"></a>greg     pts/3        <span class="m">2012</span>-03-10 <span class="m">1</span>:26 <span class="o">(</span>:0<span class="o">)</span>
-<a name="rest_code_84c78a16839e4ba095e5f5453362c6ae-3"></a>mark     pts/5        <span class="m">2012</span>-03-10 <span class="m">10</span>:29 <span class="o">(</span>:0<span class="o">)</span>
-<a name="rest_code_84c78a16839e4ba095e5f5453362c6ae-4"></a>jenny    pts/7        <span class="m">2012</span>-03-10 <span class="m">13</span>:06 <span class="o">(</span>:0<span class="o">)</span>
-</pre><p>So now, we know that Mark is working on pts/5 so lets send him message :)</p>
-<pre class="code bash"><a name="rest_code_493c3d2bf6c145438d77279381171a89-1"></a>$ <span class="nb">echo</span> <span class="s2">&quot;In 5 minutes in toilet /Jenny&quot;</span> &gt; /dev/pts/5
-</pre><p>To &quot;clean evidences&quot; :D ( remember that guy working on this terminal will lost his current works he's working on this
+<div class="code"><pre class="code bash"><a id="rest_code_6e9c82d30b3246b9a2566f59d4ff455b-1" name="rest_code_6e9c82d30b3246b9a2566f59d4ff455b-1" href="#rest_code_6e9c82d30b3246b9a2566f59d4ff455b-1"></a>$ who
+<a id="rest_code_6e9c82d30b3246b9a2566f59d4ff455b-2" name="rest_code_6e9c82d30b3246b9a2566f59d4ff455b-2" href="#rest_code_6e9c82d30b3246b9a2566f59d4ff455b-2"></a>greg     pts/3        <span class="m">2012</span>-03-10 <span class="m">1</span>:26 <span class="o">(</span>:0<span class="o">)</span>
+<a id="rest_code_6e9c82d30b3246b9a2566f59d4ff455b-3" name="rest_code_6e9c82d30b3246b9a2566f59d4ff455b-3" href="#rest_code_6e9c82d30b3246b9a2566f59d4ff455b-3"></a>mark     pts/5        <span class="m">2012</span>-03-10 <span class="m">10</span>:29 <span class="o">(</span>:0<span class="o">)</span>
+<a id="rest_code_6e9c82d30b3246b9a2566f59d4ff455b-4" name="rest_code_6e9c82d30b3246b9a2566f59d4ff455b-4" href="#rest_code_6e9c82d30b3246b9a2566f59d4ff455b-4"></a>jenny    pts/7        <span class="m">2012</span>-03-10 <span class="m">13</span>:06 <span class="o">(</span>:0<span class="o">)</span>
+</pre></div>
+<p>So now, we know that Mark is working on pts/5 so lets send him message :)</p>
+<div class="code"><pre class="code bash"><a id="rest_code_bd32de3618ea49788540bbb2f5c10a98-1" name="rest_code_bd32de3618ea49788540bbb2f5c10a98-1" href="#rest_code_bd32de3618ea49788540bbb2f5c10a98-1"></a>$ <span class="nb">echo</span> <span class="s2">&quot;In 5 minutes in toilet /Jenny&quot;</span> &gt; /dev/pts/5
+</pre></div>
+<p>To &quot;clean evidences&quot; :D ( remember that guy working on this terminal will lost his current works he's working on this
 specific terminal)</p>
-<pre class="code bash"><a name="rest_code_64b26a0706804ce898aec3df938f6fef-1"></a>$ cat /dev/urandom &gt; /dev/pts/5
-</pre>
+<div class="code"><pre class="code bash"><a id="rest_code_d7d7dc8f2cfe4df3934056e2735e10ea-1" name="rest_code_d7d7dc8f2cfe4df3934056e2735e10ea-1" href="#rest_code_d7d7dc8f2cfe4df3934056e2735e10ea-1"></a>$ cat /dev/urandom &gt; /dev/pts/5
+</pre></div>

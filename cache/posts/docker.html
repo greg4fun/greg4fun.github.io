@@ -1,12 +1,12 @@
-<div class="section" id="first-download-download-pre-build-image">
+<section id="first-download-download-pre-build-image">
 <h1>First download download pre build image :</h1>
 <p>sudo docker pull ubuntu</p>
-</div>
-<div class="section" id="run-pseudo-tty">
+</section>
+<section id="run-pseudo-tty">
 <h1>run pseudo tty:</h1>
 <p>sudo docker run -t -i ubuntu /bin/bash</p>
-</div>
-<div class="section" id="get-image-of-running-docker">
+</section>
+<section id="get-image-of-running-docker">
 <h1>get image of running docker:</h1>
 <p>sudo docker ps</p>
 <p>output:
@@ -17,25 +17,25 @@ c4fbc80d8926        ubuntu:14.04        /bin/bash           3 minutes ago       
 save container as your image:
 =============================
 sudo docker commit c4fbc80d8926 myimage_name</p>
-</div>
-<div class="section" id="running-our-image">
+</section>
+<section id="running-our-image">
 <h1>Running our image:</h1>
 <p>sudo docker run -t -i myimage_name /bin/bash</p>
-</div>
-<div class="section" id="deploying-your-app-and-dependicies">
+</section>
+<section id="deploying-your-app-and-dependicies">
 <h1>Deploying your app and dependicies:</h1>
 <p>watch out to save container before you quit bash inside docker instance
 find container id and save</p>
-</div>
-<div class="section" id="diff-image-container">
+</section>
+<section id="diff-image-container">
 <h1>Diff image container:</h1>
 <p>sudo docker diff</p>
-</div>
-<div class="section" id="start-docker-container-with-name">
+</section>
+<section id="start-docker-container-with-name">
 <h1>Start docker container with name:</h1>
 <p>sudo docker run -i -t --name=&quot;IWAPPS2&quot; iwapps /bin/bash</p>
-</div>
-<div class="section" id="commit-with-name">
+</section>
+<section id="commit-with-name">
 <h1>Commit with name :</h1>
 <p>sudo docker commit IWAPPS2 local -a &quot;greg&quot; -m &quot;First image commit&quot;</p>
 <p>Actually, images are stored within /var/lib/docker/aufs/diff</p>
@@ -87,4 +87,4 @@ sudo docker version
 sudo docker search ubuntu
 sudo docker pull ubuntu
 sudo docker images</p>
-</div>
+</section>

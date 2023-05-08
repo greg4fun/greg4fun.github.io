@@ -55,7 +55,7 @@ $ s">
                     Greg Stencel
             </span></p>
                 <p class="commentline"><i class="far fa-comment"></i>
-        
+    
     <a href="postgres-connect-through-ssh-tunnel.html#disqus_thread" data-disqus-identifier="cache/posts/postgres-connect-through-ssh-tunnel.html">Comments</a>
 
 
@@ -76,8 +76,7 @@ $ s">
 
         </div>
     </header><div class="e-content entry-content" itemprop="articleBody text">
-    <div>
-<p>There is possibility to use local pgadmin3 instance even if remote connection on postgresql server is not granted.
+    <p>There is possibility to use local pgadmin3 instance even if remote connection on postgresql server is not granted.
 To do so powerfull ssh tunneling comes with help :
 c:w
 reate ssh connection where
@@ -96,7 +95,6 @@ but then the database server will see the connection as coming in on its foo.com
 <p>If you have to "hop" to the database server via some login host, one possible setup could look like this:</p>
 <p>ssh -L 63333:db.foo.com:5432 joe@shell.foo.com
 Note that this way the connection from shell.foo.com to db.foo.com will not be encrypted by the SSH tunnel. SSH offers quite a few configuration possibilities when the network is restricted in various ways. Please refer to the SSH documentation for details.</p>
-</div>
     </div>
     <aside class="postpromonav"><nav><ul class="pager hidden-print">
 <li class="previous">
@@ -107,7 +105,7 @@ Note that this way the connection from shell.foo.com to db.foo.com will not be e
             </li>
         </ul></nav></aside><section class="comments hidden-print"><h2>Comments</h2>
         
-        
+    
         <div id="disqus_thread"></div>
         <script>
         var disqus_shortname ="stencel",
@@ -127,7 +125,7 @@ Note that this way the connection from shell.foo.com to db.foo.com will not be e
     <a href="https://disqus.com" class="dsq-brlink" rel="nofollow">Comments powered by <span class="logo-disqus">Disqus</span></a>
 
 
-        </section></article><script>var disqus_shortname="stencel";(function(){var a=document.createElement("script");a.async=true;a.src="https://"+disqus_shortname+".disqus.com/count.js";(document.getElementsByTagName("head")[0]||document.getElementsByTagName("body")[0]).appendChild(a)}());</script><footer id="footer"><p>Contents © 2021         <a href="mailto:gstencel@gmail.com">Greg Stencel</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         </p>
+        </section></article><script>var disqus_shortname="stencel";(function(){var a=document.createElement("script");a.async=true;a.src="https://"+disqus_shortname+".disqus.com/count.js";(document.getElementsByTagName("head")[0]||document.getElementsByTagName("body")[0]).appendChild(a)}());</script><footer id="footer"><p>Contents © 2023         <a href="mailto:gstencel@gmail.com">Greg Stencel</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         </p>
             
         </footer>
 </div>

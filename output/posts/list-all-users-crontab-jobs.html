@@ -51,7 +51,7 @@
                     Greg Stencel
             </span></p>
                 <p class="commentline"><i class="far fa-comment"></i>
-        
+    
     <a href="list-all-users-crontab-jobs.html#disqus_thread" data-disqus-identifier="cache/posts/list-all-users-crontab-jobs.html">Comments</a>
 
 
@@ -72,8 +72,8 @@
 
         </div>
     </header><div class="e-content entry-content" itemprop="articleBody text">
-    <pre class="code bash"><a name="rest_code_0015819660534c3aa6904a3074ef11d9-1"></a><span class="k">for</span> usr in <span class="k">$(</span>cut -f1 -d: /etc/passwd<span class="k">)</span><span class="p">;</span> <span class="k">do</span> <span class="nb">echo</span> <span class="nv">$usr</span><span class="p">;</span> crontab -u <span class="nv">$usr</span> -l<span class="p">;</span> <span class="k">done</span>
-</pre>
+    <div class="code"><pre class="code bash"><a id="rest_code_bf36599356854faa96a30a4c42c4ef07-1" name="rest_code_bf36599356854faa96a30a4c42c4ef07-1" href="list-all-users-crontab-jobs.html#rest_code_bf36599356854faa96a30a4c42c4ef07-1"></a><span class="k">for</span> usr <span class="k">in</span> <span class="k">$(</span>cut -f1 -d: /etc/passwd<span class="k">)</span><span class="p">;</span> <span class="k">do</span> <span class="nb">echo</span> <span class="nv">$usr</span><span class="p">;</span> crontab -u <span class="nv">$usr</span> -l<span class="p">;</span> <span class="k">done</span>
+</pre></div>
     </div>
     <aside class="postpromonav"><nav><ul class="pager hidden-print">
 <li class="previous">
@@ -84,7 +84,7 @@
             </li>
         </ul></nav></aside><section class="comments hidden-print"><h2>Comments</h2>
         
-        
+    
         <div id="disqus_thread"></div>
         <script>
         var disqus_shortname ="stencel",
@@ -104,7 +104,7 @@
     <a href="https://disqus.com" class="dsq-brlink" rel="nofollow">Comments powered by <span class="logo-disqus">Disqus</span></a>
 
 
-        </section></article><script>var disqus_shortname="stencel";(function(){var a=document.createElement("script");a.async=true;a.src="https://"+disqus_shortname+".disqus.com/count.js";(document.getElementsByTagName("head")[0]||document.getElementsByTagName("body")[0]).appendChild(a)}());</script><footer id="footer"><p>Contents © 2021         <a href="mailto:gstencel@gmail.com">Greg Stencel</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         </p>
+        </section></article><script>var disqus_shortname="stencel";(function(){var a=document.createElement("script");a.async=true;a.src="https://"+disqus_shortname+".disqus.com/count.js";(document.getElementsByTagName("head")[0]||document.getElementsByTagName("body")[0]).appendChild(a)}());</script><footer id="footer"><p>Contents © 2023         <a href="mailto:gstencel@gmail.com">Greg Stencel</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         </p>
             
         </footer>
 </div>

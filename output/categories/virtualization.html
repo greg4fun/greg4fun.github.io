@@ -55,24 +55,18 @@
                 Greg Stencel
             </span></p>
                 <p class="commentline"><i class="fa fa-comment"></i> 
-        
+    
     <a href="../posts/docker.html#disqus_thread" data-disqus-identifier="cache/posts/docker.html">Comments</a>
 
 
         </p>
 </div>
     </header><div class="e-content entry-content">
-    <div>
-<div class="section" id="first-download-download-pre-build-image">
-<h2>First download download pre build image :</h2>
+    <section id="first-download-download-pre-build-image"><h2>First download download pre build image :</h2>
 <p>sudo docker pull ubuntu</p>
-</div>
-<div class="section" id="run-pseudo-tty">
-<h2>run pseudo tty:</h2>
+</section><section id="run-pseudo-tty"><h2>run pseudo tty:</h2>
 <p>sudo docker run -t -i ubuntu /bin/bash</p>
-</div>
-<div class="section" id="get-image-of-running-docker">
-<h2>get image of running docker:</h2>
+</section><section id="get-image-of-running-docker"><h2>get image of running docker:</h2>
 <p>sudo docker ps</p>
 <p>output:
 ➜  ~  sudo docker ps
@@ -82,26 +76,16 @@ c4fbc80d8926        ubuntu:14.04        /bin/bash           3 minutes ago       
 save container as your image:
 =============================
 sudo docker commit c4fbc80d8926 myimage_name</p>
-</div>
-<div class="section" id="running-our-image">
-<h2>Running our image:</h2>
+</section><section id="running-our-image"><h2>Running our image:</h2>
 <p>sudo docker run -t -i myimage_name /bin/bash</p>
-</div>
-<div class="section" id="deploying-your-app-and-dependicies">
-<h2>Deploying your app and dependicies:</h2>
+</section><section id="deploying-your-app-and-dependicies"><h2>Deploying your app and dependicies:</h2>
 <p>watch out to save container before you quit bash inside docker instance
 find container id and save</p>
-</div>
-<div class="section" id="diff-image-container">
-<h2>Diff image container:</h2>
+</section><section id="diff-image-container"><h2>Diff image container:</h2>
 <p>sudo docker diff</p>
-</div>
-<div class="section" id="start-docker-container-with-name">
-<h2>Start docker container with name:</h2>
+</section><section id="start-docker-container-with-name"><h2>Start docker container with name:</h2>
 <p>sudo docker run -i -t --name="IWAPPS2" iwapps /bin/bash</p>
-</div>
-<div class="section" id="commit-with-name">
-<h2>Commit with name :</h2>
+</section><section id="commit-with-name"><h2>Commit with name :</h2>
 <p>sudo docker commit IWAPPS2 local -a "greg" -m "First image commit"</p>
 <p>Actually, images are stored within /var/lib/docker/aufs/diff</p>
 <blockquote>
@@ -152,16 +136,15 @@ sudo docker version
 sudo docker search ubuntu
 sudo docker pull ubuntu
 sudo docker images</p>
+</section>
 </div>
-</div>
-    </div>
     </article>
 </div>
 
 
 
-        
-       <script>var disqus_shortname="stencel";(function(){var a=document.createElement("script");a.async=true;a.src="https://"+disqus_shortname+".disqus.com/count.js";(document.getElementsByTagName("head")[0]||document.getElementsByTagName("body")[0]).appendChild(a)}());</script><footer id="footer"><p>Contents © 2021         <a href="mailto:gstencel@gmail.com">Greg Stencel</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         </p>
+    
+       <script>var disqus_shortname="stencel";(function(){var a=document.createElement("script");a.async=true;a.src="https://"+disqus_shortname+".disqus.com/count.js";(document.getElementsByTagName("head")[0]||document.getElementsByTagName("body")[0]).appendChild(a)}());</script><footer id="footer"><p>Contents © 2023         <a href="mailto:gstencel@gmail.com">Greg Stencel</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         </p>
             
         </footer>
 </div>

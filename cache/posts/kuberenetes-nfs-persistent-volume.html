@@ -11,63 +11,58 @@
 </ul>
 <p>Now having your NFS share here 192.168.1.11/Persistentvolume/
 you can try if it works with mount </p>
-<pre class="code literal-block"><span></span><code><span class="err">sudo mount -t nfs 192.168.1.11:/PersistentVolume /mnt/PersistentVolume</span>
-</code></pre>
-
+<div class="code"><pre class="code literal-block">sudo mount -t nfs 192.168.1.11:/PersistentVolume /mnt/PersistentVolume
+</pre></div>
 
 <p>Later on you can secure access with password.</p>
 <p>If everything works fine we need persistent volume on our cluster</p>
 <p>persistentvolume.yml</p>
-<pre class="code literal-block"><span></span><code><span class="n">apiVersion</span><span class="o">:</span> <span class="n">v1</span>
-<span class="n">kind</span><span class="o">:</span> <span class="n">PersistentVolume</span>
-<span class="n">metadata</span><span class="o">:</span>
-  <span class="n">name</span><span class="o">:</span> <span class="n">pv0001</span>
-<span class="n">spec</span><span class="o">:</span>
-  <span class="n">capacity</span><span class="o">:</span>
-    <span class="n">storage</span><span class="o">:</span> <span class="mi">100</span><span class="n">Gi</span>
-  <span class="n">accessModes</span><span class="o">:</span>
-  <span class="o">-</span> <span class="n">ReadWriteMany</span>
-  <span class="n">mountOptions</span><span class="o">:</span>
-    <span class="o">-</span> <span class="n">nfsvers</span><span class="o">=</span><span class="mf">4.1</span>
-  <span class="n">nfs</span><span class="o">:</span>
-    <span class="n">path</span><span class="o">:</span> <span class="sr">/PersistentVolume/</span><span class="n">pv0001</span>
-    <span class="n">server</span><span class="o">:</span> <span class="mf">192.168</span><span class="o">.</span><span class="mf">1.11</span>
-  <span class="n">persistentVolumeReclaimPolicy</span><span class="o">:</span> <span class="n">Retain</span>
-</code></pre>
-
+<div class="code"><pre class="code literal-block"><span class="n">apiVersion</span><span class="o">:</span><span class="w"> </span><span class="n">v1</span><span class="w"></span>
+<span class="n">kind</span><span class="o">:</span><span class="w"> </span><span class="n">PersistentVolume</span><span class="w"></span>
+<span class="n">metadata</span><span class="o">:</span><span class="w"></span>
+<span class="w">  </span><span class="n">name</span><span class="o">:</span><span class="w"> </span><span class="n">pv0001</span><span class="w"></span>
+<span class="n">spec</span><span class="o">:</span><span class="w"></span>
+<span class="w">  </span><span class="n">capacity</span><span class="o">:</span><span class="w"></span>
+<span class="w">    </span><span class="n">storage</span><span class="o">:</span><span class="w"> </span><span class="mi">100</span><span class="n">Gi</span><span class="w"></span>
+<span class="w">  </span><span class="n">accessModes</span><span class="o">:</span><span class="w"></span>
+<span class="w">  </span><span class="o">-</span><span class="w"> </span><span class="n">ReadWriteMany</span><span class="w"></span>
+<span class="w">  </span><span class="n">mountOptions</span><span class="o">:</span><span class="w"></span>
+<span class="w">    </span><span class="o">-</span><span class="w"> </span><span class="n">nfsvers</span><span class="o">=</span><span class="mf">4.1</span><span class="w"></span>
+<span class="w">  </span><span class="n">nfs</span><span class="o">:</span><span class="w"></span>
+<span class="w">    </span><span class="n">path</span><span class="o">:</span><span class="w"> </span><span class="sr">/PersistentVolume/</span><span class="n">pv0001</span><span class="w"></span>
+<span class="w">    </span><span class="n">server</span><span class="o">:</span><span class="w"> </span><span class="mf">192.168</span><span class="o">.</span><span class="mf">1.11</span><span class="w"></span>
+<span class="w">  </span><span class="n">persistentVolumeReclaimPolicy</span><span class="o">:</span><span class="w"> </span><span class="n">Retain</span><span class="w"></span>
+</pre></div>
 
 <p>Apply above yaml to the cluster</p>
-<pre class="code literal-block"><span></span><code><span class="err">kubectl apply -f persistentvolume.yml</span>
-</code></pre>
-
+<div class="code"><pre class="code literal-block">kubectl apply -f persistentvolume.yml
+</pre></div>
 
 <p>Now we need to declare persistent volume claim </p>
 <p>persistentvolumeclaim.yml</p>
-<pre class="code literal-block"><span></span><code><span class="n">apiVersion</span><span class="o">:</span> <span class="n">v1</span>
-<span class="n">kind</span><span class="o">:</span> <span class="n">PersistentVolumeClaim</span>
-<span class="n">metadata</span><span class="o">:</span>
-  <span class="n">name</span><span class="o">:</span> <span class="n">mysql</span><span class="o">-</span><span class="n">pv</span><span class="o">-</span><span class="n">claim</span>
-<span class="n">spec</span><span class="o">:</span>
-  <span class="n">accessModes</span><span class="o">:</span>
-    <span class="o">-</span> <span class="n">ReadWriteMany</span> 
-  <span class="n">resources</span><span class="o">:</span>
-    <span class="n">requests</span><span class="o">:</span>
-      <span class="n">storage</span><span class="o">:</span> <span class="mi">10</span><span class="n">Gi</span>
-</code></pre>
-
+<div class="code"><pre class="code literal-block"><span class="n">apiVersion</span><span class="o">:</span><span class="w"> </span><span class="n">v1</span><span class="w"></span>
+<span class="n">kind</span><span class="o">:</span><span class="w"> </span><span class="n">PersistentVolumeClaim</span><span class="w"></span>
+<span class="n">metadata</span><span class="o">:</span><span class="w"></span>
+<span class="w">  </span><span class="n">name</span><span class="o">:</span><span class="w"> </span><span class="n">mysql</span><span class="o">-</span><span class="n">pv</span><span class="o">-</span><span class="n">claim</span><span class="w"></span>
+<span class="n">spec</span><span class="o">:</span><span class="w"></span>
+<span class="w">  </span><span class="n">accessModes</span><span class="o">:</span><span class="w"></span>
+<span class="w">    </span><span class="o">-</span><span class="w"> </span><span class="n">ReadWriteMany</span><span class="w"> </span>
+<span class="w">  </span><span class="n">resources</span><span class="o">:</span><span class="w"></span>
+<span class="w">    </span><span class="n">requests</span><span class="o">:</span><span class="w"></span>
+<span class="w">      </span><span class="n">storage</span><span class="o">:</span><span class="w"> </span><span class="mi">10</span><span class="n">Gi</span><span class="w"></span>
+</pre></div>
 
 <p>Apply</p>
-<pre class="code literal-block"><span></span><code><span class="err">kubectl apply -f persistentvolumeclaim.yml</span>
-</code></pre>
-
+<div class="code"><pre class="code literal-block">kubectl apply -f persistentvolumeclaim.yml
+</pre></div>
 
 <p>Check if it has been bound:</p>
-<pre class="code literal-block"><span></span><code><span class="n">kubectl</span> <span class="k">get</span> <span class="n">pv</span>
+<div class="code"><pre class="code literal-block">kubectl get pv
 
-<span class="n">NAME</span>     <span class="n">CAPACITY</span>   <span class="k">ACCESS</span> <span class="n">MODES</span>   <span class="n">RECLAIM</span> <span class="n">POLICY</span>   <span class="n">STATUS</span>   <span class="n">CLAIM</span>                    <span class="n">STORAGECLASS</span>   <span class="n">REASON</span>   <span class="n">AGE</span>
-<span class="n">pv0001</span>   <span class="mi">100</span><span class="n">Gi</span>      <span class="n">RWX</span>            <span class="n">Retain</span>           <span class="n">Bound</span>    <span class="k">default</span><span class="o">/</span><span class="n">mysql</span><span class="o">-</span><span class="n">pv</span><span class="o">-</span><span class="n">claim</span>                           <span class="mi">2</span><span class="n">d4h</span>
+NAME     CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS   CLAIM                    STORAGECLASS   REASON   AGE
+pv0001   100Gi      RWX            Retain           Bound    default/mysql-pv-claim                           2d4h
 
-<span class="n">kubectl</span> <span class="k">get</span> <span class="n">pvc</span> 
-<span class="n">NAME</span>              <span class="n">STATUS</span>    <span class="n">VOLUME</span>   <span class="n">CAPACITY</span>   <span class="k">ACCESS</span> <span class="n">MODES</span>   <span class="n">STORAGECLASS</span>   <span class="n">AGE</span>
-<span class="n">mysql</span><span class="o">-</span><span class="n">pv</span><span class="o">-</span><span class="n">claim</span>    <span class="n">Bound</span>     <span class="n">pv0001</span>   <span class="mi">100</span><span class="n">Gi</span>      <span class="n">RWX</span>                           <span class="mi">2</span><span class="n">d4h</span>
-</code></pre>
+kubectl get pvc 
+NAME              STATUS    VOLUME   CAPACITY   ACCESS MODES   STORAGECLASS   AGE
+mysql-pv-claim    Bound     pv0001   100Gi      RWX                           2d4h
+</pre></div>

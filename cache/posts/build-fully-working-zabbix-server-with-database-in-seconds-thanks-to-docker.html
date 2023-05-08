@@ -20,71 +20,73 @@ so it will be easier to identify in future which volume belongs to which stack
 In Ubuntu volumes are usually being kept in/var/lib/docker/volumes but you can mount any directory from host by
 just specifying absolute or relative path in service configuration so for instance for mysql in
 example to mount mysql_data_dir just outside of our containers folder</p>
-<pre class="code bash"><a name="rest_code_ada2736a3948419e8f78eed3f3f5c008-1"></a>volumes:
-<a name="rest_code_ada2736a3948419e8f78eed3f3f5c008-2"></a>  - <span class="s1">&#39;../mysql_data_dir:/var/lib/mysql&#39;</span>
-</pre><p>Now within directory create docker-compose.yml with selected technologies in my case it is:
+<div class="code"><pre class="code bash"><a id="rest_code_91dcb87f7c4f4cff81640fcc227634bb-1" name="rest_code_91dcb87f7c4f4cff81640fcc227634bb-1" href="#rest_code_91dcb87f7c4f4cff81640fcc227634bb-1"></a>volumes:
+<a id="rest_code_91dcb87f7c4f4cff81640fcc227634bb-2" name="rest_code_91dcb87f7c4f4cff81640fcc227634bb-2" href="#rest_code_91dcb87f7c4f4cff81640fcc227634bb-2"></a>  - <span class="s1">&#39;../mysql_data_dir:/var/lib/mysql&#39;</span>
+</pre></div>
+<p>Now within directory create docker-compose.yml with selected technologies in my case it is:
 #docker-compose.yml</p>
-<pre class="code bash"><a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-1"></a>version: <span class="s1">&#39;3&#39;</span>
-<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-2"></a>
-<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-3"></a>services:
-<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-4"></a>  db:
-<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-5"></a>    image: mysql:latest
-<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-6"></a>    restart: always
-<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-7"></a>    expose:
-<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-8"></a>      - <span class="s1">&#39;3336&#39;</span>
-<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-9"></a>    environment:
-<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-10"></a>      MYSQL_ROOT_PASSWORD: <span class="s1">&#39;my_secret_password&#39;</span>
-<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-11"></a>      MYSQL_USER: <span class="s1">&#39;zabbixuser&#39;</span>
-<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-12"></a>      MYSQL_PASSWORD: <span class="s1">&#39;zabbix_password&#39;</span>
-<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-13"></a>      MYSQL_ROOT_HOST: <span class="s1">&#39;%&#39;</span>
-<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-14"></a>    volumes:
-<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-15"></a>      - <span class="s1">&#39;mysql_data_dir:/var/lib/mysql&#39;</span>
-<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-16"></a>
-<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-17"></a>
-<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-18"></a>  zabbix-server:
-<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-19"></a>    image: zabbix/zabbix-server-mysql
-<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-20"></a>    links:
-<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-21"></a>      - <span class="s2">&quot;db:mysql&quot;</span>
-<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-22"></a>      - <span class="s2">&quot;postfix:postfix&quot;</span>
-<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-23"></a>    environment:
-<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-24"></a>      MYSQL_ROOT_PASSWORD: <span class="s1">&#39;my_secret_password&#39;</span>
-<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-25"></a>      MYSQL_USER: <span class="s1">&#39;zabbixuser&#39;</span>
-<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-26"></a>      MYSQL_PASSWORD: <span class="s1">&#39;zabbixpassassword&#39;</span>
-<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-27"></a>      DB_SERVER_HOST: <span class="s1">&#39;mysql&#39;</span>
-<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-28"></a>
-<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-29"></a>
-<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-30"></a>  zabbix-web:
-<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-31"></a>    image: zabbix/zabbix-web-nginx-mysql
-<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-32"></a>    ports:
-<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-33"></a>      - <span class="s1">&#39;7777:80&#39;</span>
-<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-34"></a>    links:
-<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-35"></a>      - <span class="s2">&quot;db:mysql&quot;</span>
-<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-36"></a>      - <span class="s2">&quot;zabbix-server:zabbix-server&quot;</span>
-<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-37"></a>      - <span class="s2">&quot;postfix:postfix&quot;</span>
-<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-38"></a>    environment:
-<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-39"></a>      MYSQL_ROOT_PASSWORD: <span class="s1">&#39;my_secret_password&#39;</span>
-<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-40"></a>      MYSQL_USER: <span class="s1">&#39;zabbixuser&#39;</span>
-<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-41"></a>      MYSQL_PASSWORD: <span class="s1">&#39;zabbixpassassword&#39;</span>
-<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-42"></a>      DB_SERVER_HOST: <span class="s1">&#39;mysql&#39;</span>
-<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-43"></a>      ZBX_SERVER_HOST: <span class="s2">&quot;zabbix-server&quot;</span>
-<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-44"></a>      PHP_TZ: <span class="s2">&quot;Europe/London&quot;</span>
-<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-45"></a>  postfix:
-<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-46"></a>    image: catatnight/postfix
-<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-47"></a>    hostname: support
-<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-48"></a>    environment:
-<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-49"></a>      - <span class="nv">maildomain</span><span class="o">=</span>mydomain.com
-<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-50"></a>      - <span class="nv">smtp_user</span><span class="o">=</span>admin:my_password
-<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-51"></a>    ports:
-<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-52"></a>      - <span class="s2">&quot;25:25&quot;</span>
-<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-53"></a>    expose:
-<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-54"></a>      - <span class="s2">&quot;25&quot;</span>
-<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-55"></a>    volumes:
-<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-56"></a>      - /etc/nginx/ssl/postfix:/etc/postfix/certs
-<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-57"></a>      - /etc/nginx/ssl/postfix:/etc/opendkim/domainkeys
-<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-58"></a>volumes:
-<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-59"></a>  mysql_data_dir:
-<a name="rest_code_5f18ca7caa1b4d98a74c79d567bae088-60"></a>    driver: <span class="nb">local</span>
-</pre><p>The above solution is just enough to start zabbix server up and running in couple seconds.
+<div class="code"><pre class="code bash"><a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-1" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-1" href="#rest_code_ff215cdbe17d4b7b94753de574b86ac7-1"></a>version: <span class="s1">&#39;3&#39;</span>
+<a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-2" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-2" href="#rest_code_ff215cdbe17d4b7b94753de574b86ac7-2"></a>
+<a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-3" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-3" href="#rest_code_ff215cdbe17d4b7b94753de574b86ac7-3"></a>services:
+<a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-4" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-4" href="#rest_code_ff215cdbe17d4b7b94753de574b86ac7-4"></a>  db:
+<a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-5" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-5" href="#rest_code_ff215cdbe17d4b7b94753de574b86ac7-5"></a>    image: mysql:latest
+<a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-6" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-6" href="#rest_code_ff215cdbe17d4b7b94753de574b86ac7-6"></a>    restart: always
+<a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-7" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-7" href="#rest_code_ff215cdbe17d4b7b94753de574b86ac7-7"></a>    expose:
+<a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-8" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-8" href="#rest_code_ff215cdbe17d4b7b94753de574b86ac7-8"></a>      - <span class="s1">&#39;3336&#39;</span>
+<a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-9" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-9" href="#rest_code_ff215cdbe17d4b7b94753de574b86ac7-9"></a>    environment:
+<a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-10" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-10" href="#rest_code_ff215cdbe17d4b7b94753de574b86ac7-10"></a>      MYSQL_ROOT_PASSWORD: <span class="s1">&#39;my_secret_password&#39;</span>
+<a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-11" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-11" href="#rest_code_ff215cdbe17d4b7b94753de574b86ac7-11"></a>      MYSQL_USER: <span class="s1">&#39;zabbixuser&#39;</span>
+<a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-12" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-12" href="#rest_code_ff215cdbe17d4b7b94753de574b86ac7-12"></a>      MYSQL_PASSWORD: <span class="s1">&#39;zabbix_password&#39;</span>
+<a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-13" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-13" href="#rest_code_ff215cdbe17d4b7b94753de574b86ac7-13"></a>      MYSQL_ROOT_HOST: <span class="s1">&#39;%&#39;</span>
+<a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-14" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-14" href="#rest_code_ff215cdbe17d4b7b94753de574b86ac7-14"></a>    volumes:
+<a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-15" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-15" href="#rest_code_ff215cdbe17d4b7b94753de574b86ac7-15"></a>      - <span class="s1">&#39;mysql_data_dir:/var/lib/mysql&#39;</span>
+<a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-16" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-16" href="#rest_code_ff215cdbe17d4b7b94753de574b86ac7-16"></a>
+<a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-17" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-17" href="#rest_code_ff215cdbe17d4b7b94753de574b86ac7-17"></a>
+<a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-18" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-18" href="#rest_code_ff215cdbe17d4b7b94753de574b86ac7-18"></a>  zabbix-server:
+<a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-19" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-19" href="#rest_code_ff215cdbe17d4b7b94753de574b86ac7-19"></a>    image: zabbix/zabbix-server-mysql
+<a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-20" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-20" href="#rest_code_ff215cdbe17d4b7b94753de574b86ac7-20"></a>    links:
+<a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-21" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-21" href="#rest_code_ff215cdbe17d4b7b94753de574b86ac7-21"></a>      - <span class="s2">&quot;db:mysql&quot;</span>
+<a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-22" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-22" href="#rest_code_ff215cdbe17d4b7b94753de574b86ac7-22"></a>      - <span class="s2">&quot;postfix:postfix&quot;</span>
+<a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-23" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-23" href="#rest_code_ff215cdbe17d4b7b94753de574b86ac7-23"></a>    environment:
+<a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-24" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-24" href="#rest_code_ff215cdbe17d4b7b94753de574b86ac7-24"></a>      MYSQL_ROOT_PASSWORD: <span class="s1">&#39;my_secret_password&#39;</span>
+<a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-25" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-25" href="#rest_code_ff215cdbe17d4b7b94753de574b86ac7-25"></a>      MYSQL_USER: <span class="s1">&#39;zabbixuser&#39;</span>
+<a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-26" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-26" href="#rest_code_ff215cdbe17d4b7b94753de574b86ac7-26"></a>      MYSQL_PASSWORD: <span class="s1">&#39;zabbixpassassword&#39;</span>
+<a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-27" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-27" href="#rest_code_ff215cdbe17d4b7b94753de574b86ac7-27"></a>      DB_SERVER_HOST: <span class="s1">&#39;mysql&#39;</span>
+<a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-28" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-28" href="#rest_code_ff215cdbe17d4b7b94753de574b86ac7-28"></a>
+<a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-29" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-29" href="#rest_code_ff215cdbe17d4b7b94753de574b86ac7-29"></a>
+<a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-30" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-30" href="#rest_code_ff215cdbe17d4b7b94753de574b86ac7-30"></a>  zabbix-web:
+<a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-31" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-31" href="#rest_code_ff215cdbe17d4b7b94753de574b86ac7-31"></a>    image: zabbix/zabbix-web-nginx-mysql
+<a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-32" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-32" href="#rest_code_ff215cdbe17d4b7b94753de574b86ac7-32"></a>    ports:
+<a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-33" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-33" href="#rest_code_ff215cdbe17d4b7b94753de574b86ac7-33"></a>      - <span class="s1">&#39;7777:80&#39;</span>
+<a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-34" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-34" href="#rest_code_ff215cdbe17d4b7b94753de574b86ac7-34"></a>    links:
+<a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-35" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-35" href="#rest_code_ff215cdbe17d4b7b94753de574b86ac7-35"></a>      - <span class="s2">&quot;db:mysql&quot;</span>
+<a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-36" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-36" href="#rest_code_ff215cdbe17d4b7b94753de574b86ac7-36"></a>      - <span class="s2">&quot;zabbix-server:zabbix-server&quot;</span>
+<a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-37" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-37" href="#rest_code_ff215cdbe17d4b7b94753de574b86ac7-37"></a>      - <span class="s2">&quot;postfix:postfix&quot;</span>
+<a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-38" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-38" href="#rest_code_ff215cdbe17d4b7b94753de574b86ac7-38"></a>    environment:
+<a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-39" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-39" href="#rest_code_ff215cdbe17d4b7b94753de574b86ac7-39"></a>      MYSQL_ROOT_PASSWORD: <span class="s1">&#39;my_secret_password&#39;</span>
+<a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-40" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-40" href="#rest_code_ff215cdbe17d4b7b94753de574b86ac7-40"></a>      MYSQL_USER: <span class="s1">&#39;zabbixuser&#39;</span>
+<a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-41" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-41" href="#rest_code_ff215cdbe17d4b7b94753de574b86ac7-41"></a>      MYSQL_PASSWORD: <span class="s1">&#39;zabbixpassassword&#39;</span>
+<a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-42" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-42" href="#rest_code_ff215cdbe17d4b7b94753de574b86ac7-42"></a>      DB_SERVER_HOST: <span class="s1">&#39;mysql&#39;</span>
+<a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-43" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-43" href="#rest_code_ff215cdbe17d4b7b94753de574b86ac7-43"></a>      ZBX_SERVER_HOST: <span class="s2">&quot;zabbix-server&quot;</span>
+<a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-44" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-44" href="#rest_code_ff215cdbe17d4b7b94753de574b86ac7-44"></a>      PHP_TZ: <span class="s2">&quot;Europe/London&quot;</span>
+<a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-45" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-45" href="#rest_code_ff215cdbe17d4b7b94753de574b86ac7-45"></a>  postfix:
+<a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-46" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-46" href="#rest_code_ff215cdbe17d4b7b94753de574b86ac7-46"></a>    image: catatnight/postfix
+<a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-47" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-47" href="#rest_code_ff215cdbe17d4b7b94753de574b86ac7-47"></a>    hostname: support
+<a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-48" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-48" href="#rest_code_ff215cdbe17d4b7b94753de574b86ac7-48"></a>    environment:
+<a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-49" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-49" href="#rest_code_ff215cdbe17d4b7b94753de574b86ac7-49"></a>      - <span class="nv">maildomain</span><span class="o">=</span>mydomain.com
+<a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-50" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-50" href="#rest_code_ff215cdbe17d4b7b94753de574b86ac7-50"></a>      - <span class="nv">smtp_user</span><span class="o">=</span>admin:my_password
+<a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-51" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-51" href="#rest_code_ff215cdbe17d4b7b94753de574b86ac7-51"></a>    ports:
+<a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-52" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-52" href="#rest_code_ff215cdbe17d4b7b94753de574b86ac7-52"></a>      - <span class="s2">&quot;25:25&quot;</span>
+<a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-53" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-53" href="#rest_code_ff215cdbe17d4b7b94753de574b86ac7-53"></a>    expose:
+<a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-54" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-54" href="#rest_code_ff215cdbe17d4b7b94753de574b86ac7-54"></a>      - <span class="s2">&quot;25&quot;</span>
+<a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-55" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-55" href="#rest_code_ff215cdbe17d4b7b94753de574b86ac7-55"></a>    volumes:
+<a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-56" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-56" href="#rest_code_ff215cdbe17d4b7b94753de574b86ac7-56"></a>      - /etc/nginx/ssl/postfix:/etc/postfix/certs
+<a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-57" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-57" href="#rest_code_ff215cdbe17d4b7b94753de574b86ac7-57"></a>      - /etc/nginx/ssl/postfix:/etc/opendkim/domainkeys
+<a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-58" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-58" href="#rest_code_ff215cdbe17d4b7b94753de574b86ac7-58"></a>volumes:
+<a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-59" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-59" href="#rest_code_ff215cdbe17d4b7b94753de574b86ac7-59"></a>  mysql_data_dir:
+<a id="rest_code_ff215cdbe17d4b7b94753de574b86ac7-60" name="rest_code_ff215cdbe17d4b7b94753de574b86ac7-60" href="#rest_code_ff215cdbe17d4b7b94753de574b86ac7-60"></a>    driver: <span class="nb">local</span>
+</pre></div>
+<p>The above solution is just enough to start zabbix server up and running in couple seconds.
 To do it just run:
 .. code-block:: bash</p>
 <blockquote>

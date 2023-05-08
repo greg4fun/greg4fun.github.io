@@ -63,7 +63,7 @@ fab production1 deploy
                     Greg Stencel
             </span></p>
                 <p class="commentline"><i class="far fa-comment"></i>
-        
+    
     <a href="fabric.html#disqus_thread" data-disqus-identifier="cache/posts/fabric.html">Comments</a>
 
 
@@ -85,8 +85,7 @@ fab production1 deploy
 
         </div>
     </header><div class="e-content entry-content" itemprop="articleBody text">
-    <div>
-<p>fabric execution:::::
+    <p>fabric execution:::::
 fab -H <a class="reference external" href="mailto:me@host1">me@host1</a>,me@host2,me@host3 function</p>
 Example:
 <small>
@@ -97,18 +96,18 @@ Example:
 fab production1 deploy
 </small>
 
- but then you'll have to production1 defined inside your fabfile.py<pre class="code python"><a name="rest_code_2465e05bc56f4624a4f6b5581698a301-1"></a><span class="k">def</span> <span class="nf">production</span><span class="p">():</span>
-<a name="rest_code_2465e05bc56f4624a4f6b5581698a301-2"></a>     <span class="n">env</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span>
-<a name="rest_code_2465e05bc56f4624a4f6b5581698a301-3"></a>         <span class="n">dest</span><span class="o">=</span><span class="s1">'production'</span><span class="p">,</span>
-<a name="rest_code_2465e05bc56f4624a4f6b5581698a301-4"></a>         <span class="n">hosts</span><span class="o">=</span><span class="p">[</span><span class="s1">'some_ip_address'</span><span class="p">],</span>
-<a name="rest_code_2465e05bc56f4624a4f6b5581698a301-5"></a> <span class="p">))</span>
-<a name="rest_code_2465e05bc56f4624a4f6b5581698a301-6"></a>
-<a name="rest_code_2465e05bc56f4624a4f6b5581698a301-7"></a> <span class="k">def</span> <span class="nf">development</span><span class="p">():</span>
-<a name="rest_code_2465e05bc56f4624a4f6b5581698a301-8"></a>     <span class="n">env</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span>
-<a name="rest_code_2465e05bc56f4624a4f6b5581698a301-9"></a>         <span class="n">dest</span><span class="o">=</span><span class="s1">'development'</span><span class="p">,</span>
-<a name="rest_code_2465e05bc56f4624a4f6b5581698a301-10"></a>         <span class="n">hosts</span><span class="o">=</span><span class="p">[</span><span class="s1">'localhost'</span><span class="p">],</span>
-<a name="rest_code_2465e05bc56f4624a4f6b5581698a301-11"></a> <span class="p">))</span>
-</pre>
+ but then you'll have to production1 defined inside your fabfile.py<div class="code"><pre class="code python"><a id="rest_code_d121285bd368405cbf4a83e26e192777-1" name="rest_code_d121285bd368405cbf4a83e26e192777-1" href="fabric.html#rest_code_d121285bd368405cbf4a83e26e192777-1"></a><span class="k">def</span> <span class="nf">production</span><span class="p">():</span>
+<a id="rest_code_d121285bd368405cbf4a83e26e192777-2" name="rest_code_d121285bd368405cbf4a83e26e192777-2" href="fabric.html#rest_code_d121285bd368405cbf4a83e26e192777-2"></a>     <span class="n">env</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span>
+<a id="rest_code_d121285bd368405cbf4a83e26e192777-3" name="rest_code_d121285bd368405cbf4a83e26e192777-3" href="fabric.html#rest_code_d121285bd368405cbf4a83e26e192777-3"></a>         <span class="n">dest</span><span class="o">=</span><span class="s1">'production'</span><span class="p">,</span>
+<a id="rest_code_d121285bd368405cbf4a83e26e192777-4" name="rest_code_d121285bd368405cbf4a83e26e192777-4" href="fabric.html#rest_code_d121285bd368405cbf4a83e26e192777-4"></a>         <span class="n">hosts</span><span class="o">=</span><span class="p">[</span><span class="s1">'some_ip_address'</span><span class="p">],</span>
+<a id="rest_code_d121285bd368405cbf4a83e26e192777-5" name="rest_code_d121285bd368405cbf4a83e26e192777-5" href="fabric.html#rest_code_d121285bd368405cbf4a83e26e192777-5"></a> <span class="p">))</span>
+<a id="rest_code_d121285bd368405cbf4a83e26e192777-6" name="rest_code_d121285bd368405cbf4a83e26e192777-6" href="fabric.html#rest_code_d121285bd368405cbf4a83e26e192777-6"></a>
+<a id="rest_code_d121285bd368405cbf4a83e26e192777-7" name="rest_code_d121285bd368405cbf4a83e26e192777-7" href="fabric.html#rest_code_d121285bd368405cbf4a83e26e192777-7"></a> <span class="k">def</span> <span class="nf">development</span><span class="p">():</span>
+<a id="rest_code_d121285bd368405cbf4a83e26e192777-8" name="rest_code_d121285bd368405cbf4a83e26e192777-8" href="fabric.html#rest_code_d121285bd368405cbf4a83e26e192777-8"></a>     <span class="n">env</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span>
+<a id="rest_code_d121285bd368405cbf4a83e26e192777-9" name="rest_code_d121285bd368405cbf4a83e26e192777-9" href="fabric.html#rest_code_d121285bd368405cbf4a83e26e192777-9"></a>         <span class="n">dest</span><span class="o">=</span><span class="s1">'development'</span><span class="p">,</span>
+<a id="rest_code_d121285bd368405cbf4a83e26e192777-10" name="rest_code_d121285bd368405cbf4a83e26e192777-10" href="fabric.html#rest_code_d121285bd368405cbf4a83e26e192777-10"></a>         <span class="n">hosts</span><span class="o">=</span><span class="p">[</span><span class="s1">'localhost'</span><span class="p">],</span>
+<a id="rest_code_d121285bd368405cbf4a83e26e192777-11" name="rest_code_d121285bd368405cbf4a83e26e192777-11" href="fabric.html#rest_code_d121285bd368405cbf4a83e26e192777-11"></a> <span class="p">))</span>
+</pre></div>
 <p><strong>local</strong> - execute a local command means host from which we launch fabric</p>
 <p><strong>run</strong>   - execute a remote command on all specified hosts, user-level permissions</p>
 <p><strong>sudo</strong> - sudo a command on the remote server)</p>
@@ -118,7 +117,6 @@ fab production1 deploy
 <p><strong>reboot</strong> - reboot the remote system, disconnect, and wait for wait seconds)</p>
 <p>Download some logs</p>
 <p>get(remote_path="/tmp/log_extracts.tar.gz", local_path="/logs/new_log.tar.gz")</p>
-</div>
     </div>
     <aside class="postpromonav"><nav><ul class="pager hidden-print">
 <li class="previous">
@@ -129,7 +127,7 @@ fab production1 deploy
             </li>
         </ul></nav></aside><section class="comments hidden-print"><h2>Comments</h2>
         
-        
+    
         <div id="disqus_thread"></div>
         <script>
         var disqus_shortname ="stencel",
@@ -149,7 +147,7 @@ fab production1 deploy
     <a href="https://disqus.com" class="dsq-brlink" rel="nofollow">Comments powered by <span class="logo-disqus">Disqus</span></a>
 
 
-        </section></article><script>var disqus_shortname="stencel";(function(){var a=document.createElement("script");a.async=true;a.src="https://"+disqus_shortname+".disqus.com/count.js";(document.getElementsByTagName("head")[0]||document.getElementsByTagName("body")[0]).appendChild(a)}());</script><footer id="footer"><p>Contents © 2021         <a href="mailto:gstencel@gmail.com">Greg Stencel</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         </p>
+        </section></article><script>var disqus_shortname="stencel";(function(){var a=document.createElement("script");a.async=true;a.src="https://"+disqus_shortname+".disqus.com/count.js";(document.getElementsByTagName("head")[0]||document.getElementsByTagName("body")[0]).appendChild(a)}());</script><footer id="footer"><p>Contents © 2023         <a href="mailto:gstencel@gmail.com">Greg Stencel</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         </p>
             
         </footer>
 </div>
