@@ -7,8 +7,8 @@
 .. description: 
 .. type: text
 
-Global variables
-----------------
+Global variables antipattern
+----------------------------
 Global variables make code harder to reason about, test, and debug. Instead, use local variables or pass variables as function arguments.
 
 .. code-block:: python
@@ -27,8 +27,8 @@ Global variables make code harder to reason about, test, and debug. Instead, use
     print(x) # Output: 1
 
 
-Mutating arguments
-------------------
+Mutating arguments antipattern
+------------------------------
 
 Modifying arguments passed to a function can lead to unintended side effects and make code harder to understand. Instead, create a copy of the argument and modify the copy.
 In Python, mutating arguments means modifying the value of an argument passed to a function. Here's an example of a function that mutates an argument
@@ -66,8 +66,8 @@ The problem with this approach is that modifying the original list can lead to u
 
 In this updated example, the add_one function creates a new list new_numbers by using a list comprehension to add 1 to each element of the numbers list. The function then returns the new list without modifying the original list. This approach is safer and makes the code easier to understand and maintain.
 
-Using eval() or exec()
-----------------------
+Using eval() or exec() antipattern
+----------------------------------
 
 Using eval() or exec() can be dangerous and allow arbitrary code execution. Instead, use safer alternatives like ast.literal_eval() or subprocess.
 In Python, `eval()` and `exec()` are built-in functions that allow you to execute dynamic code. However, using them can be risky and potentially dangerous if not used properly. Here are some considerations when using `eval()` or `exec()`:
@@ -99,8 +99,8 @@ In general, it's best to avoid using `eval()` or `exec()` unless there is no oth
 
 
 
-Not using with statements
--------------------------
+Not using with statements antipattern
+-------------------------------------
 
 Not using with statements for file I/O can lead to resource leaks and potential security vulnerabilities. Always use with statements to ensure that files are properly closed.
 In Python, the `with` statement is used to ensure that a resource is properly managed and released, even if an exception occurs while the code is executing. Not using the `with` statement can lead to bugs, resource leaks, and other issues. Here's an example of how to use the `with` statement:
@@ -166,23 +166,58 @@ In this example, the `except` block catches a specific exception (`SomeException
 By handling exceptions in a meaningful way, you can make your code more robust and easier to maintain, as well as making it easier to diagnose and fix issues when they arise.
 
 
-Overusing inheritance
----------------------
+Overusing inheritance antipattern
+---------------------------------
 Overusing inheritance can make code harder to understand and maintain. Instead, favor composition and use inheritance only when it makes sense.
-Overusing inheritance in Python can lead to overly complex and brittle code. Inheritance is a powerful tool for creating reusable code and building class hierarchies, but it should be used judiciously and with care.
+Inheritance is a powerful feature of object-oriented programming that allows one class to inherit the properties and methods of another class. However, overusing inheritance can lead to code that is difficult to understand and maintain. Here is an example of overusing inheritance in Python:
 
-One of the main issues with overusing inheritance is that it can lead to tightly-coupled code that is difficult to modify and maintain. When a subclass inherits from a superclass, it inherits all of the superclass's attributes and methods, which can make it harder to modify the subclass without affecting the superclass or other subclasses that inherit from it.
+.. code-block:: python
 
-Additionally, overusing inheritance can make it harder to reuse code in different contexts. When a subclass inherits from a superclass, it is tightly coupled to the superclass's implementation, which can make it harder to reuse the subclass in different contexts or with different requirements.
+    class Animal:
+        def __init__(self, name, species):
+            self.name = name
+            self.species = species
 
-To avoid overusing inheritance, it's important to follow the "composition over inheritance" principle. This means that instead of creating complex inheritance hierarchies, you should favor building objects out of smaller, more modular components. This approach allows for more flexible and reusable code, as each component can be reused and combined in different ways to meet different requirements.
+        def move(self):
+            print(f"{self.name} is moving")
 
-Another way to avoid overusing inheritance is to favor delegation over inheritance. Delegation involves creating a new class that contains an instance of an existing class, and then exposing the existing class's functionality through the new class's methods. This approach allows for greater flexibility and reuse, as the new class can be modified and extended without affecting the existing class.
+    class Dog(Animal):
+        def __init__(self, name):
+            super().__init__(name, "dog")
 
-Overall, while inheritance can be a powerful tool, it should be used judiciously and with care. By following the "composition over inheritance" principle and favoring delegation over inheritance, you can create more flexible and reusable code that is easier to modify and maintain over time.
+        def bark(self):
+            print("Woof!")
 
-Hardcoding configuration values and paths
------------------------------------------
+    class Cat(Animal):
+        def __init__(self, name):
+            super().__init__(name, "cat")
+
+        def meow(self):
+            print("Meow!")
+
+    class GermanShepherd(Dog):
+        def __init__(self, name):
+            super().__init__(name)
+            self.breed = "German Shepherd"
+
+    class Siamese(Cat):
+        def __init__(self, name):
+            super().__init__(name)
+            self.breed = "Siamese"
+
+    class Mutt(Dog):
+        def __init__(self, name):
+            super().__init__(name)
+            self.breed = "Mutt"
+
+In this example, the `Animal` class is the base class, and it has two subclasses, `Dog` and `Cat`, which add the `bark` and `meow` methods respectively. Then, there are three more subclasses, `GermanShepherd`, `Siamese`, and `Mutt`, which inherit from `Dog`.
+
+While this code may seem fine at first glance, it actually suffers from overuse of inheritance. The `GermanShepherd`, `Siamese`, and `Mutt` classes do not add any new functionality beyond what is already present in the `Dog` class. This means that the `Dog` class is being used as a sort of catch-all superclass for all dog breeds, which makes the code harder to understand and maintain.
+
+A better approach would be to use composition instead of inheritance. For example, each dog breed could be its own class, with a `Dog` object inside it to provide the common functionality. This would make the code more modular and easier to reason about.
+
+Hardcoding configuration values and paths antipattern
+-----------------------------------------------------
 Hardcoding configuration values can make code harder to reuse and maintain. Instead, use environment variables or configuration files to store configuration values.
 Hardcoding paths to files and directories in your code can make it difficult to deploy your code to different environments.
 Hardcoding configuration values and paths in Python can make your code inflexible and difficult to maintain. If a configuration value or path changes, you'll have to update your code to reflect the change, which can be time-consuming and error-prone. Additionally, hardcoding values can make it harder to reuse your code in different contexts or with different requirements.
@@ -222,33 +257,86 @@ Here's an example of using environment variables to store a path:
 In this example, the `os.environ` dictionary is used to retrieve the value of the `MY_DATA_PATH` environment variable. If the variable is not set, a default value of `/default/data/path` is used.
 By using configuration files or environment variables to store configuration values and paths, you can make your code more flexible and easier to maintain. If a configuration value or path changes, you only need to update the configuration file or environment variable, rather than modifying your code. Additionally, configuration files and environment variables make it easier to reuse your code in different contexts or with different requirements.
 
-Duplicated code
----------------
+Duplicated code antipattern
+---------------------------
 
-Duplicated code is code that is repeated in multiple places in your code. This can make your code difficult to maintain, as you may need to make changes to the code in multiple places if you need to update it.
+Duplicated code, also known as "code smells," is a common problem in software development that occurs when the same or similar code appears in multiple places within a codebase. Duplicated code can make the codebase more difficult to maintain, as changes may need to be made in multiple places. Here is an example of duplicated code in Python:
 
-Not using functions
--------------------
+.. code-block:: python
+
+    def calculate_area_of_circle(radius):
+        pi = 3.14159265359
+        area = pi * (radius ** 2)
+        return area
+
+    def calculate_area_of_rectangle(length, width):
+        area = length * width
+        return area
+
+    def calculate_area_of_triangle(base, height):
+        area = 0.5 * base * height
+        return area
+
+    def calculate_circumference_of_circle(radius):
+        pi = 3.14159265359
+        circumference = 2 * pi * radius
+        return circumference
+
+    def calculate_perimeter_of_rectangle(length, width):
+        perimeter = 2 * (length + width)
+        return perimeter
+
+    def calculate_perimeter_of_triangle(side1, side2, side3):
+        perimeter = side1 + side2 + side3
+        return perimeter
+
+In this example, the code to calculate the area and perimeter/circumference of different shapes is duplicated. This can be refactored to remove the duplication by creating a `Shape` class with methods for calculating area and perimeter/circumference:
+
+.. code-block:: python
+
+    class Shape:
+        def __init__(self):
+            self.pi = 3.14159265359
+
+        def calculate_area_of_circle(self, radius):
+            area = self.pi * (radius ** 2)
+            return area
+
+        def calculate_area_of_rectangle(self, length, width):
+            area = length * width
+            return area
+
+        def calculate_area_of_triangle(self, base, height):
+            area = 0.5 * base * height
+            return area
+
+        def calculate_circumference_of_circle(self, radius):
+            circumference = 2 * self.pi * radius
+            return circumference
+
+        def calculate_perimeter_of_rectangle(self, length, width):
+            perimeter = 2 * (length + width)
+            return perimeter
+
+        def calculate_perimeter_of_triangle(self, side1, side2, side3):
+            perimeter = side1 + side2 + side3
+            return perimeter
+
+This refactored code consolidates the duplicate code into a single class, which can be used to calculate the area and perimeter/circumference of various shapes. This makes the code more modular, easier to maintain, and reduces the likelihood of introducing errors when updating or modifying the code.
+
+Not using functions classes or exceptions antipattern
+-----------------------------------------------------
 Functions are a powerful tool that can help you to organize your code and make it more readable and maintainable. Not using functions can make your code more difficult to understand and to debug.
-
-Not using classes
------------------
 Classes are a powerful tool that can help you to create reusable objects. Not using classes can make your code more difficult to understand and to maintain.
-
-Not using exceptions
---------------------
 Exceptions are a powerful tool that can help you to handle errors gracefully. Not using exceptions can make your code more difficult to use and to debug.
 
-Not using a debugger
---------------------
-A debugger is a tool that can help you to step through your code and find errors. Not using a debugger can make it more difficult to find and fix errors in your code.
 
-Using print for debugging
--------------------------
+Using print for debugging antipattern
+-------------------------------------
 Using print statements for debugging can make it harder to debug and maintain code. Instead, use a debugger like pdb or ipdb to step through code and inspect variables.
 
-Not using type annotations
---------------------------
+Not using type annotations antipattern
+--------------------------------------
 
 Python 3 introduced type annotations, which can help catch bugs at compile-time and make code more self-documenting. Not using type annotations can lead to code that is harder to understand and maintain.
 Not using type annotations in Python can make your code harder to read, understand, and maintain. Type annotations allow you to specify the types of function arguments and return values, which can help catch bugs early, improve code clarity, and make it easier for others to use and understand your code.
@@ -282,8 +370,8 @@ Type annotations can be especially useful in larger codebases or when working on
 To use type annotations in Python, you'll need to use Python 3.5 or later. Type annotations are not enforced by the Python interpreter, but you can use tools like `mypy` to check your code for type-related errors at runtime.
 
 
-Not using f-strings
--------------------
+Not using f-strings antipattern
+-------------------------------
 Python 3.6 introduced f-strings, which provide an easy and concise way to format strings. Not using f-strings can make code harder to read and maintain.
 
 Not using f-strings in Python can make your code less readable and harder to maintain. f-strings are a powerful feature introduced in Python 3.6 that allow you to easily format strings with variables or expressions.
@@ -324,8 +412,8 @@ In this example, we're using an f-string to format the string with the variables
 
 In summary, using f-strings in Python can make your code more readable, concise, and easier to maintain. F-strings are a powerful feature that allows you to format strings with variables and expressions in a more intuitive and error-free way.
 
-Not using enumerate
--------------------
+Not using enumerate antipattern
+-------------------------------
 Not using enumerate to loop over a sequence and get both the index and value can make code harder to read and maintain. Instead, use enumerate to loop over a sequence and get both the index and value.
 
 Using `enumerate` in Python can make your code more readable and easier to maintain. `enumerate` is a built-in Python function that allows you to loop over an iterable and keep track of the index of the current element.
@@ -345,7 +433,7 @@ Using `enumerate` can make your code more readable and easier to understand, esp
 
 Here's an example of achieving the same result as the previous example without using `enumerate`:
 
-.. code-block:: python
+daa
 
     fruits = ['apple', 'banana', 'orange']
     index = 0
@@ -358,13 +446,13 @@ In this example, we're manually creating a counter variable `index` and incremen
 
 In summary, using `enumerate` in Python can make your code more readable and easier to maintain, especially when you need to loop over an iterable and keep track of the index. Using `enumerate` can also help you avoid errors and make your code more concise.
 
-Not using context managers
---------------------------
+Not using context managers antipattern
+--------------------------------------
 
 Not using context managers can lead to resource leaks and potential security vulnerabilities. Always use context managers to ensure that resources are properly closed.
 
-Not using the else clause with for and while
---------------------------------------------
+Not using the else clause with for and while antipattern
+--------------------------------------------------------
 In Python, you can use the `else` clause with a `for` or `while` loop to specify a block of code that should be executed if the loop completes normally without encountering a `break` statement. This can be a powerful tool for creating more robust and reliable code.
 
 Here's an example of using the `else` clause with a `for` loop:
@@ -396,8 +484,8 @@ Using the `else` clause with a `for` or `while` loop can make your code more rob
 
 Not using the else clause with for and while can make code harder to read and maintain. Instead, use the else clause with for and while to execute code when the loop completes normally.
 
-Using list as a default argument value
---------------------------------------
+Using list as a default argument value antipattern
+--------------------------------------------------
 
 Using list as a default argument value can lead to unexpected behavior when the list is modified. Instead, use None as the default argument value and create a new list inside the function if needed.
 In Python, you can use a list as a default argument value in a function. While this can be useful in some cases, it can also lead to unexpected behavior if you're not careful.
