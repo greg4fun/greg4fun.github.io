@@ -13,7 +13,7 @@
 <link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="rss.xml">
 <link rel="canonical" href="https://stencel.io/index.html">
 <link rel="next" href="index-4.html" type="text/html">
-<!--[if lt IE 9]><script src="assets/js/html5shiv-printshiv.min.js"></script><![endif]--><link rel="prefetch" href="posts/python-antipatterns.html" type="text/html">
+<!--[if lt IE 9]><script src="assets/js/html5shiv-printshiv.min.js"></script><![endif]--><link rel="prefetch" href="posts/building-an-intelligent-nerf-turret-with-jetson-nano-a-journey-into-diy-robotics-and-ai.html" type="text/html">
 </head>
 <body>
     <a href="#page-content" class="sr-only sr-only-focusable">Skip to main content</a>
@@ -42,7 +42,74 @@
 
     
 <div class="postindex">
-    <article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="posts/python-antipatterns.html" class="u-url">Python antipatterns</a></h1>
+    <article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="posts/building-an-intelligent-nerf-turret-with-jetson-nano-a-journey-into-diy-robotics-and-ai.html" class="u-url">Building an Intelligent Nerf Turret with Jetson Nano: A Journey into DIY Robotics and AI</a></h1>
+        <div class="metadata">
+            <p class="dateline"><a href="posts/building-an-intelligent-nerf-turret-with-jetson-nano-a-journey-into-diy-robotics-and-ai.html" rel="bookmark"><i class="fa fa-clock"></i> <time class="published dt-published" datetime="2023-12-07T11:04:09Z" title="2023-12-07 11:04">2023-12-07 11:04</time></a></p>
+            <p class="byline author vcard"> <i class="fa fa-user"></i> <span class="byline-name fn" itemprop="author">
+                Greg Stencel
+            </span></p>
+                <p class="commentline"><i class="fa fa-comment"></i> 
+    
+    <a href="posts/building-an-intelligent-nerf-turret-with-jetson-nano-a-journey-into-diy-robotics-and-ai.html#disqus_thread" data-disqus-identifier="cache/posts/building-an-intelligent-nerf-turret-with-jetson-nano-a-journey-into-diy-robotics-and-ai.html">Comments</a>
+
+
+        </p>
+</div>
+    </header><div class="e-content entry-content">
+    <section id="introduction"><h2>Introduction</h2>
+<p>Imagine transforming a simple toy into an intelligent machine that recognises and interacts with its environment. That's exactly what I set out to do with a Nerf turret. The journey began with a desire to create something fun and educational for my son and me, and it evolved into an exploration of open-source hardware, machine learning, and robotics.</p>
+<img alt="/images/123.jpg" src="images/123.jpg" style="height: 600px;"></section><section id="the-beginning-assembling-the-turret"><h2>The Beginning: Assembling the Turret</h2>
+<p>The project started with an open-source Nerf turret design</p>
+<p><a class="reference external" href="https://www.littlefrenchkev.com/bluetooth-nerf-turret">https://www.littlefrenchkev.com/bluetooth-nerf-turret</a></p>
+<p>I printed all the parts using a 3D printer and got to work.</p>
+<p>The assembly involved soldering components, integrating Arduino and servo motors for movement control, and programming the turret based on a project from the LittleFrenchKev website.</p>
+<p>This initial phase was to explain basic electronics and programming to my son.</p>
+</section><section id="the-fun"><h2>The fun</h2>
+<embed><iframe width="800" height="600" src="https://www.youtube.com/embed/rzwS_gR10EM?autoplay=1&amp;mute=1">
+</iframe>
+</embed></section><section id="from-manual-to-autonomous-the-leap-into-ai"><h2>From Manual to Autonomous: The Leap into AI</h2>
+<p>After playing with the manually controlled turret, I realised the potential to make it autonomous and "intelligent."</p>
+<p>The challenge was to enable the turret to recognise and target objects autonomously.</p>
+<p>With a background in basic OpenCV and Tesseract from a decade ago, I decided to delve deeper into machine learning.</p>
+</section><section id="the-decision-why-jetson-nano"><h2>The Decision: Why Jetson Nano?</h2>
+<p>The offline Image recognitions options had to involve specialised hardware options were:  Jetson Nano, Google Coral, and Intel CS.</p>
+<p>I chose Jetson Nano for its balance of accessibility, power, and community support.</p>
+<p>With its AI/ML Jetpack and 128-core GPU, Jetson Nano is the perfect fit for someone reentering the world of AI and machine learning.</p>
+</section><section id="the-upgrade-image-recognition-and-servo-control"><h2>The Upgrade: Image Recognition and Servo Control</h2>
+<p>Initially, I planned to use a Kinect camera for its depth-sensing capabilities.</p>
+<p>However, I encountered compatibility issues with the Python version of the Jetson Nano Nvidia-customised ubuntu version.</p>
+<p>So, I switched to a full HD Logitech camera.
+I asked ChatGPT for help in using the camera for person detection and received comprehensive guidance, including code snippets and suggestions to use Nvidia's pre-trained models for person detection.</p>
+<p><a class="reference external" href="https://chat.openai.com/share/1120521a-1042-4971-9e33-a852b85178f5">https://chat.openai.com/share/1120521a-1042-4971-9e33-a852b85178f5</a></p>
+<p><a class="reference external" href="https://chat.openai.com/share/8ace3024-bcc9-44c1-a08a-7a5658a0e3e3">https://chat.openai.com/share/8ace3024-bcc9-44c1-a08a-7a5658a0e3e3</a></p>
+<p>The implementation succeeded – the turret could now recognise a person using the Logitech camera.</p>
+</section><section id="integrating-ai-with-mechanics"><h2>Integrating AI with Mechanics</h2>
+<p>The next step was to translate the detected coordinates into servo movements.</p>
+<p>I slightly modified the existing application to transform it into a web API that could accept coordinates.</p>
+<p>This meant that the turret was not just a passive observer but could actively interact with its environment.</p>
+<p>To add an interactive element, I created a simple HTML interface where the turret's movement followed the mouse cursor. A click would prompt the turret to "shoot."</p>
+<p>WITH HELP OF CHATGPT!</p>
+<img alt="/images/1.jpg" src="images/1.jpg"><img alt="/images/2.jpg" src="images/2.jpg"><p>After launching and accessing application of course I had some CORS errors</p>
+<p>but if I didnt know whats <a class="reference external" href="https://owasp.org/www-community/attacks/csrf">CORS</a> I could still just paste error to get answer from chatgpt -SCARY!</p>
+<img alt="/images/4.jpg" src="images/4.jpg"><img alt="/images/5.jpg" src="images/5.jpg"><p>Later I wanted the turret to follow my mouse live.
+NOTE If we are without Architectual mind sending mouse coordinates changes through http API is crazy this would load server- but hapilly Chatgpt TELLS US ABOUT IT!!! just in case we have no infrastructure application workflow experience.)</p>
+<img alt="/images/8.jpg" src="images/8.jpg"><p>What it didnt suggest is that for this specific usecase best would be to use websockets.</p>
+<img alt="/images/9.jpg" src="images/9.jpg"><p><a class="reference external" href="https://chat.openai.com/share/10b53b4b-d5df-41f7-9723-abde7da934e9">https://chat.openai.com/share/10b53b4b-d5df-41f7-9723-abde7da934e9</a></p>
+<p>This feature made the turret a demonstration of AI and robotics and an engaging toy.</p>
+</section><section id="conclusion-more-than-just-a-toy"><h2>Conclusion: More Than Just a Toy</h2>
+<p>This project was a journey through various domains:</p>
+<ul class="simple">
+<li><p>3D printing</p></li>
+<li><p>electronics</p></li>
+<li><p>programming</p></li>
+<li><p>AI</p></li>
+<li><p>robotics</p></li>
+</ul>
+<p>It was a learning experience fueled by curiosity and the desire to create something unique. The Nerf turret, now equipped with AI capabilities, stands as a testament to the power of open-source projects and the accessibility of modern technology.
+What started as a fun project with my son became a gateway into the fascinating world of AI and robotics, demonstrating that anyone can step into the world of DIY AI projects with curiosity and the right tools.</p>
+</section>
+</div>
+    </article><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="posts/python-antipatterns.html" class="u-url">Python antipatterns</a></h1>
         <div class="metadata">
             <p class="dateline"><a href="posts/python-antipatterns.html" rel="bookmark"><i class="fa fa-clock"></i> <time class="published dt-published" datetime="2023-05-06T22:56:20Z" title="2023-05-06 22:56">2023-05-06 22:56</time></a></p>
             <p class="byline author vcard"> <i class="fa fa-user"></i> <span class="byline-name fn" itemprop="author">
@@ -2549,116 +2616,6 @@ previously was
 UserParameter=mysql.ping,HOME=/var/lib/zabbix mysqladmin ping | grep -c alive
 so grep didnt work</p>
 <p>Write your post here.</p>
-</section>
-</div>
-    </article><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="posts/zabbix-stack-with-docker-composeyml.html" class="u-url">Zabbix stack with docker-compose.yml</a></h1>
-        <div class="metadata">
-            <p class="dateline"><a href="posts/zabbix-stack-with-docker-composeyml.html" rel="bookmark"><i class="fa fa-clock"></i> <time class="published dt-published" datetime="2018-03-15T17:14:48Z" title="2018-03-15 17:14">2018-03-15 17:14</time></a></p>
-            <p class="byline author vcard"> <i class="fa fa-user"></i> <span class="byline-name fn" itemprop="author">
-                Greg Stencel
-            </span></p>
-                <p class="commentline"><i class="fa fa-comment"></i> 
-    
-    <a href="posts/zabbix-stack-with-docker-composeyml.html#disqus_thread" data-disqus-identifier="cache/posts/zabbix-stack-with-docker-composeyml.html">Comments</a>
-
-
-        </p>
-</div>
-    </header><div class="e-content entry-content">
-    <section id="fully-working-zabbix-server-solution-with-ui-and-database-in-seconds"><h2>Fully working zabbix server solution with UI and database in seconds</h2>
-<p>I wanted to install zabbix server quickly with docker but amount of zabbix images (created by zabbix) on dockerhub just overwhelmed me.
-To set up running zabbix server we need 3 images
-* choice of sql DB
-* zabbix-web  - web interface
-* zabbix-server - main zabbix process responsible for polling and trapping data and sending notifications to users.</p>
-<p>My choice of database was MySQL so I created docker-compose file to have full stack of running zabbix server:</p>
-<p>Notice(you may want to use alpine versions for production env)
-docker-compose.yml:</p>
-<div class="code"><pre class="code bash"><a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-1" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-1" href="posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-1"></a>version: <span class="s1">'3'</span>
-<a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-2" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-2" href="posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-2"></a>
-<a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-3" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-3" href="posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-3"></a>services:
-<a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-4" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-4" href="posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-4"></a>  db:
-<a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-5" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-5" href="posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-5"></a>    image: mysql:latest
-<a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-6" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-6" href="posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-6"></a>    restart: always
-<a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-7" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-7" href="posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-7"></a>    expose:
-<a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-8" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-8" href="posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-8"></a>      - <span class="s1">'3336'</span>
-<a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-9" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-9" href="posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-9"></a>    environment:
-<a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-10" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-10" href="posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-10"></a>      MYSQL_ROOT_PASSWORD: <span class="s1">'my_secret_password'</span>
-<a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-11" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-11" href="posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-11"></a>      MYSQL_USER: <span class="s1">'zabbixuser'</span>
-<a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-12" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-12" href="posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-12"></a>      MYSQL_PASSWORD: <span class="s1">'zabbixpass'</span>
-<a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-13" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-13" href="posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-13"></a>      MYSQL_ROOT_HOST: <span class="s1">'%'</span>
-<a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-14" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-14" href="posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-14"></a>    volumes:
-<a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-15" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-15" href="posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-15"></a>      - <span class="s1">'mysql_data_dir:/var/lib/mysql'</span>
-<a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-16" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-16" href="posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-16"></a>
-<a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-17" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-17" href="posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-17"></a>
-<a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-18" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-18" href="posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-18"></a>  zabbix-server:
-<a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-19" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-19" href="posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-19"></a>    image: zabbix/zabbix-server-mysql
-<a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-20" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-20" href="posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-20"></a>    links:
-<a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-21" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-21" href="posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-21"></a>      - <span class="s2">"db:mysql"</span>
-<a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-22" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-22" href="posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-22"></a>      - <span class="s2">"postfix:postfix"</span>
-<a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-23" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-23" href="posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-23"></a>    environment:
-<a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-24" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-24" href="posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-24"></a>      MYSQL_ROOT_PASSWORD: <span class="s1">'my_secret_password'</span>
-<a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-25" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-25" href="posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-25"></a>      MYSQL_USER: <span class="s1">'zabbixuser'</span>
-<a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-26" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-26" href="posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-26"></a>      MYSQL_PASSWORD: <span class="s1">'zabbixpass'</span>
-<a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-27" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-27" href="posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-27"></a>      DB_SERVER_HOST: <span class="s1">'mysql'</span>
-<a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-28" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-28" href="posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-28"></a>
-<a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-29" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-29" href="posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-29"></a>
-<a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-30" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-30" href="posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-30"></a>  zabbix-web:
-<a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-31" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-31" href="posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-31"></a>    image: zabbix/zabbix-web-nginx-mysql
-<a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-32" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-32" href="posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-32"></a>    ports:
-<a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-33" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-33" href="posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-33"></a>      - <span class="s1">'7777:80'</span>
-<a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-34" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-34" href="posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-34"></a>    links:
-<a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-35" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-35" href="posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-35"></a>      - <span class="s2">"db:mysql"</span>
-<a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-36" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-36" href="posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-36"></a>      - <span class="s2">"zabbix-server:zabbix-server"</span>
-<a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-37" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-37" href="posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-37"></a>      - <span class="s2">"postfix:postfix"</span>
-<a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-38" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-38" href="posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-38"></a>    environment:
-<a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-39" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-39" href="posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-39"></a>      MYSQL_ROOT_PASSWORD: <span class="s1">'secret'</span>
-<a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-40" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-40" href="posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-40"></a>      MYSQL_USER: <span class="s1">'zabbixuser'</span>
-<a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-41" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-41" href="posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-41"></a>      MYSQL_PASSWORD: <span class="s1">'myzabbixpass'</span>
-<a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-42" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-42" href="posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-42"></a>      DB_SERVER_HOST: <span class="s1">'mysql'</span>
-<a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-43" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-43" href="posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-43"></a>      ZBX_SERVER_HOST: <span class="s2">"zabbix-server"</span>
-<a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-44" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-44" href="posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-44"></a>      PHP_TZ: <span class="s2">"Europe/London"</span>
-<a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-45" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-45" href="posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-45"></a>  postfix:
-<a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-46" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-46" href="posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-46"></a>    image: catatnight/postfix
-<a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-47" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-47" href="posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-47"></a>    hostname: support
-<a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-48" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-48" href="posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-48"></a>    environment:
-<a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-49" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-49" href="posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-49"></a>      - <span class="nv">maildomain</span><span class="o">=</span>domain.com
-<a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-50" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-50" href="posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-50"></a>      - <span class="nv">smtp_user</span><span class="o">=</span>admin:password
-<a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-51" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-51" href="posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-51"></a>    ports:
-<a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-52" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-52" href="posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-52"></a>      - <span class="s2">"25:25"</span>
-<a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-53" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-53" href="posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-53"></a>    <span class="c1">#  - "465:465"</span>
-<a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-54" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-54" href="posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-54"></a>    <span class="c1">#  - "587:587"</span>
-<a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-55" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-55" href="posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-55"></a>    expose:
-<a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-56" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-56" href="posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-56"></a>      - <span class="s2">"25"</span>
-<a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-57" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-57" href="posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-57"></a>    <span class="c1">#  - "465"</span>
-<a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-58" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-58" href="posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-58"></a>    <span class="c1">#  - "587"</span>
-<a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-59" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-59" href="posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-59"></a>    volumes:
-<a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-60" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-60" href="posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-60"></a>      - /etc/nginx/ssl/postfix:/etc/postfix/certs
-<a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-61" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-61" href="posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-61"></a>      - /etc/nginx/ssl/postfix:/etc/opendkim/domainkeys
-<a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-62" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-62" href="posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-62"></a>volumes:
-<a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-63" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-63" href="posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-63"></a>  mysql_data_dir:
-<a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-64" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-64" href="posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-64"></a>    driver: <span class="nb">local</span>
-<a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-65" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-65" href="posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-65"></a>
-<a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-66" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-66" href="posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-66"></a>      <span class="c1">#- ./deployment/config_files/main-postfix-live.cf:/etc/postfix/main.cf</span>
-<a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-67" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-67" href="posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-67"></a>    <span class="c1">#networks:</span>
-<a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-68" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-68" href="posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-68"></a>    <span class="c1">#  - backend</span>
-<a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-69" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-69" href="posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-69"></a>    <span class="c1">#entrypoint: /docker-entrypoint.sh</span>
-</pre></div>
-<p>The above solution is just enough to start zabbix server up and
-running in couple seconds. To run it just put yml file into some directory (directory is important as volume created for mysql will have this dir name as prefix) volumes are usually stored in /var/lib/docker/volumes and run:</p>
-<div class="code"><pre class="code bash"><a id="rest_code_b084e8357fb6454a85190418dcab85f5-1" name="rest_code_b084e8357fb6454a85190418dcab85f5-1" href="posts/zabbix-stack-with-docker-composeyml.html#rest_code_b084e8357fb6454a85190418dcab85f5-1"></a>sudo docker-compose up
-</pre></div>
-<p>Thats it!!!
-You now have your zabbix running on port 7777</p>
-<p>So what happened here docker-compose up has build and runned 3 containers
-by running zabbix container it discovered there are no tables in mysql and has built them.</p>
-<p>Now you just need to add agents/servers you want to monitor.
-Check out adding agent in separate post [here]</p>
-<p>Versions:
-(versions I've used in this example Feb 2018):</p>
-<p>Docker-compose: 1.17.0, build ac53b73
-Docker: 17.09.1-ce, build 19e2cf6
-Kernel: 4.13.0-36-generic</p>
 </section>
 </div>
     </article>

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html prefix="        og: http://ogp.me/ns# article: http://ogp.me/ns/article#     " vocab="http://ogp.me/ns" lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+<title>Building an Intelligent Nerf Turret with Jetson Nano: A Journey into DIY Robotics and AI | Greg's Tech Notes</title>
+<link href="https://fonts.googleapis.com/css?family=Bitter:400,400i,700" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+<link href="../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../rss.xml">
+<link rel="canonical" href="https://stencel.io/posts/building-an-intelligent-nerf-turret-with-jetson-nano-a-journey-into-diy-robotics-and-ai.html">
+<!--[if lt IE 9]><script src="../assets/js/html5shiv-printshiv.min.js"></script><![endif]--><meta name="author" content="Greg Stencel">
+<link rel="prev" href="python-antipatterns.html" title="Python antipatterns" type="text/html">
+<meta property="og:site_name" content="Greg's Tech Notes">
+<meta property="og:title" content="Building an Intelligent Nerf Turret with Jetson Nano: A Journey into D">
+<meta property="og:url" content="https://stencel.io/posts/building-an-intelligent-nerf-turret-with-jetson-nano-a-journey-into-diy-robotics-and-ai.html">
+<meta property="og:description" content="Introduction
+Imagine transforming a simple toy into an intelligent machine that recognises and interacts with its environment. That's exactly what I set out to do with a Nerf turret. The journey began">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2023-12-07T11:04:09Z">
+</head>
+<body>
+    <a href="#page-content" class="sr-only sr-only-focusable">Skip to main content</a>
+    
+    <section class="social"><ul>
+<li><p style="color:#fff;font-size:3em;">stencel.io</p></li>
+        <li><p style="color:#fff;font-size:2em;">greg's tech notes</p></li>
+            <li>
+                <a href="https://stencel.io/">
+                    <img src="../images/aboutme.png" alt="Greg's Tech Notes" id="logo"></a>
+            </li>
+        
+            <li><a href="../index.html" title="Home"><i class="fa fa-home"></i></a></li>
+            <li><a href="../archive.html" title="Archives"><i class="fa fa-folder-open"></i></a></li>
+            <li><a href="../categories/index.html" title="Tags"><i class="fa fa-tags"></i></a></li>
+            <li><a href="https://www.linkedin.com/in/gregstencel/" title="My Linkedin"><i class="fab fa-linkedin"></i></a></li>
+            <li><a href="https://github.com/greg4fun" title="My Github"><i class="fab fa-github"></i></a></li>
+    
+    
+
+        </ul></section><section class="page-content"><div class="content" rel="main">
+            
+<article class="post-text h-entry hentry postpage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="#" class="u-url">Building an Intelligent Nerf Turret with Jetson Nano: A Journey into DIY Robotics and AI</a></h1>
+
+        <div class="metadata">
+            <p class="dateline"><a href="#" rel="bookmark"><i class="fa fa-clock"></i> <time class="published dt-published" datetime="2023-12-07T11:04:09Z" itemprop="datePublished" title="2023-12-07 11:04">2023-12-07 11:04</time></a></p>
+            <p class="byline author vcard"> <i class="fa fa-user"></i> <span class="byline-name fn" itemprop="author">
+                    Greg Stencel
+            </span></p>
+                <p class="commentline"><i class="far fa-comment"></i>
+    
+    <a href="building-an-intelligent-nerf-turret-with-jetson-nano-a-journey-into-diy-robotics-and-ai.html#disqus_thread" data-disqus-identifier="cache/posts/building-an-intelligent-nerf-turret-with-jetson-nano-a-journey-into-diy-robotics-and-ai.html">Comments</a>
+
+
+            
+        </p>
+<p class="sourceline"><a href="building-an-intelligent-nerf-turret-with-jetson-nano-a-journey-into-diy-robotics-and-ai.rst" class="sourcelink"><i class="fa fa-file-code"></i> Source</a></p>
+
+            
+
+            
+
+        </div>
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+    <section id="introduction"><h2>Introduction</h2>
+<p>Imagine transforming a simple toy into an intelligent machine that recognises and interacts with its environment. That's exactly what I set out to do with a Nerf turret. The journey began with a desire to create something fun and educational for my son and me, and it evolved into an exploration of open-source hardware, machine learning, and robotics.</p>
+<img alt="/images/123.jpg" src="../images/123.jpg" style="height: 600px;"></section><section id="the-beginning-assembling-the-turret"><h2>The Beginning: Assembling the Turret</h2>
+<p>The project started with an open-source Nerf turret design</p>
+<p><a class="reference external" href="https://www.littlefrenchkev.com/bluetooth-nerf-turret">https://www.littlefrenchkev.com/bluetooth-nerf-turret</a></p>
+<p>I printed all the parts using a 3D printer and got to work.</p>
+<p>The assembly involved soldering components, integrating Arduino and servo motors for movement control, and programming the turret based on a project from the LittleFrenchKev website.</p>
+<p>This initial phase was to explain basic electronics and programming to my son.</p>
+</section><section id="the-fun"><h2>The fun</h2>
+<embed><iframe width="800" height="600" src="https://www.youtube.com/embed/rzwS_gR10EM?autoplay=1&amp;mute=1">
+</iframe>
+</embed></section><section id="from-manual-to-autonomous-the-leap-into-ai"><h2>From Manual to Autonomous: The Leap into AI</h2>
+<p>After playing with the manually controlled turret, I realised the potential to make it autonomous and "intelligent."</p>
+<p>The challenge was to enable the turret to recognise and target objects autonomously.</p>
+<p>With a background in basic OpenCV and Tesseract from a decade ago, I decided to delve deeper into machine learning.</p>
+</section><section id="the-decision-why-jetson-nano"><h2>The Decision: Why Jetson Nano?</h2>
+<p>The offline Image recognitions options had to involve specialised hardware options were:  Jetson Nano, Google Coral, and Intel CS.</p>
+<p>I chose Jetson Nano for its balance of accessibility, power, and community support.</p>
+<p>With its AI/ML Jetpack and 128-core GPU, Jetson Nano is the perfect fit for someone reentering the world of AI and machine learning.</p>
+</section><section id="the-upgrade-image-recognition-and-servo-control"><h2>The Upgrade: Image Recognition and Servo Control</h2>
+<p>Initially, I planned to use a Kinect camera for its depth-sensing capabilities.</p>
+<p>However, I encountered compatibility issues with the Python version of the Jetson Nano Nvidia-customised ubuntu version.</p>
+<p>So, I switched to a full HD Logitech camera.
+I asked ChatGPT for help in using the camera for person detection and received comprehensive guidance, including code snippets and suggestions to use Nvidia's pre-trained models for person detection.</p>
+<p><a class="reference external" href="https://chat.openai.com/share/1120521a-1042-4971-9e33-a852b85178f5">https://chat.openai.com/share/1120521a-1042-4971-9e33-a852b85178f5</a></p>
+<p><a class="reference external" href="https://chat.openai.com/share/8ace3024-bcc9-44c1-a08a-7a5658a0e3e3">https://chat.openai.com/share/8ace3024-bcc9-44c1-a08a-7a5658a0e3e3</a></p>
+<p>The implementation succeeded – the turret could now recognise a person using the Logitech camera.</p>
+</section><section id="integrating-ai-with-mechanics"><h2>Integrating AI with Mechanics</h2>
+<p>The next step was to translate the detected coordinates into servo movements.</p>
+<p>I slightly modified the existing application to transform it into a web API that could accept coordinates.</p>
+<p>This meant that the turret was not just a passive observer but could actively interact with its environment.</p>
+<p>To add an interactive element, I created a simple HTML interface where the turret's movement followed the mouse cursor. A click would prompt the turret to "shoot."</p>
+<p>WITH HELP OF CHATGPT!</p>
+<img alt="/images/1.jpg" src="../images/1.jpg"><img alt="/images/2.jpg" src="../images/2.jpg"><p>After launching and accessing application of course I had some CORS errors</p>
+<p>but if I didnt know whats <a class="reference external" href="https://owasp.org/www-community/attacks/csrf">CORS</a> I could still just paste error to get answer from chatgpt -SCARY!</p>
+<img alt="/images/4.jpg" src="../images/4.jpg"><img alt="/images/5.jpg" src="../images/5.jpg"><p>Later I wanted the turret to follow my mouse live.
+NOTE If we are without Architectual mind sending mouse coordinates changes through http API is crazy this would load server- but hapilly Chatgpt TELLS US ABOUT IT!!! just in case we have no infrastructure application workflow experience.)</p>
+<img alt="/images/8.jpg" src="../images/8.jpg"><p>What it didnt suggest is that for this specific usecase best would be to use websockets.</p>
+<img alt="/images/9.jpg" src="../images/9.jpg"><p><a class="reference external" href="https://chat.openai.com/share/10b53b4b-d5df-41f7-9723-abde7da934e9">https://chat.openai.com/share/10b53b4b-d5df-41f7-9723-abde7da934e9</a></p>
+<p>This feature made the turret a demonstration of AI and robotics and an engaging toy.</p>
+</section><section id="conclusion-more-than-just-a-toy"><h2>Conclusion: More Than Just a Toy</h2>
+<p>This project was a journey through various domains:</p>
+<ul class="simple">
+<li><p>3D printing</p></li>
+<li><p>electronics</p></li>
+<li><p>programming</p></li>
+<li><p>AI</p></li>
+<li><p>robotics</p></li>
+</ul>
+<p>It was a learning experience fueled by curiosity and the desire to create something unique. The Nerf turret, now equipped with AI capabilities, stands as a testament to the power of open-source projects and the accessibility of modern technology.
+What started as a fun project with my son became a gateway into the fascinating world of AI and robotics, demonstrating that anyone can step into the world of DIY AI projects with curiosity and the right tools.</p>
+</section>
+</div>
+    <aside class="postpromonav"><nav><ul class="pager hidden-print">
+<li class="previous">
+                <a href="python-antipatterns.html" rel="prev" title="Python antipatterns">Previous post</a>
+            </li>
+        </ul></nav></aside><section class="comments hidden-print"><h2>Comments</h2>
+        
+    
+        <div id="disqus_thread"></div>
+        <script>
+        var disqus_shortname ="stencel",
+            disqus_url="https://stencel.io/posts/building-an-intelligent-nerf-turret-with-jetson-nano-a-journey-into-diy-robotics-and-ai.html",
+        disqus_title="Building an Intelligent Nerf Turret with Jetson Nano: A Journey into DIY Robotics and AI",
+        disqus_identifier="cache/posts/building-an-intelligent-nerf-turret-with-jetson-nano-a-journey-into-diy-robotics-and-ai.html",
+        disqus_config = function () {
+            this.language = "en";
+        };
+        (function() {
+            var dsq = document.createElement('script'); dsq.async = true;
+            dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script><noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a>
+</noscript>
+    <a href="https://disqus.com" class="dsq-brlink" rel="nofollow">Comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+        </section></article><script>var disqus_shortname="stencel";(function(){var a=document.createElement("script");a.async=true;a.src="https://"+disqus_shortname+".disqus.com/count.js";(document.getElementsByTagName("head")[0]||document.getElementsByTagName("body")[0]).appendChild(a)}());</script><footer id="footer"><p>Contents © 2023         <a href="mailto:gstencel@gmail.com">Greg Stencel</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         </p>
+            
+        </footer>
+</div>
+    </section><script src="../assets/js/all-nocdn.js"></script><!-- fancy dates --><script>
+    moment.locale("en");
+    fancydates(0, "YYYY-MM-DD HH:mm");
+    </script><!-- end fancy dates --><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element) {
+            return element.getElementsByTagName('img')[0].alt;
+    }});
+    </script><script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-50641127-1', 'stencel.io');
+  ga('send', 'pageview');
+
+</script><script type="text/javascript" src="../assets/js/tipuesearch_set.js"></script><script type="text/javascript" src="../assets/js/tipuesearch.js"></script><script type="text/javascript">
+$(document).ready(function() {
+     $('#tipue_search_input').tipuesearch({
+         'mode': 'json',
+         'contentLocation': '/assets/js/tipuesearch_content.json',
+         'showUrl': false
+     });
+});
+</script>
+</body>
+</html>
