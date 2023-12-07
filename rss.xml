@@ -1,5 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Greg's Tech Notes</title><link>https://stencel.io/</link><description>Tech notes and tips</description><atom:link href="https://stencel.io/rss.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><copyright>Contents © 2023 &lt;a href="mailto:gstencel@gmail.com"&gt;Greg Stencel&lt;/a&gt; </copyright><lastBuildDate>Tue, 09 May 2023 20:37:26 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Python antipatterns</title><link>https://stencel.io/posts/python-antipatterns.html</link><dc:creator>Greg Stencel</dc:creator><description>&lt;section id="global-variables-antipattern"&gt;
+<?xml-stylesheet type="text/xsl" href="assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Greg's Tech Notes</title><link>https://stencel.io/</link><description>Tech notes and tips</description><atom:link href="https://stencel.io/rss.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><copyright>Contents © 2023 &lt;a href="mailto:gstencel@gmail.com"&gt;Greg Stencel&lt;/a&gt; </copyright><lastBuildDate>Thu, 07 Dec 2023 12:59:43 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Building an Intelligent Nerf Turret with Jetson Nano: A Journey into DIY Robotics and AI</title><link>https://stencel.io/posts/building-an-intelligent-nerf-turret-with-jetson-nano-a-journey-into-diy-robotics-and-ai.html</link><dc:creator>Greg Stencel</dc:creator><description>&lt;section id="introduction"&gt;
+&lt;h2&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;Imagine transforming a simple toy into an intelligent machine that recognises and interacts with its environment. That's exactly what I set out to do with a Nerf turret. The journey began with a desire to create something fun and educational for my son and me, and it evolved into an exploration of open-source hardware, machine learning, and robotics.&lt;/p&gt;
+&lt;img alt="/images/123.jpg" src="https://stencel.io/images/123.jpg" style="height: 600px;"&gt;
+&lt;/section&gt;
+&lt;section id="the-beginning-assembling-the-turret"&gt;
+&lt;h2&gt;The Beginning: Assembling the Turret&lt;/h2&gt;
+&lt;p&gt;The project started with an open-source Nerf turret design&lt;/p&gt;
+&lt;p&gt;&lt;a class="reference external" href="https://www.littlefrenchkev.com/bluetooth-nerf-turret"&gt;https://www.littlefrenchkev.com/bluetooth-nerf-turret&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;I printed all the parts using a 3D printer and got to work.&lt;/p&gt;
+&lt;p&gt;The assembly involved soldering components, integrating Arduino and servo motors for movement control, and programming the turret based on a project from the LittleFrenchKev website.&lt;/p&gt;
+&lt;p&gt;This initial phase was to explain basic electronics and programming to my son.&lt;/p&gt;
+&lt;/section&gt;
+&lt;section id="the-fun"&gt;
+&lt;h2&gt;The fun&lt;/h2&gt;
+&lt;embed&gt;
+&lt;iframe width="800" height="600" src="https://www.youtube.com/embed/rzwS_gR10EM?autoplay=1&amp;amp;mute=1"&gt;
+&lt;/iframe&gt;
+&lt;/embed&gt;&lt;/section&gt;
+&lt;section id="from-manual-to-autonomous-the-leap-into-ai"&gt;
+&lt;h2&gt;From Manual to Autonomous: The Leap into AI&lt;/h2&gt;
+&lt;p&gt;After playing with the manually controlled turret, I realised the potential to make it autonomous and "intelligent."&lt;/p&gt;
+&lt;p&gt;The challenge was to enable the turret to recognise and target objects autonomously.&lt;/p&gt;
+&lt;p&gt;With a background in basic OpenCV and Tesseract from a decade ago, I decided to delve deeper into machine learning.&lt;/p&gt;
+&lt;/section&gt;
+&lt;section id="the-decision-why-jetson-nano"&gt;
+&lt;h2&gt;The Decision: Why Jetson Nano?&lt;/h2&gt;
+&lt;p&gt;The offline Image recognitions options had to involve specialised hardware options were:  Jetson Nano, Google Coral, and Intel CS.&lt;/p&gt;
+&lt;p&gt;I chose Jetson Nano for its balance of accessibility, power, and community support.&lt;/p&gt;
+&lt;p&gt;With its AI/ML Jetpack and 128-core GPU, Jetson Nano is the perfect fit for someone reentering the world of AI and machine learning.&lt;/p&gt;
+&lt;/section&gt;
+&lt;section id="the-upgrade-image-recognition-and-servo-control"&gt;
+&lt;h2&gt;The Upgrade: Image Recognition and Servo Control&lt;/h2&gt;
+&lt;p&gt;Initially, I planned to use a Kinect camera for its depth-sensing capabilities.&lt;/p&gt;
+&lt;p&gt;However, I encountered compatibility issues with the Python version of the Jetson Nano Nvidia-customised ubuntu version.&lt;/p&gt;
+&lt;p&gt;So, I switched to a full HD Logitech camera.
+I asked ChatGPT for help in using the camera for person detection and received comprehensive guidance, including code snippets and suggestions to use Nvidia's pre-trained models for person detection.&lt;/p&gt;
+&lt;p&gt;&lt;a class="reference external" href="https://chat.openai.com/share/1120521a-1042-4971-9e33-a852b85178f5"&gt;https://chat.openai.com/share/1120521a-1042-4971-9e33-a852b85178f5&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a class="reference external" href="https://chat.openai.com/share/8ace3024-bcc9-44c1-a08a-7a5658a0e3e3"&gt;https://chat.openai.com/share/8ace3024-bcc9-44c1-a08a-7a5658a0e3e3&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;The implementation succeeded – the turret could now recognise a person using the Logitech camera.&lt;/p&gt;
+&lt;/section&gt;
+&lt;section id="integrating-ai-with-mechanics"&gt;
+&lt;h2&gt;Integrating AI with Mechanics&lt;/h2&gt;
+&lt;p&gt;The next step was to translate the detected coordinates into servo movements.&lt;/p&gt;
+&lt;p&gt;I slightly modified the existing application to transform it into a web API that could accept coordinates.&lt;/p&gt;
+&lt;p&gt;This meant that the turret was not just a passive observer but could actively interact with its environment.&lt;/p&gt;
+&lt;p&gt;To add an interactive element, I created a simple HTML interface where the turret's movement followed the mouse cursor. A click would prompt the turret to "shoot."&lt;/p&gt;
+&lt;p&gt;WITH HELP OF CHATGPT!&lt;/p&gt;
+&lt;img alt="/images/1.jpg" src="https://stencel.io/images/1.jpg"&gt;
+&lt;img alt="/images/2.jpg" src="https://stencel.io/images/2.jpg"&gt;
+&lt;p&gt;After launching and accessing application of course I had some CORS errors&lt;/p&gt;
+&lt;p&gt;but if I didnt know whats &lt;a class="reference external" href="https://owasp.org/www-community/attacks/csrf"&gt;CORS&lt;/a&gt; I could still just paste error to get answer from chatgpt -SCARY!&lt;/p&gt;
+&lt;img alt="/images/4.jpg" src="https://stencel.io/images/4.jpg"&gt;
+&lt;img alt="/images/5.jpg" src="https://stencel.io/images/5.jpg"&gt;
+&lt;p&gt;Later I wanted the turret to follow my mouse live.
+NOTE If we are without Architectual mind sending mouse coordinates changes through http API is crazy this would load server- but hapilly Chatgpt TELLS US ABOUT IT!!! just in case we have no infrastructure application workflow experience.)&lt;/p&gt;
+&lt;img alt="/images/8.jpg" src="https://stencel.io/images/8.jpg"&gt;
+&lt;p&gt;What it didnt suggest is that for this specific usecase best would be to use websockets.&lt;/p&gt;
+&lt;img alt="/images/9.jpg" src="https://stencel.io/images/9.jpg"&gt;
+&lt;p&gt;&lt;a class="reference external" href="https://chat.openai.com/share/10b53b4b-d5df-41f7-9723-abde7da934e9"&gt;https://chat.openai.com/share/10b53b4b-d5df-41f7-9723-abde7da934e9&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;This feature made the turret a demonstration of AI and robotics and an engaging toy.&lt;/p&gt;
+&lt;/section&gt;
+&lt;section id="conclusion-more-than-just-a-toy"&gt;
+&lt;h2&gt;Conclusion: More Than Just a Toy&lt;/h2&gt;
+&lt;p&gt;This project was a journey through various domains:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;p&gt;3D printing&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;electronics&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;programming&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;AI&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;robotics&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;It was a learning experience fueled by curiosity and the desire to create something unique. The Nerf turret, now equipped with AI capabilities, stands as a testament to the power of open-source projects and the accessibility of modern technology.
+What started as a fun project with my son became a gateway into the fascinating world of AI and robotics, demonstrating that anyone can step into the world of DIY AI projects with curiosity and the right tools.&lt;/p&gt;
+&lt;/section&gt;</description><guid>https://stencel.io/posts/building-an-intelligent-nerf-turret-with-jetson-nano-a-journey-into-diy-robotics-and-ai.html</guid><pubDate>Thu, 07 Dec 2023 11:04:09 GMT</pubDate></item><item><title>Python antipatterns</title><link>https://stencel.io/posts/python-antipatterns.html</link><dc:creator>Greg Stencel</dc:creator><description>&lt;section id="global-variables-antipattern"&gt;
 &lt;h2&gt;Global variables antipattern&lt;/h2&gt;
 &lt;p&gt;Global variables make code harder to reason about, test, and debug. Instead, use local variables or pass variables as function arguments.&lt;/p&gt;
 &lt;div class="code"&gt;&lt;pre class="code python"&gt;&lt;a id="rest_code_12bcd585656549a2a8428fe0a92f3abc-1" name="rest_code_12bcd585656549a2a8428fe0a92f3abc-1" href="https://stencel.io/posts/python-antipatterns.html#rest_code_12bcd585656549a2a8428fe0a92f3abc-1"&gt;&lt;/a&gt;&lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;
@@ -2507,99 +2581,4 @@ previously was
 UserParameter=mysql.ping,HOME=/var/lib/zabbix mysqladmin ping | grep -c alive
 so grep didnt work&lt;/p&gt;
 &lt;p&gt;Write your post here.&lt;/p&gt;
-&lt;/section&gt;</description><category>DevOps</category><category>docker</category><category>docker-compose</category><category>monitoring</category><category>zabbix</category><guid>https://stencel.io/posts/adding-zabbix-agent-to-server.html</guid><pubDate>Fri, 16 Mar 2018 09:27:50 GMT</pubDate></item><item><title>Zabbix stack with docker-compose.yml</title><link>https://stencel.io/posts/zabbix-stack-with-docker-composeyml.html</link><dc:creator>Greg Stencel</dc:creator><description>&lt;section id="fully-working-zabbix-server-solution-with-ui-and-database-in-seconds"&gt;
-&lt;h2&gt;Fully working zabbix server solution with UI and database in seconds&lt;/h2&gt;
-&lt;p&gt;I wanted to install zabbix server quickly with docker but amount of zabbix images (created by zabbix) on dockerhub just overwhelmed me.
-To set up running zabbix server we need 3 images
-* choice of sql DB
-* zabbix-web  - web interface
-* zabbix-server - main zabbix process responsible for polling and trapping data and sending notifications to users.&lt;/p&gt;
-&lt;p&gt;My choice of database was MySQL so I created docker-compose file to have full stack of running zabbix server:&lt;/p&gt;
-&lt;p&gt;Notice(you may want to use alpine versions for production env)
-docker-compose.yml:&lt;/p&gt;
-&lt;div class="code"&gt;&lt;pre class="code bash"&gt;&lt;a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-1" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-1" href="https://stencel.io/posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-1"&gt;&lt;/a&gt;version: &lt;span class="s1"&gt;'3'&lt;/span&gt;
-&lt;a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-2" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-2" href="https://stencel.io/posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-2"&gt;&lt;/a&gt;
-&lt;a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-3" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-3" href="https://stencel.io/posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-3"&gt;&lt;/a&gt;services:
-&lt;a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-4" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-4" href="https://stencel.io/posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-4"&gt;&lt;/a&gt;  db:
-&lt;a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-5" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-5" href="https://stencel.io/posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-5"&gt;&lt;/a&gt;    image: mysql:latest
-&lt;a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-6" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-6" href="https://stencel.io/posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-6"&gt;&lt;/a&gt;    restart: always
-&lt;a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-7" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-7" href="https://stencel.io/posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-7"&gt;&lt;/a&gt;    expose:
-&lt;a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-8" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-8" href="https://stencel.io/posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-8"&gt;&lt;/a&gt;      - &lt;span class="s1"&gt;'3336'&lt;/span&gt;
-&lt;a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-9" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-9" href="https://stencel.io/posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-9"&gt;&lt;/a&gt;    environment:
-&lt;a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-10" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-10" href="https://stencel.io/posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-10"&gt;&lt;/a&gt;      MYSQL_ROOT_PASSWORD: &lt;span class="s1"&gt;'my_secret_password'&lt;/span&gt;
-&lt;a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-11" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-11" href="https://stencel.io/posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-11"&gt;&lt;/a&gt;      MYSQL_USER: &lt;span class="s1"&gt;'zabbixuser'&lt;/span&gt;
-&lt;a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-12" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-12" href="https://stencel.io/posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-12"&gt;&lt;/a&gt;      MYSQL_PASSWORD: &lt;span class="s1"&gt;'zabbixpass'&lt;/span&gt;
-&lt;a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-13" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-13" href="https://stencel.io/posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-13"&gt;&lt;/a&gt;      MYSQL_ROOT_HOST: &lt;span class="s1"&gt;'%'&lt;/span&gt;
-&lt;a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-14" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-14" href="https://stencel.io/posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-14"&gt;&lt;/a&gt;    volumes:
-&lt;a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-15" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-15" href="https://stencel.io/posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-15"&gt;&lt;/a&gt;      - &lt;span class="s1"&gt;'mysql_data_dir:/var/lib/mysql'&lt;/span&gt;
-&lt;a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-16" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-16" href="https://stencel.io/posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-16"&gt;&lt;/a&gt;
-&lt;a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-17" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-17" href="https://stencel.io/posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-17"&gt;&lt;/a&gt;
-&lt;a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-18" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-18" href="https://stencel.io/posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-18"&gt;&lt;/a&gt;  zabbix-server:
-&lt;a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-19" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-19" href="https://stencel.io/posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-19"&gt;&lt;/a&gt;    image: zabbix/zabbix-server-mysql
-&lt;a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-20" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-20" href="https://stencel.io/posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-20"&gt;&lt;/a&gt;    links:
-&lt;a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-21" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-21" href="https://stencel.io/posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-21"&gt;&lt;/a&gt;      - &lt;span class="s2"&gt;"db:mysql"&lt;/span&gt;
-&lt;a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-22" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-22" href="https://stencel.io/posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-22"&gt;&lt;/a&gt;      - &lt;span class="s2"&gt;"postfix:postfix"&lt;/span&gt;
-&lt;a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-23" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-23" href="https://stencel.io/posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-23"&gt;&lt;/a&gt;    environment:
-&lt;a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-24" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-24" href="https://stencel.io/posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-24"&gt;&lt;/a&gt;      MYSQL_ROOT_PASSWORD: &lt;span class="s1"&gt;'my_secret_password'&lt;/span&gt;
-&lt;a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-25" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-25" href="https://stencel.io/posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-25"&gt;&lt;/a&gt;      MYSQL_USER: &lt;span class="s1"&gt;'zabbixuser'&lt;/span&gt;
-&lt;a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-26" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-26" href="https://stencel.io/posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-26"&gt;&lt;/a&gt;      MYSQL_PASSWORD: &lt;span class="s1"&gt;'zabbixpass'&lt;/span&gt;
-&lt;a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-27" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-27" href="https://stencel.io/posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-27"&gt;&lt;/a&gt;      DB_SERVER_HOST: &lt;span class="s1"&gt;'mysql'&lt;/span&gt;
-&lt;a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-28" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-28" href="https://stencel.io/posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-28"&gt;&lt;/a&gt;
-&lt;a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-29" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-29" href="https://stencel.io/posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-29"&gt;&lt;/a&gt;
-&lt;a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-30" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-30" href="https://stencel.io/posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-30"&gt;&lt;/a&gt;  zabbix-web:
-&lt;a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-31" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-31" href="https://stencel.io/posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-31"&gt;&lt;/a&gt;    image: zabbix/zabbix-web-nginx-mysql
-&lt;a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-32" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-32" href="https://stencel.io/posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-32"&gt;&lt;/a&gt;    ports:
-&lt;a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-33" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-33" href="https://stencel.io/posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-33"&gt;&lt;/a&gt;      - &lt;span class="s1"&gt;'7777:80'&lt;/span&gt;
-&lt;a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-34" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-34" href="https://stencel.io/posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-34"&gt;&lt;/a&gt;    links:
-&lt;a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-35" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-35" href="https://stencel.io/posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-35"&gt;&lt;/a&gt;      - &lt;span class="s2"&gt;"db:mysql"&lt;/span&gt;
-&lt;a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-36" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-36" href="https://stencel.io/posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-36"&gt;&lt;/a&gt;      - &lt;span class="s2"&gt;"zabbix-server:zabbix-server"&lt;/span&gt;
-&lt;a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-37" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-37" href="https://stencel.io/posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-37"&gt;&lt;/a&gt;      - &lt;span class="s2"&gt;"postfix:postfix"&lt;/span&gt;
-&lt;a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-38" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-38" href="https://stencel.io/posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-38"&gt;&lt;/a&gt;    environment:
-&lt;a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-39" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-39" href="https://stencel.io/posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-39"&gt;&lt;/a&gt;      MYSQL_ROOT_PASSWORD: &lt;span class="s1"&gt;'secret'&lt;/span&gt;
-&lt;a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-40" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-40" href="https://stencel.io/posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-40"&gt;&lt;/a&gt;      MYSQL_USER: &lt;span class="s1"&gt;'zabbixuser'&lt;/span&gt;
-&lt;a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-41" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-41" href="https://stencel.io/posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-41"&gt;&lt;/a&gt;      MYSQL_PASSWORD: &lt;span class="s1"&gt;'myzabbixpass'&lt;/span&gt;
-&lt;a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-42" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-42" href="https://stencel.io/posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-42"&gt;&lt;/a&gt;      DB_SERVER_HOST: &lt;span class="s1"&gt;'mysql'&lt;/span&gt;
-&lt;a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-43" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-43" href="https://stencel.io/posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-43"&gt;&lt;/a&gt;      ZBX_SERVER_HOST: &lt;span class="s2"&gt;"zabbix-server"&lt;/span&gt;
-&lt;a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-44" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-44" href="https://stencel.io/posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-44"&gt;&lt;/a&gt;      PHP_TZ: &lt;span class="s2"&gt;"Europe/London"&lt;/span&gt;
-&lt;a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-45" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-45" href="https://stencel.io/posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-45"&gt;&lt;/a&gt;  postfix:
-&lt;a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-46" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-46" href="https://stencel.io/posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-46"&gt;&lt;/a&gt;    image: catatnight/postfix
-&lt;a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-47" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-47" href="https://stencel.io/posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-47"&gt;&lt;/a&gt;    hostname: support
-&lt;a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-48" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-48" href="https://stencel.io/posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-48"&gt;&lt;/a&gt;    environment:
-&lt;a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-49" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-49" href="https://stencel.io/posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-49"&gt;&lt;/a&gt;      - &lt;span class="nv"&gt;maildomain&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;domain.com
-&lt;a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-50" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-50" href="https://stencel.io/posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-50"&gt;&lt;/a&gt;      - &lt;span class="nv"&gt;smtp_user&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;admin:password
-&lt;a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-51" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-51" href="https://stencel.io/posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-51"&gt;&lt;/a&gt;    ports:
-&lt;a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-52" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-52" href="https://stencel.io/posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-52"&gt;&lt;/a&gt;      - &lt;span class="s2"&gt;"25:25"&lt;/span&gt;
-&lt;a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-53" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-53" href="https://stencel.io/posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-53"&gt;&lt;/a&gt;    &lt;span class="c1"&gt;#  - "465:465"&lt;/span&gt;
-&lt;a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-54" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-54" href="https://stencel.io/posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-54"&gt;&lt;/a&gt;    &lt;span class="c1"&gt;#  - "587:587"&lt;/span&gt;
-&lt;a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-55" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-55" href="https://stencel.io/posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-55"&gt;&lt;/a&gt;    expose:
-&lt;a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-56" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-56" href="https://stencel.io/posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-56"&gt;&lt;/a&gt;      - &lt;span class="s2"&gt;"25"&lt;/span&gt;
-&lt;a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-57" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-57" href="https://stencel.io/posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-57"&gt;&lt;/a&gt;    &lt;span class="c1"&gt;#  - "465"&lt;/span&gt;
-&lt;a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-58" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-58" href="https://stencel.io/posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-58"&gt;&lt;/a&gt;    &lt;span class="c1"&gt;#  - "587"&lt;/span&gt;
-&lt;a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-59" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-59" href="https://stencel.io/posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-59"&gt;&lt;/a&gt;    volumes:
-&lt;a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-60" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-60" href="https://stencel.io/posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-60"&gt;&lt;/a&gt;      - /etc/nginx/ssl/postfix:/etc/postfix/certs
-&lt;a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-61" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-61" href="https://stencel.io/posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-61"&gt;&lt;/a&gt;      - /etc/nginx/ssl/postfix:/etc/opendkim/domainkeys
-&lt;a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-62" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-62" href="https://stencel.io/posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-62"&gt;&lt;/a&gt;volumes:
-&lt;a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-63" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-63" href="https://stencel.io/posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-63"&gt;&lt;/a&gt;  mysql_data_dir:
-&lt;a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-64" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-64" href="https://stencel.io/posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-64"&gt;&lt;/a&gt;    driver: &lt;span class="nb"&gt;local&lt;/span&gt;
-&lt;a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-65" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-65" href="https://stencel.io/posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-65"&gt;&lt;/a&gt;
-&lt;a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-66" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-66" href="https://stencel.io/posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-66"&gt;&lt;/a&gt;      &lt;span class="c1"&gt;#- ./deployment/config_files/main-postfix-live.cf:/etc/postfix/main.cf&lt;/span&gt;
-&lt;a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-67" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-67" href="https://stencel.io/posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-67"&gt;&lt;/a&gt;    &lt;span class="c1"&gt;#networks:&lt;/span&gt;
-&lt;a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-68" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-68" href="https://stencel.io/posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-68"&gt;&lt;/a&gt;    &lt;span class="c1"&gt;#  - backend&lt;/span&gt;
-&lt;a id="rest_code_f449ce6f9ec040c28b92af4b184810d7-69" name="rest_code_f449ce6f9ec040c28b92af4b184810d7-69" href="https://stencel.io/posts/zabbix-stack-with-docker-composeyml.html#rest_code_f449ce6f9ec040c28b92af4b184810d7-69"&gt;&lt;/a&gt;    &lt;span class="c1"&gt;#entrypoint: /docker-entrypoint.sh&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;The above solution is just enough to start zabbix server up and
-running in couple seconds. To run it just put yml file into some directory (directory is important as volume created for mysql will have this dir name as prefix) volumes are usually stored in /var/lib/docker/volumes and run:&lt;/p&gt;
-&lt;div class="code"&gt;&lt;pre class="code bash"&gt;&lt;a id="rest_code_b084e8357fb6454a85190418dcab85f5-1" name="rest_code_b084e8357fb6454a85190418dcab85f5-1" href="https://stencel.io/posts/zabbix-stack-with-docker-composeyml.html#rest_code_b084e8357fb6454a85190418dcab85f5-1"&gt;&lt;/a&gt;sudo docker-compose up
-&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Thats it!!!
-You now have your zabbix running on port 7777&lt;/p&gt;
-&lt;p&gt;So what happened here docker-compose up has build and runned 3 containers
-by running zabbix container it discovered there are no tables in mysql and has built them.&lt;/p&gt;
-&lt;p&gt;Now you just need to add agents/servers you want to monitor.
-Check out adding agent in separate post [here]&lt;/p&gt;
-&lt;p&gt;Versions:
-(versions I've used in this example Feb 2018):&lt;/p&gt;
-&lt;p&gt;Docker-compose: 1.17.0, build ac53b73
-Docker: 17.09.1-ce, build 19e2cf6
-Kernel: 4.13.0-36-generic&lt;/p&gt;
-&lt;/section&gt;</description><category>draft</category><guid>https://stencel.io/posts/zabbix-stack-with-docker-composeyml.html</guid><pubDate>Thu, 15 Mar 2018 17:14:48 GMT</pubDate></item></channel></rss>
+&lt;/section&gt;</description><category>DevOps</category><category>docker</category><category>docker-compose</category><category>monitoring</category><category>zabbix</category><guid>https://stencel.io/posts/adding-zabbix-agent-to-server.html</guid><pubDate>Fri, 16 Mar 2018 09:27:50 GMT</pubDate></item></channel></rss>
