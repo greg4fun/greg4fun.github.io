@@ -1,0 +1,75 @@
+<section id="introduction">
+<h1>Introduction</h1>
+<p>Imagine transforming a simple toy into an intelligent machine that recognises and interacts with its environment. That's exactly what I set out to do with a Nerf turret. The journey began with a desire to create something fun and educational for my son and me, and it evolved into an exploration of open-source hardware, machine learning, and robotics.</p>
+<img alt="/images/123.jpg" src="/images/123.jpg" style="height: 600px;" />
+</section>
+<section id="the-beginning-assembling-the-turret">
+<h1>The Beginning: Assembling the Turret</h1>
+<p>The project started with an open-source Nerf turret design</p>
+<p><a class="reference external" href="https://www.littlefrenchkev.com/bluetooth-nerf-turret">https://www.littlefrenchkev.com/bluetooth-nerf-turret</a></p>
+<p>I printed all the parts using a 3D printer and got to work.</p>
+<p>The assembly involved soldering components, integrating Arduino and servo motors for movement control, and programming the turret based on a project from the LittleFrenchKev website.</p>
+<p>This initial phase was to explain basic electronics and programming to my son.</p>
+</section>
+<section id="the-fun">
+<h1>The fun</h1>
+<embed>
+<iframe width="800" height="600" src="https://www.youtube.com/embed/rzwS_gR10EM?autoplay=1&mute=1">
+</iframe>
+</embed></section>
+<section id="from-manual-to-autonomous-the-leap-into-ai">
+<h1>From Manual to Autonomous: The Leap into AI</h1>
+<p>After playing with the manually controlled turret, I realised the potential to make it autonomous and &quot;intelligent.&quot;</p>
+<p>The challenge was to enable the turret to recognise and target objects autonomously.</p>
+<p>With a background in basic OpenCV and Tesseract from a decade ago, I decided to delve deeper into machine learning.</p>
+</section>
+<section id="the-decision-why-jetson-nano">
+<h1>The Decision: Why Jetson Nano?</h1>
+<p>The offline Image recognitions options had to involve specialised hardware options were:  Jetson Nano, Google Coral, and Intel CS.</p>
+<p>I chose Jetson Nano for its balance of accessibility, power, and community support.</p>
+<p>With its AI/ML Jetpack and 128-core GPU, Jetson Nano is the perfect fit for someone reentering the world of AI and machine learning.</p>
+</section>
+<section id="the-upgrade-image-recognition-and-servo-control">
+<h1>The Upgrade: Image Recognition and Servo Control</h1>
+<p>Initially, I planned to use a Kinect camera for its depth-sensing capabilities.</p>
+<p>However, I encountered compatibility issues with the Python version of the Jetson Nano Nvidia-customised ubuntu version.</p>
+<p>So, I switched to a full HD Logitech camera.
+I asked ChatGPT for help in using the camera for person detection and received comprehensive guidance, including code snippets and suggestions to use Nvidia's pre-trained models for person detection.</p>
+<p><a class="reference external" href="https://chat.openai.com/share/1120521a-1042-4971-9e33-a852b85178f5">https://chat.openai.com/share/1120521a-1042-4971-9e33-a852b85178f5</a></p>
+<p><a class="reference external" href="https://chat.openai.com/share/8ace3024-bcc9-44c1-a08a-7a5658a0e3e3">https://chat.openai.com/share/8ace3024-bcc9-44c1-a08a-7a5658a0e3e3</a></p>
+<p>The implementation succeeded – the turret could now recognise a person using the Logitech camera.</p>
+</section>
+<section id="integrating-ai-with-mechanics">
+<h1>Integrating AI with Mechanics</h1>
+<p>The next step was to translate the detected coordinates into servo movements.</p>
+<p>I slightly modified the existing application to transform it into a web API that could accept coordinates.</p>
+<p>This meant that the turret was not just a passive observer but could actively interact with its environment.</p>
+<p>To add an interactive element, I created a simple HTML interface where the turret's movement followed the mouse cursor. A click would prompt the turret to &quot;shoot.&quot;</p>
+<p>WITH HELP OF CHATGPT!</p>
+<img alt="/images/1.jpg" src="/images/1.jpg" />
+<img alt="/images/2.jpg" src="/images/2.jpg" />
+<p>After launching and accessing application of course I had some CORS errors</p>
+<p>but if I didnt know whats <a class="reference external" href="https://owasp.org/www-community/attacks/csrf">CORS</a> I could still just paste error to get answer from chatgpt -SCARY!</p>
+<img alt="/images/4.jpg" src="/images/4.jpg" />
+<img alt="/images/5.jpg" src="/images/5.jpg" />
+<p>Later I wanted the turret to follow my mouse live.
+NOTE If we are without Architectual mind sending mouse coordinates changes through http API is crazy this would load server- but hapilly Chatgpt TELLS US ABOUT IT!!! just in case we have no infrastructure application workflow experience.)</p>
+<img alt="/images/8.jpg" src="/images/8.jpg" />
+<p>What it didnt suggest is that for this specific usecase best would be to use websockets.</p>
+<img alt="/images/9.jpg" src="/images/9.jpg" />
+<p><a class="reference external" href="https://chat.openai.com/share/10b53b4b-d5df-41f7-9723-abde7da934e9">https://chat.openai.com/share/10b53b4b-d5df-41f7-9723-abde7da934e9</a></p>
+<p>This feature made the turret a demonstration of AI and robotics and an engaging toy.</p>
+</section>
+<section id="conclusion-more-than-just-a-toy">
+<h1>Conclusion: More Than Just a Toy</h1>
+<p>This project was a journey through various domains:</p>
+<ul class="simple">
+<li><p>3D printing</p></li>
+<li><p>electronics</p></li>
+<li><p>programming</p></li>
+<li><p>AI</p></li>
+<li><p>robotics</p></li>
+</ul>
+<p>It was a learning experience fueled by curiosity and the desire to create something unique. The Nerf turret, now equipped with AI capabilities, stands as a testament to the power of open-source projects and the accessibility of modern technology.
+What started as a fun project with my son became a gateway into the fascinating world of AI and robotics, demonstrating that anyone can step into the world of DIY AI projects with curiosity and the right tools.</p>
+</section>
