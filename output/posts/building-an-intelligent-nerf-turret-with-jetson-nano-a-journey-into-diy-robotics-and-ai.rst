@@ -135,3 +135,11 @@ This project was a journey through various domains:
 It was a learning experience fueled by curiosity and the desire to create something unique. The Nerf turret, now equipped with AI capabilities, stands as a testament to the power of open-source projects and the accessibility of modern technology.
 What started as a fun project with my son became a gateway into the fascinating world of AI and robotics, demonstrating that anyone can step into the world of DIY AI projects with curiosity and the right tools.
 
+
+.. raw:: html
+
+    <embed>
+    <iframe width="800" height="600" src="https://www.youtube.com/embed/krFlASb-rEQ?autoplay=1&mute=1">
+    </iframe>
+    </embed>
+ 
