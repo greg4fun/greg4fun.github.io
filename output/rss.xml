@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Greg's Tech Notes</title><link>https://stencel.io/</link><description>Tech notes and tips</description><atom:link href="https://stencel.io/rss.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><copyright>Contents © 2023 &lt;a href="mailto:gstencel@gmail.com"&gt;Greg Stencel&lt;/a&gt; </copyright><lastBuildDate>Mon, 11 Dec 2023 14:16:41 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Building an Intelligent Nerf Turret with Jetson Nano: A Journey into DIY Robotics and AI</title><link>https://stencel.io/posts/building-an-intelligent-nerf-turret-with-jetson-nano-a-journey-into-diy-robotics-and-ai.html</link><dc:creator>Greg Stencel</dc:creator><description>&lt;section id="introduction"&gt;
+<?xml-stylesheet type="text/xsl" href="assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Greg's Tech Notes</title><link>https://stencel.io/</link><description>Tech notes and tips</description><atom:link href="https://stencel.io/rss.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><copyright>Contents © 2023 &lt;a href="mailto:gstencel@gmail.com"&gt;Greg Stencel&lt;/a&gt; </copyright><lastBuildDate>Mon, 11 Dec 2023 14:28:46 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Building an Intelligent Nerf Turret with Jetson Nano: A Journey into DIY Robotics and AI</title><link>https://stencel.io/posts/building-an-intelligent-nerf-turret-with-jetson-nano-a-journey-into-diy-robotics-and-ai.html</link><dc:creator>Greg Stencel</dc:creator><description>&lt;section id="introduction"&gt;
 &lt;h2&gt;Introduction&lt;/h2&gt;
 &lt;p&gt;Imagine transforming a simple toy into an intelligent machine that recognises and interacts with its environment. That's exactly what I set out to do with a Nerf turret. The journey began with a desire to create something fun and educational for my son and me, and it evolved into an exploration of open-source hardware, machine learning, and robotics.&lt;/p&gt;
 &lt;img alt="/images/123.jpg" src="https://stencel.io/images/123.jpg" style="height: 600px;"&gt;
@@ -73,6 +73,9 @@ NOTE If we are without Architectual mind sending mouse coordinates changes throu
 &lt;/ul&gt;
 &lt;p&gt;It was a learning experience fueled by curiosity and the desire to create something unique. The Nerf turret, now equipped with AI capabilities, stands as a testament to the power of open-source projects and the accessibility of modern technology.
 What started as a fun project with my son became a gateway into the fascinating world of AI and robotics, demonstrating that anyone can step into the world of DIY AI projects with curiosity and the right tools.&lt;/p&gt;
+&lt;/section&gt;
+&lt;section id="the-outcome"&gt;
+&lt;h2&gt;THE OUTCOME&lt;/h2&gt;
 &lt;embed&gt;
 &lt;iframe width="800" height="600" src="https://www.youtube.com/embed/krFlASb-rEQ?autoplay=1&amp;amp;mute=1"&gt;
 &lt;/iframe&gt;
