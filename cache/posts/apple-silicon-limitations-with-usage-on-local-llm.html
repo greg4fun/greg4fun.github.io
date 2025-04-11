@@ -1,0 +1,307 @@
+<section id="maximizing-llm-usage-on-a-128gb-m1-ultra-apple-silicon-mac-studio">
+<h1>Maximizing LLM Usage on a 128GB M1 Ultra (Apple Silicon Mac Studio)</h1>
+<section id="understanding-unified-memory-and-the-96gb-vram-limit">
+<h2>Understanding Unified Memory and the 96GB “VRAM” Limit</h2>
+<p>Apple’s M1 Ultra chip uses <em>unified memory</em>, meaning the CPU and GPU
+share the same 128 GB RAM pool. However, macOS does <strong>not</strong> allow the
+GPU to use all 128 GB for graphics/compute tasks by default. In
+practice, about <strong>75% of the physical memory</strong> is the recommended
+maximum for GPU usage. This is why tools like Ollama (which uses Apple’s
+Metal Performance Shaders for acceleration) report roughly <strong>96 GB</strong> as
+available “GPU memory” on a 128 GB system – the remaining 25% is
+reserved for the OS and CPU tasks.</p>
+<p>In Apple’s Metal API, the property
+<code class="docutils literal">`recommendedMaxWorkingSetSize</code> &lt;<a class="reference external" href="https://developer.apple.com/documentation/metal/mtldevice/%20recommendedmaxworkingsetsize">https://developer.apple.com/documentation/metal/mtldevice/%20recommendedmaxworkingsetsize</a>&gt;`__
+reflects this limit. It’s essentially the <strong>largest memory footprint</strong>
+the GPU can use “without affecting performance” (i.e. without causing
+memory pressure or swaps). For a 128 GB Mac, this value comes out to
+about 96 GB. (By comparison, a 64 GB Mac has ~48 GB usable for GPU, and
+a 32 GB Mac only ~21–24 GB for GPU, which is ~65–75% of RAM.) In short,
+<strong>Ollama showing 96 GB is not a bug</strong> – it’s reflecting an Apple-imposed
+limit on how much unified memory the GPU backend (Metal/MPS) will
+utilize.</p>
+</section>
+<section id="why-is-only-75-of-memory-usable-by-the-gpu">
+<h2>Why is Only 75% of Memory Usable by the GPU?</h2>
+<p>This behavior appears to be a <strong>deliberate system design</strong>. Apple likely
+reserves a portion of unified memory to ensure the system remains
+responsive and to avoid GPU allocations evicting critical data needed by
+the OS or CPU. Apple’s documentation calls this a <em>“recommended”</em>
+working set size, but in practice it functions as a <strong>hard cap</strong> for GPU
+memory in user-space programs. Developers on Apple’s forums note that
+the limit is roughly 75% of physical RAM, and it’s <em>hard-coded</em> in
+current macOS drivers. Unfortunately, Apple hasn’t been very public
+about this constraint (leading some to call it <em>“false advertising”</em>
+when touting unified memory sizes).</p>
+<p><strong>Is this a Metal API limitation or Ollama’s fault?</strong> It’s fundamentally
+a limitation of the <strong>Metal drivers / macOS GPU memory manager</strong>, not
+something specific to Ollama. Any software using GPU acceleration on
+macOS (be it Ollama’s ggml/Metal backend, PyTorch with MPS, TensorFlow
+Metal, etc.) will see a similar ceiling. Ollama is built on
+<code class="docutils literal">llama.cpp</code> with Metal support, so it inherits the same constraint. In
+other words, by default <strong>no single process can use the full 128 GB for
+GPU computations</strong> – about 32 GB will be left unused by the GPU (though
+the CPU can still use that portion for other things).</p>
+<p>Apple’s own guidance to developers suggests breaking up tasks to fit
+within the recommended working set or stream data in/out as needed. For
+<strong>LLMs</strong>, however, the entire model often needs to reside in memory for
+fast inference, so “just split the job” isn’t straightforward. If an LLM
+model exceeds the GPU allotment, one of two things typically happens:</p>
+<ul class="simple">
+<li><p><strong>Partial CPU Offload:</strong> Frameworks may load whatever fits on the GPU
+and offload the remainder to CPU. This allows the model to run, but
+<strong>slows performance</strong> since the CPU is much slower for matrix
+multiplies. (For example, on Apple M2 Max, GPU inference for a 65B
+model was nearly <em>2× faster</em> than CPU inference. So keeping as much
+on the GPU as possible is key to performance.) In Ollama/llama.cpp,
+if your model is slightly too large for GPU memory, you might notice
+the last few layers or the KV cache running on CPU, causing a
+slowdown in token generation speed.</p></li>
+<li><p><strong>Out-of-Memory Error or Eviction:</strong> If the model <em>far</em> exceeds the
+GPU limit, you may simply get an error or the process will use macOS
+virtual memory (disk swap), leading to <strong>severe slowdowns</strong>. MacOS
+does not automatically “expand” the GPU memory beyond the recommended
+limit, so an oversized model can fail to load under Metal. For
+instance, a user found that a LLaMA2 70B 6-bit model (~52.5 GB) could
+not fully load on a 64 GB Mac until they reduced the GPU use or split
+some of it to CPU, since only ~48 GB was available to the GPU by
+default.</p></li>
+</ul>
+<p>In summary, the <strong>96 GB cap on a 128 GB M1 Ultra</strong> is a safety mechanism
+in macOS’s Metal driver. It’s not easily changed via normal settings,
+and it affects all apps using the GPU. Next, we’ll explore how you <em>can</em>
+override or work around this limit to better utilize your high-memory
+Mac for local LLMs.</p>
+</section>
+<section id="increasing-gpu-memory-utilization-beyond-the-96-gb-default">
+<h2>Increasing GPU Memory Utilization (Beyond the 96 GB Default)</h2>
+<p>While Apple doesn’t provide an official toggle to use more of the
+unified memory, advanced users have discovered a way to <strong>manually raise
+the GPU memory limit</strong> on Apple Silicon Macs. This involves using a
+<strong>``sysctl`` command</strong> to adjust a hidden kernel parameter. <em>Use these
+tweaks at your own risk:</em> they are not officially supported by Apple
+(and may require disabling System Integrity Protection in some cases).</p>
+<p><strong>How to override the VRAM limit on macOS:</strong></p>
+<ol class="arabic">
+<li><p><strong>Determine a safe memory split.</strong> Decide how much RAM to allocate to
+GPU tasks vs. leave for the OS/CPU. It’s wise <em>not</em> to give 100% of
+RAM to the GPU, or you risk starving the OS. A common recommendation
+is to leave at least <strong>8–16 GB for the system</strong>. For a 128 GB Mac
+Studio, you might aim to allocate around <strong>120 GB</strong> to the GPU and
+keep ~8 GB for the OS. (120 GB is 93.75% of 128 GB – users have
+reported success with this, effectively raising the limit from 96 GB
+to 120 GB.)</p></li>
+<li><p><strong>Run the ``sysctl`` command to set the new limit.</strong> Open the
+Terminal app and enter:</p>
+<div class="code"><pre class="code bash"><a id="rest_code_573efdeadd164b37acbee5a03cc92a58-1" name="rest_code_573efdeadd164b37acbee5a03cc92a58-1" href="#rest_code_573efdeadd164b37acbee5a03cc92a58-1"></a>sudo<span class="w"> </span>sysctl<span class="w"> </span>iogpu.wired_limit_mb<span class="o">=</span>&lt;desired_MB&gt;
+</pre></div>
+<p>Replace <code class="docutils literal">&lt;desired_MB&gt;</code> with the amount of memory (in MB) you want
+the GPU to be allowed to use. For example, to set ~120 GB, use
+<code class="docutils literal">iogpu.wired_limit_mb=122880</code> (since 120×1024 = 122880 MB). For
+96 GB (the default on 128), it would be 98304, and for 128 GB (not
+recommended), 131072. On <strong>macOS Sonoma (14.x)</strong> and later, use the
+<code class="docutils literal">iogpu.wired_limit_mb</code> key. <em>(On older macOS versions (e.g. Ventura
+or Monterey), the key was named ``debug.iogpu.wired_limit`` and took
+a value in bytes. Sonoma simplified it to MB and changed the name.)</em></p>
+<p>After running the command with <code class="docutils literal">sudo</code>, enter your password if
+prompted. No reboot is required – the setting takes effect
+immediately. For example, one user with a 64 GB M1 Max ran
+<code class="docutils literal">sudo sysctl iogpu.wired_limit_mb=57344</code> (56 GB) and saw the Metal
+<code class="docutils literal">recommendedMaxWorkingSetSize</code> jump accordingly in the logs,
+allowing the GPU to use 56 GB instead of the default ~48 GB.</p>
+</li>
+<li><p><strong>Verify the new GPU memory availability.</strong> You can check that the
+limit changed by looking at your LLM application’s logs or using
+system tools:</p>
+<ul class="simple">
+<li><p>In <strong>Ollama</strong>, run a model and then check the Ollama server log.
+You should see a line like
+<code class="docutils literal">ggml_metal_init: recommendedMaxWorkingSetSize = XXXX MB</code>. After
+the sysctl tweak, this number should reflect your new setting
+(e.g. ~120000 MB) rather than the old ~98304 MB.</p></li>
+<li><p>You can also use <code class="docutils literal">sysctl iogpu.wired_limit_mb</code> without <code class="docutils literal">=</code> to
+read the current value and confirm it’s set.</p></li>
+<li><p>The <code class="docutils literal">ollama ps</code> command will show the GPU memory usage for a
+loaded model (e.g. “25 GB – 100% GPU” for a 25 GB model). After
+raising the limit, you’ll be able to load larger models before
+that hits 100%.</p></li>
+</ul>
+</li>
+<li><p><strong>(Optional) Persist the setting across reboots.</strong> By default, the
+change made by <code class="docutils literal">sysctl</code> will reset on reboot (the parameter goes
+back to <code class="docutils literal">0</code>, which means “use default 75%”). If you want this
+change to apply automatically at startup, you can add the setting to
+<strong>``/etc/sysctl.conf``</strong> (create the file if it doesn’t exist) in the
+format:</p>
+<pre class="literal-block">iogpu.wired_limit_mb=&lt;desired_MB&gt;</pre>
+<p>Keep in mind that to modify this file, you might need to <strong>disable
+System Integrity Protection (SIP)</strong> on your Mac, since altering
+certain kernel parameters permanently is restricted. Many users
+simply re-run the <code class="docutils literal">sudo sysctl</code> command when needed, to avoid
+disabling SIP. Given that it’s a one-liner and only needed when you
+plan to do heavy ML work, manually setting it is usually fine. (If
+you do add it to sysctl.conf, and later want to revert to defaults,
+remove the line and reboot, or set it back to 0 which tells macOS to
+use the default 75% limit.)</p>
+</li>
+</ol>
+<p><strong>Important cautions:</strong> Pushing the GPU memory limit closer to 100% of
+RAM can cause instability if macOS or other apps suddenly need more
+memory. Monitor <strong>Memory Pressure</strong> in Activity Monitor – if it stays
+green while running your model, you’re okay; if it goes red or the
+system starts swapping, consider dialing back the GPU allocation. In
+practice, leaving a buffer for the OS (and for things like the LLM’s
+CPU-based components) is crucial. Many folks find leaving ~8–16 GB for
+system use keeps things stable even under heavy load.</p>
+</section>
+<section id="other-workflows-to-maximize-hardware-utilization">
+<h2>Other Workflows to Maximize Hardware Utilization</h2>
+<p>Aside from raising the Metal memory cap, here are additional tips and
+configurations to fully leverage a 128 GB M1 Ultra for local LLM
+inference:</p>
+<ul class="simple">
+<li><p><strong>Use Quantized Models to Fit More in Memory:</strong> Take advantage of
+quantization (4-bit, 5-bit, or 8-bit) so that large models consume
+less memory. For example, LLaMA-2 70B in 4-bit precision might use
+~35–40 GB, which easily fits in the 96 GB GPU limit (even leaving
+room for a large context window). With 128 GB total, you could even
+load a 70B model at 8-bit (~70–80 GB) entirely in GPU memory after
+the sysctl tweak (since 8-bit 70B is too large for 96 GB but could
+fit in ~120 GB). Smaller quantization not only saves memory but also
+reduces memory bandwidth usage, often improving throughput. <em>Note:</em>
+Apple’s MPS backend (used by Ollama/llama.cpp) supports 4-bit and
+5-bit quantization via the ggml library, but very <em>high</em> quantization
+(2-bit) may not be supported or may degrade quality significantly.
+Choose the smallest model precision that still gives you acceptable
+accuracy.</p></li>
+<li><p><strong>Optimize Context Length vs. Speed:</strong> If you increase the context
+length (the token window for prompts/history), be aware it linearly
+increases memory usage for the model’s KV cache. A longer context can
+cause the GPU memory usage to balloon and potentially exceed the
+limit, forcing a fallback to CPU memory (which will slow down
+generation). For example, going from 2048 tokens to 8192 tokens
+context will roughly 4× the memory required for the KV cache. If you
+find that long conversations slow down on your model, it might be
+because you’ve exceeded the GPU memory and spilled into CPU RAM. To
+max out performance, try to <strong>keep context length within what your
+GPU portion can handle</strong>. You can monitor this via <code class="docutils literal">ollama ps</code> (it
+shows how much VRAM the model + context is using). If you need
+ultra-long contexts, consider the memory tweak above, or use a
+smaller model that leaves headroom for the KV cache.</p></li>
+<li><p><strong>Leverage CPU RAM for Overflow (Hybrid Offloading):</strong> The nice thing
+about unified memory is that even when you hit the GPU’s recommended
+limit, the remainder of the model <em>can</em> reside in normal RAM.
+Frameworks like llama.cpp will automatically use CPU for the parts
+that don’t fit on GPU. While pure GPU use is fastest, this hybrid
+approach means you <strong>can</strong> technically load models larger than 96 GB
+– up to the full 128 GB – but with some of the work handled by CPU.
+If a model is just slightly over the GPU limit, this is efficient:
+e.g., a 75 GB model on a 128 GB Mac might run 96 GB on GPU and the
+other ~-20 GB on CPU. It will be slower than fully on-GPU, but still
+functional. <em>Note:</em> Ollama doesn’t currently expose a manual setting
+for “GPU layers” vs “CPU layers”, but llama.cpp’s CLI does (the
+<code class="docutils literal"><span class="pre">-ngl</span></code> flag specifies number of GPU layers to offload). In
+practice, just attempt to load the model – if it’s over budget, the
+system will offload automatically. If performance is too slow, you
+may need to choose a smaller model or reduce context.</p></li>
+<li><p><strong>CPU-Only Inference as a Fallback:</strong> In cases where GPU acceleration
+isn’t working (e.g., a model with unsupported operations on MPS, or
+if you want to use <strong>vLLM</strong> which currently lacks MPS support), you
+can run on the 20-core CPU of the M1 Ultra. The CPU can use the
+entire 128 GB for the model, no 75% restriction. The downside is
+speed: CPU inference is much slower for large models. Still, for
+certain large models that simply cannot fit in 96 GB (even
+quantized), CPU mode is an option. Ollama does not have a simple
+switch for CPU-only, but you could use the underlying <code class="docutils literal">llama.cpp</code>
+compiled without Metal, or another library’s CPU path. Expect that a
+70B model on CPU will be <strong>several times slower</strong> than on the Apple
+GPU (e.g., &lt;1 token/sec in worst cases). This is really a last resort
+if GPU memory is exhausted or if using a backend like vLLM which, as
+of 2025, runs on CPU on Macs.</p></li>
+<li><p><strong>Stay Updated with Apple’s Tools:</strong> Apple is actively improving
+their machine learning support on Mac. Ensure you’re on the latest
+macOS (newer versions sometimes raise or optimize memory limits) and
+using the latest version of Ollama/llama.cpp. For instance, macOS
+updates have reportedly adjusted the usable GPU memory fraction for
+some configs (some older systems saw ~65% use, newer ones 75%).
+Likewise, <code class="docutils literal">llama.cpp</code> and Ollama are rapidly evolving – newer
+releases might have better memory management, faster Metal kernels,
+or support for the Apple Neural Engine (ANE) if Apple ever opens it
+up. Keeping these updated will help maximize performance.</p></li>
+<li><p><strong>High-Power Mode and Cooling (if applicable):</strong> On a Mac Studio, you
+don’t have “Turbo” or “High Power” mode like MacBook Pros do, but you
+should still ensure the machine has adequate cooling (the Mac
+Studio’s fans should ramp up under load – make sure they’re not
+obstructed or overly dusty). The M1 Ultra will thermal throttle if it
+somehow overheats (less likely in a desktop chassis, but worth noting
+for sustained jobs). A cool environment can sustain peak GPU
+frequency for longer, which helps throughput.</p></li>
+<li><p><strong>Parallelism and Batch Inference:</strong> If you’re serving an LLM with
+Ollama (which acts as a local API server), you might handle multiple
+requests or streams at once. The M1 Ultra has <strong>20 CPU cores</strong> (16
+performance + 4 efficiency) and a 64-core GPU, which can handle some
+parallel work. However, single large model inference is mostly bound
+by the GPU compute for each token. You won’t easily get <em>more</em>
+tokens/sec by running two queries concurrently – they’ll just share
+resources. For maximum single-query performance, focus on one model
+at a time. If you need to serve multiple users or models, consider
+running one model on GPU and another on CPU (or using two separate
+Mac machines), to avoid contention. Also, when running a generation,
+try to avoid other heavy GPU tasks (don’t, say, be gaming or running
+a video export) which could also contend for that 96 GB GPU
+allocation.</p></li>
+<li><p><strong>Use Efficient Serving Backends:</strong> Tools like <strong>vLLM</strong>, <strong>TGI (Text
+Generation Inference)</strong>, or others can optimize prompt handling and
+token outputs for throughput. On Mac these may run in CPU mode (since
+vLLM doesn’t yet use Metal), but they can still leverage
+multi-threading and batch prompts together. If your goal is to
+<strong>maximize token output throughput</strong> for many prompts, a specialized
+server like vLLM might offer better efficiency in how it uses the CPU
+cache and memory. (For example, vLLM is designed to reuse KV cache
+across requests to avoid re-computation, which can be beneficial even
+on CPU.) Just note that any CPU-based approach will be slower per
+token than GPU-based inference.</p></li>
+</ul>
+</section>
+<section id="conclusion-and-further-reading">
+<h2>Conclusion and Further Reading</h2>
+<p>In summary, the reason your M1 Ultra shows only ~96 GB for LLMs is due
+to Apple’s <strong>Metal memory management</strong>, which by default caps GPU memory
+usage to about 75% of unified RAM. This is a system-level safeguard, not
+a flaw in Ollama. To fully utilize your 128 GB machine for large models,
+you can apply the <strong>``sysctl`` tweak</strong> to raise the limit (e.g. up to
+~120 GB GPU use), and employ other strategies like quantization and
+careful context length management to stay within budget. With these
+adjustments, a Mac Studio M1 Ultra becomes a very capable box for local
+LLM inference – able to run models in the 70B parameter class (and
+beyond, with quantization) entirely from memory, something traditional
+GPUs (with fixed VRAM) often cannot do.</p>
+<p>For more details and community discussions, you may find the following
+resources helpful:</p>
+<ul class="simple">
+<li><p>Apple Developer Forums – <em>“recommendedMaxWorkingSetSize – is there a
+way to use all our unified memory for GPU?”</em> (discussion of the 75%
+limit and Apple’s stance).</p></li>
+<li><p>GitHub: llama.cpp Issue
+<a class="reference external" href="https://github.com/ggerganov/llama.cpp/issues/1870">#1870</a> – <em>GPU
+Memory problem on Apple M2 Max 64GB</em> (users report the 75% limit and
+share performance observations).</p></li>
+<li><p>Peddal’s Blog – <em>Optimizing VRAM Settings for Local LLM on macOS</em>
+(step-by-step guide to using <code class="docutils literal">sudo sysctl iogpu.wired_limit_mb</code> to
+increase usable VRAM, with examples).</p></li>
+<li><p>Reddit: r/LocalLLaMA – various threads (e.g. users running 70B on
+96GB Macs, etc.) where the 75% memory issue is discussed and the
+<code class="docutils literal">iogpu.wired_limit</code> workaround is shared. <em>(Look for keywords “VRAM
+75%” or “iogpu.wired_limit” in those discussions.)</em></p></li>
+<li><p>Hacker News: <em>High-RAM Apple Silicon for large models?</em> – contains
+insights into Apple GPU vs NVIDIA, and limitations of the Metal
+backend for ML.</p></li>
+<li><p><strong>Ollama’s documentation</strong> – for any settings related to performance,
+and <strong>llama.cpp’s README</strong> for tips on Metal and thread tuning.</p></li>
+</ul>
+<p>By combining these techniques, you should be able to <strong>max out</strong> your
+Mac Studio’s capabilities, running cutting-edge LLMs locally with as
+much of that 128 GB put to work as possible. Good luck, and happy
+experimenting with your local AI models!</p>
+</section>
+</section>

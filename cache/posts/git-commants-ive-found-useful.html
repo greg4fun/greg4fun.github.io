@@ -1,37 +1,37 @@
 <p>Check files changed between branches</p>
-<div class="code"><pre class="code bash"><a id="rest_code_05e9b958f7cb4fb486f092e2f75b87a8-1" name="rest_code_05e9b958f7cb4fb486f092e2f75b87a8-1" href="#rest_code_05e9b958f7cb4fb486f092e2f75b87a8-1"></a>git diff --name-status master..devel
+<div class="code"><pre class="code bash"><a id="rest_code_8f5a9602e5e84a80ad81794770060655-1" name="rest_code_8f5a9602e5e84a80ad81794770060655-1" href="#rest_code_8f5a9602e5e84a80ad81794770060655-1"></a>git<span class="w"> </span>diff<span class="w"> </span>--name-status<span class="w"> </span>master..devel
 </pre></div>
 <p>Check changes on file form different branch/commit</p>
-<div class="code"><pre class="code bash"><a id="rest_code_469b596af61740618c710eb2fbf5996d-1" name="rest_code_469b596af61740618c710eb2fbf5996d-1" href="#rest_code_469b596af61740618c710eb2fbf5996d-1"></a>git diff commit_hash -- filename
+<div class="code"><pre class="code bash"><a id="rest_code_0e97d8650e994a82a06615fef7f4fd1a-1" name="rest_code_0e97d8650e994a82a06615fef7f4fd1a-1" href="#rest_code_0e97d8650e994a82a06615fef7f4fd1a-1"></a>git<span class="w"> </span>diff<span class="w"> </span>commit_hash<span class="w"> </span>--<span class="w"> </span>filename
 </pre></div>
 <p>Same as above between 2 branches/commits</p>
-<div class="code"><pre class="code bash"><a id="rest_code_659437bfce2f4503994b548a52b22de6-1" name="rest_code_659437bfce2f4503994b548a52b22de6-1" href="#rest_code_659437bfce2f4503994b548a52b22de6-1"></a>git diff commit_hash master -- filename
+<div class="code"><pre class="code bash"><a id="rest_code_3bf3d2ceaf064bd48d140afb990f34a4-1" name="rest_code_3bf3d2ceaf064bd48d140afb990f34a4-1" href="#rest_code_3bf3d2ceaf064bd48d140afb990f34a4-1"></a>git<span class="w"> </span>diff<span class="w"> </span>commit_hash<span class="w"> </span>master<span class="w"> </span>--<span class="w"> </span>filename
 </pre></div>
 <p>Check full file history</p>
-<div class="code"><pre class="code bash"><a id="rest_code_0999ad8f923c431e8b1c1a9c8c0a7eea-1" name="rest_code_0999ad8f923c431e8b1c1a9c8c0a7eea-1" href="#rest_code_0999ad8f923c431e8b1c1a9c8c0a7eea-1"></a>git log -p -- filename
+<div class="code"><pre class="code bash"><a id="rest_code_77dba453bc0e4bada056464d1e59746b-1" name="rest_code_77dba453bc0e4bada056464d1e59746b-1" href="#rest_code_77dba453bc0e4bada056464d1e59746b-1"></a>git<span class="w"> </span>log<span class="w"> </span>-p<span class="w"> </span>--<span class="w"> </span>filename
 </pre></div>
 <p>Check who broke production server :</p>
-<div class="code"><pre class="code bash"><a id="rest_code_5a1d2b61607b415ca27634f6796aca37-1" name="rest_code_5a1d2b61607b415ca27634f6796aca37-1" href="#rest_code_5a1d2b61607b415ca27634f6796aca37-1"></a>git blame filename
+<div class="code"><pre class="code bash"><a id="rest_code_233ea506549943df85da821ae063c8b0-1" name="rest_code_233ea506549943df85da821ae063c8b0-1" href="#rest_code_233ea506549943df85da821ae063c8b0-1"></a>git<span class="w"> </span>blame<span class="w"> </span>filename
 </pre></div>
 <p>Merge as one commit (need to commit afterwards) its not default like in normal merge:</p>
-<div class="code"><pre class="code bash"><a id="rest_code_97aaf77bd1ce40808a2efc198918a83f-1" name="rest_code_97aaf77bd1ce40808a2efc198918a83f-1" href="#rest_code_97aaf77bd1ce40808a2efc198918a83f-1"></a>git merge --squash branch
+<div class="code"><pre class="code bash"><a id="rest_code_e02c16917f0042199bcfb434d30b988e-1" name="rest_code_e02c16917f0042199bcfb434d30b988e-1" href="#rest_code_e02c16917f0042199bcfb434d30b988e-1"></a>git<span class="w"> </span>merge<span class="w"> </span>--squash<span class="w"> </span>branch
 </pre></div>
 <p>List of commits in git local storage</p>
-<div class="code"><pre class="code bash"><a id="rest_code_658c207793c145878bf96d785308be86-1" name="rest_code_658c207793c145878bf96d785308be86-1" href="#rest_code_658c207793c145878bf96d785308be86-1"></a>git reflog
+<div class="code"><pre class="code bash"><a id="rest_code_92d682fbdde94415a5e219b8ea91101e-1" name="rest_code_92d682fbdde94415a5e219b8ea91101e-1" href="#rest_code_92d682fbdde94415a5e219b8ea91101e-1"></a>git<span class="w"> </span>reflog
 </pre></div>
 <p>Take(checkout) file from different branch/commit</p>
-<div class="code"><pre class="code bash"><a id="rest_code_a42a0f49a02347f0ab9067d7dceeae15-1" name="rest_code_a42a0f49a02347f0ab9067d7dceeae15-1" href="#rest_code_a42a0f49a02347f0ab9067d7dceeae15-1"></a>git checkout develop -- filename
-<a id="rest_code_a42a0f49a02347f0ab9067d7dceeae15-2" name="rest_code_a42a0f49a02347f0ab9067d7dceeae15-2" href="#rest_code_a42a0f49a02347f0ab9067d7dceeae15-2"></a>git checkout commit_hash -- filename
+<div class="code"><pre class="code bash"><a id="rest_code_73ccf9da1ce94161957dafd06ff4fea3-1" name="rest_code_73ccf9da1ce94161957dafd06ff4fea3-1" href="#rest_code_73ccf9da1ce94161957dafd06ff4fea3-1"></a>git<span class="w"> </span>checkout<span class="w"> </span>develop<span class="w"> </span>--<span class="w"> </span>filename
+<a id="rest_code_73ccf9da1ce94161957dafd06ff4fea3-2" name="rest_code_73ccf9da1ce94161957dafd06ff4fea3-2" href="#rest_code_73ccf9da1ce94161957dafd06ff4fea3-2"></a>git<span class="w"> </span>checkout<span class="w"> </span>commit_hash<span class="w"> </span>--<span class="w"> </span>filename
 </pre></div>
 <p>Reset current branch to remote:</p>
-<div class="code"><pre class="code bash"><a id="rest_code_9efa3a82420745a6afc93ebf85eadb0f-1" name="rest_code_9efa3a82420745a6afc93ebf85eadb0f-1" href="#rest_code_9efa3a82420745a6afc93ebf85eadb0f-1"></a>git reset --hard origin/current_branch
-<a id="rest_code_9efa3a82420745a6afc93ebf85eadb0f-2" name="rest_code_9efa3a82420745a6afc93ebf85eadb0f-2" href="#rest_code_9efa3a82420745a6afc93ebf85eadb0f-2"></a>git reset --hard origin/master
+<div class="code"><pre class="code bash"><a id="rest_code_1410ba4db9914e03bbb8c7a551e67c46-1" name="rest_code_1410ba4db9914e03bbb8c7a551e67c46-1" href="#rest_code_1410ba4db9914e03bbb8c7a551e67c46-1"></a>git<span class="w"> </span>reset<span class="w"> </span>--hard<span class="w"> </span>origin/current_branch
+<a id="rest_code_1410ba4db9914e03bbb8c7a551e67c46-2" name="rest_code_1410ba4db9914e03bbb8c7a551e67c46-2" href="#rest_code_1410ba4db9914e03bbb8c7a551e67c46-2"></a>git<span class="w"> </span>reset<span class="w"> </span>--hard<span class="w"> </span>origin/master
 </pre></div>
 <p>Save and depracate changes which were not commited</p>
-<div class="code"><pre class="code bash"><a id="rest_code_5c3551e8026a45acb768c450a0f9e910-1" name="rest_code_5c3551e8026a45acb768c450a0f9e910-1" href="#rest_code_5c3551e8026a45acb768c450a0f9e910-1"></a>git stash
-<a id="rest_code_5c3551e8026a45acb768c450a0f9e910-2" name="rest_code_5c3551e8026a45acb768c450a0f9e910-2" href="#rest_code_5c3551e8026a45acb768c450a0f9e910-2"></a>git stash save -a
+<div class="code"><pre class="code bash"><a id="rest_code_c36d1177acbf4aa385046098ea184893-1" name="rest_code_c36d1177acbf4aa385046098ea184893-1" href="#rest_code_c36d1177acbf4aa385046098ea184893-1"></a>git<span class="w"> </span>stash
+<a id="rest_code_c36d1177acbf4aa385046098ea184893-2" name="rest_code_c36d1177acbf4aa385046098ea184893-2" href="#rest_code_c36d1177acbf4aa385046098ea184893-2"></a>git<span class="w"> </span>stash<span class="w"> </span>save<span class="w"> </span>-a
 </pre></div>
 <p>Restore stash (by picking selected)</p>
-<div class="code"><pre class="code bash"><a id="rest_code_325e2a088ad04f9db13e30cf32d8909b-1" name="rest_code_325e2a088ad04f9db13e30cf32d8909b-1" href="#rest_code_325e2a088ad04f9db13e30cf32d8909b-1"></a>git stash list
-<a id="rest_code_325e2a088ad04f9db13e30cf32d8909b-2" name="rest_code_325e2a088ad04f9db13e30cf32d8909b-2" href="#rest_code_325e2a088ad04f9db13e30cf32d8909b-2"></a>git stash pop <span class="o">{</span><span class="m">0</span><span class="o">}</span>
+<div class="code"><pre class="code bash"><a id="rest_code_070fb48313444b67a92029e4940cf1be-1" name="rest_code_070fb48313444b67a92029e4940cf1be-1" href="#rest_code_070fb48313444b67a92029e4940cf1be-1"></a>git<span class="w"> </span>stash<span class="w"> </span>list
+<a id="rest_code_070fb48313444b67a92029e4940cf1be-2" name="rest_code_070fb48313444b67a92029e4940cf1be-2" href="#rest_code_070fb48313444b67a92029e4940cf1be-2"></a>git<span class="w"> </span>stash<span class="w"> </span>pop<span class="w"> </span><span class="o">{</span><span class="m">0</span><span class="o">}</span>
 </pre></div>

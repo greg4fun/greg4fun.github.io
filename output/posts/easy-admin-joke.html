@@ -80,17 +80,17 @@ to my coleague so I thought to display something on his screen.</p>
 I read about pseudoterminals "pts"  they are inside /dev directory</p>
 <p>Yea yea I know 3 rules of admin : Respect the privacy of others. Think before you type. With great power comes great responsibility bla bla bla ...</p>
 <p>To do this joke just check who is logged in and on which pts is he :</p>
-<div class="code"><pre class="code bash"><a id="rest_code_6e9c82d30b3246b9a2566f59d4ff455b-1" name="rest_code_6e9c82d30b3246b9a2566f59d4ff455b-1" href="easy-admin-joke.html#rest_code_6e9c82d30b3246b9a2566f59d4ff455b-1"></a>$ who
-<a id="rest_code_6e9c82d30b3246b9a2566f59d4ff455b-2" name="rest_code_6e9c82d30b3246b9a2566f59d4ff455b-2" href="easy-admin-joke.html#rest_code_6e9c82d30b3246b9a2566f59d4ff455b-2"></a>greg     pts/3        <span class="m">2012</span>-03-10 <span class="m">1</span>:26 <span class="o">(</span>:0<span class="o">)</span>
-<a id="rest_code_6e9c82d30b3246b9a2566f59d4ff455b-3" name="rest_code_6e9c82d30b3246b9a2566f59d4ff455b-3" href="easy-admin-joke.html#rest_code_6e9c82d30b3246b9a2566f59d4ff455b-3"></a>mark     pts/5        <span class="m">2012</span>-03-10 <span class="m">10</span>:29 <span class="o">(</span>:0<span class="o">)</span>
-<a id="rest_code_6e9c82d30b3246b9a2566f59d4ff455b-4" name="rest_code_6e9c82d30b3246b9a2566f59d4ff455b-4" href="easy-admin-joke.html#rest_code_6e9c82d30b3246b9a2566f59d4ff455b-4"></a>jenny    pts/7        <span class="m">2012</span>-03-10 <span class="m">13</span>:06 <span class="o">(</span>:0<span class="o">)</span>
+<div class="code"><pre class="code bash"><a id="rest_code_7a01788a4d954b32b73a3035c5a6f6a9-1" name="rest_code_7a01788a4d954b32b73a3035c5a6f6a9-1" href="easy-admin-joke.html#rest_code_7a01788a4d954b32b73a3035c5a6f6a9-1"></a>$<span class="w"> </span>who
+<a id="rest_code_7a01788a4d954b32b73a3035c5a6f6a9-2" name="rest_code_7a01788a4d954b32b73a3035c5a6f6a9-2" href="easy-admin-joke.html#rest_code_7a01788a4d954b32b73a3035c5a6f6a9-2"></a>greg<span class="w">     </span>pts/3<span class="w">        </span><span class="m">2012</span>-03-10<span class="w"> </span><span class="m">1</span>:26<span class="w"> </span><span class="o">(</span>:0<span class="o">)</span>
+<a id="rest_code_7a01788a4d954b32b73a3035c5a6f6a9-3" name="rest_code_7a01788a4d954b32b73a3035c5a6f6a9-3" href="easy-admin-joke.html#rest_code_7a01788a4d954b32b73a3035c5a6f6a9-3"></a>mark<span class="w">     </span>pts/5<span class="w">        </span><span class="m">2012</span>-03-10<span class="w"> </span><span class="m">10</span>:29<span class="w"> </span><span class="o">(</span>:0<span class="o">)</span>
+<a id="rest_code_7a01788a4d954b32b73a3035c5a6f6a9-4" name="rest_code_7a01788a4d954b32b73a3035c5a6f6a9-4" href="easy-admin-joke.html#rest_code_7a01788a4d954b32b73a3035c5a6f6a9-4"></a>jenny<span class="w">    </span>pts/7<span class="w">        </span><span class="m">2012</span>-03-10<span class="w"> </span><span class="m">13</span>:06<span class="w"> </span><span class="o">(</span>:0<span class="o">)</span>
 </pre></div>
 <p>So now, we know that Mark is working on pts/5 so lets send him message :)</p>
-<div class="code"><pre class="code bash"><a id="rest_code_bd32de3618ea49788540bbb2f5c10a98-1" name="rest_code_bd32de3618ea49788540bbb2f5c10a98-1" href="easy-admin-joke.html#rest_code_bd32de3618ea49788540bbb2f5c10a98-1"></a>$ <span class="nb">echo</span> <span class="s2">"In 5 minutes in toilet /Jenny"</span> &gt; /dev/pts/5
+<div class="code"><pre class="code bash"><a id="rest_code_7a1b67cae1534b018277754f9c789ab1-1" name="rest_code_7a1b67cae1534b018277754f9c789ab1-1" href="easy-admin-joke.html#rest_code_7a1b67cae1534b018277754f9c789ab1-1"></a>$<span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s2">"In 5 minutes in toilet /Jenny"</span><span class="w"> </span>&gt;<span class="w"> </span>/dev/pts/5
 </pre></div>
 <p>To "clean evidences" :D ( remember that guy working on this terminal will lost his current works he's working on this
 specific terminal)</p>
-<div class="code"><pre class="code bash"><a id="rest_code_d7d7dc8f2cfe4df3934056e2735e10ea-1" name="rest_code_d7d7dc8f2cfe4df3934056e2735e10ea-1" href="easy-admin-joke.html#rest_code_d7d7dc8f2cfe4df3934056e2735e10ea-1"></a>$ cat /dev/urandom &gt; /dev/pts/5
+<div class="code"><pre class="code bash"><a id="rest_code_f5ebb5990f7d430db715b43879756427-1" name="rest_code_f5ebb5990f7d430db715b43879756427-1" href="easy-admin-joke.html#rest_code_f5ebb5990f7d430db715b43879756427-1"></a>$<span class="w"> </span>cat<span class="w"> </span>/dev/urandom<span class="w"> </span>&gt;<span class="w"> </span>/dev/pts/5
 </pre></div>
     </div>
     <aside class="postpromonav"><nav><ul class="pager hidden-print">
@@ -122,7 +122,7 @@ specific terminal)</p>
     <a href="https://disqus.com" class="dsq-brlink" rel="nofollow">Comments powered by <span class="logo-disqus">Disqus</span></a>
 
 
-        </section></article><script>var disqus_shortname="stencel";(function(){var a=document.createElement("script");a.async=true;a.src="https://"+disqus_shortname+".disqus.com/count.js";(document.getElementsByTagName("head")[0]||document.getElementsByTagName("body")[0]).appendChild(a)}());</script><footer id="footer"><p>Contents © 2023         <a href="mailto:gstencel@gmail.com">Greg Stencel</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         </p>
+        </section></article><script>var disqus_shortname="stencel";(function(){var a=document.createElement("script");a.async=true;a.src="https://"+disqus_shortname+".disqus.com/count.js";(document.getElementsByTagName("head")[0]||document.getElementsByTagName("body")[0]).appendChild(a)}());</script><footer id="footer"><p>Contents © 2025         <a href="mailto:gstencel@gmail.com">Greg Stencel</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         </p>
             
         </footer>
 </div>
