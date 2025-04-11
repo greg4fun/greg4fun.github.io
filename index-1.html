@@ -56,8 +56,8 @@
         </p>
 </div>
     </header><div class="e-content entry-content">
-    <div class="code"><pre class="code psql"><a id="rest_code_9ee602987645463aacce661d14ac936c-1" name="rest_code_9ee602987645463aacce661d14ac936c-1" href="posts/postgres-terminate-connection.html#rest_code_9ee602987645463aacce661d14ac936c-1"></a><span class="k">select</span><span class="w"> </span><span class="n">pg_terminate_backend</span><span class="p">(</span><span class="n">pid</span><span class="p">)</span><span class="w"></span>
-<a id="rest_code_9ee602987645463aacce661d14ac936c-2" name="rest_code_9ee602987645463aacce661d14ac936c-2" href="posts/postgres-terminate-connection.html#rest_code_9ee602987645463aacce661d14ac936c-2"></a><span class="k">from</span><span class="w"> </span><span class="n">pg_stat_activity</span><span class="p">;</span><span class="w"></span>
+    <div class="code"><pre class="code psql"><a id="rest_code_ff65d07c0516452ca1b23757d782ca4b-1" name="rest_code_ff65d07c0516452ca1b23757d782ca4b-1" href="posts/postgres-terminate-connection.html#rest_code_ff65d07c0516452ca1b23757d782ca4b-1"></a><span class="k">select</span><span class="w"> </span><span class="n">pg_terminate_backend</span><span class="p">(</span><span class="n">pid</span><span class="p">)</span>
+<a id="rest_code_ff65d07c0516452ca1b23757d782ca4b-2" name="rest_code_ff65d07c0516452ca1b23757d782ca4b-2" href="posts/postgres-terminate-connection.html#rest_code_ff65d07c0516452ca1b23757d782ca4b-2"></a><span class="k">from</span><span class="w"> </span><span class="n">pg_stat_activity</span><span class="p">;</span>
 </pre></div>
     </div>
     </article><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="posts/watch.html" class="u-url">watch</a></h1>
@@ -97,17 +97,17 @@ remotely. It can be usefull when you're in place with big packet loss and you of
 restoring database  you should be in screen session because when something will disconnect you you can alwas log in and
 connect to screen session in which restoring is taking place.</p>
 <p>So executing</p>
-<div class="code"><pre class="code bash"><a id="rest_code_6db23e24e67a4b2ba385c6e834975f88-1" name="rest_code_6db23e24e67a4b2ba385c6e834975f88-1" href="posts/running-scripts-in-background-linux.html#rest_code_6db23e24e67a4b2ba385c6e834975f88-1"></a>$./my_script.sh <span class="p">&amp;</span>
+<div class="code"><pre class="code bash"><a id="rest_code_48cc0181b9c148de9fac89a339371b14-1" name="rest_code_48cc0181b9c148de9fac89a339371b14-1" href="posts/running-scripts-in-background-linux.html#rest_code_48cc0181b9c148de9fac89a339371b14-1"></a>$./my_script.sh<span class="w"> </span><span class="p">&amp;</span>
 </pre></div>
 <p>will be only running when your session is still active so when you'll logout it will be killed.</p>
 <p>To run it independent from your presence on server do it with nohup:</p>
-<div class="code"><pre class="code bash"><a id="rest_code_c8acd3ebf61e45aca4af481e7e35bb92-1" name="rest_code_c8acd3ebf61e45aca4af481e7e35bb92-1" href="posts/running-scripts-in-background-linux.html#rest_code_c8acd3ebf61e45aca4af481e7e35bb92-1"></a>$ nohup ./my_script.sh <span class="p">&amp;</span>
+<div class="code"><pre class="code bash"><a id="rest_code_81bee0de322d49c7b728744650c993de-1" name="rest_code_81bee0de322d49c7b728744650c993de-1" href="posts/running-scripts-in-background-linux.html#rest_code_81bee0de322d49c7b728744650c993de-1"></a>$<span class="w"> </span>nohup<span class="w"> </span>./my_script.sh<span class="w"> </span><span class="p">&amp;</span>
 </pre></div>
 <p>To launch screen :</p>
-<div class="code"><pre class="code bash"><a id="rest_code_f42663c421e24caeb6f120d6e81cfc82-1" name="rest_code_f42663c421e24caeb6f120d6e81cfc82-1" href="posts/running-scripts-in-background-linux.html#rest_code_f42663c421e24caeb6f120d6e81cfc82-1"></a>$ screen
+<div class="code"><pre class="code bash"><a id="rest_code_16d93f33fac54238a86d3b710bf0d56e-1" name="rest_code_16d93f33fac54238a86d3b710bf0d56e-1" href="posts/running-scripts-in-background-linux.html#rest_code_16d93f33fac54238a86d3b710bf0d56e-1"></a>$<span class="w"> </span>screen
 </pre></div>
 <p>Best practice is to launch screen with its name :</p>
-<div class="code"><pre class="code bash"><a id="rest_code_e9a7054050694ee89fe31b8f2e85723a-1" name="rest_code_e9a7054050694ee89fe31b8f2e85723a-1" href="posts/running-scripts-in-background-linux.html#rest_code_e9a7054050694ee89fe31b8f2e85723a-1"></a>$ screen -S my_own_screen_name
+<div class="code"><pre class="code bash"><a id="rest_code_b5e568baadb34616a6c7193d8352d94f-1" name="rest_code_b5e568baadb34616a6c7193d8352d94f-1" href="posts/running-scripts-in-background-linux.html#rest_code_b5e568baadb34616a6c7193d8352d94f-1"></a>$<span class="w"> </span>screen<span class="w"> </span>-S<span class="w"> </span>my_own_screen_name
 </pre></div>
 Then if you want detach screen to get back later
 
@@ -115,16 +115,16 @@ Then if you want detach screen to get back later
 
 If you want terminate screen just
 <kbd>Ctrl</kbd><kbd>d</kbd> or exit<p>then you can resume it with:</p>
-<div class="code"><pre class="code bash"><a id="rest_code_e760c454e0f248feb1d024f4c5454a97-1" name="rest_code_e760c454e0f248feb1d024f4c5454a97-1" href="posts/running-scripts-in-background-linux.html#rest_code_e760c454e0f248feb1d024f4c5454a97-1"></a>$ screen -r my_own_screen_name
+<div class="code"><pre class="code bash"><a id="rest_code_ef9ebd7a4c384ef592e1a661054c2f32-1" name="rest_code_ef9ebd7a4c384ef592e1a661054c2f32-1" href="posts/running-scripts-in-background-linux.html#rest_code_ef9ebd7a4c384ef592e1a661054c2f32-1"></a>$<span class="w"> </span>screen<span class="w"> </span>-r<span class="w"> </span>my_own_screen_name
 </pre></div>
 <p>To list all available screens :</p>
-<div class="code"><pre class="code bash"><a id="rest_code_bcff6131c110451daa276a26e5aa5e68-1" name="rest_code_bcff6131c110451daa276a26e5aa5e68-1" href="posts/running-scripts-in-background-linux.html#rest_code_bcff6131c110451daa276a26e5aa5e68-1"></a>$ screen -ls
+<div class="code"><pre class="code bash"><a id="rest_code_4114683c04f44b91a4cc054d0cb76f90-1" name="rest_code_4114683c04f44b91a4cc054d0cb76f90-1" href="posts/running-scripts-in-background-linux.html#rest_code_4114683c04f44b91a4cc054d0cb76f90-1"></a>$<span class="w"> </span>screen<span class="w"> </span>-ls
 </pre></div>
 <p>To attach to already attached screen:</p>
-<div class="code"><pre class="code bash"><a id="rest_code_c893a97a1d634aaf9db9a871f2fc95ae-1" name="rest_code_c893a97a1d634aaf9db9a871f2fc95ae-1" href="posts/running-scripts-in-background-linux.html#rest_code_c893a97a1d634aaf9db9a871f2fc95ae-1"></a>$ screen -x my_own_screen_name
+<div class="code"><pre class="code bash"><a id="rest_code_438bcf8f632b4f85aeff0903b794bf3b-1" name="rest_code_438bcf8f632b4f85aeff0903b794bf3b-1" href="posts/running-scripts-in-background-linux.html#rest_code_438bcf8f632b4f85aeff0903b794bf3b-1"></a>$<span class="w"> </span>screen<span class="w"> </span>-x<span class="w"> </span>my_own_screen_name
 </pre></div>
 <p>To attach to attached screen and detach others:</p>
-<div class="code"><pre class="code bash"><a id="rest_code_0971384fa7fd4544a56762fb41cf8296-1" name="rest_code_0971384fa7fd4544a56762fb41cf8296-1" href="posts/running-scripts-in-background-linux.html#rest_code_0971384fa7fd4544a56762fb41cf8296-1"></a>$ screen -r -d my_own_screen_name
+<div class="code"><pre class="code bash"><a id="rest_code_8db5850cdb494dc0876ae127bb993aae-1" name="rest_code_8db5850cdb494dc0876ae127bb993aae-1" href="posts/running-scripts-in-background-linux.html#rest_code_8db5850cdb494dc0876ae127bb993aae-1"></a>$<span class="w"> </span>screen<span class="w"> </span>-r<span class="w"> </span>-d<span class="w"> </span>my_own_screen_name
 </pre></div>
 <p>To rename existing screen:</p>
 (being attached):
@@ -151,17 +151,17 @@ to my coleague so I thought to display something on his screen.</p>
 I read about pseudoterminals "pts"  they are inside /dev directory</p>
 <p>Yea yea I know 3 rules of admin : Respect the privacy of others. Think before you type. With great power comes great responsibility bla bla bla ...</p>
 <p>To do this joke just check who is logged in and on which pts is he :</p>
-<div class="code"><pre class="code bash"><a id="rest_code_6e9c82d30b3246b9a2566f59d4ff455b-1" name="rest_code_6e9c82d30b3246b9a2566f59d4ff455b-1" href="posts/easy-admin-joke.html#rest_code_6e9c82d30b3246b9a2566f59d4ff455b-1"></a>$ who
-<a id="rest_code_6e9c82d30b3246b9a2566f59d4ff455b-2" name="rest_code_6e9c82d30b3246b9a2566f59d4ff455b-2" href="posts/easy-admin-joke.html#rest_code_6e9c82d30b3246b9a2566f59d4ff455b-2"></a>greg     pts/3        <span class="m">2012</span>-03-10 <span class="m">1</span>:26 <span class="o">(</span>:0<span class="o">)</span>
-<a id="rest_code_6e9c82d30b3246b9a2566f59d4ff455b-3" name="rest_code_6e9c82d30b3246b9a2566f59d4ff455b-3" href="posts/easy-admin-joke.html#rest_code_6e9c82d30b3246b9a2566f59d4ff455b-3"></a>mark     pts/5        <span class="m">2012</span>-03-10 <span class="m">10</span>:29 <span class="o">(</span>:0<span class="o">)</span>
-<a id="rest_code_6e9c82d30b3246b9a2566f59d4ff455b-4" name="rest_code_6e9c82d30b3246b9a2566f59d4ff455b-4" href="posts/easy-admin-joke.html#rest_code_6e9c82d30b3246b9a2566f59d4ff455b-4"></a>jenny    pts/7        <span class="m">2012</span>-03-10 <span class="m">13</span>:06 <span class="o">(</span>:0<span class="o">)</span>
+<div class="code"><pre class="code bash"><a id="rest_code_7a01788a4d954b32b73a3035c5a6f6a9-1" name="rest_code_7a01788a4d954b32b73a3035c5a6f6a9-1" href="posts/easy-admin-joke.html#rest_code_7a01788a4d954b32b73a3035c5a6f6a9-1"></a>$<span class="w"> </span>who
+<a id="rest_code_7a01788a4d954b32b73a3035c5a6f6a9-2" name="rest_code_7a01788a4d954b32b73a3035c5a6f6a9-2" href="posts/easy-admin-joke.html#rest_code_7a01788a4d954b32b73a3035c5a6f6a9-2"></a>greg<span class="w">     </span>pts/3<span class="w">        </span><span class="m">2012</span>-03-10<span class="w"> </span><span class="m">1</span>:26<span class="w"> </span><span class="o">(</span>:0<span class="o">)</span>
+<a id="rest_code_7a01788a4d954b32b73a3035c5a6f6a9-3" name="rest_code_7a01788a4d954b32b73a3035c5a6f6a9-3" href="posts/easy-admin-joke.html#rest_code_7a01788a4d954b32b73a3035c5a6f6a9-3"></a>mark<span class="w">     </span>pts/5<span class="w">        </span><span class="m">2012</span>-03-10<span class="w"> </span><span class="m">10</span>:29<span class="w"> </span><span class="o">(</span>:0<span class="o">)</span>
+<a id="rest_code_7a01788a4d954b32b73a3035c5a6f6a9-4" name="rest_code_7a01788a4d954b32b73a3035c5a6f6a9-4" href="posts/easy-admin-joke.html#rest_code_7a01788a4d954b32b73a3035c5a6f6a9-4"></a>jenny<span class="w">    </span>pts/7<span class="w">        </span><span class="m">2012</span>-03-10<span class="w"> </span><span class="m">13</span>:06<span class="w"> </span><span class="o">(</span>:0<span class="o">)</span>
 </pre></div>
 <p>So now, we know that Mark is working on pts/5 so lets send him message :)</p>
-<div class="code"><pre class="code bash"><a id="rest_code_bd32de3618ea49788540bbb2f5c10a98-1" name="rest_code_bd32de3618ea49788540bbb2f5c10a98-1" href="posts/easy-admin-joke.html#rest_code_bd32de3618ea49788540bbb2f5c10a98-1"></a>$ <span class="nb">echo</span> <span class="s2">"In 5 minutes in toilet /Jenny"</span> &gt; /dev/pts/5
+<div class="code"><pre class="code bash"><a id="rest_code_7a1b67cae1534b018277754f9c789ab1-1" name="rest_code_7a1b67cae1534b018277754f9c789ab1-1" href="posts/easy-admin-joke.html#rest_code_7a1b67cae1534b018277754f9c789ab1-1"></a>$<span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s2">"In 5 minutes in toilet /Jenny"</span><span class="w"> </span>&gt;<span class="w"> </span>/dev/pts/5
 </pre></div>
 <p>To "clean evidences" :D ( remember that guy working on this terminal will lost his current works he's working on this
 specific terminal)</p>
-<div class="code"><pre class="code bash"><a id="rest_code_d7d7dc8f2cfe4df3934056e2735e10ea-1" name="rest_code_d7d7dc8f2cfe4df3934056e2735e10ea-1" href="posts/easy-admin-joke.html#rest_code_d7d7dc8f2cfe4df3934056e2735e10ea-1"></a>$ cat /dev/urandom &gt; /dev/pts/5
+<div class="code"><pre class="code bash"><a id="rest_code_f5ebb5990f7d430db715b43879756427-1" name="rest_code_f5ebb5990f7d430db715b43879756427-1" href="posts/easy-admin-joke.html#rest_code_f5ebb5990f7d430db715b43879756427-1"></a>$<span class="w"> </span>cat<span class="w"> </span>/dev/urandom<span class="w"> </span>&gt;<span class="w"> </span>/dev/pts/5
 </pre></div>
     </div>
     </article><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="posts/mysql.html" class="u-url">MySQL</a></h1>
@@ -180,13 +180,13 @@ specific terminal)</p>
     </header><div class="e-content entry-content">
     <section id="mysql-tips"><h2>MySQL tips:</h2>
 <p>Create database with charset utf8</p>
-<div class="code"><pre class="code sql"><a id="rest_code_89cce02112f642cc8ecc92bcbf5beb11-1" name="rest_code_89cce02112f642cc8ecc92bcbf5beb11-1" href="posts/mysql.html#rest_code_89cce02112f642cc8ecc92bcbf5beb11-1"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">DATABASE</span><span class="w"> </span><span class="n">mynew_db_name</span><span class="w"> </span><span class="nb">CHARACTER</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="n">utf8</span><span class="w"> </span><span class="k">COLLATE</span><span class="w"> </span><span class="n">utf8_general_ci</span><span class="p">;</span><span class="w"></span>
+<div class="code"><pre class="code sql"><a id="rest_code_7aaa91e4acad4e69b8d42c7e8128ae78-1" name="rest_code_7aaa91e4acad4e69b8d42c7e8128ae78-1" href="posts/mysql.html#rest_code_7aaa91e4acad4e69b8d42c7e8128ae78-1"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">DATABASE</span><span class="w"> </span><span class="n">mynew_db_name</span><span class="w"> </span><span class="nb">CHARACTER</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="n">utf8</span><span class="w"> </span><span class="k">COLLATE</span><span class="w"> </span><span class="n">utf8_general_ci</span><span class="p">;</span>
 </pre></div>
 <p>Grant everything to local user on all tables</p>
-<div class="code"><pre class="code sql"><a id="rest_code_d19c7884fb434152a24b2d0baae525e7-1" name="rest_code_d19c7884fb434152a24b2d0baae525e7-1" href="posts/mysql.html#rest_code_d19c7884fb434152a24b2d0baae525e7-1"></a><span class="k">GRANT</span><span class="w"> </span><span class="k">ALL</span><span class="w"> </span><span class="k">PRIVILEGES</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">db_name</span><span class="p">.</span><span class="o">*</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="n">my_user</span><span class="o">@</span><span class="n">localhost</span><span class="w"> </span><span class="n">IDENTIFIED</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="s1">'my_secret_password'</span><span class="p">;</span><span class="w"></span>
+<div class="code"><pre class="code sql"><a id="rest_code_bb4f3a0ad71342a6b51767d9d165f5b4-1" name="rest_code_bb4f3a0ad71342a6b51767d9d165f5b4-1" href="posts/mysql.html#rest_code_bb4f3a0ad71342a6b51767d9d165f5b4-1"></a><span class="k">GRANT</span><span class="w"> </span><span class="k">ALL</span><span class="w"> </span><span class="k">PRIVILEGES</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">db_name</span><span class="p">.</span><span class="o">*</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="n">my_user</span><span class="o">@</span><span class="n">localhost</span><span class="w"> </span><span class="n">IDENTIFIED</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="s1">'my_secret_password'</span><span class="p">;</span>
 </pre></div>
 <p>Grant everything to remote user on all tables</p>
-<div class="code"><pre class="code sql"><a id="rest_code_c08c53a676724348b4217aff1e08f991-1" name="rest_code_c08c53a676724348b4217aff1e08f991-1" href="posts/mysql.html#rest_code_c08c53a676724348b4217aff1e08f991-1"></a><span class="k">GRANT</span><span class="w"> </span><span class="k">ALL</span><span class="w"> </span><span class="k">PRIVILEGES</span><span class="w"> </span><span class="k">ON</span><span class="w">  </span><span class="n">db_name</span><span class="p">.</span><span class="o">*</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="n">my_user</span><span class="o">@</span><span class="s1">'IP_of_host_user_connects_from'</span><span class="w"> </span><span class="n">IDENTIFIED</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="s1">'my_secret_password'</span><span class="p">;</span><span class="w"></span>
+<div class="code"><pre class="code sql"><a id="rest_code_b18f1fd2b5db429c8111919e449e0c76-1" name="rest_code_b18f1fd2b5db429c8111919e449e0c76-1" href="posts/mysql.html#rest_code_b18f1fd2b5db429c8111919e449e0c76-1"></a><span class="k">GRANT</span><span class="w"> </span><span class="k">ALL</span><span class="w"> </span><span class="k">PRIVILEGES</span><span class="w"> </span><span class="k">ON</span><span class="w">  </span><span class="n">db_name</span><span class="p">.</span><span class="o">*</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="n">my_user</span><span class="o">@</span><span class="s1">'IP_of_host_user_connects_from'</span><span class="w"> </span><span class="n">IDENTIFIED</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="s1">'my_secret_password'</span><span class="p">;</span>
 </pre></div>
 <p>If you want to add only <strong>SELECT</strong> or something else instead of <strong>ALL</strong> there are other available privileges like:</p>
 <p><strong>SELECT, UPDATE, ALTER, CREATE, DELETE, DROP, SHOW DATABASES</strong>
@@ -194,13 +194,13 @@ CREATE TEMPORARY TABLES, EXECUTE, FILE, GRANT OPTION, INDEX, INSERT, LOCK TABLES
 <p>After all you want to reload privileges because when mysqld starts, it reads all grant table contents into memory. The in-memory tables become effective for access control at that point.
 To tell the server to reload the grant tables, perform a flush-privileges operation.</p>
 <p>Execute sql :</p>
-<div class="code"><pre class="code sql"><a id="rest_code_cad78b25db494c15b266726eb5c6fd97-1" name="rest_code_cad78b25db494c15b266726eb5c6fd97-1" href="posts/mysql.html#rest_code_cad78b25db494c15b266726eb5c6fd97-1"></a><span class="n">FLUSH</span><span class="w"> </span><span class="k">PRIVILEGES</span><span class="w"> </span><span class="p">;</span><span class="w"></span>
+<div class="code"><pre class="code sql"><a id="rest_code_0e3278881473494b878652bef1fe8ef1-1" name="rest_code_0e3278881473494b878652bef1fe8ef1-1" href="posts/mysql.html#rest_code_0e3278881473494b878652bef1fe8ef1-1"></a><span class="n">FLUSH</span><span class="w"> </span><span class="k">PRIVILEGES</span><span class="w"> </span><span class="p">;</span>
 </pre></div>
 <p>or you can even do it from shell by</p>
-<div class="code"><pre class="code bash"><a id="rest_code_14649104f26a46fdbe3753c7faf9583f-1" name="rest_code_14649104f26a46fdbe3753c7faf9583f-1" href="posts/mysql.html#rest_code_14649104f26a46fdbe3753c7faf9583f-1"></a>$ mysqladmin flush-privileges
+<div class="code"><pre class="code bash"><a id="rest_code_8f83223b371642cb8e81d7cba9dfbecf-1" name="rest_code_8f83223b371642cb8e81d7cba9dfbecf-1" href="posts/mysql.html#rest_code_8f83223b371642cb8e81d7cba9dfbecf-1"></a>$<span class="w"> </span>mysqladmin<span class="w"> </span>flush-privileges
 </pre></div>
 <p>or</p>
-<div class="code"><pre class="code bash"><a id="rest_code_b1d20e8b7b9c468ba9fd5d592e8c8197-1" name="rest_code_b1d20e8b7b9c468ba9fd5d592e8c8197-1" href="posts/mysql.html#rest_code_b1d20e8b7b9c468ba9fd5d592e8c8197-1"></a>$ mysqladmin reload
+<div class="code"><pre class="code bash"><a id="rest_code_f032afdaa7e8498caafdc0b35dec6ca4-1" name="rest_code_f032afdaa7e8498caafdc0b35dec6ca4-1" href="posts/mysql.html#rest_code_f032afdaa7e8498caafdc0b35dec6ca4-1"></a>$<span class="w"> </span>mysqladmin<span class="w"> </span>reload
 </pre></div>
 </section>
 </div>
@@ -227,53 +227,53 @@ So if youre switchng from mysql it can help you for beginning:</p>
 <p>So first problem was my user access - I couldnt access postgres even through root :)
 so after clean installation if you want to launch psql client for postgres just su as postgres after that you can create
 your own super user or user having privileges to specific database</p>
-<div class="code"><pre class="code bash"><a id="rest_code_61a76499263c40eeaaf5b6e25f15f78a-1" name="rest_code_61a76499263c40eeaaf5b6e25f15f78a-1" href="posts/postgres.html#rest_code_61a76499263c40eeaaf5b6e25f15f78a-1"></a>$ su postgres
-<a id="rest_code_61a76499263c40eeaaf5b6e25f15f78a-2" name="rest_code_61a76499263c40eeaaf5b6e25f15f78a-2" href="posts/postgres.html#rest_code_61a76499263c40eeaaf5b6e25f15f78a-2"></a>$ psql
+<div class="code"><pre class="code bash"><a id="rest_code_06181ecf59034fb3a6d78ac0e3950c74-1" name="rest_code_06181ecf59034fb3a6d78ac0e3950c74-1" href="posts/postgres.html#rest_code_06181ecf59034fb3a6d78ac0e3950c74-1"></a>$<span class="w"> </span>su<span class="w"> </span>postgres
+<a id="rest_code_06181ecf59034fb3a6d78ac0e3950c74-2" name="rest_code_06181ecf59034fb3a6d78ac0e3950c74-2" href="posts/postgres.html#rest_code_06181ecf59034fb3a6d78ac0e3950c74-2"></a>$<span class="w"> </span>psql
 </pre></div>
 <p>and then you should be able to do everything</p>
 <p>To see databases "<strong>show databases;</strong>" didn't work anymore :) in postgres</p>
-<div class="code"><pre class="code psql"><a id="rest_code_55817f03ecbf4c9ea346bc1db32d3cf5-1" name="rest_code_55817f03ecbf4c9ea346bc1db32d3cf5-1" href="posts/postgres.html#rest_code_55817f03ecbf4c9ea346bc1db32d3cf5-1"></a><span class="kp">\list</span>
-<a id="rest_code_55817f03ecbf4c9ea346bc1db32d3cf5-2" name="rest_code_55817f03ecbf4c9ea346bc1db32d3cf5-2" href="posts/postgres.html#rest_code_55817f03ecbf4c9ea346bc1db32d3cf5-2"></a><span class="go">\l</span>
+<div class="code"><pre class="code psql"><a id="rest_code_9131c5a4bba6487fb34e2f7aa631eec9-1" name="rest_code_9131c5a4bba6487fb34e2f7aa631eec9-1" href="posts/postgres.html#rest_code_9131c5a4bba6487fb34e2f7aa631eec9-1"></a><span class="kp">\list</span>
+<a id="rest_code_9131c5a4bba6487fb34e2f7aa631eec9-2" name="rest_code_9131c5a4bba6487fb34e2f7aa631eec9-2" href="posts/postgres.html#rest_code_9131c5a4bba6487fb34e2f7aa631eec9-2"></a><span class="go">\l</span>
 </pre></div>
 <p>connect to database:</p>
-<div class="code"><pre class="code psql"><a id="rest_code_5ec40036a9ac4e5985245ebcba519b8d-1" name="rest_code_5ec40036a9ac4e5985245ebcba519b8d-1" href="posts/postgres.html#rest_code_5ec40036a9ac4e5985245ebcba519b8d-1"></a><span class="kp">\c</span><span class="w"> </span><span class="ss">db_name</span>
+<div class="code"><pre class="code psql"><a id="rest_code_f6d279633db347caa47a6ca942a6d35d-1" name="rest_code_f6d279633db347caa47a6ca942a6d35d-1" href="posts/postgres.html#rest_code_f6d279633db347caa47a6ca942a6d35d-1"></a><span class="kp">\c</span><span class="w"> </span><span class="ss">db_name</span>
 </pre></div>
 <p><strong>show tables;</strong> in database:</p>
-<div class="code"><pre class="code psql"><a id="rest_code_9ec649481dc04f79b7eb1ad0c3884bc4-1" name="rest_code_9ec649481dc04f79b7eb1ad0c3884bc4-1" href="posts/postgres.html#rest_code_9ec649481dc04f79b7eb1ad0c3884bc4-1"></a><span class="kp">\dt</span>
+<div class="code"><pre class="code psql"><a id="rest_code_4959077c387643e3b2d7caa0a912a6a2-1" name="rest_code_4959077c387643e3b2d7caa0a912a6a2-1" href="posts/postgres.html#rest_code_4959077c387643e3b2d7caa0a912a6a2-1"></a><span class="kp">\dt</span>
 </pre></div>
 <p><strong>Explain</strong> or <strong>describe</strong> table:</p>
-<div class="code"><pre class="code psql"><a id="rest_code_298718afd96c48219e627dd234837e3a-1" name="rest_code_298718afd96c48219e627dd234837e3a-1" href="posts/postgres.html#rest_code_298718afd96c48219e627dd234837e3a-1"></a><span class="kp">\d+</span><span class="w"> </span><span class="ss">table_name</span>
+<div class="code"><pre class="code psql"><a id="rest_code_30138ef13df741e6b02e2948240a7509-1" name="rest_code_30138ef13df741e6b02e2948240a7509-1" href="posts/postgres.html#rest_code_30138ef13df741e6b02e2948240a7509-1"></a><span class="kp">\d+</span><span class="w"> </span><span class="ss">table_name</span>
 </pre></div>
 <p>Show all shortcuts:</p>
-<div class="code"><pre class="code psql"><a id="rest_code_c079299f6e09497fbdf418a4c339a43d-1" name="rest_code_c079299f6e09497fbdf418a4c339a43d-1" href="posts/postgres.html#rest_code_c079299f6e09497fbdf418a4c339a43d-1"></a><span class="kp">\?</span>
+<div class="code"><pre class="code psql"><a id="rest_code_cc70904214614ad7a42e390c192459e4-1" name="rest_code_cc70904214614ad7a42e390c192459e4-1" href="posts/postgres.html#rest_code_cc70904214614ad7a42e390c192459e4-1"></a><span class="kp">\?</span>
 </pre></div>
 <section id="backup"><h3>Backup</h3>
 <p>To dump database to sql script with inserts etc use pg_dump remember (it wont dump user privileges):</p>
-<div class="code"><pre class="code psql"><a id="rest_code_fdaa7c2628434b4ca4dd9f6fc76fae71-1" name="rest_code_fdaa7c2628434b4ca4dd9f6fc76fae71-1" href="posts/postgres.html#rest_code_fdaa7c2628434b4ca4dd9f6fc76fae71-1"></a><span class="n">pg_dump</span><span class="w"> </span><span class="n">my_database</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">my_database</span><span class="mf">.</span><span class="n">pgdump</span><span class="w"></span>
+<div class="code"><pre class="code psql"><a id="rest_code_baedaf39aa074f978db0ef83257ab043-1" name="rest_code_baedaf39aa074f978db0ef83257ab043-1" href="posts/postgres.html#rest_code_baedaf39aa074f978db0ef83257ab043-1"></a><span class="n">pg_dump</span><span class="w"> </span><span class="n">my_database</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">my_database</span><span class="mf">.</span><span class="n">pgdump</span>
 </pre></div>
 <p>The better way of dumping database is pg_dumpall it dumps database users and groups, tablespaces, access permissions that apply to databases as a whole.</p>
-<div class="code"><pre class="code psql"><a id="rest_code_abcd6213969445bd8cffb4948da30273-1" name="rest_code_abcd6213969445bd8cffb4948da30273-1" href="posts/postgres.html#rest_code_abcd6213969445bd8cffb4948da30273-1"></a><span class="n">pg_dumpall</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">my_dump</span><span class="mf">.</span><span class="n">pgdump</span><span class="w"></span>
+<div class="code"><pre class="code psql"><a id="rest_code_e689d8719c734e3ea5a70616222642e3-1" name="rest_code_e689d8719c734e3ea5a70616222642e3-1" href="posts/postgres.html#rest_code_e689d8719c734e3ea5a70616222642e3-1"></a><span class="n">pg_dumpall</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">my_dump</span><span class="mf">.</span><span class="n">pgdump</span>
 </pre></div>
 <p>If you want to move your users of postgres to different server you can:</p>
-<div class="code"><pre class="code psql"><a id="rest_code_ac43e5bf138b4e63a4c1a84b975fc367-1" name="rest_code_ac43e5bf138b4e63a4c1a84b975fc367-1" href="posts/postgres.html#rest_code_ac43e5bf138b4e63a4c1a84b975fc367-1"></a><span class="n">pg_dumpall</span><span class="w"> </span><span class="c1">--roles-only &gt; my_users.pgdump</span>
+<div class="code"><pre class="code psql"><a id="rest_code_8b66c8ffbebd4c6b81014c39fb94d68a-1" name="rest_code_8b66c8ffbebd4c6b81014c39fb94d68a-1" href="posts/postgres.html#rest_code_8b66c8ffbebd4c6b81014c39fb94d68a-1"></a><span class="n">pg_dumpall</span><span class="w"> </span><span class="c1">--roles-only &gt; my_users.pgdump</span>
 </pre></div>
 </section><section id="restore"><h3>Restore</h3>
 <p>TO simply restore backup pgdump sql file :</p>
-<div class="code"><pre class="code psql"><a id="rest_code_c10c243885e8493b88c766fdf863bdb9-1" name="rest_code_c10c243885e8493b88c766fdf863bdb9-1" href="posts/postgres.html#rest_code_c10c243885e8493b88c766fdf863bdb9-1"></a><span class="n">psql</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">my_database</span><span class="mf">.</span><span class="n">pgdump</span><span class="w"></span>
+<div class="code"><pre class="code psql"><a id="rest_code_4a7d576733d94beea61a5cbd8d305cf2-1" name="rest_code_4a7d576733d94beea61a5cbd8d305cf2-1" href="posts/postgres.html#rest_code_4a7d576733d94beea61a5cbd8d305cf2-1"></a><span class="n">psql</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">my_database</span><span class="mf">.</span><span class="n">pgdump</span>
 </pre></div>
 </section><section id="access-privileges"><h3>Access Privileges:</h3>
 <p>Another way is about accessing postgresql if you worked with mysql you could just provide : grant all privileges on db to <a class="reference external" href="mailto:user_name@localhost">user_name@localhost</a> or <a class="reference external" href="mailto:user_name@'10.0.0.1">user_name@'10.0.0.1</a>' here it's not the same. Privileges can be configured in low level pg_hba.conf file where you provide who(sys user) who(db_user) where_from . Adding user in postgres:</p>
 <p>Create user:</p>
-<div class="code"><pre class="code psql"><a id="rest_code_1cb63e781ace4489af121dbbaf99a347-1" name="rest_code_1cb63e781ace4489af121dbbaf99a347-1" href="posts/postgres.html#rest_code_1cb63e781ace4489af121dbbaf99a347-1"></a><span class="k">create</span><span class="w"> </span><span class="k">user</span><span class="w"> </span><span class="n">my_name</span><span class="w"> </span><span class="k">with</span><span class="w"> </span><span class="k">password</span><span class="w"> </span><span class="s1">'secret'</span><span class="p">;</span><span class="w"></span>
+<div class="code"><pre class="code psql"><a id="rest_code_bf384e218e7443e6a86494a366a2db59-1" name="rest_code_bf384e218e7443e6a86494a366a2db59-1" href="posts/postgres.html#rest_code_bf384e218e7443e6a86494a366a2db59-1"></a><span class="k">create</span><span class="w"> </span><span class="k">user</span><span class="w"> </span><span class="n">my_name</span><span class="w"> </span><span class="k">with</span><span class="w"> </span><span class="k">password</span><span class="w"> </span><span class="s1">'secret'</span><span class="p">;</span>
 </pre></div>
 <p>change owner of db:</p>
-<div class="code"><pre class="code psql"><a id="rest_code_2f88d5d85b5c402eaeb040e6b5f268d1-1" name="rest_code_2f88d5d85b5c402eaeb040e6b5f268d1-1" href="posts/postgres.html#rest_code_2f88d5d85b5c402eaeb040e6b5f268d1-1"></a><span class="k">alter</span><span class="w"> </span><span class="k">database</span><span class="w"> </span><span class="n">mydatabase</span><span class="w">  </span><span class="k">owner</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="n">new_owner_name</span><span class="p">;</span><span class="w"></span>
+<div class="code"><pre class="code psql"><a id="rest_code_564e853bc60d42aa85098890bd0f1868-1" name="rest_code_564e853bc60d42aa85098890bd0f1868-1" href="posts/postgres.html#rest_code_564e853bc60d42aa85098890bd0f1868-1"></a><span class="k">alter</span><span class="w"> </span><span class="k">database</span><span class="w"> </span><span class="n">mydatabase</span><span class="w">  </span><span class="k">owner</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="n">new_owner_name</span><span class="p">;</span>
 </pre></div>
 <p>change owner of tables:</p>
-<div class="code"><pre class="code psql"><a id="rest_code_4bca030e6b46482ba3d0095843f272e2-1" name="rest_code_4bca030e6b46482ba3d0095843f272e2-1" href="posts/postgres.html#rest_code_4bca030e6b46482ba3d0095843f272e2-1"></a><span class="k">REASSIGN</span><span class="w"> </span><span class="k">OWNED</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">old_role</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="n">new_role</span><span class="w"></span>
+<div class="code"><pre class="code psql"><a id="rest_code_a03cf5a2e5b54dac9e15019fff9f3574-1" name="rest_code_a03cf5a2e5b54dac9e15019fff9f3574-1" href="posts/postgres.html#rest_code_a03cf5a2e5b54dac9e15019fff9f3574-1"></a><span class="k">REASSIGN</span><span class="w"> </span><span class="k">OWNED</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">old_role</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="n">new_role</span>
 </pre></div>
 <p>rename db</p>
-<div class="code"><pre class="code psql"><a id="rest_code_83071d3c6af1493682ce5226a2e8fc61-1" name="rest_code_83071d3c6af1493682ce5226a2e8fc61-1" href="posts/postgres.html#rest_code_83071d3c6af1493682ce5226a2e8fc61-1"></a><span class="k">alter</span><span class="w">  </span><span class="k">database</span><span class="w"> </span><span class="n">production</span><span class="w"> </span><span class="k">rename</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="n">production_delete</span><span class="p">;</span><span class="w"></span>
+<div class="code"><pre class="code psql"><a id="rest_code_4106912b4ac84bb9910d86e0e38f223d-1" name="rest_code_4106912b4ac84bb9910d86e0e38f223d-1" href="posts/postgres.html#rest_code_4106912b4ac84bb9910d86e0e38f223d-1"></a><span class="k">alter</span><span class="w">  </span><span class="k">database</span><span class="w"> </span><span class="n">production</span><span class="w"> </span><span class="k">rename</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="n">production_delete</span><span class="p">;</span>
 </pre></div>
 </section></section>
 </div>
@@ -380,153 +380,153 @@ so to notify me I wrote a bot in pycurl and placed job in cron to send me an ema
 when ot will be in stock.</p>
 </blockquote>
 <p>Cut of sourcefragment from giffgaff webpage:</p>
-<div class="code"><pre class="code html"><a id="rest_code_d8393471c291414998965d1c2efed74b-1" name="rest_code_d8393471c291414998965d1c2efed74b-1" href="posts/giffgaffbot.html#rest_code_d8393471c291414998965d1c2efed74b-1"></a><span class="p">&lt;</span><span class="nt">form</span> <span class="na">id</span><span class="o">=</span><span class="s">"frmBuyPhone"</span> <span class="na">action</span><span class="o">=</span><span class="s">"/samsung/samsung-galaxy-s5/phone-plans"</span> <span class="na">method</span><span class="o">=</span><span class="s">"post"</span> <span class="na">data-color-memory-mapping</span><span class="o">=</span><span class="s">'</span>
-<a id="rest_code_d8393471c291414998965d1c2efed74b-2" name="rest_code_d8393471c291414998965d1c2efed74b-2" href="posts/giffgaffbot.html#rest_code_d8393471c291414998965d1c2efed74b-2"></a><span class="s">{"black":{"16":{"price":"517","sku":"GG1SAS5BBN","stock":1,"isLoanAvailable":true,"minMonthlyPayment":2139,"minAPR":970}},</span>
-<a id="rest_code_d8393471c291414998965d1c2efed74b-3" name="rest_code_d8393471c291414998965d1c2efed74b-3" href="posts/giffgaffbot.html#rest_code_d8393471c291414998965d1c2efed74b-3"></a><span class="s"> "white":{"16":{"price":"517","sku":"GG1SAS5WWN","stock":1,"isLoanAvailable":true,"minMonthlyPayment":2139,"minAPR":970}},</span>
-<a id="rest_code_d8393471c291414998965d1c2efed74b-4" name="rest_code_d8393471c291414998965d1c2efed74b-4" href="posts/giffgaffbot.html#rest_code_d8393471c291414998965d1c2efed74b-4"></a><span class="s"> "blue":{"16":{"price":"517","sku":"GG1SAS5BLN","stock":1,"isLoanAvailable":true,"minMonthlyPayment":2139,"minAPR":970}},</span>
-<a id="rest_code_d8393471c291414998965d1c2efed74b-5" name="rest_code_d8393471c291414998965d1c2efed74b-5" href="posts/giffgaffbot.html#rest_code_d8393471c291414998965d1c2efed74b-5"></a><span class="s"> "gold":{"16":{"price":"517","sku":"GG1SAGS5GN","stock":1,"isLoanAvailable":true,"minMonthlyPayment":2139,"minAPR":970}}}'</span>
-<a id="rest_code_d8393471c291414998965d1c2efed74b-6" name="rest_code_d8393471c291414998965d1c2efed74b-6" href="posts/giffgaffbot.html#rest_code_d8393471c291414998965d1c2efed74b-6"></a><span class="na">data-loan-mapping</span><span class="o">=</span><span class="s">'{"GG1SAS5BBN":{"5000":{"24":{"deal_id":"7049","apr":970,"loan_amount":46700,"monthly_payment":2139,"total_payment":56336},"18":{"deal_id":"7053","apr":1140,"loan_amount":46700,"monthly_payment":2821,"total_payment":55778},"12":{"deal_id":"7057","apr":1470,"loan_amount":46700,"monthly_payment":4187,"total_payment":55244},"6":{"deal_id":"7061","apr":2580,"loan_amount":46700,"monthly_payment":8317,"total_payment":54902}}</span>
+<div class="code"><pre class="code html"><a id="rest_code_cfe025f69b1442c19060014e2999ee5b-1" name="rest_code_cfe025f69b1442c19060014e2999ee5b-1" href="posts/giffgaffbot.html#rest_code_cfe025f69b1442c19060014e2999ee5b-1"></a><span class="p">&lt;</span><span class="nt">form</span> <span class="na">id</span><span class="o">=</span><span class="s">"frmBuyPhone"</span> <span class="na">action</span><span class="o">=</span><span class="s">"/samsung/samsung-galaxy-s5/phone-plans"</span> <span class="na">method</span><span class="o">=</span><span class="s">"post"</span> <span class="na">data-color-memory-mapping</span><span class="o">=</span><span class="s">'</span>
+<a id="rest_code_cfe025f69b1442c19060014e2999ee5b-2" name="rest_code_cfe025f69b1442c19060014e2999ee5b-2" href="posts/giffgaffbot.html#rest_code_cfe025f69b1442c19060014e2999ee5b-2"></a><span class="s">{"black":{"16":{"price":"517","sku":"GG1SAS5BBN","stock":1,"isLoanAvailable":true,"minMonthlyPayment":2139,"minAPR":970}},</span>
+<a id="rest_code_cfe025f69b1442c19060014e2999ee5b-3" name="rest_code_cfe025f69b1442c19060014e2999ee5b-3" href="posts/giffgaffbot.html#rest_code_cfe025f69b1442c19060014e2999ee5b-3"></a><span class="s"> "white":{"16":{"price":"517","sku":"GG1SAS5WWN","stock":1,"isLoanAvailable":true,"minMonthlyPayment":2139,"minAPR":970}},</span>
+<a id="rest_code_cfe025f69b1442c19060014e2999ee5b-4" name="rest_code_cfe025f69b1442c19060014e2999ee5b-4" href="posts/giffgaffbot.html#rest_code_cfe025f69b1442c19060014e2999ee5b-4"></a><span class="s"> "blue":{"16":{"price":"517","sku":"GG1SAS5BLN","stock":1,"isLoanAvailable":true,"minMonthlyPayment":2139,"minAPR":970}},</span>
+<a id="rest_code_cfe025f69b1442c19060014e2999ee5b-5" name="rest_code_cfe025f69b1442c19060014e2999ee5b-5" href="posts/giffgaffbot.html#rest_code_cfe025f69b1442c19060014e2999ee5b-5"></a><span class="s"> "gold":{"16":{"price":"517","sku":"GG1SAGS5GN","stock":1,"isLoanAvailable":true,"minMonthlyPayment":2139,"minAPR":970}}}'</span>
+<a id="rest_code_cfe025f69b1442c19060014e2999ee5b-6" name="rest_code_cfe025f69b1442c19060014e2999ee5b-6" href="posts/giffgaffbot.html#rest_code_cfe025f69b1442c19060014e2999ee5b-6"></a><span class="na">data-loan-mapping</span><span class="o">=</span><span class="s">'{"GG1SAS5BBN":{"5000":{"24":{"deal_id":"7049","apr":970,"loan_amount":46700,"monthly_payment":2139,"total_payment":56336},"18":{"deal_id":"7053","apr":1140,"loan_amount":46700,"monthly_payment":2821,"total_payment":55778},"12":{"deal_id":"7057","apr":1470,"loan_amount":46700,"monthly_payment":4187,"total_payment":55244},"6":{"deal_id":"7061","apr":2580,"loan_amount":46700,"monthly_payment":8317,"total_payment":54902}}</span>
 </pre></div>
 <p>The bot looks like this :</p>
 <div class="code"><table class="codetable">
 <tr>
-<td class="linenos linenodiv"><a href="posts/giffgaffbot.html#rest_code_711f1fa428ed4360a9c91d693dbd7224-1"><code data-line-number=" 1"></code></a></td>
-<td class="code"><code><a id="rest_code_711f1fa428ed4360a9c91d693dbd7224-1" name="rest_code_711f1fa428ed4360a9c91d693dbd7224-1"></a> <span class="c1">#!/usr/bin/env python</span>
+<td class="linenos linenodiv"><a href="posts/giffgaffbot.html#rest_code_17aa882838464f0c8b79803f843b5780-1"><code data-line-number=" 1"></code></a></td>
+<td class="code"><code><a id="rest_code_17aa882838464f0c8b79803f843b5780-1" name="rest_code_17aa882838464f0c8b79803f843b5780-1"></a> <span class="c1">#!/usr/bin/env python</span>
 </code></td>
 </tr>
 <tr>
-<td class="linenos linenodiv"><a href="posts/giffgaffbot.html#rest_code_711f1fa428ed4360a9c91d693dbd7224-2"><code data-line-number=" 2"></code></a></td>
-<td class="code"><code><a id="rest_code_711f1fa428ed4360a9c91d693dbd7224-2" name="rest_code_711f1fa428ed4360a9c91d693dbd7224-2"></a> <span class="kn">import</span> <span class="nn">pycurl</span>
+<td class="linenos linenodiv"><a href="posts/giffgaffbot.html#rest_code_17aa882838464f0c8b79803f843b5780-2"><code data-line-number=" 2"></code></a></td>
+<td class="code"><code><a id="rest_code_17aa882838464f0c8b79803f843b5780-2" name="rest_code_17aa882838464f0c8b79803f843b5780-2"></a> <span class="kn">import</span><span class="w"> </span><span class="nn">pycurl</span>
 </code></td>
 </tr>
 <tr>
-<td class="linenos linenodiv"><a href="posts/giffgaffbot.html#rest_code_711f1fa428ed4360a9c91d693dbd7224-3"><code data-line-number=" 3"></code></a></td>
-<td class="code"><code><a id="rest_code_711f1fa428ed4360a9c91d693dbd7224-3" name="rest_code_711f1fa428ed4360a9c91d693dbd7224-3"></a> <span class="kn">import</span> <span class="nn">sys</span>
+<td class="linenos linenodiv"><a href="posts/giffgaffbot.html#rest_code_17aa882838464f0c8b79803f843b5780-3"><code data-line-number=" 3"></code></a></td>
+<td class="code"><code><a id="rest_code_17aa882838464f0c8b79803f843b5780-3" name="rest_code_17aa882838464f0c8b79803f843b5780-3"></a> <span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
 </code></td>
 </tr>
 <tr>
-<td class="linenos linenodiv"><a href="posts/giffgaffbot.html#rest_code_711f1fa428ed4360a9c91d693dbd7224-4"><code data-line-number=" 4"></code></a></td>
-<td class="code"><code><a id="rest_code_711f1fa428ed4360a9c91d693dbd7224-4" name="rest_code_711f1fa428ed4360a9c91d693dbd7224-4"></a> <span class="kn">import</span> <span class="nn">cStringIO</span>
+<td class="linenos linenodiv"><a href="posts/giffgaffbot.html#rest_code_17aa882838464f0c8b79803f843b5780-4"><code data-line-number=" 4"></code></a></td>
+<td class="code"><code><a id="rest_code_17aa882838464f0c8b79803f843b5780-4" name="rest_code_17aa882838464f0c8b79803f843b5780-4"></a> <span class="kn">import</span><span class="w"> </span><span class="nn">cStringIO</span>
 </code></td>
 </tr>
 <tr>
-<td class="linenos linenodiv"><a href="posts/giffgaffbot.html#rest_code_711f1fa428ed4360a9c91d693dbd7224-5"><code data-line-number=" 5"></code></a></td>
-<td class="code"><code><a id="rest_code_711f1fa428ed4360a9c91d693dbd7224-5" name="rest_code_711f1fa428ed4360a9c91d693dbd7224-5"></a> <span class="kn">import</span> <span class="nn">re</span>
+<td class="linenos linenodiv"><a href="posts/giffgaffbot.html#rest_code_17aa882838464f0c8b79803f843b5780-5"><code data-line-number=" 5"></code></a></td>
+<td class="code"><code><a id="rest_code_17aa882838464f0c8b79803f843b5780-5" name="rest_code_17aa882838464f0c8b79803f843b5780-5"></a> <span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
 </code></td>
 </tr>
 <tr>
-<td class="linenos linenodiv"><a href="posts/giffgaffbot.html#rest_code_711f1fa428ed4360a9c91d693dbd7224-6"><code data-line-number=" 6"></code></a></td>
-<td class="code"><code><a id="rest_code_711f1fa428ed4360a9c91d693dbd7224-6" name="rest_code_711f1fa428ed4360a9c91d693dbd7224-6"></a> <span class="kn">import</span> <span class="nn">os</span>
+<td class="linenos linenodiv"><a href="posts/giffgaffbot.html#rest_code_17aa882838464f0c8b79803f843b5780-6"><code data-line-number=" 6"></code></a></td>
+<td class="code"><code><a id="rest_code_17aa882838464f0c8b79803f843b5780-6" name="rest_code_17aa882838464f0c8b79803f843b5780-6"></a> <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 </code></td>
 </tr>
 <tr>
-<td class="linenos linenodiv"><a href="posts/giffgaffbot.html#rest_code_711f1fa428ed4360a9c91d693dbd7224-7"><code data-line-number=" 7"></code></a></td>
-<td class="code"><code><a id="rest_code_711f1fa428ed4360a9c91d693dbd7224-7" name="rest_code_711f1fa428ed4360a9c91d693dbd7224-7"></a> <span class="n">buf</span> <span class="o">=</span> <span class="n">cStringIO</span><span class="o">.</span><span class="n">StringIO</span><span class="p">()</span>
+<td class="linenos linenodiv"><a href="posts/giffgaffbot.html#rest_code_17aa882838464f0c8b79803f843b5780-7"><code data-line-number=" 7"></code></a></td>
+<td class="code"><code><a id="rest_code_17aa882838464f0c8b79803f843b5780-7" name="rest_code_17aa882838464f0c8b79803f843b5780-7"></a> <span class="n">buf</span> <span class="o">=</span> <span class="n">cStringIO</span><span class="o">.</span><span class="n">StringIO</span><span class="p">()</span>
 </code></td>
 </tr>
 <tr>
-<td class="linenos linenodiv"><a href="posts/giffgaffbot.html#rest_code_711f1fa428ed4360a9c91d693dbd7224-8"><code data-line-number=" 8"></code></a></td>
-<td class="code"><code><a id="rest_code_711f1fa428ed4360a9c91d693dbd7224-8" name="rest_code_711f1fa428ed4360a9c91d693dbd7224-8"></a> <span class="n">ch</span> <span class="o">=</span> <span class="n">pycurl</span><span class="o">.</span><span class="n">Curl</span><span class="p">()</span>
+<td class="linenos linenodiv"><a href="posts/giffgaffbot.html#rest_code_17aa882838464f0c8b79803f843b5780-8"><code data-line-number=" 8"></code></a></td>
+<td class="code"><code><a id="rest_code_17aa882838464f0c8b79803f843b5780-8" name="rest_code_17aa882838464f0c8b79803f843b5780-8"></a> <span class="n">ch</span> <span class="o">=</span> <span class="n">pycurl</span><span class="o">.</span><span class="n">Curl</span><span class="p">()</span>
 </code></td>
 </tr>
 <tr>
-<td class="linenos linenodiv"><a href="posts/giffgaffbot.html#rest_code_711f1fa428ed4360a9c91d693dbd7224-9"><code data-line-number=" 9"></code></a></td>
-<td class="code"><code><a id="rest_code_711f1fa428ed4360a9c91d693dbd7224-9" name="rest_code_711f1fa428ed4360a9c91d693dbd7224-9"></a> <span class="n">ch</span><span class="o">.</span><span class="n">setopt</span><span class="p">(</span><span class="n">pycurl</span><span class="o">.</span><span class="n">VERBOSE</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<td class="linenos linenodiv"><a href="posts/giffgaffbot.html#rest_code_17aa882838464f0c8b79803f843b5780-9"><code data-line-number=" 9"></code></a></td>
+<td class="code"><code><a id="rest_code_17aa882838464f0c8b79803f843b5780-9" name="rest_code_17aa882838464f0c8b79803f843b5780-9"></a> <span class="n">ch</span><span class="o">.</span><span class="n">setopt</span><span class="p">(</span><span class="n">pycurl</span><span class="o">.</span><span class="n">VERBOSE</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
 </code></td>
 </tr>
 <tr>
-<td class="linenos linenodiv"><a href="posts/giffgaffbot.html#rest_code_711f1fa428ed4360a9c91d693dbd7224-10"><code data-line-number="10"></code></a></td>
-<td class="code"><code><a id="rest_code_711f1fa428ed4360a9c91d693dbd7224-10" name="rest_code_711f1fa428ed4360a9c91d693dbd7224-10"></a> <span class="n">ch</span><span class="o">.</span><span class="n">setopt</span><span class="p">(</span><span class="n">pycurl</span><span class="o">.</span><span class="n">WRITEFUNCTION</span><span class="p">,</span> <span class="n">buf</span><span class="o">.</span><span class="n">write</span><span class="p">)</span>
+<td class="linenos linenodiv"><a href="posts/giffgaffbot.html#rest_code_17aa882838464f0c8b79803f843b5780-10"><code data-line-number="10"></code></a></td>
+<td class="code"><code><a id="rest_code_17aa882838464f0c8b79803f843b5780-10" name="rest_code_17aa882838464f0c8b79803f843b5780-10"></a> <span class="n">ch</span><span class="o">.</span><span class="n">setopt</span><span class="p">(</span><span class="n">pycurl</span><span class="o">.</span><span class="n">WRITEFUNCTION</span><span class="p">,</span> <span class="n">buf</span><span class="o">.</span><span class="n">write</span><span class="p">)</span>
 </code></td>
 </tr>
 <tr>
-<td class="linenos linenodiv"><a href="posts/giffgaffbot.html#rest_code_711f1fa428ed4360a9c91d693dbd7224-11"><code data-line-number="11"></code></a></td>
-<td class="code"><code><a id="rest_code_711f1fa428ed4360a9c91d693dbd7224-11" name="rest_code_711f1fa428ed4360a9c91d693dbd7224-11"></a> <span class="n">ch</span><span class="o">.</span><span class="n">setopt</span><span class="p">(</span><span class="n">pycurl</span><span class="o">.</span><span class="n">COOKIEJAR</span><span class="p">,</span> <span class="s1">'Ocookie.txt'</span><span class="p">)</span>
+<td class="linenos linenodiv"><a href="posts/giffgaffbot.html#rest_code_17aa882838464f0c8b79803f843b5780-11"><code data-line-number="11"></code></a></td>
+<td class="code"><code><a id="rest_code_17aa882838464f0c8b79803f843b5780-11" name="rest_code_17aa882838464f0c8b79803f843b5780-11"></a> <span class="n">ch</span><span class="o">.</span><span class="n">setopt</span><span class="p">(</span><span class="n">pycurl</span><span class="o">.</span><span class="n">COOKIEJAR</span><span class="p">,</span> <span class="s1">'Ocookie.txt'</span><span class="p">)</span>
 </code></td>
 </tr>
 <tr>
-<td class="linenos linenodiv"><a href="posts/giffgaffbot.html#rest_code_711f1fa428ed4360a9c91d693dbd7224-12"><code data-line-number="12"></code></a></td>
-<td class="code"><code><a id="rest_code_711f1fa428ed4360a9c91d693dbd7224-12" name="rest_code_711f1fa428ed4360a9c91d693dbd7224-12"></a> <span class="n">ch</span><span class="o">.</span><span class="n">setopt</span><span class="p">(</span><span class="n">pycurl</span><span class="o">.</span><span class="n">USERAGENT</span><span class="p">,</span><span class="s2">"Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1; BTRS122288; .NET CLR 1.1.4322; .NET CLR 2.0.50727; .NET CLR 3.0.4506.2152; .NET CLR 3.5.30729; InfoPath.3)"</span><span class="p">)</span>
+<td class="linenos linenodiv"><a href="posts/giffgaffbot.html#rest_code_17aa882838464f0c8b79803f843b5780-12"><code data-line-number="12"></code></a></td>
+<td class="code"><code><a id="rest_code_17aa882838464f0c8b79803f843b5780-12" name="rest_code_17aa882838464f0c8b79803f843b5780-12"></a> <span class="n">ch</span><span class="o">.</span><span class="n">setopt</span><span class="p">(</span><span class="n">pycurl</span><span class="o">.</span><span class="n">USERAGENT</span><span class="p">,</span><span class="s2">"Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1; BTRS122288; .NET CLR 1.1.4322; .NET CLR 2.0.50727; .NET CLR 3.0.4506.2152; .NET CLR 3.5.30729; InfoPath.3)"</span><span class="p">)</span>
 </code></td>
 </tr>
 <tr>
-<td class="linenos linenodiv"><a href="posts/giffgaffbot.html#rest_code_711f1fa428ed4360a9c91d693dbd7224-13"><code data-line-number="13"></code></a></td>
-<td class="code"><code><a id="rest_code_711f1fa428ed4360a9c91d693dbd7224-13" name="rest_code_711f1fa428ed4360a9c91d693dbd7224-13"></a> <span class="k">def</span> <span class="nf">get_products</span><span class="p">(</span><span class="n">url</span><span class="p">):</span>
+<td class="linenos linenodiv"><a href="posts/giffgaffbot.html#rest_code_17aa882838464f0c8b79803f843b5780-13"><code data-line-number="13"></code></a></td>
+<td class="code"><code><a id="rest_code_17aa882838464f0c8b79803f843b5780-13" name="rest_code_17aa882838464f0c8b79803f843b5780-13"></a> <span class="k">def</span><span class="w"> </span><span class="nf">get_products</span><span class="p">(</span><span class="n">url</span><span class="p">):</span>
 </code></td>
 </tr>
 <tr>
-<td class="linenos linenodiv"><a href="posts/giffgaffbot.html#rest_code_711f1fa428ed4360a9c91d693dbd7224-14"><code data-line-number="14"></code></a></td>
-<td class="code"><code><a id="rest_code_711f1fa428ed4360a9c91d693dbd7224-14" name="rest_code_711f1fa428ed4360a9c91d693dbd7224-14"></a>     <span class="n">ch</span><span class="o">.</span><span class="n">setopt</span><span class="p">(</span><span class="n">pycurl</span><span class="o">.</span><span class="n">URL</span><span class="p">,</span> <span class="n">url</span><span class="p">)</span>
+<td class="linenos linenodiv"><a href="posts/giffgaffbot.html#rest_code_17aa882838464f0c8b79803f843b5780-14"><code data-line-number="14"></code></a></td>
+<td class="code"><code><a id="rest_code_17aa882838464f0c8b79803f843b5780-14" name="rest_code_17aa882838464f0c8b79803f843b5780-14"></a>     <span class="n">ch</span><span class="o">.</span><span class="n">setopt</span><span class="p">(</span><span class="n">pycurl</span><span class="o">.</span><span class="n">URL</span><span class="p">,</span> <span class="n">url</span><span class="p">)</span>
 </code></td>
 </tr>
 <tr>
-<td class="linenos linenodiv"><a href="posts/giffgaffbot.html#rest_code_711f1fa428ed4360a9c91d693dbd7224-15"><code data-line-number="15"></code></a></td>
-<td class="code"><code><a id="rest_code_711f1fa428ed4360a9c91d693dbd7224-15" name="rest_code_711f1fa428ed4360a9c91d693dbd7224-15"></a>     <span class="n">ch</span><span class="o">.</span><span class="n">perform</span><span class="p">()</span>
+<td class="linenos linenodiv"><a href="posts/giffgaffbot.html#rest_code_17aa882838464f0c8b79803f843b5780-15"><code data-line-number="15"></code></a></td>
+<td class="code"><code><a id="rest_code_17aa882838464f0c8b79803f843b5780-15" name="rest_code_17aa882838464f0c8b79803f843b5780-15"></a>     <span class="n">ch</span><span class="o">.</span><span class="n">perform</span><span class="p">()</span>
 </code></td>
 </tr>
 <tr>
-<td class="linenos linenodiv"><a href="posts/giffgaffbot.html#rest_code_711f1fa428ed4360a9c91d693dbd7224-16"><code data-line-number="16"></code></a></td>
-<td class="code"><code><a id="rest_code_711f1fa428ed4360a9c91d693dbd7224-16" name="rest_code_711f1fa428ed4360a9c91d693dbd7224-16"></a>     <span class="n">buf</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+<td class="linenos linenodiv"><a href="posts/giffgaffbot.html#rest_code_17aa882838464f0c8b79803f843b5780-16"><code data-line-number="16"></code></a></td>
+<td class="code"><code><a id="rest_code_17aa882838464f0c8b79803f843b5780-16" name="rest_code_17aa882838464f0c8b79803f843b5780-16"></a>     <span class="n">buf</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
 </code></td>
 </tr>
 <tr>
-<td class="linenos linenodiv"><a href="posts/giffgaffbot.html#rest_code_711f1fa428ed4360a9c91d693dbd7224-17"><code data-line-number="17"></code></a></td>
-<td class="code"><code><a id="rest_code_711f1fa428ed4360a9c91d693dbd7224-17" name="rest_code_711f1fa428ed4360a9c91d693dbd7224-17"></a>     <span class="n">newdata</span> <span class="o">=</span> <span class="n">buf</span><span class="o">.</span><span class="n">getvalue</span><span class="p">()</span>
+<td class="linenos linenodiv"><a href="posts/giffgaffbot.html#rest_code_17aa882838464f0c8b79803f843b5780-17"><code data-line-number="17"></code></a></td>
+<td class="code"><code><a id="rest_code_17aa882838464f0c8b79803f843b5780-17" name="rest_code_17aa882838464f0c8b79803f843b5780-17"></a>     <span class="n">newdata</span> <span class="o">=</span> <span class="n">buf</span><span class="o">.</span><span class="n">getvalue</span><span class="p">()</span>
 </code></td>
 </tr>
 <tr>
-<td class="linenos linenodiv"><a href="posts/giffgaffbot.html#rest_code_711f1fa428ed4360a9c91d693dbd7224-18"><code data-line-number="18"></code></a></td>
-<td class="code"><code><a id="rest_code_711f1fa428ed4360a9c91d693dbd7224-18" name="rest_code_711f1fa428ed4360a9c91d693dbd7224-18"></a>     <span class="n">newdata</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s2">"data-color-memory-mapping.*"</span><span class="p">,</span> <span class="n">newdata</span><span class="p">)</span><span class="o">.</span><span class="n">group</span><span class="p">()</span>
+<td class="linenos linenodiv"><a href="posts/giffgaffbot.html#rest_code_17aa882838464f0c8b79803f843b5780-18"><code data-line-number="18"></code></a></td>
+<td class="code"><code><a id="rest_code_17aa882838464f0c8b79803f843b5780-18" name="rest_code_17aa882838464f0c8b79803f843b5780-18"></a>     <span class="n">newdata</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s2">"data-color-memory-mapping.*"</span><span class="p">,</span> <span class="n">newdata</span><span class="p">)</span><span class="o">.</span><span class="n">group</span><span class="p">()</span>
 </code></td>
 </tr>
 <tr>
-<td class="linenos linenodiv"><a href="posts/giffgaffbot.html#rest_code_711f1fa428ed4360a9c91d693dbd7224-19"><code data-line-number="19"></code></a></td>
-<td class="code"><code><a id="rest_code_711f1fa428ed4360a9c91d693dbd7224-19" name="rest_code_711f1fa428ed4360a9c91d693dbd7224-19"></a>     <span class="n">newdata</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s2">"blue.*"</span><span class="p">,</span> <span class="n">newdata</span><span class="p">)</span><span class="o">.</span><span class="n">group</span><span class="p">()</span>
+<td class="linenos linenodiv"><a href="posts/giffgaffbot.html#rest_code_17aa882838464f0c8b79803f843b5780-19"><code data-line-number="19"></code></a></td>
+<td class="code"><code><a id="rest_code_17aa882838464f0c8b79803f843b5780-19" name="rest_code_17aa882838464f0c8b79803f843b5780-19"></a>     <span class="n">newdata</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s2">"blue.*"</span><span class="p">,</span> <span class="n">newdata</span><span class="p">)</span><span class="o">.</span><span class="n">group</span><span class="p">()</span>
 </code></td>
 </tr>
 <tr>
-<td class="linenos linenodiv"><a href="posts/giffgaffbot.html#rest_code_711f1fa428ed4360a9c91d693dbd7224-20"><code data-line-number="20"></code></a></td>
-<td class="code"><code><a id="rest_code_711f1fa428ed4360a9c91d693dbd7224-20" name="rest_code_711f1fa428ed4360a9c91d693dbd7224-20"></a>     <span class="n">newdata</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s2">"stock.:([0-9]{0,2})"</span><span class="p">,</span> <span class="n">newdata</span><span class="p">)</span>
+<td class="linenos linenodiv"><a href="posts/giffgaffbot.html#rest_code_17aa882838464f0c8b79803f843b5780-20"><code data-line-number="20"></code></a></td>
+<td class="code"><code><a id="rest_code_17aa882838464f0c8b79803f843b5780-20" name="rest_code_17aa882838464f0c8b79803f843b5780-20"></a>     <span class="n">newdata</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s2">"stock.:([0-9]{0,2})"</span><span class="p">,</span> <span class="n">newdata</span><span class="p">)</span>
 </code></td>
 </tr>
 <tr>
-<td class="linenos linenodiv"><a href="posts/giffgaffbot.html#rest_code_711f1fa428ed4360a9c91d693dbd7224-21"><code data-line-number="21"></code></a></td>
-<td class="code"><code><a id="rest_code_711f1fa428ed4360a9c91d693dbd7224-21" name="rest_code_711f1fa428ed4360a9c91d693dbd7224-21"></a>     <span class="n">newdata</span> <span class="o">=</span> <span class="n">newdata</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<td class="linenos linenodiv"><a href="posts/giffgaffbot.html#rest_code_17aa882838464f0c8b79803f843b5780-21"><code data-line-number="21"></code></a></td>
+<td class="code"><code><a id="rest_code_17aa882838464f0c8b79803f843b5780-21" name="rest_code_17aa882838464f0c8b79803f843b5780-21"></a>     <span class="n">newdata</span> <span class="o">=</span> <span class="n">newdata</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 </code></td>
 </tr>
 <tr>
-<td class="linenos linenodiv"><a href="posts/giffgaffbot.html#rest_code_711f1fa428ed4360a9c91d693dbd7224-22"><code data-line-number="22"></code></a></td>
-<td class="code"><code><a id="rest_code_711f1fa428ed4360a9c91d693dbd7224-22" name="rest_code_711f1fa428ed4360a9c91d693dbd7224-22"></a>     <span class="k">if</span> <span class="nb">int</span><span class="p">(</span><span class="n">newdata</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+<td class="linenos linenodiv"><a href="posts/giffgaffbot.html#rest_code_17aa882838464f0c8b79803f843b5780-22"><code data-line-number="22"></code></a></td>
+<td class="code"><code><a id="rest_code_17aa882838464f0c8b79803f843b5780-22" name="rest_code_17aa882838464f0c8b79803f843b5780-22"></a>     <span class="k">if</span> <span class="nb">int</span><span class="p">(</span><span class="n">newdata</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
 </code></td>
 </tr>
 <tr>
-<td class="linenos linenodiv"><a href="posts/giffgaffbot.html#rest_code_711f1fa428ed4360a9c91d693dbd7224-23"><code data-line-number="23"></code></a></td>
-<td class="code"><code><a id="rest_code_711f1fa428ed4360a9c91d693dbd7224-23" name="rest_code_711f1fa428ed4360a9c91d693dbd7224-23"></a>         <span class="nb">print</span> <span class="s2">"not in stock"</span>
+<td class="linenos linenodiv"><a href="posts/giffgaffbot.html#rest_code_17aa882838464f0c8b79803f843b5780-23"><code data-line-number="23"></code></a></td>
+<td class="code"><code><a id="rest_code_17aa882838464f0c8b79803f843b5780-23" name="rest_code_17aa882838464f0c8b79803f843b5780-23"></a>         <span class="nb">print</span> <span class="s2">"not in stock"</span>
 </code></td>
 </tr>
 <tr>
-<td class="linenos linenodiv"><a href="posts/giffgaffbot.html#rest_code_711f1fa428ed4360a9c91d693dbd7224-24"><code data-line-number="24"></code></a></td>
-<td class="code"><code><a id="rest_code_711f1fa428ed4360a9c91d693dbd7224-24" name="rest_code_711f1fa428ed4360a9c91d693dbd7224-24"></a>     <span class="k">else</span><span class="p">:</span>
+<td class="linenos linenodiv"><a href="posts/giffgaffbot.html#rest_code_17aa882838464f0c8b79803f843b5780-24"><code data-line-number="24"></code></a></td>
+<td class="code"><code><a id="rest_code_17aa882838464f0c8b79803f843b5780-24" name="rest_code_17aa882838464f0c8b79803f843b5780-24"></a>     <span class="k">else</span><span class="p">:</span>
 </code></td>
 </tr>
 <tr>
-<td class="linenos linenodiv"><a href="posts/giffgaffbot.html#rest_code_711f1fa428ed4360a9c91d693dbd7224-25"><code data-line-number="25"></code></a></td>
-<td class="code"><code><a id="rest_code_711f1fa428ed4360a9c91d693dbd7224-25" name="rest_code_711f1fa428ed4360a9c91d693dbd7224-25"></a>         <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="s2">"echo 'in stock  </span><span class="si">%s</span><span class="s2">' | /usr/sbin/sendmail mymail@gmail.com"</span> <span class="o">%</span> <span class="n">newdata</span><span class="p">)</span>
+<td class="linenos linenodiv"><a href="posts/giffgaffbot.html#rest_code_17aa882838464f0c8b79803f843b5780-25"><code data-line-number="25"></code></a></td>
+<td class="code"><code><a id="rest_code_17aa882838464f0c8b79803f843b5780-25" name="rest_code_17aa882838464f0c8b79803f843b5780-25"></a>         <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="s2">"echo 'in stock  </span><span class="si">%s</span><span class="s2">' | /usr/sbin/sendmail mymail@gmail.com"</span> <span class="o">%</span> <span class="n">newdata</span><span class="p">)</span>
 </code></td>
 </tr>
 <tr>
-<td class="linenos linenodiv"><a href="posts/giffgaffbot.html#rest_code_711f1fa428ed4360a9c91d693dbd7224-26"><code data-line-number="26"></code></a></td>
-<td class="code"><code><a id="rest_code_711f1fa428ed4360a9c91d693dbd7224-26" name="rest_code_711f1fa428ed4360a9c91d693dbd7224-26"></a>         <span class="nb">print</span> <span class="s2">"in stock"</span>
+<td class="linenos linenodiv"><a href="posts/giffgaffbot.html#rest_code_17aa882838464f0c8b79803f843b5780-26"><code data-line-number="26"></code></a></td>
+<td class="code"><code><a id="rest_code_17aa882838464f0c8b79803f843b5780-26" name="rest_code_17aa882838464f0c8b79803f843b5780-26"></a>         <span class="nb">print</span> <span class="s2">"in stock"</span>
 </code></td>
 </tr>
 <tr>
-<td class="linenos linenodiv"><a href="posts/giffgaffbot.html#rest_code_711f1fa428ed4360a9c91d693dbd7224-27"><code data-line-number="27"></code></a></td>
-<td class="code"><code><a id="rest_code_711f1fa428ed4360a9c91d693dbd7224-27" name="rest_code_711f1fa428ed4360a9c91d693dbd7224-27"></a>
+<td class="linenos linenodiv"><a href="posts/giffgaffbot.html#rest_code_17aa882838464f0c8b79803f843b5780-27"><code data-line-number="27"></code></a></td>
+<td class="code"><code><a id="rest_code_17aa882838464f0c8b79803f843b5780-27" name="rest_code_17aa882838464f0c8b79803f843b5780-27"></a>
 </code></td>
 </tr>
 <tr>
-<td class="linenos linenodiv"><a href="posts/giffgaffbot.html#rest_code_711f1fa428ed4360a9c91d693dbd7224-28"><code data-line-number="28"></code></a></td>
-<td class="code"><code><a id="rest_code_711f1fa428ed4360a9c91d693dbd7224-28" name="rest_code_711f1fa428ed4360a9c91d693dbd7224-28"></a> <span class="n">get_products</span><span class="p">(</span><span class="s1">'http://giffgaff.com/samsung/samsung-galaxy-s5/phone-details'</span><span class="p">)</span>
+<td class="linenos linenodiv"><a href="posts/giffgaffbot.html#rest_code_17aa882838464f0c8b79803f843b5780-28"><code data-line-number="28"></code></a></td>
+<td class="code"><code><a id="rest_code_17aa882838464f0c8b79803f843b5780-28" name="rest_code_17aa882838464f0c8b79803f843b5780-28"></a> <span class="n">get_products</span><span class="p">(</span><span class="s1">'http://giffgaff.com/samsung/samsung-galaxy-s5/phone-details'</span><span class="p">)</span>
 </code></td>
 </tr>
 </table></div>
@@ -644,7 +644,7 @@ mode ESC)</p></li>
    :%s/\n/ /cg - replace all spaces with enter in all lines but with confirmation<br></p>
 </blockquote>
 </section><hr class="docutils">
-<section id="id1"><h3>Indedation</h3>
+<section id="indedation-1"><h3>Indedation</h3>
 <blockquote>
 <kbd>v</kbd> then select block you want indent and press number of indedations<kbd>2</kbd><kbd>&gt;</kbd> -  execute indentation on the selected block</blockquote>
 </section><section id="marking-text-visual-mode"><h3>Marking text (visual mode)</h3>
@@ -853,7 +853,7 @@ then I -text ESC</p>
 <li class="previous">
                 <a href="index-2.html" rel="prev">Newer posts</a>
             </li>
-        </ul></nav><script>var disqus_shortname="stencel";(function(){var a=document.createElement("script");a.async=true;a.src="https://"+disqus_shortname+".disqus.com/count.js";(document.getElementsByTagName("head")[0]||document.getElementsByTagName("body")[0]).appendChild(a)}());</script><footer id="footer"><p>Contents © 2023         <a href="mailto:gstencel@gmail.com">Greg Stencel</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         </p>
+        </ul></nav><script>var disqus_shortname="stencel";(function(){var a=document.createElement("script");a.async=true;a.src="https://"+disqus_shortname+".disqus.com/count.js";(document.getElementsByTagName("head")[0]||document.getElementsByTagName("body")[0]).appendChild(a)}());</script><footer id="footer"><p>Contents © 2025         <a href="mailto:gstencel@gmail.com">Greg Stencel</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         </p>
             
         </footer>
 </div>

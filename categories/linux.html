@@ -137,7 +137,7 @@ $ xrandr --output LVDS1 --pos 400x500</p>
 </div>
     </header><div class="e-content entry-content">
     <p>To display total size of each subdirectory</p>
-<div class="code"><pre class="code bash"><a id="rest_code_cb9c5aaf0cc849a7b8ec565b0f8e1e32-1" name="rest_code_cb9c5aaf0cc849a7b8ec565b0f8e1e32-1" href="../posts/linux-diplay-size-of-each-subdirectory.html#rest_code_cb9c5aaf0cc849a7b8ec565b0f8e1e32-1"></a>du -sh *
+<div class="code"><pre class="code bash"><a id="rest_code_aad3702a17784ff2a58c5c0fcdfad0b7-1" name="rest_code_aad3702a17784ff2a58c5c0fcdfad0b7-1" href="../posts/linux-diplay-size-of-each-subdirectory.html#rest_code_aad3702a17784ff2a58c5c0fcdfad0b7-1"></a>du<span class="w"> </span>-sh<span class="w"> </span>*
 </pre></div>
 <p>-h human readable displays MB and GB instead of milions and bilions of bytes :)
 -s summarize total size of dir</p>
@@ -178,7 +178,7 @@ $ xrandr --output LVDS1 --pos 400x500</p>
         </p>
 </div>
     </header><div class="e-content entry-content">
-    <div class="code"><pre class="code bash"><a id="rest_code_bf36599356854faa96a30a4c42c4ef07-1" name="rest_code_bf36599356854faa96a30a4c42c4ef07-1" href="../posts/list-all-users-crontab-jobs.html#rest_code_bf36599356854faa96a30a4c42c4ef07-1"></a><span class="k">for</span> usr <span class="k">in</span> <span class="k">$(</span>cut -f1 -d: /etc/passwd<span class="k">)</span><span class="p">;</span> <span class="k">do</span> <span class="nb">echo</span> <span class="nv">$usr</span><span class="p">;</span> crontab -u <span class="nv">$usr</span> -l<span class="p">;</span> <span class="k">done</span>
+    <div class="code"><pre class="code bash"><a id="rest_code_7eb2ebf0ae57418a99bdf43097dcb91e-1" name="rest_code_7eb2ebf0ae57418a99bdf43097dcb91e-1" href="../posts/list-all-users-crontab-jobs.html#rest_code_7eb2ebf0ae57418a99bdf43097dcb91e-1"></a><span class="k">for</span><span class="w"> </span>usr<span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">$(</span>cut<span class="w"> </span>-f1<span class="w"> </span>-d:<span class="w"> </span>/etc/passwd<span class="k">)</span><span class="p">;</span><span class="w"> </span><span class="k">do</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="nv">$usr</span><span class="p">;</span><span class="w"> </span>crontab<span class="w"> </span>-u<span class="w"> </span><span class="nv">$usr</span><span class="w"> </span>-l<span class="p">;</span><span class="w"> </span><span class="k">done</span>
 </pre></div>
     </div>
     </article><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="../posts/linux-suspended-jobs.html" class="u-url">Linux suspended jobs</a></h1>
@@ -229,17 +229,17 @@ remotely. It can be usefull when you're in place with big packet loss and you of
 restoring database  you should be in screen session because when something will disconnect you you can alwas log in and
 connect to screen session in which restoring is taking place.</p>
 <p>So executing</p>
-<div class="code"><pre class="code bash"><a id="rest_code_6db23e24e67a4b2ba385c6e834975f88-1" name="rest_code_6db23e24e67a4b2ba385c6e834975f88-1" href="../posts/running-scripts-in-background-linux.html#rest_code_6db23e24e67a4b2ba385c6e834975f88-1"></a>$./my_script.sh <span class="p">&amp;</span>
+<div class="code"><pre class="code bash"><a id="rest_code_48cc0181b9c148de9fac89a339371b14-1" name="rest_code_48cc0181b9c148de9fac89a339371b14-1" href="../posts/running-scripts-in-background-linux.html#rest_code_48cc0181b9c148de9fac89a339371b14-1"></a>$./my_script.sh<span class="w"> </span><span class="p">&amp;</span>
 </pre></div>
 <p>will be only running when your session is still active so when you'll logout it will be killed.</p>
 <p>To run it independent from your presence on server do it with nohup:</p>
-<div class="code"><pre class="code bash"><a id="rest_code_c8acd3ebf61e45aca4af481e7e35bb92-1" name="rest_code_c8acd3ebf61e45aca4af481e7e35bb92-1" href="../posts/running-scripts-in-background-linux.html#rest_code_c8acd3ebf61e45aca4af481e7e35bb92-1"></a>$ nohup ./my_script.sh <span class="p">&amp;</span>
+<div class="code"><pre class="code bash"><a id="rest_code_81bee0de322d49c7b728744650c993de-1" name="rest_code_81bee0de322d49c7b728744650c993de-1" href="../posts/running-scripts-in-background-linux.html#rest_code_81bee0de322d49c7b728744650c993de-1"></a>$<span class="w"> </span>nohup<span class="w"> </span>./my_script.sh<span class="w"> </span><span class="p">&amp;</span>
 </pre></div>
 <p>To launch screen :</p>
-<div class="code"><pre class="code bash"><a id="rest_code_f42663c421e24caeb6f120d6e81cfc82-1" name="rest_code_f42663c421e24caeb6f120d6e81cfc82-1" href="../posts/running-scripts-in-background-linux.html#rest_code_f42663c421e24caeb6f120d6e81cfc82-1"></a>$ screen
+<div class="code"><pre class="code bash"><a id="rest_code_16d93f33fac54238a86d3b710bf0d56e-1" name="rest_code_16d93f33fac54238a86d3b710bf0d56e-1" href="../posts/running-scripts-in-background-linux.html#rest_code_16d93f33fac54238a86d3b710bf0d56e-1"></a>$<span class="w"> </span>screen
 </pre></div>
 <p>Best practice is to launch screen with its name :</p>
-<div class="code"><pre class="code bash"><a id="rest_code_e9a7054050694ee89fe31b8f2e85723a-1" name="rest_code_e9a7054050694ee89fe31b8f2e85723a-1" href="../posts/running-scripts-in-background-linux.html#rest_code_e9a7054050694ee89fe31b8f2e85723a-1"></a>$ screen -S my_own_screen_name
+<div class="code"><pre class="code bash"><a id="rest_code_b5e568baadb34616a6c7193d8352d94f-1" name="rest_code_b5e568baadb34616a6c7193d8352d94f-1" href="../posts/running-scripts-in-background-linux.html#rest_code_b5e568baadb34616a6c7193d8352d94f-1"></a>$<span class="w"> </span>screen<span class="w"> </span>-S<span class="w"> </span>my_own_screen_name
 </pre></div>
 Then if you want detach screen to get back later
 
@@ -247,16 +247,16 @@ Then if you want detach screen to get back later
 
 If you want terminate screen just
 <kbd>Ctrl</kbd><kbd>d</kbd> or exit<p>then you can resume it with:</p>
-<div class="code"><pre class="code bash"><a id="rest_code_e760c454e0f248feb1d024f4c5454a97-1" name="rest_code_e760c454e0f248feb1d024f4c5454a97-1" href="../posts/running-scripts-in-background-linux.html#rest_code_e760c454e0f248feb1d024f4c5454a97-1"></a>$ screen -r my_own_screen_name
+<div class="code"><pre class="code bash"><a id="rest_code_ef9ebd7a4c384ef592e1a661054c2f32-1" name="rest_code_ef9ebd7a4c384ef592e1a661054c2f32-1" href="../posts/running-scripts-in-background-linux.html#rest_code_ef9ebd7a4c384ef592e1a661054c2f32-1"></a>$<span class="w"> </span>screen<span class="w"> </span>-r<span class="w"> </span>my_own_screen_name
 </pre></div>
 <p>To list all available screens :</p>
-<div class="code"><pre class="code bash"><a id="rest_code_bcff6131c110451daa276a26e5aa5e68-1" name="rest_code_bcff6131c110451daa276a26e5aa5e68-1" href="../posts/running-scripts-in-background-linux.html#rest_code_bcff6131c110451daa276a26e5aa5e68-1"></a>$ screen -ls
+<div class="code"><pre class="code bash"><a id="rest_code_4114683c04f44b91a4cc054d0cb76f90-1" name="rest_code_4114683c04f44b91a4cc054d0cb76f90-1" href="../posts/running-scripts-in-background-linux.html#rest_code_4114683c04f44b91a4cc054d0cb76f90-1"></a>$<span class="w"> </span>screen<span class="w"> </span>-ls
 </pre></div>
 <p>To attach to already attached screen:</p>
-<div class="code"><pre class="code bash"><a id="rest_code_c893a97a1d634aaf9db9a871f2fc95ae-1" name="rest_code_c893a97a1d634aaf9db9a871f2fc95ae-1" href="../posts/running-scripts-in-background-linux.html#rest_code_c893a97a1d634aaf9db9a871f2fc95ae-1"></a>$ screen -x my_own_screen_name
+<div class="code"><pre class="code bash"><a id="rest_code_438bcf8f632b4f85aeff0903b794bf3b-1" name="rest_code_438bcf8f632b4f85aeff0903b794bf3b-1" href="../posts/running-scripts-in-background-linux.html#rest_code_438bcf8f632b4f85aeff0903b794bf3b-1"></a>$<span class="w"> </span>screen<span class="w"> </span>-x<span class="w"> </span>my_own_screen_name
 </pre></div>
 <p>To attach to attached screen and detach others:</p>
-<div class="code"><pre class="code bash"><a id="rest_code_0971384fa7fd4544a56762fb41cf8296-1" name="rest_code_0971384fa7fd4544a56762fb41cf8296-1" href="../posts/running-scripts-in-background-linux.html#rest_code_0971384fa7fd4544a56762fb41cf8296-1"></a>$ screen -r -d my_own_screen_name
+<div class="code"><pre class="code bash"><a id="rest_code_8db5850cdb494dc0876ae127bb993aae-1" name="rest_code_8db5850cdb494dc0876ae127bb993aae-1" href="../posts/running-scripts-in-background-linux.html#rest_code_8db5850cdb494dc0876ae127bb993aae-1"></a>$<span class="w"> </span>screen<span class="w"> </span>-r<span class="w"> </span>-d<span class="w"> </span>my_own_screen_name
 </pre></div>
 <p>To rename existing screen:</p>
 (being attached):
@@ -283,17 +283,17 @@ to my coleague so I thought to display something on his screen.</p>
 I read about pseudoterminals "pts"  they are inside /dev directory</p>
 <p>Yea yea I know 3 rules of admin : Respect the privacy of others. Think before you type. With great power comes great responsibility bla bla bla ...</p>
 <p>To do this joke just check who is logged in and on which pts is he :</p>
-<div class="code"><pre class="code bash"><a id="rest_code_6e9c82d30b3246b9a2566f59d4ff455b-1" name="rest_code_6e9c82d30b3246b9a2566f59d4ff455b-1" href="../posts/easy-admin-joke.html#rest_code_6e9c82d30b3246b9a2566f59d4ff455b-1"></a>$ who
-<a id="rest_code_6e9c82d30b3246b9a2566f59d4ff455b-2" name="rest_code_6e9c82d30b3246b9a2566f59d4ff455b-2" href="../posts/easy-admin-joke.html#rest_code_6e9c82d30b3246b9a2566f59d4ff455b-2"></a>greg     pts/3        <span class="m">2012</span>-03-10 <span class="m">1</span>:26 <span class="o">(</span>:0<span class="o">)</span>
-<a id="rest_code_6e9c82d30b3246b9a2566f59d4ff455b-3" name="rest_code_6e9c82d30b3246b9a2566f59d4ff455b-3" href="../posts/easy-admin-joke.html#rest_code_6e9c82d30b3246b9a2566f59d4ff455b-3"></a>mark     pts/5        <span class="m">2012</span>-03-10 <span class="m">10</span>:29 <span class="o">(</span>:0<span class="o">)</span>
-<a id="rest_code_6e9c82d30b3246b9a2566f59d4ff455b-4" name="rest_code_6e9c82d30b3246b9a2566f59d4ff455b-4" href="../posts/easy-admin-joke.html#rest_code_6e9c82d30b3246b9a2566f59d4ff455b-4"></a>jenny    pts/7        <span class="m">2012</span>-03-10 <span class="m">13</span>:06 <span class="o">(</span>:0<span class="o">)</span>
+<div class="code"><pre class="code bash"><a id="rest_code_7a01788a4d954b32b73a3035c5a6f6a9-1" name="rest_code_7a01788a4d954b32b73a3035c5a6f6a9-1" href="../posts/easy-admin-joke.html#rest_code_7a01788a4d954b32b73a3035c5a6f6a9-1"></a>$<span class="w"> </span>who
+<a id="rest_code_7a01788a4d954b32b73a3035c5a6f6a9-2" name="rest_code_7a01788a4d954b32b73a3035c5a6f6a9-2" href="../posts/easy-admin-joke.html#rest_code_7a01788a4d954b32b73a3035c5a6f6a9-2"></a>greg<span class="w">     </span>pts/3<span class="w">        </span><span class="m">2012</span>-03-10<span class="w"> </span><span class="m">1</span>:26<span class="w"> </span><span class="o">(</span>:0<span class="o">)</span>
+<a id="rest_code_7a01788a4d954b32b73a3035c5a6f6a9-3" name="rest_code_7a01788a4d954b32b73a3035c5a6f6a9-3" href="../posts/easy-admin-joke.html#rest_code_7a01788a4d954b32b73a3035c5a6f6a9-3"></a>mark<span class="w">     </span>pts/5<span class="w">        </span><span class="m">2012</span>-03-10<span class="w"> </span><span class="m">10</span>:29<span class="w"> </span><span class="o">(</span>:0<span class="o">)</span>
+<a id="rest_code_7a01788a4d954b32b73a3035c5a6f6a9-4" name="rest_code_7a01788a4d954b32b73a3035c5a6f6a9-4" href="../posts/easy-admin-joke.html#rest_code_7a01788a4d954b32b73a3035c5a6f6a9-4"></a>jenny<span class="w">    </span>pts/7<span class="w">        </span><span class="m">2012</span>-03-10<span class="w"> </span><span class="m">13</span>:06<span class="w"> </span><span class="o">(</span>:0<span class="o">)</span>
 </pre></div>
 <p>So now, we know that Mark is working on pts/5 so lets send him message :)</p>
-<div class="code"><pre class="code bash"><a id="rest_code_bd32de3618ea49788540bbb2f5c10a98-1" name="rest_code_bd32de3618ea49788540bbb2f5c10a98-1" href="../posts/easy-admin-joke.html#rest_code_bd32de3618ea49788540bbb2f5c10a98-1"></a>$ <span class="nb">echo</span> <span class="s2">"In 5 minutes in toilet /Jenny"</span> &gt; /dev/pts/5
+<div class="code"><pre class="code bash"><a id="rest_code_7a1b67cae1534b018277754f9c789ab1-1" name="rest_code_7a1b67cae1534b018277754f9c789ab1-1" href="../posts/easy-admin-joke.html#rest_code_7a1b67cae1534b018277754f9c789ab1-1"></a>$<span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s2">"In 5 minutes in toilet /Jenny"</span><span class="w"> </span>&gt;<span class="w"> </span>/dev/pts/5
 </pre></div>
 <p>To "clean evidences" :D ( remember that guy working on this terminal will lost his current works he's working on this
 specific terminal)</p>
-<div class="code"><pre class="code bash"><a id="rest_code_d7d7dc8f2cfe4df3934056e2735e10ea-1" name="rest_code_d7d7dc8f2cfe4df3934056e2735e10ea-1" href="../posts/easy-admin-joke.html#rest_code_d7d7dc8f2cfe4df3934056e2735e10ea-1"></a>$ cat /dev/urandom &gt; /dev/pts/5
+<div class="code"><pre class="code bash"><a id="rest_code_f5ebb5990f7d430db715b43879756427-1" name="rest_code_f5ebb5990f7d430db715b43879756427-1" href="../posts/easy-admin-joke.html#rest_code_f5ebb5990f7d430db715b43879756427-1"></a>$<span class="w"> </span>cat<span class="w"> </span>/dev/urandom<span class="w"> </span>&gt;<span class="w"> </span>/dev/pts/5
 </pre></div>
     </div>
     </article>
@@ -302,7 +302,7 @@ specific terminal)</p>
 
 
     
-       <script>var disqus_shortname="stencel";(function(){var a=document.createElement("script");a.async=true;a.src="https://"+disqus_shortname+".disqus.com/count.js";(document.getElementsByTagName("head")[0]||document.getElementsByTagName("body")[0]).appendChild(a)}());</script><footer id="footer"><p>Contents © 2023         <a href="mailto:gstencel@gmail.com">Greg Stencel</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         </p>
+       <script>var disqus_shortname="stencel";(function(){var a=document.createElement("script");a.async=true;a.src="https://"+disqus_shortname+".disqus.com/count.js";(document.getElementsByTagName("head")[0]||document.getElementsByTagName("body")[0]).appendChild(a)}());</script><footer id="footer"><p>Contents © 2025         <a href="mailto:gstencel@gmail.com">Greg Stencel</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         </p>
             
         </footer>
 </div>

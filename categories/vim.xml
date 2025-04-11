@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Greg's Tech Notes (Posts about vim)</title><link>https://stencel.io/</link><description></description><atom:link href="https://stencel.io/categories/vim.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><copyright>Contents © 2023 &lt;a href="mailto:gstencel@gmail.com"&gt;Greg Stencel&lt;/a&gt; </copyright><lastBuildDate>Sat, 06 May 2023 20:05:03 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Quick vi / vim tutorial</title><link>https://stencel.io/posts/vim.html</link><dc:creator>Greg Stencel</dc:creator><description>&lt;p&gt;This site is written to promote using VIM cause it's free, it has a lot
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Greg's Tech Notes (Posts about vim)</title><link>https://stencel.io/</link><description></description><atom:link href="https://stencel.io/categories/vim.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><copyright>Contents © 2025 &lt;a href="mailto:gstencel@gmail.com"&gt;Greg Stencel&lt;/a&gt; </copyright><lastBuildDate>Fri, 11 Apr 2025 06:59:42 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Quick vi / vim tutorial</title><link>https://stencel.io/posts/vim.html</link><dc:creator>Greg Stencel</dc:creator><description>&lt;p&gt;This site is written to promote using VIM cause it's free, it has a lot
 of plugins and it can even be python IDE ;) and vi is also on every unix
 like system so logging to your clean instalation server it's good to
 know how to edit conf files.&lt;/p&gt;
@@ -105,7 +105,7 @@ mode ESC)&lt;/p&gt;&lt;/li&gt;
  &lt;/p&gt;&lt;/blockquote&gt;
 &lt;/section&gt;
 &lt;hr class="docutils"&gt;
-&lt;section id="id1"&gt;
+&lt;section id="indedation-1"&gt;
 &lt;h3&gt;Indedation&lt;/h3&gt;
 &lt;blockquote&gt;
 &lt;kbd&gt;v&lt;/kbd&gt; then select block you want indent and press number of indedations&lt;kbd&gt;2&lt;/kbd&gt;&lt;kbd&gt;&amp;gt;&lt;/kbd&gt; -  execute indentation on the selected block&lt;/blockquote&gt;

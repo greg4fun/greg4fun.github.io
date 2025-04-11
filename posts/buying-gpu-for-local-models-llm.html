@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html prefix="        og: http://ogp.me/ns# article: http://ogp.me/ns/article#     " vocab="http://ogp.me/ns" lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+<title>Buying GPU for local models (llm) | Greg's Tech Notes</title>
+<link href="https://fonts.googleapis.com/css?family=Bitter:400,400i,700" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+<link href="../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../rss.xml">
+<link rel="canonical" href="https://stencel.io/posts/buying-gpu-for-local-models-llm.html">
+<!--[if lt IE 9]><script src="../assets/js/html5shiv-printshiv.min.js"></script><![endif]--><meta name="author" content="Greg Stencel">
+<link rel="prev" href="building-an-intelligent-nerf-turret-with-jetson-nano-a-journey-into-diy-robotics-and-ai.html" title="Building an Intelligent Nerf Turret with Jetson Nano: A Journey into DIY Robotics and AI" type="text/html">
+<link rel="next" href="apple-silicon-limitations-with-usage-on-local-llm%20.html" title="Apple silicon limitations with usage on local LLM " type="text/html">
+<meta property="og:site_name" content="Greg's Tech Notes">
+<meta property="og:title" content="Buying GPU for local models (llm)">
+<meta property="og:url" content="https://stencel.io/posts/buying-gpu-for-local-models-llm.html">
+<meta property="og:description" content="Buying GPU for Running Large Parameter Models (LLMs) on Your Local Machine
+
+Introduction and Motivation
+Running large language models locally comes with one major challenge: memory. I learned this fir">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2025-04-08T21:34:55Z">
+</head>
+<body>
+    <a href="#page-content" class="sr-only sr-only-focusable">Skip to main content</a>
+    
+    <section class="social"><ul>
+<li><p style="color:#fff;font-size:3em;">stencel.io</p></li>
+        <li><p style="color:#fff;font-size:2em;">greg's tech notes</p></li>
+            <li>
+                <a href="https://stencel.io/">
+                    <img src="../images/aboutme.png" alt="Greg's Tech Notes" id="logo"></a>
+            </li>
+        
+            <li><a href="../index.html" title="Home"><i class="fa fa-home"></i></a></li>
+            <li><a href="../archive.html" title="Archives"><i class="fa fa-folder-open"></i></a></li>
+            <li><a href="../categories/index.html" title="Tags"><i class="fa fa-tags"></i></a></li>
+            <li><a href="https://www.linkedin.com/in/gregstencel/" title="My Linkedin"><i class="fab fa-linkedin"></i></a></li>
+            <li><a href="https://github.com/greg4fun" title="My Github"><i class="fab fa-github"></i></a></li>
+    
+    
+
+        </ul></section><section class="page-content"><div class="content" rel="main">
+            
+<article class="post-text h-entry hentry postpage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="#" class="u-url">Buying GPU for local models (llm)</a></h1>
+
+        <div class="metadata">
+            <p class="dateline"><a href="#" rel="bookmark"><i class="fa fa-clock"></i> <time class="published dt-published" datetime="2025-04-08T21:34:55Z" itemprop="datePublished" title="2025-04-08 21:34">2025-04-08 21:34</time></a></p>
+            <p class="byline author vcard"> <i class="fa fa-user"></i> <span class="byline-name fn" itemprop="author">
+                    Greg Stencel
+            </span></p>
+                <p class="commentline"><i class="far fa-comment"></i>
+    
+    <a href="buying-gpu-for-local-models-llm.html#disqus_thread" data-disqus-identifier="cache/posts/buying-gpu-for-local-models-llm.html">Comments</a>
+
+
+            
+        </p>
+<p class="sourceline"><a href="buying-gpu-for-local-models-llm.rst" class="sourcelink"><i class="fa fa-file-code"></i> Source</a></p>
+
+            
+
+            
+
+        </div>
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+    <section id="buying-gpu-for-running-large-parameter-models-llms-on-your-local-machine"><h2>Buying GPU for Running Large Parameter Models (LLMs) on Your Local Machine</h2>
+<section id="introduction-and-motivation"><h3>Introduction and Motivation</h3>
+<p>Running large language models locally comes with one major challenge: <strong>memory</strong>. I learned this firsthand using an NVIDIA RTX 4090 with 24 GB of VRAM. While the 4090’s raw performance is stellar, its limited VRAM quickly became a bottleneck when attempting to run models beyond roughly 30 billion parameters – the largest models simply wouldn’t fit in memory, leading to crashes or severe slowdowns. In other words, <em>memory size is key – even more important than memory speed or GPU compute power when it comes to huge LLMs</em>.</p>
+<p>This realization led me to explore alternatives that offer more memory per dollar. I discovered that Apple Silicon, specifically the <strong>Apple M1 Ultra</strong> system-on-chip with <strong>128 GB of unified memory</strong>, provides an excellent GB/$ ratio for local AI work. Unlike a discrete GPU, Apple’s unified memory architecture lets the GPU dynamically use a large pool of system memory at very high bandwidth (around 800 GB/s). Practically, this meant I could load models that a 24 GB GPU could not. For example, the <strong>DeepSeek R1 70B</strong> model (70 billion parameters) requires roughly <em>43–48 GB</em> of memory even in quantized form – well above the 4090’s VRAM. On the M1 Ultra (128 GB), I was able to run DeepSeek 70B locally by using 5-bit quantization to reduce the model size to around 43 GB, fitting comfortably in unified memory. The high memory bandwidth helps feed the model data to the GPU cores efficiently, minimizing slowdowns. This was a revelatory experience: a compact desktop (Mac Studio with M1 Ultra) could handle a 70B model that would normally require multi-GPU servers.</p>
+<p>It’s worth noting this experiment took place before Apple’s <strong>M3 Ultra</strong> chip was released. The M1 Ultra proved the value of massive memory capacity for LLMs. Since then, newer hardware (like M3 Ultra and upcoming NVIDIA GPUs) has further shifted the landscape by offering even more memory or bandwidth. In the remainder of this article, we’ll compare several consumer-grade hardware options for running large LLMs locally, focusing on memory capacity, bandwidth, quantization support, model size limits, performance (measured in tokens per second), power efficiency, and cost effectiveness. We’ll also mention which popular models (such as LLaMA, DeepSeek, Mistral, Mixtral, etc.) can be run on each platform given these constraints.</p>
+</section><section id="key-considerations-for-local-llm-hardware"><h3>Key Considerations for Local LLM Hardware</h3>
+<p>Before diving into hardware specifics, it’s important to understand the factors that determine whether a given system can run a large LLM:</p>
+<ul class="simple">
+<li><p><strong>Memory Capacity (VRAM or Unified RAM):</strong>
+Large models demand <em>tens or hundreds of gigabytes</em> of memory. For example, a 65B parameter model in 16-bit floating point requires roughly 130 GB, and even 4-bit quantized versions can be 30–40 GB in size. If the model doesn’t fully fit in GPU memory, it must be offloaded to CPU RAM—which dramatically hurts throughput due to slower data transfer speeds. Apple’s unified memory allows using up to 128–192 GB (or more on newer systems) seamlessly for GPU tasks, whereas PC GPUs are currently limited to 24 GB (4090) or 48 GB (professional cards) per card. <strong>Having enough memory is the primary requirement</strong> to avoid performance issues.</p></li>
+<li><p><strong>Memory Bandwidth:</strong>
+Once a model fits, how quickly the GPU can access model data influences token generation speed. For instance, the NVIDIA RTX 4090 delivers about 1000 GB/s bandwidth from its VRAM, whereas Apple’s M1, M2, and M3 Ultra provide around 800 GB/s. Higher bandwidth means the model’s parameters and activations can be moved faster, which boosts tokens per second. (By comparison, CPU memory bandwidth is much lower, which is why pure CPU inference is significantly slower.)</p></li>
+<li><p><strong>Quantization and Model Precision:</strong>
+Running models at lower precision (such as int4/int5 via GGML or GGUF quantization) is a game-changer for local inference. Quantization can reduce a model’s size by 2–4× with minimal quality loss, enabling larger models to fit into limited memory. For example, LLaMA2 70B in 4-bit mode is roughly 35–40 GB—a size that could fit on a 48 GB GPU or in unified memory—whereas the full 16-bit model would be approximately 140 GB. While all the hardware options discussed can run quantized models, not all can handle full-precision models. In each section below, the maximum model size possible in full precision is noted where applicable.</p></li>
+<li><p><strong>Compute Throughput (GPU Cores/Tensor Cores):</strong>
+Once memory is sufficient, the raw speed of the GPU or accelerator determines how many tokens per second you can generate. NVIDIA’s GPUs excel with thousands of CUDA and Tensor cores, whereas Apple’s GPUs have fewer compute units but aim to compensate with efficiency. A high-end NVIDIA card may generate tokens faster on a given model, but if VRAM is insufficient, it may need to use a smaller quantization scheme or offload to CPU, affecting speed.</p></li>
+<li><p><strong>Power Efficiency:</strong>
+For users planning continuous inference or using a personal workstation, power consumption is important. A PC with a 4090 may draw 500–600 W under load, while Apple’s SoCs draw a fraction of that—often around 150–200 W for the entire system. Lower power usage can lead to long-term savings, less heat, and quieter operation.</p></li>
+<li><p><strong>Cost (Price per GB and Tokens per Dollar):</strong>
+Considering the high cost of consumer GPUs and Apple systems, it’s useful to compare cost effectiveness. For example, the M1 Ultra with 128 GB of unified memory offers a lower cost per GB than a single NVIDIA RTX 4090 (which has only 24 GB). However, if you are only working with models that fit in 24 GB, you may achieve higher tokens per second per dollar with an NVIDIA card. The trade-offs are clear: choose based on whether raw speed or maximum memory capacity is more important for your specific LLM use cases.</p></li>
+</ul></section><section id="comparative-hardware-options-for-local-llms"><h3>Comparative Hardware Options for Local LLMs</h3>
+<p>In this section, we compare five consumer-level hardware setups for running large LLMs locally:</p>
+<ul class="simple">
+<li><p><strong>NVIDIA GeForce RTX 4090 (24 GB GDDR6X VRAM)</strong> – Current generation flagship GPU.</p></li>
+<li><p><strong>NVIDIA GeForce RTX 5090 (32 GB GDDR7 VRAM, upcoming)</strong> – Next-generation flagship (based on leaked specifications).</p></li>
+<li><p><strong>Apple M1 Ultra (128 GB Unified Memory)</strong> – Apple Silicon (2022) with unified CPU/GPU memory.</p></li>
+<li><p><strong>Apple M2 Ultra (192 GB Unified Memory)</strong> – Updated Apple Silicon (2023) with increased cores and memory.</p></li>
+<li><p><strong>Apple M3 Ultra (up to 512 GB Unified Memory)</strong> – Latest high-end Apple Silicon (2025).</p></li>
+</ul>
+<p>For each, the discussion below covers memory capacity and bandwidth, ability to run quantized versus full-precision models, performance (tokens per second), power efficiency, cost, and example model sizes that run well.</p>
+<p>### NVIDIA RTX 4090 (24 GB VRAM)</p>
+<p>The <strong>RTX 4090</strong> is a powerhouse GPU based on NVIDIA’s Ada Lovelace architecture. It features 16,384 CUDA cores and 24 GB of GDDR6X VRAM on a 384-bit bus, delivering approximately 1000 GB/s of memory bandwidth. Its strength is in raw throughput: for models that fit in 24 GB, the 4090 can generate tokens very quickly. For example, running a 7–13B parameter model (such as LLaMA-13B) with 4-bit quantization can yield generation speeds in the range of 100–130 tokens per second. Even a 30B model (when quantized) can run at high speed on this card.</p>
+<p>However, 24 GB of VRAM is insufficient for the largest models. A 65B model quantized to 4-bit (approximately 35–40 GB) cannot fit entirely in a single 4090’s memory. Workarounds include enabling CPU offloading, but that results in significant slowdowns as the GPU waits for data from system RAM. As a result, the RTX 4090 excels for models up to about 30B but is limited when it comes to 65B–70B models (though these can run with compromises).</p>
+<p>On the plus side, the RTX 4090 is well supported by frameworks such as exllama and TensorRT. With the right optimizations, users have achieved around 30–35 tokens per second even on a 70B model by streaming weights from the CPU. In summary, the 4090 offers excellent performance per dollar for midsize LLMs, but its 24 GB VRAM creates an upper limit on model size.</p>
+<p>### NVIDIA RTX 5090 (Leaked Next-Gen, 32 GB VRAM)</p>
+<p>While NVIDIA has not officially released the RTX 5090, credible leaks suggest it will feature <strong>32 GB of GDDR7 VRAM</strong> on a widened 512-bit bus, with a memory bandwidth of roughly 1.8 TB/s. This upgrade will increase the maximum model size that can reside entirely on the GPU. Although a 70B model quantized to 4-bit (around 35–40 GB) may still push the limits, the increased VRAM makes it more feasible to handle larger or moderately quantized models with minimal offloading.</p>
+<p>Performance improvements are expected from increased core counts and higher bandwidth. Extrapolations indicate token throughput could be 1.5–2× that of the 4090 on models that fit entirely on GPU, meaning significantly faster speeds on midsize models and improved performance on larger ones when partial offloading is needed. However, the RTX 5090 is also anticipated to come with higher cost and power consumption, making it a premium choice for enthusiasts willing to pay for cutting-edge performance.</p>
+<p>### Apple M1 Ultra (128 GB Unified Memory)</p>
+<p>The <strong>Apple M1 Ultra</strong> is an entirely different approach. Rather than a discrete GPU, it is a system-on-chip (SoC) that combines CPU, GPU, and memory into one package. With up to <strong>128 GB of unified memory</strong> available to both CPU and GPU, and a memory bandwidth of around 800 GB/s, the M1 Ultra offers an outstanding memory capacity that allows very large models to be loaded entirely on device.</p>
+<p>With this memory pool, models like LLaMA2-70B in 4-bit (about 35–40 GB) or even 8-bit quantized models (70–80 GB) can be loaded without needing to offload portions to the CPU. Although the integrated GPU in the M1 Ultra is not as fast as high-end NVIDIA offerings (with a 70B model running at around 8–12 tokens/sec compared to higher speeds on a 4090), the system shines in its energy efficiency and simplicity. A Mac Studio built with M1 Ultra typically draws only about 150 W under load, in contrast to the much higher power draws of high-end discrete GPUs.</p>
+<p>In cost terms, while the system price of around $5,000 is premium, the cost per gigabyte of memory is very competitive compared to building a multi-GPU PC.</p>
+<p>### Apple M2 Ultra (192 GB Unified Memory)</p>
+<p>The <strong>Apple M2 Ultra</strong> (2023) builds on the strengths of the M1 Ultra. It can be configured with up to <strong>192 GB of unified memory</strong> and features a GPU with up to 76 cores. While the memory bandwidth remains at about 800 GB/s, the M2 Ultra’s more powerful GPU improves performance—making it roughly 20–30% faster than the M1 Ultra on many tasks.</p>
+<p>The increased memory capacity allows for even larger models or larger contexts, such as loading a full LLaMA2-70B in FP16 (if carefully optimized) or running two large models simultaneously. Although the token generation speed on very large models is still limited (around 36 tokens/sec on a 13B model, for instance), the M2 Ultra represents the upper limit of single-machine LLM hosting for many real-world applications, while consuming far less power than an equivalent NVIDIA system.</p>
+<p>### Apple M3 Ultra (512 GB Unified Memory, 2025)</p>
+<p>The latest in Apple’s lineup, the <strong>M3 Ultra</strong>, takes things to a new extreme. With configurations available up to <strong>512 GB of unified memory</strong> and an 80-core GPU, it is designed for tasks that require massive memory capacity. Although the memory bandwidth remains similar at roughly 800 GB/s, the overall architectural improvements and the sheer number of GPU cores significantly increase compute performance.</p>
+<p>For LLM practitioners, the 512 GB option means that virtually any open-source model available—even future models with hundreds of billions of parameters—can be loaded on a single machine. In practice, this allows researchers to experiment with extremely large models, long context lengths, or even load multiple models concurrently. While the price for such configurations can be well above $10,000, the balance of extreme memory, acceptable compute speeds, and exceptional power efficiency makes the M3 Ultra an attractive platform for those who need uncompromised model size within a desktop environment.</p>
+</section><section id="comparative-summary"><h3>Comparative Summary</h3>
+<p>Below is a summary table comparing these hardware options:</p>
+<table>
+<thead><tr>
+<th class="head"><p><strong>Hardware</strong></p></th>
+<th class="head"><p><strong>Memory</strong></p></th>
+<th class="head"><p><strong>Bandwidth</strong></p></th>
+<th class="head"><p><strong>Power (TDP)</strong></p></th>
+<th class="head"><p><strong>Approx Price</strong></p></th>
+</tr></thead>
+<tbody>
+<tr>
+<td><p>NVIDIA RTX 4090</p></td>
+<td><p>24 GB GDDR6X</p></td>
+<td><p>~1000 GB/s</p></td>
+<td><p>450 W</p></td>
+<td><p>~$1,600 (GPU only)</p></td>
+</tr>
+<tr>
+<td><p>NVIDIA RTX 5090</p></td>
+<td><p>32 GB GDDR7</p></td>
+<td><p>~1.8 TB/s</p></td>
+<td><p>~600 W (est.)</p></td>
+<td><p>~$2,000 (est.)</p></td>
+</tr>
+<tr>
+<td><p>Apple M1 Ultra</p></td>
+<td><p>64–128 GB Unified</p></td>
+<td><p>~800 GB/s</p></td>
+<td><p>~90 W (chip)</p></td>
+<td><p>~$5,000 (system)</p></td>
+</tr>
+<tr>
+<td><p>Apple M2 Ultra</p></td>
+<td><p>64–192 GB Unified</p></td>
+<td><p>~800 GB/s</p></td>
+<td><p>~90 W (chip)</p></td>
+<td><p>~$4,000–$7,000 (system)</p></td>
+</tr>
+<tr>
+<td><p>Apple M3 Ultra</p></td>
+<td><p>96–512 GB Unified</p></td>
+<td><p>800+ GB/s</p></td>
+<td><p>~150 W (est.)</p></td>
+<td><p>~$5,000–$10,000+ (system)</p></td>
+</tr>
+</tbody>
+</table>
+<p><em>Note: Prices for NVIDIA GPUs are for the card only, while Apple system prices reflect full workstation configurations. Bandwidth and power for the RTX 5090 and M3 Ultra are based on early leaks and estimates.</em></p>
+<section id="a-few-key-observations"><h4>A Few Key Observations</h4>
+<ul class="simple">
+<li><p><strong>Memory per Dollar:</strong>
+Apple’s offerings provide a tremendous amount of memory relative to their cost. For users whose primary goal is to run very large models, a Mac Studio with 128–192 GB (or even 512 GB) of unified memory can be more cost-effective than assembling a multi-GPU system to achieve similar memory capacity.</p></li>
+<li><p><strong>Raw Performance:</strong>
+NVIDIA GPUs lead in raw token generation throughput when the model fits entirely in VRAM. For models that do, the RTX 4090 (and the upcoming RTX 5090) offer faster response times. However, for extremely large models that exceed discrete GPU VRAM, performance may be compromised due to CPU offloading, at which point Apple Silicon’s unified memory systems offer a distinct advantage.</p></li>
+<li><p><strong>Scalability:</strong>
+NVIDIA’s multi-GPU configurations can further boost performance, although the complexity and power requirements rise. Apple’s integrated systems, while excellent in memory capacity, do not currently support multi-unit scaling in the same manner.</p></li>
+<li><p><strong>Power and Efficiency:</strong>
+Apple’s SoCs are far more power-efficient than high-end discrete GPUs. This is an important consideration for 24/7 inference tasks or when operating in thermally constrained environments.</p></li>
+<li><p><strong>Use Cases:</strong>
+For chat, coding, and inference tasks on models up to around 30B parameters, the NVIDIA RTX 4090 (or 5090) is an excellent choice. For models in the 65B–70B range or if absolute memory capacity is required for long-context or multiple simultaneous models, Apple’s M1, M2, and M3 Ultra systems offer a superior value proposition.</p></li>
+</ul></section></section><section id="conclusion"><h3>Conclusion</h3>
+<p>By understanding the memory requirements of large LLMs and the strengths of each hardware option, you can make an informed decision on the <strong>GPU (or SoC)</strong> to invest in for local AI work. Whether you choose the brute-force approach of a next-gen NVIDIA GPU or the memory-rich, energy-efficient approach of Apple Silicon, it’s an exciting time—the ability to run models that once required multi-GPU servers is now within reach on a desktop machine.</p>
+</section><section id="references"><h3>References</h3>
+<ul class="simple">
+<li><p>[llama.cpp Discussions on GitHub](<a class="reference external" href="https://github.com/ggml-org/llama.cpp/discussions/4167">https://github.com/ggml-org/llama.cpp/discussions/4167</a>)</p></li>
+</ul></section></section>
+</div>
+    <aside class="postpromonav"><nav><ul class="pager hidden-print">
+<li class="previous">
+                <a href="building-an-intelligent-nerf-turret-with-jetson-nano-a-journey-into-diy-robotics-and-ai.html" rel="prev" title="Building an Intelligent Nerf Turret with Jetson Nano: A Journey into DIY Robotics and AI">Previous post</a>
+            </li>
+            <li class="next">
+                <a href="apple-silicon-limitations-with-usage-on-local-llm%20.html" rel="next" title="Apple silicon limitations with usage on local LLM ">Next post</a>
+            </li>
+        </ul></nav></aside><section class="comments hidden-print"><h2>Comments</h2>
+        
+    
+        <div id="disqus_thread"></div>
+        <script>
+        var disqus_shortname ="stencel",
+            disqus_url="https://stencel.io/posts/buying-gpu-for-local-models-llm.html",
+        disqus_title="Buying GPU for local models (llm)",
+        disqus_identifier="cache/posts/buying-gpu-for-local-models-llm.html",
+        disqus_config = function () {
+            this.language = "en";
+        };
+        (function() {
+            var dsq = document.createElement('script'); dsq.async = true;
+            dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script><noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a>
+</noscript>
+    <a href="https://disqus.com" class="dsq-brlink" rel="nofollow">Comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+        </section></article><script>var disqus_shortname="stencel";(function(){var a=document.createElement("script");a.async=true;a.src="https://"+disqus_shortname+".disqus.com/count.js";(document.getElementsByTagName("head")[0]||document.getElementsByTagName("body")[0]).appendChild(a)}());</script><footer id="footer"><p>Contents © 2025         <a href="mailto:gstencel@gmail.com">Greg Stencel</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         </p>
+            
+        </footer>
+</div>
+    </section><script src="../assets/js/all-nocdn.js"></script><!-- fancy dates --><script>
+    moment.locale("en");
+    fancydates(0, "YYYY-MM-DD HH:mm");
+    </script><!-- end fancy dates --><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element) {
+            return element.getElementsByTagName('img')[0].alt;
+    }});
+    </script><script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-50641127-1', 'stencel.io');
+  ga('send', 'pageview');
+
+</script><script type="text/javascript" src="../assets/js/tipuesearch_set.js"></script><script type="text/javascript" src="../assets/js/tipuesearch.js"></script><script type="text/javascript">
+$(document).ready(function() {
+     $('#tipue_search_input').tipuesearch({
+         'mode': 'json',
+         'contentLocation': '/assets/js/tipuesearch_content.json',
+         'showUrl': false
+     });
+});
+</script>
+</body>
+</html>

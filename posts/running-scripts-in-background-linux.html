@@ -81,17 +81,17 @@ remotely. It can be usefull when you're in place with big packet loss and you of
 restoring database  you should be in screen session because when something will disconnect you you can alwas log in and
 connect to screen session in which restoring is taking place.</p>
 <p>So executing</p>
-<div class="code"><pre class="code bash"><a id="rest_code_6db23e24e67a4b2ba385c6e834975f88-1" name="rest_code_6db23e24e67a4b2ba385c6e834975f88-1" href="running-scripts-in-background-linux.html#rest_code_6db23e24e67a4b2ba385c6e834975f88-1"></a>$./my_script.sh <span class="p">&amp;</span>
+<div class="code"><pre class="code bash"><a id="rest_code_48cc0181b9c148de9fac89a339371b14-1" name="rest_code_48cc0181b9c148de9fac89a339371b14-1" href="running-scripts-in-background-linux.html#rest_code_48cc0181b9c148de9fac89a339371b14-1"></a>$./my_script.sh<span class="w"> </span><span class="p">&amp;</span>
 </pre></div>
 <p>will be only running when your session is still active so when you'll logout it will be killed.</p>
 <p>To run it independent from your presence on server do it with nohup:</p>
-<div class="code"><pre class="code bash"><a id="rest_code_c8acd3ebf61e45aca4af481e7e35bb92-1" name="rest_code_c8acd3ebf61e45aca4af481e7e35bb92-1" href="running-scripts-in-background-linux.html#rest_code_c8acd3ebf61e45aca4af481e7e35bb92-1"></a>$ nohup ./my_script.sh <span class="p">&amp;</span>
+<div class="code"><pre class="code bash"><a id="rest_code_81bee0de322d49c7b728744650c993de-1" name="rest_code_81bee0de322d49c7b728744650c993de-1" href="running-scripts-in-background-linux.html#rest_code_81bee0de322d49c7b728744650c993de-1"></a>$<span class="w"> </span>nohup<span class="w"> </span>./my_script.sh<span class="w"> </span><span class="p">&amp;</span>
 </pre></div>
 <p>To launch screen :</p>
-<div class="code"><pre class="code bash"><a id="rest_code_f42663c421e24caeb6f120d6e81cfc82-1" name="rest_code_f42663c421e24caeb6f120d6e81cfc82-1" href="running-scripts-in-background-linux.html#rest_code_f42663c421e24caeb6f120d6e81cfc82-1"></a>$ screen
+<div class="code"><pre class="code bash"><a id="rest_code_16d93f33fac54238a86d3b710bf0d56e-1" name="rest_code_16d93f33fac54238a86d3b710bf0d56e-1" href="running-scripts-in-background-linux.html#rest_code_16d93f33fac54238a86d3b710bf0d56e-1"></a>$<span class="w"> </span>screen
 </pre></div>
 <p>Best practice is to launch screen with its name :</p>
-<div class="code"><pre class="code bash"><a id="rest_code_e9a7054050694ee89fe31b8f2e85723a-1" name="rest_code_e9a7054050694ee89fe31b8f2e85723a-1" href="running-scripts-in-background-linux.html#rest_code_e9a7054050694ee89fe31b8f2e85723a-1"></a>$ screen -S my_own_screen_name
+<div class="code"><pre class="code bash"><a id="rest_code_b5e568baadb34616a6c7193d8352d94f-1" name="rest_code_b5e568baadb34616a6c7193d8352d94f-1" href="running-scripts-in-background-linux.html#rest_code_b5e568baadb34616a6c7193d8352d94f-1"></a>$<span class="w"> </span>screen<span class="w"> </span>-S<span class="w"> </span>my_own_screen_name
 </pre></div>
 Then if you want detach screen to get back later
 
@@ -99,16 +99,16 @@ Then if you want detach screen to get back later
 
 If you want terminate screen just
 <kbd>Ctrl</kbd><kbd>d</kbd> or exit<p>then you can resume it with:</p>
-<div class="code"><pre class="code bash"><a id="rest_code_e760c454e0f248feb1d024f4c5454a97-1" name="rest_code_e760c454e0f248feb1d024f4c5454a97-1" href="running-scripts-in-background-linux.html#rest_code_e760c454e0f248feb1d024f4c5454a97-1"></a>$ screen -r my_own_screen_name
+<div class="code"><pre class="code bash"><a id="rest_code_ef9ebd7a4c384ef592e1a661054c2f32-1" name="rest_code_ef9ebd7a4c384ef592e1a661054c2f32-1" href="running-scripts-in-background-linux.html#rest_code_ef9ebd7a4c384ef592e1a661054c2f32-1"></a>$<span class="w"> </span>screen<span class="w"> </span>-r<span class="w"> </span>my_own_screen_name
 </pre></div>
 <p>To list all available screens :</p>
-<div class="code"><pre class="code bash"><a id="rest_code_bcff6131c110451daa276a26e5aa5e68-1" name="rest_code_bcff6131c110451daa276a26e5aa5e68-1" href="running-scripts-in-background-linux.html#rest_code_bcff6131c110451daa276a26e5aa5e68-1"></a>$ screen -ls
+<div class="code"><pre class="code bash"><a id="rest_code_4114683c04f44b91a4cc054d0cb76f90-1" name="rest_code_4114683c04f44b91a4cc054d0cb76f90-1" href="running-scripts-in-background-linux.html#rest_code_4114683c04f44b91a4cc054d0cb76f90-1"></a>$<span class="w"> </span>screen<span class="w"> </span>-ls
 </pre></div>
 <p>To attach to already attached screen:</p>
-<div class="code"><pre class="code bash"><a id="rest_code_c893a97a1d634aaf9db9a871f2fc95ae-1" name="rest_code_c893a97a1d634aaf9db9a871f2fc95ae-1" href="running-scripts-in-background-linux.html#rest_code_c893a97a1d634aaf9db9a871f2fc95ae-1"></a>$ screen -x my_own_screen_name
+<div class="code"><pre class="code bash"><a id="rest_code_438bcf8f632b4f85aeff0903b794bf3b-1" name="rest_code_438bcf8f632b4f85aeff0903b794bf3b-1" href="running-scripts-in-background-linux.html#rest_code_438bcf8f632b4f85aeff0903b794bf3b-1"></a>$<span class="w"> </span>screen<span class="w"> </span>-x<span class="w"> </span>my_own_screen_name
 </pre></div>
 <p>To attach to attached screen and detach others:</p>
-<div class="code"><pre class="code bash"><a id="rest_code_0971384fa7fd4544a56762fb41cf8296-1" name="rest_code_0971384fa7fd4544a56762fb41cf8296-1" href="running-scripts-in-background-linux.html#rest_code_0971384fa7fd4544a56762fb41cf8296-1"></a>$ screen -r -d my_own_screen_name
+<div class="code"><pre class="code bash"><a id="rest_code_8db5850cdb494dc0876ae127bb993aae-1" name="rest_code_8db5850cdb494dc0876ae127bb993aae-1" href="running-scripts-in-background-linux.html#rest_code_8db5850cdb494dc0876ae127bb993aae-1"></a>$<span class="w"> </span>screen<span class="w"> </span>-r<span class="w"> </span>-d<span class="w"> </span>my_own_screen_name
 </pre></div>
 <p>To rename existing screen:</p>
 (being attached):
@@ -144,7 +144,7 @@ If you want terminate screen just
     <a href="https://disqus.com" class="dsq-brlink" rel="nofollow">Comments powered by <span class="logo-disqus">Disqus</span></a>
 
 
-        </section></article><script>var disqus_shortname="stencel";(function(){var a=document.createElement("script");a.async=true;a.src="https://"+disqus_shortname+".disqus.com/count.js";(document.getElementsByTagName("head")[0]||document.getElementsByTagName("body")[0]).appendChild(a)}());</script><footer id="footer"><p>Contents © 2023         <a href="mailto:gstencel@gmail.com">Greg Stencel</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         </p>
+        </section></article><script>var disqus_shortname="stencel";(function(){var a=document.createElement("script");a.async=true;a.src="https://"+disqus_shortname+".disqus.com/count.js";(document.getElementsByTagName("head")[0]||document.getElementsByTagName("body")[0]).appendChild(a)}());</script><footer id="footer"><p>Contents © 2025         <a href="mailto:gstencel@gmail.com">Greg Stencel</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         </p>
             
         </footer>
 </div>
