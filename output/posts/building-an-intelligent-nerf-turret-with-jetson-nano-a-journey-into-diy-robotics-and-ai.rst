@@ -136,14 +136,10 @@ It was a learning experience fueled by curiosity and the desire to create someth
 What started as a fun project with my son became a gateway into the fascinating world of AI and robotics, demonstrating that anyone can step into the world of DIY AI projects with curiosity and the right tools.
 
 
-THE OUTCOME
-===========
-
 .. raw:: html
 
     <embed>
     <iframe width="800" height="600" src="https://www.youtube.com/embed/krFlASb-rEQ?autoplay=1&mute=1">
     </iframe>
     </embed>
-
-
+ 
